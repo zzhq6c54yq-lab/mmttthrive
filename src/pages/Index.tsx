@@ -33,7 +33,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 6000);
+    }, 12000); // Changed from 6000 to 12000 milliseconds (12 seconds)
 
     return () => clearTimeout(timer);
   }, []);
