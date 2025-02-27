@@ -37,6 +37,7 @@
     
     /* Custom colors */
     --gold: 43 74% 49%;
+    --copper: 18 59% 46%;
   }
 
   * {
@@ -111,8 +112,20 @@
   }
 }
 
+@keyframes copperShimmer {
+  0% {
+    filter: drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(184, 115, 51, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
+  }
+}
+
 .intro-logo-icon {
-  animation: fadeInLogo 2s ease-out forwards, shimmer 3s ease-in-out 2s infinite;
+  animation: fadeInLogo 2s ease-out forwards, copperShimmer 3s ease-in-out 2s infinite;
 }
 
 .gold-element {
