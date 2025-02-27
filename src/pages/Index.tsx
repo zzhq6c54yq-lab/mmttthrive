@@ -42,7 +42,7 @@ const Index = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-black">
         <div className="text-center">
-          <h1 className="intro-logo text-5xl md:text-7xl mb-4 text-[#F5C242]">
+          <h1 className="intro-logo text-5xl md:text-7xl mb-4 text-[#F5C242] font-bold">
             THRIVE MT
           </h1>
           <p className="intro-text text-sm md:text-base text-gray-300">
@@ -55,7 +55,8 @@ const Index = () => {
             <img 
               src="/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png" 
               alt="Thrive MT Logo" 
-              className="h-28 md:h-40 mx-auto"
+              className="h-28 md:h-40 mx-auto logo-glow"
+              style={{ filter: "brightness(0) saturate(100%) invert(70%) sepia(53%) saturate(1352%) hue-rotate(360deg) brightness(103%) contrast(102%)" }}
             />
           </div>
         </div>
