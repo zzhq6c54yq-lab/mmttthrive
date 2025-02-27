@@ -47,7 +47,11 @@ const Index = () => {
               src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
               alt="Thrive Logo" 
               className="w-40 md:w-48 mx-auto intro-logo-icon gold-element"
-              style={{ filter: 'brightness(1.2) hue-rotate(-10deg)', mixBlendMode: 'screen' }}
+              style={{ 
+                filter: 'brightness(1.2) hue-rotate(-10deg) drop-shadow(0 0 8px rgba(245, 194, 66, 0.6))', 
+                mixBlendMode: 'screen',
+                WebkitFilter: 'brightness(1.2) hue-rotate(-10deg) drop-shadow(0 0 8px rgba(245, 194, 66, 0.6))'
+              }}
             />
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
