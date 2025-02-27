@@ -40,7 +40,7 @@ const Index = () => {
 
   if (showIntro) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#26262f]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f]">
         <div className="text-center max-w-2xl mx-auto px-4">
           <div className="mb-8">
             <img 
