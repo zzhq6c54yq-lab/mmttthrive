@@ -114,13 +114,13 @@
 
 @keyframes copperShimmer {
   0% {
-    filter: drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
+    filter: drop-shadow(0 0 4px rgba(245, 194, 66, 0.4));
   }
   50% {
-    filter: drop-shadow(0 0 12px rgba(184, 115, 51, 0.8));
+    filter: drop-shadow(0 0 12px rgba(245, 194, 66, 0.8));
   }
   100% {
-    filter: drop-shadow(0 0 4px rgba(184, 115, 51, 0.4));
+    filter: drop-shadow(0 0 4px rgba(245, 194, 66, 0.4));
   }
 }
 
