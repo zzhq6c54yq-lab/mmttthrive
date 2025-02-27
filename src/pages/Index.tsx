@@ -46,11 +46,10 @@ const Index = () => {
             <img 
               src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
               alt="Thrive Logo" 
-              className="w-40 md:w-48 mx-auto intro-logo-icon gold-element"
+              className="w-40 md:w-48 mx-auto intro-logo-icon"
               style={{ 
-                filter: 'brightness(1.2) hue-rotate(-10deg) drop-shadow(0 0 8px rgba(245, 194, 66, 0.6))', 
-                mixBlendMode: 'screen',
-                WebkitFilter: 'brightness(1.2) hue-rotate(-10deg) drop-shadow(0 0 8px rgba(245, 194, 66, 0.6))'
+                filter: 'brightness(0) saturate(100%) invert(78%) sepia(51%) saturate(916%) hue-rotate(337deg) brightness(101%) contrast(96%) drop-shadow(0 0 10px rgba(245, 194, 66, 0.7))',
+                mixBlendMode: 'normal'
               }}
             />
           </div>

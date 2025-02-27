@@ -112,7 +112,7 @@
 }
 
 .intro-logo-icon {
-  animation: fadeInLogo 2s ease-out forwards;
+  animation: fadeInLogo 2s ease-out forwards, shimmer 3s ease-in-out 2s infinite;
 }
 
 .gold-element {
