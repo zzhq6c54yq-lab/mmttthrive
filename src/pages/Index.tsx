@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield } from "lucide-react";
@@ -49,8 +50,9 @@ const Index = () => {
               style={{ filter: "brightness(0) saturate(100%) invert(70%) sepia(53%) saturate(1352%) hue-rotate(360deg) brightness(103%) contrast(102%)" }}
             />
           </div>
-          <h1 className="intro-logo-text text-6xl md:text-8xl mb-8 text-white">
-            Thrive
+          <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
+            <span className="text-white">Thrive</span>
+            <span className="text-[#F5C242]"> MT</span>
           </h1>
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving
