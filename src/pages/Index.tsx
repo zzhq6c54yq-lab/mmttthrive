@@ -46,12 +46,13 @@ const Index = () => {
             <img 
               src="/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png" 
               alt="Thrive Logo" 
-              className="w-40 md:w-48 mx-auto intro-logo-icon"
+              className="w-40 md:w-48 mx-auto intro-logo-icon gold-element"
+              style={{ filter: 'brightness(1.2) hue-rotate(-10deg)' }}
             />
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
             <span className="text-white">Thrive</span>
-            <span className="text-[#F5C242]"> MT</span>
+            <span className="text-[#F5C242] gold-element"> MT</span>
           </h1>
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving
