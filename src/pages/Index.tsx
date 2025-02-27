@@ -50,9 +50,41 @@ const emergencyResources = [
   { name: "Crisis Line", contact: "1-800-273-8255", description: "Local support" },
 ];
 
+const visionBoardQualities = [
+  { id: "peaceful", label: "Peaceful" },
+  { id: "confident", label: "Confident" },
+  { id: "focused", label: "Focused" },
+  { id: "joyful", label: "Joyful" },
+  { id: "resilient", label: "Resilient" },
+  { id: "balanced", label: "Balanced" },
+  { id: "energetic", label: "Energetic" },
+  { id: "mindful", label: "Mindful" },
+  { id: "creative", label: "Creative" },
+  { id: "grateful", label: "Grateful" },
+  { id: "empathetic", label: "Empathetic" },
+  { id: "present", label: "Present" },
+];
+
+const visionBoardGoals = [
+  { id: "reducing-anxiety", label: "Reducing anxiety" },
+  { id: "managing-stress", label: "Managing stress" },
+  { id: "improving-sleep", label: "Improving sleep" },
+  { id: "better-relationships", label: "Better relationships" },
+  { id: "career-growth", label: "Career growth" },
+  { id: "health-wellness", label: "Health & wellness" },
+  { id: "emotional-regulation", label: "Emotional regulation" },
+  { id: "setting-boundaries", label: "Setting boundaries" },
+  { id: "overcoming-trauma", label: "Overcoming trauma" },
+  { id: "finding-purpose", label: "Finding purpose" },
+  { id: "building-confidence", label: "Building confidence" },
+  { id: "work-life-balance", label: "Work-life balance" },
+];
+
 const Index = () => {
-  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'main'>('intro');
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'neutral' | 'sad' | null>(null);
+  const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,6 +93,22 @@ const Index = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const toggleQuality = (id: string) => {
+    setSelectedQualities(prev => 
+      prev.includes(id) 
+        ? prev.filter(q => q !== id) 
+        : [...prev, id]
+    );
+  };
+
+  const toggleGoal = (id: string) => {
+    setSelectedGoals(prev => 
+      prev.includes(id) 
+        ? prev.filter(g => g !== id) 
+        : [...prev, id]
+    );
+  };
 
   if (screenState === 'intro') {
     return (
@@ -142,9 +190,9 @@ const Index = () => {
             </div>
             <Button 
               className="group"
-              onClick={() => setScreenState('main')}
+              onClick={() => setScreenState('visionBoard')}
             >
-              Continue to Thrive
+              Create Your Vision
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -165,9 +213,9 @@ const Index = () => {
             </div>
             <Button 
               className="group"
-              onClick={() => setScreenState('main')}
+              onClick={() => setScreenState('visionBoard')}
             >
-              Continue to Thrive
+              Create Your Vision
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -196,15 +244,84 @@ const Index = () => {
             </p>
             <Button 
               className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
-              onClick={() => setScreenState('main')}
+              onClick={() => setScreenState('visionBoard')}
             >
-              Continue to Thrive
+              Create Your Vision
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
         </div>
       );
     }
+  }
+
+  if (screenState === 'visionBoard') {
+    return (
+      <div className="min-h-screen py-12 bg-gradient-to-b from-[#1a1a1f] to-[#2a2a3f] text-white animate-fade-in overflow-auto">
+        <div className="max-w-4xl mx-auto px-4">
+          <h1 className="text-3xl md:text-5xl text-center mb-6 font-light">
+            My Vision Board
+          </h1>
+          <p className="text-lg md:text-xl text-center mb-10 text-gray-300">
+            The future version of myself that I am choosing now will be:
+          </p>
+          
+          <div className="mb-12">
+            <h2 className="text-2xl mb-6 text-[#B87333]">Qualities I Want to Embrace</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {visionBoardQualities.map((quality) => (
+                <button
+                  key={quality.id}
+                  onClick={() => toggleQuality(quality.id)}
+                  className={`p-3 rounded-lg transition-all duration-300 text-lg ${
+                    selectedQualities.includes(quality.id)
+                      ? 'bg-[#B87333] text-white'
+                      : 'bg-white/10 hover:bg-white/20 text-white'
+                  }`}
+                >
+                  {quality.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="mb-12">
+            <h2 className="text-2xl mb-6 text-[#B87333]">Goals I Want to Achieve</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {visionBoardGoals.map((goal) => (
+                <button
+                  key={goal.id}
+                  onClick={() => toggleGoal(goal.id)}
+                  className={`p-3 rounded-lg transition-all duration-300 text-left ${
+                    selectedGoals.includes(goal.id)
+                      ? 'bg-[#B87333] text-white'
+                      : 'bg-white/10 hover:bg-white/20 text-white'
+                  }`}
+                >
+                  {goal.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-gray-300 mb-6">
+              {selectedQualities.length > 0 || selectedGoals.length > 0 
+                ? `You've selected ${selectedQualities.length} qualities and ${selectedGoals.length} goals.`
+                : "Select at least one quality or goal to help tailor your therapy and mental health resources."}
+            </p>
+            <Button 
+              className="group bg-[#B87333] hover:bg-[#B87333]/80 text-white"
+              onClick={() => setScreenState('main')}
+              disabled={selectedQualities.length === 0 && selectedGoals.length === 0}
+            >
+              Continue to Thrive
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
