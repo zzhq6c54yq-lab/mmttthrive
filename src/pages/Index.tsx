@@ -123,6 +123,9 @@ const Index = () => {
           </div>
           <h1 className="intro-logo-text text-6xl md:text-8xl mb-8">
             <span className="text-white">Thrive</span>
+            <span className="text-[#B87333] ml-2" style={{ 
+              textShadow: '0 0 10px rgba(184, 115, 51, 0.8), 0 0 20px rgba(184, 115, 51, 0.4)' 
+            }}>MT</span>
           </h1>
           <p className="intro-tagline text-xl md:text-2xl text-gray-300">
             because life should be more than just surviving
