@@ -363,7 +363,15 @@ const Index = () => {
               <Card 
                 key={index}
                 className="p-6 backdrop-blur-sm bg-background/50 border border-border/50 hover:border-primary/50 transition-colors duration-300 cursor-pointer"
-                onClick={() => navigate(feature.path)}
+                onClick={() => {
+                  if (feature.path === "/mental-wellness-tools") {
+                    navigate(feature.path, {
+                      state: { qualities: selectedQualities, goals: selectedGoals }
+                    });
+                  } else {
+                    navigate(feature.path);
+                  }
+                }}
               >
                 <feature.icon className="h-8 w-8 mb-4 text-primary/80" />
                 <h3 className="text-xl mb-3">{feature.title}</h3>
@@ -391,7 +399,13 @@ const Index = () => {
               Connect with a Therapist
               <MessageCircle className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline" className="group">
+            <Button 
+              variant="outline" 
+              className="group"
+              onClick={() => navigate("/mental-wellness-tools", {
+                state: { qualities: selectedQualities, goals: selectedGoals }
+              })}
+            >
               Explore Resources
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
