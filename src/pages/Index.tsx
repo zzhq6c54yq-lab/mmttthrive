@@ -101,7 +101,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setScreenState('mood');
-    }, 12000);
+    }, 7000);
 
     return () => clearTimeout(timer);
   }, []);
