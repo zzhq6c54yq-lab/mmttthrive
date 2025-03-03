@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry } from "lucide-react";
@@ -683,7 +682,7 @@ const Index = () => {
           </p>
           <Button className="group">
             Start Your Journey
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
           <Button 
             className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
