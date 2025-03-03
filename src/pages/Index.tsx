@@ -196,11 +196,11 @@ const Index = () => {
   if (screenState === 'mood') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in">
-        <div className="text-center max-w-2xl mx-auto px-4">
+        <div className="text-center max-w-md mx-auto px-4">
           <h2 className="text-2xl md:text-3xl text-white mb-8">
             How are you feeling today?
           </h2>
-          <div className="flex justify-center gap-8 md:gap-16">
+          <div className="flex justify-center gap-4 md:gap-8">
             <button 
               onClick={() => {
                 setSelectedMood('happy');
@@ -208,7 +208,7 @@ const Index = () => {
               }}
               className="mood-button group"
             >
-              <Smile className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <Smile className="w-14 h-14 md:w-16 md:h-16 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
             </button>
             <button 
               onClick={() => {
@@ -217,7 +217,7 @@ const Index = () => {
               }}
               className="mood-button group"
             >
-              <Meh className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <Meh className="w-14 h-14 md:w-16 md:h-16 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
             </button>
             <button 
               onClick={() => {
@@ -226,7 +226,7 @@ const Index = () => {
               }}
               className="mood-button group"
             >
-              <Frown className="w-16 h-16 md:w-20 md:h-20 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <Frown className="w-14 h-14 md:w-16 md:h-16 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
             </button>
           </div>
           <Button 
