@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -88,7 +87,7 @@ const visionBoardGoals = [
 
 const Index = () => {
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
-  const [selectedMood, setSelectedMood] = useState<'happy' | 'neutral' | 'sad' | null>(null);
+  const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [userInfo, setUserInfo] = useState({
@@ -200,7 +199,7 @@ const Index = () => {
           <h2 className="text-2xl md:text-3xl text-white mb-8">
             How are you feeling today?
           </h2>
-          <div className="flex justify-center gap-4 md:gap-8">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-4 mb-4">
             <button 
               onClick={() => {
                 setSelectedMood('happy');
@@ -208,7 +207,18 @@ const Index = () => {
               }}
               className="mood-button group"
             >
-              <Smile className="w-14 h-14 md:w-16 md:h-16 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <Smile className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-xs text-white mt-1">Happy</span>
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedMood('ok');
+                setScreenState('moodResponse');
+              }}
+              className="mood-button group"
+            >
+              <Annoyed className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-xs text-white mt-1">Just Ok</span>
             </button>
             <button 
               onClick={() => {
@@ -217,7 +227,20 @@ const Index = () => {
               }}
               className="mood-button group"
             >
-              <Meh className="w-14 h-14 md:w-16 md:h-16 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <Meh className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-xs text-white mt-1">Neutral</span>
+            </button>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 md:gap-4">
+            <button 
+              onClick={() => {
+                setSelectedMood('down');
+                setScreenState('moodResponse');
+              }}
+              className="mood-button group"
+            >
+              <HeartCrack className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-xs text-white mt-1">Feeling Down</span>
             </button>
             <button 
               onClick={() => {
@@ -226,7 +249,18 @@ const Index = () => {
               }}
               className="mood-button group"
             >
-              <Frown className="w-14 h-14 md:w-16 md:h-16 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <Frown className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-xs text-white mt-1">Sad</span>
+            </button>
+            <button 
+              onClick={() => {
+                setSelectedMood('overwhelmed');
+                setScreenState('moodResponse');
+              }}
+              className="mood-button group"
+            >
+              <Angry className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-xs text-white mt-1">Overwhelmed</span>
             </button>
           </div>
           <Button 
@@ -254,6 +288,40 @@ const Index = () => {
                   {affirmation}
                 </p>
               ))}
+            </div>
+            <Button 
+              className="group"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      );
+    } else if (selectedMood === 'ok') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F0FB] animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Annoyed className="w-20 h-20 mx-auto mb-8 text-[#B87333]" />
+            <h2 className="text-3xl md:text-4xl mb-8">It's Okay to Just Be Okay</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light">
+                Some days are just "okay" - and that's perfectly fine.
+              </p>
+              <p className="text-xl md:text-2xl font-light">
+                You don't have to be at your best or your worst. The middle ground is valid too.
+              </p>
+              <p className="text-xl md:text-2xl font-light">
+                Embrace the ordinary moments - they're the ones that make up most of life.
+              </p>
             </div>
             <Button 
               className="group"
@@ -302,6 +370,40 @@ const Index = () => {
           </div>
         </div>
       );
+    } else if (selectedMood === 'down') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F5F7] animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <HeartCrack className="w-20 h-20 mx-auto mb-8 text-[#B87333]" />
+            <h2 className="text-3xl md:text-4xl mb-8">When You're Feeling Down</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light">
+                It's natural to have low moments - they're part of everyone's experience.
+              </p>
+              <p className="text-xl md:text-2xl font-light">
+                Be gentle with yourself today. Small acts of self-care can make a difference.
+              </p>
+              <p className="text-xl md:text-2xl font-light">
+                Remember that this feeling will pass, even when it doesn't feel like it now.
+              </p>
+            </div>
+            <Button 
+              className="group"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      );
     } else if (selectedMood === 'sad') {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in">
@@ -328,6 +430,51 @@ const Index = () => {
               onClick={() => setScreenState('register')}
             >
               Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      );
+    } else if (selectedMood === 'overwhelmed') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Angry className="w-20 h-20 mx-auto mb-8 text-[#ea384c]" />
+            <h2 className="text-3xl md:text-4xl mb-8">When It's All Too Much</h2>
+            <p className="text-xl mb-6">
+              If you're feeling overwhelmed and struggling to cope, please consider these steps:
+            </p>
+            <div className="space-y-4 mb-8">
+              <div className="p-4 border border-[#ea384c]/20 rounded-lg bg-[#ea384c]/10">
+                <h3 className="text-xl font-medium">Take a Breath</h3>
+                <p className="my-2">Try the 4-7-8 breathing technique: Inhale for 4 seconds, hold for 7, exhale for 8.</p>
+              </div>
+              <div className="p-4 border border-[#ea384c]/20 rounded-lg bg-[#ea384c]/10">
+                <h3 className="text-xl font-medium">Step Away</h3>
+                <p className="my-2">If possible, step away from triggers temporarily to reset your system.</p>
+              </div>
+              <div className="p-4 border border-[#ea384c]/20 rounded-lg bg-[#ea384c]/10">
+                <h3 className="text-xl font-medium">Reach Out</h3>
+                <p className="my-2">Contact a trusted friend, family member, or mental health professional.</p>
+              </div>
+            </div>
+            <div className="p-4 border-2 border-[#ea384c] rounded-lg bg-[#ea384c]/10 mb-8">
+              <h3 className="text-xl font-bold">Crisis Resources</h3>
+              <p className="text-2xl font-bold text-[#ea384c] my-2">988</p>
+              <p className="opacity-80">National Suicide Prevention Lifeline - Available 24/7</p>
+            </div>
+            <Button 
+              className="group bg-[#ea384c] hover:bg-[#ea384c]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue When Ready
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
