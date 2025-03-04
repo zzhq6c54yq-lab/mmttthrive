@@ -4,6 +4,7 @@ import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, 
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 
 const features = [
   {
@@ -92,6 +93,7 @@ const visionBoardGoals = [
 ];
 
 const Index = () => {
+  const [showCoPayCredit, setShowCoPayCredit] = useState(true);
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -180,6 +182,8 @@ const Index = () => {
 
   return (
     <>
+      <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
+
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
           <div className="floating-bg"></div>
