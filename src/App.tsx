@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import RealTimeTherapy from "./pages/RealTimeTherapy";
 import MentalWellnessTools from "./pages/MentalWellnessTools";
+import ToolDetail from "./pages/ToolDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
+          <Route path="/mental-wellness-tools/:toolId" element={<ToolDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

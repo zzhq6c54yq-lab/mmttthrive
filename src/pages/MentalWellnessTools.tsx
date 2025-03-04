@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { 
@@ -23,7 +22,7 @@ import {
   HeartHandshake,
   ScrollText
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -298,6 +297,7 @@ const toolCategories = [
 
 const MentalWellnessTools = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
@@ -306,7 +306,6 @@ const MentalWellnessTools = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Parse URL state if available
   useEffect(() => {
     if (location.state) {
       const { qualities, goals } = location.state as { qualities?: string[], goals?: string[] };
@@ -315,15 +314,12 @@ const MentalWellnessTools = () => {
     }
   }, [location]);
 
-  // Generate recommendations based on selected qualities and goals
   const generateRecommendations = () => {
     const allSelections = [...selectedQualities, ...selectedGoals];
     if (allSelections.length === 0) {
-      // Default recommendations if no selections
       return ["Meditation & Mindfulness", "Mood Tracking", "Self-Help Resources"];
     }
 
-    // Calculate tool scores based on keyword matches
     const toolScores = toolCategories.map(tool => {
       const matchCount = tool.keywords.filter(keyword => 
         allSelections.includes(keyword)
@@ -331,7 +327,6 @@ const MentalWellnessTools = () => {
       return { title: tool.title, score: matchCount };
     });
 
-    // Sort tools by score and get top 3
     const topTools = toolScores
       .sort((a, b) => b.score - a.score)
       .slice(0, 3)
@@ -340,7 +335,6 @@ const MentalWellnessTools = () => {
     return topTools;
   };
 
-  // Handle clicking the personalized recommendations button
   const handleGetPersonalizedRecs = () => {
     setRecommendations(generateRecommendations());
     setShowPersonalized(true);
@@ -351,7 +345,16 @@ const MentalWellnessTools = () => {
     });
   };
 
-  // Filter tools by category and search term
+  const handleToolSelect = (toolTitle: string) => {
+    const toolSlug = toolTitle.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/mental-wellness-tools/${toolSlug}`);
+    
+    toast({
+      title: `${toolTitle} Selected`,
+      description: "Loading detailed resources and tools...",
+    });
+  };
+
   const filteredTools = toolCategories.filter(tool => {
     const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          tool.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -360,7 +363,6 @@ const MentalWellnessTools = () => {
     return matchesSearch && (categoryFilter === "recommended" ? recommendations.includes(tool.title) : true);
   });
 
-  // Categories for filtering
   const categories = [
     { id: "all", label: "All Tools" },
     { id: "recommended", label: "Recommended For You" }
@@ -368,7 +370,6 @@ const MentalWellnessTools = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
       <div className="bg-[#1a1a1f] text-white py-12 relative overflow-hidden">
         <div className="floating-bg animate-pulse"></div>
         <div className="container px-4 max-w-6xl mx-auto relative z-10">
@@ -383,9 +384,7 @@ const MentalWellnessTools = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        {/* Search and filter bar */}
         <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center">
           <div className="relative flex-1">
             <input
@@ -411,7 +410,6 @@ const MentalWellnessTools = () => {
           </div>
         </div>
 
-        {/* Personalized recommendations section (when shown) */}
         {showPersonalized && (
           <div className="mb-16 bg-[#F1F0FB] rounded-xl p-8 animate-fade-up">
             <h2 className="text-3xl font-light mb-6 text-center">Your Personalized Recommendations</h2>
@@ -435,6 +433,7 @@ const MentalWellnessTools = () => {
                       <p className="text-muted-foreground text-sm mb-4">{tool.description}</p>
                       <Button 
                         className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-sm hero-button"
+                        onClick={() => handleToolSelect(tool.title)}
                       >
                         {tool.cta}
                       </Button>
@@ -446,7 +445,6 @@ const MentalWellnessTools = () => {
           </div>
         )}
 
-        {/* Tool grid - all tools */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredTools.map((category, index) => (
             <Card key={index} 
@@ -472,12 +470,7 @@ const MentalWellnessTools = () => {
                 </ul>
                 <Button 
                   className="w-full bg-[#B87333] hover:bg-[#B87333]/90 hero-button"
-                  onClick={() => {
-                    toast({
-                      title: `${category.title} Selected`,
-                      description: "Tool details are coming soon!",
-                    });
-                  }}
+                  onClick={() => handleToolSelect(category.title)}
                 >
                   {category.cta}
                 </Button>
@@ -486,14 +479,12 @@ const MentalWellnessTools = () => {
           ))}
         </div>
 
-        {/* Show message if no tools match filters */}
         {filteredTools.length === 0 && (
           <div className="text-center py-16">
             <p className="text-xl text-muted-foreground">No matching tools found. Try adjusting your search.</p>
           </div>
         )}
 
-        {/* Personalization CTA */}
         <div className="mt-16 bg-[#F1F0FB] rounded-xl p-8 text-center">
           <h2 className="text-3xl font-light mb-4">Your Personalized Wellness Journey</h2>
           <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto">
