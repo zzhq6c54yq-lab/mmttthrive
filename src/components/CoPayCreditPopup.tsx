@@ -2,7 +2,6 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 
 interface CoPayCreditPopupProps {
   open: boolean;
@@ -34,6 +33,15 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
                     <span className="font-medium">Meet Henry</span>
                     <p className="text-sm text-gray-600 mt-1">
                       Introducing Henry, our AI sponsor for N.A. or A.A. recovery support, available to guide you through your journey
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="bg-[#B87333] h-2 w-2 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                  <div>
+                    <span className="font-medium">Barter System</span>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Can't afford therapy? Pay what you can and balance the rest through community service
                     </p>
                   </div>
                 </li>
