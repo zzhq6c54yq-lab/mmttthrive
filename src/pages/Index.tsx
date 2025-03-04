@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +17,12 @@ const features = [
     description: "Connect with licensed therapists instantly through secure video sessions.",
     icon: MessageCircle,
     path: "/real-time-therapy"
+  },
+  {
+    title: "My Sponsor",
+    description: "Access NA program resources and connect with a digital sponsor anytime.",
+    icon: HeartHandshake,
+    path: "/my-sponsor"
   },
   {
     title: "Flexible Scheduling",
