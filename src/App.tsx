@@ -23,8 +23,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
+          <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
           <Route path="/mental-wellness-tools/:toolId" element={<ToolDetail />} />
           <Route path="/therapist-questionnaire" element={<TherapistQuestionnaire />} />
           <Route path="/therapist-matches" element={<TherapistMatches />} />

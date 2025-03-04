@@ -7,16 +7,16 @@ import { useToast } from "@/hooks/use-toast";
 
 const features = [
   {
-    title: "Real-Time Therapy",
-    description: "Connect with licensed therapists instantly through secure video sessions.",
-    icon: MessageCircle,
-    path: "/real-time-therapy"
-  },
-  {
     title: "Mental Wellness Tools", 
     description: "Access evidence-based resources and exercises for your mental health journey.",
     icon: Brain,
     path: "/mental-wellness-tools"
+  },
+  {
+    title: "Real-Time Therapy",
+    description: "Connect with licensed therapists instantly through secure video sessions.",
+    icon: MessageCircle,
+    path: "/real-time-therapy"
   },
   {
     title: "Flexible Scheduling",
