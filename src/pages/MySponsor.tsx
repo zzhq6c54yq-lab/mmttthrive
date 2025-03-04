@@ -1,10 +1,12 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Book, Calendar, HeartHandshake, Users, MessageCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
 import SponsorChatbot from "@/components/SponsorChatbot";
 import HomeButton from "@/components/HomeButton";
 
@@ -39,6 +41,17 @@ const traditions = [
 ];
 
 const MySponsor = () => {
+  const [traditionsOpen, setTraditionsOpen] = useState(false);
+  const [meetingsOpen, setMeetingsOpen] = useState(false);
+
+  const showTraditions = () => {
+    setTraditionsOpen(true);
+  };
+
+  const showMeetings = () => {
+    setMeetingsOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#1a1a1f] text-white p-6">
       <HomeButton />
@@ -101,7 +114,7 @@ const MySponsor = () => {
                     <Button 
                       variant="outline" 
                       className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                      onClick={() => document.querySelector('[data-value="traditions"]')?.click()}
+                      onClick={showTraditions}
                     >
                       <Users className="h-4 w-4 mr-2" />
                       View Traditions
@@ -119,7 +132,7 @@ const MySponsor = () => {
                     <Button 
                       variant="outline" 
                       className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                      onClick={() => document.querySelector('[data-value="meetings"]')?.click()}
+                      onClick={showMeetings}
                     >
                       <Calendar className="h-4 w-4 mr-2" />
                       Find Meetings
@@ -151,7 +164,7 @@ const MySponsor = () => {
                   <Button 
                     variant="outline" 
                     className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                    onClick={() => document.querySelector('[data-value="traditions"]')?.click()}
+                    onClick={showTraditions}
                   >
                     <Users className="h-4 w-4 mr-2" />
                     View Traditions
@@ -171,7 +184,7 @@ const MySponsor = () => {
                   <Button 
                     variant="outline" 
                     className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                    onClick={() => document.querySelector('[data-value="meetings"]')?.click()}
+                    onClick={showMeetings}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
                     Find Meetings
@@ -180,57 +193,82 @@ const MySponsor = () => {
               </Card>
             </div>
           </TabsContent>
-
-          {/* Hidden tabs that are accessible via buttons */}
-          <TabsTrigger value="traditions" className="hidden" data-value="traditions" />
-          <TabsContent value="traditions">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {traditions.map((tradition, index) => (
-                <Card key={index} className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h3 className="text-lg font-medium mb-2 text-[#B87333]">Tradition {index + 1}</h3>
-                  <p className="text-sm text-gray-300">{tradition}</p>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsTrigger value="meetings" className="hidden" data-value="meetings" />
-          <TabsContent value="meetings">
-            <Card className="p-6 border border-[#B87333]/20 bg-white/5">
-              <h3 className="text-2xl font-medium mb-4">Find NA Meetings</h3>
-              <p className="text-gray-300 mb-4">
-                Connect with your local NA community or join virtual meetings worldwide.
-              </p>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h4 className="text-lg font-medium mb-2">Local Meetings</h4>
-                  <p className="text-sm text-gray-300 mb-4">
-                    Find in-person meetings in your area.
-                  </p>
-                  <Button 
-                    className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
-                    onClick={() => window.open("https://www.na.org/meetingsearch/", "_blank")}
-                  >
-                    Search Local Meetings
-                  </Button>
-                </Card>
-                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h4 className="text-lg font-medium mb-2">Virtual Meetings</h4>
-                  <p className="text-sm text-gray-300 mb-4">
-                    Join online meetings from anywhere.
-                  </p>
-                  <Button 
-                    className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
-                    onClick={() => window.open("https://virtual-na.org/", "_blank")}
-                  >
-                    Join Virtual Meetings
-                  </Button>
-                </Card>
-              </div>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
+
+      {/* Traditions Dialog */}
+      <Dialog open={traditionsOpen} onOpenChange={setTraditionsOpen}>
+        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-light">
+              The <span className="text-[#B87333]">12 Traditions</span> of NA
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Guiding principles that help NA groups function effectively
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
+            {traditions.map((tradition, index) => (
+              <Card key={index} className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h3 className="text-lg font-medium mb-2 text-[#B87333]">Tradition {index + 1}</h3>
+                <p className="text-sm text-gray-300">{tradition}</p>
+              </Card>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Meetings Dialog */}
+      <Dialog open={meetingsOpen} onOpenChange={setMeetingsOpen}>
+        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/20 text-white max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-light">
+              Find NA <span className="text-[#B87333]">Meetings</span>
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Connect with your local NA community or join virtual meetings worldwide
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 md:grid-cols-2 mt-4">
+            <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+              <h4 className="text-lg font-medium mb-2">Local Meetings</h4>
+              <p className="text-sm text-gray-300 mb-4">
+                Find in-person meetings in your area.
+              </p>
+              <Button 
+                className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
+                onClick={() => {
+                  window.open("https://www.na.org/meetingsearch/", "_blank");
+                  toast({
+                    title: "Opening NA Meeting Search",
+                    description: "Redirecting you to the official NA meeting search page",
+                  });
+                }}
+              >
+                Search Local Meetings
+              </Button>
+            </Card>
+            <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+              <h4 className="text-lg font-medium mb-2">Virtual Meetings</h4>
+              <p className="text-sm text-gray-300 mb-4">
+                Join online meetings from anywhere.
+              </p>
+              <Button 
+                className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
+                onClick={() => {
+                  window.open("https://virtual-na.org/", "_blank");
+                  toast({
+                    title: "Opening Virtual NA Meetings",
+                    description: "Redirecting you to the virtual NA meetings page",
+                  });
+                }}
+              >
+                Join Virtual Meetings
+              </Button>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
