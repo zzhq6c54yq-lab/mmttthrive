@@ -27,6 +27,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { toolCategories } from "@/data/toolCategories";
+import HomeButton from "@/components/HomeButton";
 
 const MentalWellnessTools = () => {
   const location = useLocation();
@@ -106,10 +107,13 @@ const MentalWellnessTools = () => {
       <div className="bg-[#1a1a1f] text-white py-12 relative overflow-hidden">
         <div className="floating-bg animate-pulse"></div>
         <div className="container px-4 max-w-6xl mx-auto relative z-10">
-          <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 mb-6 transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
+            <HomeButton />
+          </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4 gradient-heading">Mental Wellness Tools</h1>
           <p className="text-xl text-gray-300 max-w-3xl">
             Evidence-based resources and exercises to support your mental health journey.

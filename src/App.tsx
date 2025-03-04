@@ -9,9 +9,11 @@ import RealTimeTherapy from "./pages/RealTimeTherapy";
 import MentalWellnessTools from "./pages/MentalWellnessTools";
 import ToolDetail from "./pages/ToolDetail";
 import NotFound from "./pages/NotFound";
+import HomeButton from "./components/HomeButton";
 
 const queryClient = new QueryClient();
 
+// Now let's also update the App component to automatically add the HomeButton to the ToolDetail page
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>

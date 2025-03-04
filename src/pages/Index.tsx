@@ -1,9 +1,8 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const features = [
@@ -97,15 +96,23 @@ const Index = () => {
     password: '',
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setScreenState('mood');
-    }, 7000);
+    if (location.state && location.state.returnToIntro) {
+      setScreenState('intro');
+      window.history.replaceState({}, document.title);
+    } else {
+      const timer = setTimeout(() => {
+        if (screenState === 'intro') {
+          setScreenState('mood');
+        }
+      }, 7000);
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state, screenState]);
 
   const toggleQuality = (id: string) => {
     setSelectedQualities(prev => 
@@ -675,7 +682,7 @@ const Index = () => {
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button 
-              className="ml-4 mt-4 md:mt-0 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
               onClick={handlePrevious}
             >
               <ArrowLeft className="h-4 w-4" />
