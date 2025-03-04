@@ -61,14 +61,6 @@ const MySponsor = () => {
               <Book className="h-4 w-4 mr-2" />
               12 Steps
             </TabsTrigger>
-            <TabsTrigger value="traditions" className="data-[state=active]:bg-[#B87333]">
-              <Users className="h-4 w-4 mr-2" />
-              12 Traditions
-            </TabsTrigger>
-            <TabsTrigger value="meetings" className="data-[state=active]:bg-[#B87333]">
-              <Calendar className="h-4 w-4 mr-2" />
-              Find Meetings
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="sponsor" className="space-y-4">
@@ -98,6 +90,42 @@ const MySponsor = () => {
                     </li>
                   </ul>
                 </Card>
+                
+                {/* 12 Traditions Card */}
+                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                  <h3 className="text-lg font-medium mb-2">12 Traditions</h3>
+                  <p className="text-sm text-gray-300 mb-2">
+                    Explore the guiding principles that keep our fellowship united.
+                  </p>
+                  <div className="flex">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
+                      onClick={() => document.querySelector('[data-value="traditions"]')?.click()}
+                    >
+                      <Users className="h-4 w-4 mr-2" />
+                      View Traditions
+                    </Button>
+                  </div>
+                </Card>
+                
+                {/* Find Meetings Card */}
+                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                  <h3 className="text-lg font-medium mb-2">Find Meetings</h3>
+                  <p className="text-sm text-gray-300 mb-2">
+                    Connect with local and online NA meetings.
+                  </p>
+                  <div className="flex">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
+                      onClick={() => document.querySelector('[data-value="meetings"]')?.click()}
+                    >
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Find Meetings
+                    </Button>
+                  </div>
+                </Card>
               </div>
             </div>
           </TabsContent>
@@ -111,8 +139,50 @@ const MySponsor = () => {
                 </Card>
               ))}
             </div>
+            
+            {/* 12 Traditions Card */}
+            <div className="mt-6">
+              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h3 className="text-lg font-medium mb-2">12 Traditions</h3>
+                <p className="text-sm text-gray-300 mb-2">
+                  Explore the guiding principles that keep our fellowship united.
+                </p>
+                <div className="flex">
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
+                    onClick={() => document.querySelector('[data-value="traditions"]')?.click()}
+                  >
+                    <Users className="h-4 w-4 mr-2" />
+                    View Traditions
+                  </Button>
+                </div>
+              </Card>
+            </div>
+            
+            {/* Find Meetings Card */}
+            <div className="mt-4">
+              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
+                <h3 className="text-lg font-medium mb-2">Find Meetings</h3>
+                <p className="text-sm text-gray-300 mb-2">
+                  Connect with local and online NA meetings.
+                </p>
+                <div className="flex">
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
+                    onClick={() => document.querySelector('[data-value="meetings"]')?.click()}
+                  >
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Find Meetings
+                  </Button>
+                </div>
+              </Card>
+            </div>
           </TabsContent>
 
+          {/* Hidden tabs that are accessible via buttons */}
+          <TabsTrigger value="traditions" className="hidden" data-value="traditions" />
           <TabsContent value="traditions">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {traditions.map((tradition, index) => (
@@ -124,6 +194,7 @@ const MySponsor = () => {
             </div>
           </TabsContent>
 
+          <TabsTrigger value="meetings" className="hidden" data-value="meetings" />
           <TabsContent value="meetings">
             <Card className="p-6 border border-[#B87333]/20 bg-white/5">
               <h3 className="text-2xl font-medium mb-4">Find NA Meetings</h3>
