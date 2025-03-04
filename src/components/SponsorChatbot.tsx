@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
 type Message = {
@@ -19,7 +19,7 @@ const SponsorChatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      content: "Hi there, I'm your digital sponsor. I'm here to support you in your recovery journey. How can I help you today?",
+      content: "Hi there, I'm Henry, your digital sponsor. I'm here to support you in your recovery journey. How can I help you today?",
       role: "assistant",
       timestamp: new Date(),
     },
@@ -98,7 +98,7 @@ const SponsorChatbot: React.FC = () => {
   return (
     <Card className="w-full h-[600px] flex flex-col border border-[#B87333]/20 bg-white/5 backdrop-blur-md">
       <div className="p-4 border-b border-[#B87333]/20 bg-[#B87333]/10">
-        <h3 className="text-lg font-medium text-white">Your Digital Sponsor</h3>
+        <h3 className="text-lg font-medium text-white">Henry - Your Digital Sponsor</h3>
         <p className="text-sm text-gray-300">Available 24/7 to support your recovery journey</p>
       </div>
       
@@ -119,11 +119,12 @@ const SponsorChatbot: React.FC = () => {
                 {message.role === "assistant" && (
                   <div className="flex items-center mb-1">
                     <Avatar className="h-6 w-6 mr-2">
-                      <div className="bg-[#B87333]/20 h-full w-full flex items-center justify-center text-[#B87333] text-xs">
-                        S
-                      </div>
+                      <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
+                      <AvatarFallback className="bg-[#B87333]/20 h-full w-full flex items-center justify-center text-[#B87333] text-xs">
+                        H
+                      </AvatarFallback>
                     </Avatar>
-                    <span className="text-xs text-gray-300">Sponsor</span>
+                    <span className="text-xs text-gray-300">Henry</span>
                   </div>
                 )}
                 <p className="text-sm">{message.content}</p>
@@ -141,9 +142,10 @@ const SponsorChatbot: React.FC = () => {
               <div className="max-w-[80%] rounded-lg p-3 bg-gray-700 text-white">
                 <div className="flex items-center">
                   <Avatar className="h-6 w-6 mr-2">
-                    <div className="bg-[#B87333]/20 h-full w-full flex items-center justify-center text-[#B87333] text-xs">
-                      S
-                    </div>
+                    <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
+                    <AvatarFallback className="bg-[#B87333]/20 h-full w-full flex items-center justify-center text-[#B87333] text-xs">
+                      H
+                    </AvatarFallback>
                   </Avatar>
                   <Loader2 className="h-4 w-4 animate-spin text-[#B87333]" />
                 </div>
