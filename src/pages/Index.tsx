@@ -4,7 +4,6 @@ import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, 
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import WhatsNewDialog from "@/components/WhatsNewDialog";
 
 const features = [
   {
@@ -93,7 +92,6 @@ const visionBoardGoals = [
 ];
 
 const Index = () => {
-  const [showWhatsNew, setShowWhatsNew] = useState(true);
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -113,14 +111,14 @@ const Index = () => {
       window.history.replaceState({}, document.title);
     } else {
       const timer = setTimeout(() => {
-        if (screenState === 'intro' && !showWhatsNew) {
+        if (screenState === 'intro') {
           setScreenState('mood');
         }
       }, 7000);
 
       return () => clearTimeout(timer);
     }
-  }, [location.state, screenState, showWhatsNew]);
+  }, [location.state, screenState]);
 
   const toggleQuality = (id: string) => {
     setSelectedQualities(prev => 
@@ -182,8 +180,6 @@ const Index = () => {
 
   return (
     <>
-      <WhatsNewDialog open={showWhatsNew} onOpenChange={setShowWhatsNew} />
-
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
           <div className="floating-bg"></div>
@@ -641,7 +637,7 @@ const Index = () => {
 
       {screenState === 'visionBoard' && (
         <div className="min-h-screen py-12 bg-gradient-to-b from-[#1a1a1f] to-[#2a2a3f] text-white animate-fade-in overflow-auto relative">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20 fixed"></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.02%22/></svg>')] opacity-20 fixed"></div>
           <div className="max-w-4xl mx-auto px-4 relative z-10">
             <h1 className="text-3xl md:text-5xl text-center mb-6 font-light gradient-heading">
               My Vision Board
