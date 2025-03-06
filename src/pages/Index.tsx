@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -186,13 +185,13 @@ const selfPacedClasses: VirtualClass[] = [
 ];
 
 const moodAffirmations = {
-  "Content": "Your positive energy creates a beautiful ripple effect of joy all around you! Embrace this wonderful feeling and let it fuel your day. Remember, you deserve every moment of happiness, and your smile can inspire others to find their own joy.",
-  "Moderate": "Finding balance is a remarkable strength that not everyone possesses. You're navigating life's challenges with grace and stability. Each step forward is a significant victory worth celebrating, and your steady progress is building a foundation for lasting well-being.",
-  "Neutral": "Being centered gives you a unique clarity that many seek but few achieve. This balanced state allows you to make mindful choices and fully appreciate the present moment. Notice how this emotional equilibrium provides you space to choose your next steps with intention.",
-  "Uneasy": "It's perfectly okay to feel uncertain sometimes. Remember your inner strength and resilience - you've successfully navigated challenging waters before and grown stronger from each experience. This feeling is temporary, and brighter moments await just around the corner.",
-  "Distressed": "Every feeling is valid and temporary. Be especially gentle with yourself today - take the smallest steps toward comfort, and acknowledge each one. Brighter moments are always on the horizon, and this discomfort is teaching you something valuable about your needs.",
-  "Anxious": "Take a deep, nurturing breath and remember you are infinitely stronger than you realize in this moment. This feeling will pass, and you already possess all the tools and wisdom to navigate through it. Your awareness itself is the first step toward relief.",
-  "Overwhelmed": "You don't have to carry everything at once - it's okay to set some burdens down. Break challenges into the smallest possible steps, celebrate each tiny victory, and remember how incredibly resilient you truly are. Each time you've felt this way before, you've found your way through."
+  "Content": "Your positive energy creates a beautiful ripple effect of joy all around you! Embrace this wonderful feeling and let it fuel your day. Remember, you deserve every moment of happiness, and your smile can inspire others to find their own joy. These moments of contentment are building blocks for lasting well-being and resilience. Notice how this feeling affects your body—perhaps your shoulders feel lighter or your breathing comes more easily.",
+  "Moderate": "Finding balance is a remarkable strength that not everyone possesses. You're navigating life's challenges with grace and stability. Each step forward is a significant victory worth celebrating, and your steady progress is building a foundation for lasting well-being. Your ability to maintain perspective during life's ups and downs is a powerful asset that will serve you well through any situation.",
+  "Neutral": "Being centered gives you a unique clarity that many seek but few achieve. This balanced state allows you to make mindful choices and fully appreciate the present moment. Notice how this emotional equilibrium provides you space to choose your next steps with intention. From this neutral ground, you can observe your thoughts and feelings without being overwhelmed by them—a truly valuable skill in today's fast-paced world.",
+  "Uneasy": "It's perfectly okay to feel uncertain sometimes. Remember your inner strength and resilience - you've successfully navigated challenging waters before and grown stronger from each experience. This feeling is temporary, and brighter moments await just around the corner. Consider what your uneasiness might be trying to tell you—sometimes these feelings are signposts guiding us toward important insights or necessary changes.",
+  "Distressed": "Every feeling is valid and temporary. Be especially gentle with yourself today - take the smallest steps toward comfort, and acknowledge each one. Brighter moments are always on the horizon, and this discomfort is teaching you something valuable about your needs. Remember that you've moved through difficult feelings before, and each time you've emerged with new wisdom and strength. Your awareness of these feelings shows your emotional intelligence.",
+  "Anxious": "Take a deep, nurturing breath and remember you are infinitely stronger than you realize in this moment. This feeling will pass, and you already possess all the tools and wisdom to navigate through it. Your awareness itself is the first step toward relief. Consider what small action might bring you comfort right now—perhaps a brief walk, a glass of water, or a few minutes of mindful breathing. You're not alone in feeling this way, and reaching out for support is a sign of courage.",
+  "Overwhelmed": "You don't have to carry everything at once - it's okay to set some burdens down. Break challenges into the smallest possible steps, celebrate each tiny victory, and remember how incredibly resilient you truly are. Each time you've felt this way before, you've found your way through. Take a moment to acknowledge your courage in facing these intense feelings. Your capacity to handle difficult situations has grown with every challenge you've faced."
 };
 
 const emergencySupport = {
@@ -285,7 +284,6 @@ const Index = () => {
     setShowVisionBoard(false);
   };
 
-  // Render the appropriate component based on the current state
   if (showIntro) {
     return <IntroScreen onComplete={handleIntroComplete} />;
   }

@@ -1,23 +1,34 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 interface IntroScreenProps {
   onComplete: () => void;
 }
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
+  const [startFadeOut, setStartFadeOut] = useState(false);
+  
+  useEffect(() => {
+    // Start the fade out effect after 5 seconds
+    const fadeOutTimer = setTimeout(() => {
+      setStartFadeOut(true);
+    }, 5000);
+    
+    // Complete the transition after 8 seconds total
+    const completeTimer = setTimeout(() => {
       onComplete();
     }, 8000);
     
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(fadeOutTimer);
+      clearTimeout(completeTimer);
+    };
   }, [onComplete]);
 
   return (
-    <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white">
+    <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-start pt-24 md:pt-32 text-white">
       <div className="text-center">
-        <div className="intro-logo-icon mb-4">
+        <div className={`intro-logo-icon mb-4 ${startFadeOut ? 'logo-persist' : ''}`}>
           <img 
             src="/lovable-uploads/7d06dcc4-22d6-4a52-8d1a-ad5febe60afb.png" 
             alt="Thrive MT Logo" 
@@ -25,14 +36,14 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onComplete }) => {
             style={{ filter: "brightness(0) saturate(100%) invert(100%) sepia(43%) saturate(1352%) hue-rotate(337deg) brightness(89%) contrast(91%)" }}
           />
         </div>
-        <h1 className="intro-logo-text text-5xl md:text-7xl font-bold mb-2">
+        <h1 className={`intro-logo-text text-5xl md:text-7xl font-bold mb-2 ${startFadeOut ? 'logo-text-persist' : ''}`}>
           <span className="copper-text">Thrive MT</span>
         </h1>
-        <h2 className="intro-logo-text text-2xl md:text-3xl font-semibold mb-4">
+        <h2 className={`intro-logo-text text-2xl md:text-3xl font-semibold mb-4 ${startFadeOut ? 'fade-out-fast' : ''}`}>
           <span className="text-white">New Beginnings</span>
         </h2>
-        <p className="intro-tagline text-xl md:text-2xl text-[#B87333] mb-4">
-          because life should be more then just surviving
+        <p className={`intro-tagline text-xl md:text-2xl text-[#B87333] mb-4 ${startFadeOut ? 'fade-out-fast' : ''}`}>
+          because life should be more than just surviving
         </p>
       </div>
     </div>
