@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -338,14 +337,10 @@ const Index = () => {
               <Button
                 key={mood.label}
                 variant="ghost"
-                className={`flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all ${
-                  currentMood === mood.label
-                    ? `copper-text scale-110`
-                    : "text-white hover:copper-text"
-                }`}
+                className="flex flex-col items-center justify-center py-6 px-4 rounded-xl hover:scale-110 transition-all"
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className={`mb-3 ${currentMood === mood.label ? 'copper-text' : 'text-current'}`}>
+                <div className="mb-3 text-[#B87333]">
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
