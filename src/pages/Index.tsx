@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -272,6 +273,11 @@ const Index = () => {
     setShowVisionBoard(true);
   };
 
+  const continueMoodToVisionBoard = () => {
+    setShowMoodResponse(false);
+    setShowVisionBoard(true);
+  };
+
   const goBackToMainContent = () => {
     setShowVisionBoard(false);
   };
@@ -297,7 +303,7 @@ const Index = () => {
           showEmergencyResources={showEmergencyResources}
           emergencyResourcesForMood={emergencyResourcesForMood}
           onBack={() => setShowMoodResponse(false)}
-          onContinue={proceedToMainContent}
+          onContinue={continueMoodToVisionBoard}
         />
       );
     }

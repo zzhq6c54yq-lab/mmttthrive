@@ -9,6 +9,7 @@ import SubscriptionPlansDialog from "./SubscriptionPlansDialog";
 import SponsorChatbot from "@/components/SponsorChatbot";
 import { VirtualClass } from "@/data/toolCategories";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface DashboardProps {
   workshops: VirtualClass[];
@@ -34,7 +35,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   onVisionBoardClick,
 }) => {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
-  const [showHenryInfo, setShowHenryInfo] = useState(false);
+  const [showHenryDialog, setShowHenryDialog] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#1a1a20] text-white">
@@ -55,34 +56,31 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-[#2a2a30] p-4 rounded-lg shadow-lg max-w-xl mx-auto mb-8">
             <p className="text-lg font-light italic text-gray-300">{randomAffirmation}</p>
           </div>
-        </div>
-
-        <div className="mb-12">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="w-full block text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <h3 className="text-xl font-semibold text-white">
-                    Meet H.E.N.R.Y. - Your Mental Health Navigator
-                    <Info className="inline-block ml-2 h-4 w-4 text-[#B87333]" />
-                  </h3>
-                </div>
-                <SponsorChatbot 
-                  selectedMood={currentMood as "happy" | "ok" | "neutral" | "down" | "sad" | "overwhelmed" | null} 
-                  contextType="mental_health" 
-                  className="max-w-3xl mx-auto" 
-                />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-md p-4 bg-[#2a2a30] border-[#B87333]">
-                <p>
-                  H.E.N.R.Y. is your personal Mental Health Navigator, here to help you explore the app, find resources, and provide support 24/7. Ask about tools, exercises, or any mental health topic!
-                </p>
-                <p className="mt-2 text-sm text-[#B87333]">
-                  H - Hope | E - Emotional Awareness | N - Nurturing Relationships | R - Resilience | Y - You Matter
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          
+          <Dialog open={showHenryDialog} onOpenChange={setShowHenryDialog}>
+            <DialogTrigger asChild>
+              <Button variant="copper" className="mx-auto mt-4 mb-8">
+                <Info className="mr-2 h-4 w-4" /> Meet H.E.N.R.Y. - Your Mental Health Navigator
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[800px] bg-[#2a2a30] border-[#B87333]">
+              <DialogHeader>
+                <DialogTitle className="text-xl text-white">Meet H.E.N.R.Y. - Your Mental Health Navigator</DialogTitle>
+                <DialogDescription className="text-gray-300">
+                  <p className="mb-4">
+                    H.E.N.R.Y. is your personal Mental Health Navigator, here to help you explore the app, find resources, and provide support 24/7. Ask about tools, exercises, or any mental health topic!
+                  </p>
+                  <p className="text-sm text-[#B87333] mb-4">
+                    H - Hope | E - Emotional Awareness | N - Nurturing Relationships | R - Resilience | Y - You Matter
+                  </p>
+                </DialogDescription>
+              </DialogHeader>
+              <SponsorChatbot 
+                selectedMood={currentMood as "happy" | "ok" | "neutral" | "down" | "sad" | "overwhelmed" | null} 
+                contextType="mental_health" 
+              />
+            </DialogContent>
+          </Dialog>
         </div>
 
         <FeaturedWorkshops workshops={workshops} />
