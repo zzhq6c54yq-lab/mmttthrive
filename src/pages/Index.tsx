@@ -186,15 +186,27 @@ const selfPacedClasses: VirtualClass[] = [
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [showMoodScreen, setShowMoodScreen] = useState(false);
   const [selfPacedWorkshops, setSelfPacedWorkshops] = useState<VirtualClass[]>([]);
   const [currentMood, setCurrentMood] = useState<string | null>(null);
   const [randomAffirmation, setRandomAffirmation] = useState("");
   const [randomEncouragement, setRandomEncouragement] = useState("");
+  const [moodFeedback, setMoodFeedback] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+
+  // Mapping of moods to positive affirmations
+  const moodAffirmations = {
+    "Happy": "Your happiness radiates to those around you. Keep shining!",
+    "Okay": "It's okay to be okay! Small steps lead to big progress.",
+    "Sad": "It's okay to feel down sometimes. Remember, every cloud has a silver lining.",
+    "Anxious": "Take a deep breath. You've overcome challenges before, and you can do it again.",
+    "Angry": "Your feelings are valid. When you're ready, channel that energy into something positive.",
+    "Stressed": "One step at a time. You're stronger than you think and capable of handling this."
+  };
 
   useEffect(() => {
     setSelfPacedWorkshops(selfPacedClasses);
@@ -207,6 +219,7 @@ const Index = () => {
     
     const timer = setTimeout(() => {
       setShowIntro(false);
+      setShowMoodScreen(true);
     }, 8000);
     
     return () => clearTimeout(timer);
@@ -214,11 +227,17 @@ const Index = () => {
 
   const handleMoodSelection = (mood: string) => {
     setCurrentMood(mood);
+    setMoodFeedback(moodAffirmations[mood as keyof typeof moodAffirmations] || "Thank you for sharing how you feel.");
     
     toast({
       title: "Mood Tracked",
       description: `Your mood has been recorded as ${mood}.`,
     });
+
+    // Set a timeout to transition to the main content
+    setTimeout(() => {
+      setShowMoodScreen(false);
+    }, 5000);
   };
 
   const handleToolClick = (path: string) => {
@@ -248,6 +267,10 @@ const Index = () => {
     });
   };
 
+  const proceedToMainContent = () => {
+    setShowMoodScreen(false);
+  };
+
   if (showIntro) {
     return (
       <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white">
@@ -269,6 +292,65 @@ const Index = () => {
           <p className="intro-tagline text-xl md:text-2xl text-[#B87333] mb-4">
             because life should be more then just surviving
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (showMoodScreen) {
+    return (
+      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
+        <div className="w-full max-w-3xl bg-[#2a2a30] rounded-lg p-8 shadow-lg animate-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center">How are you feeling today?</h1>
+          
+          <p className="text-center text-gray-300 mb-8 text-lg">{randomEncouragement}</p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { emoji: <Smile className="h-8 w-8" />, label: "Happy", color: "bg-green-600" },
+              { emoji: <Meh className="h-8 w-8" />, label: "Okay", color: "bg-blue-600" },
+              { emoji: <Frown className="h-8 w-8" />, label: "Sad", color: "bg-indigo-600" },
+              { emoji: <Annoyed className="h-8 w-8" />, label: "Anxious", color: "bg-yellow-600" },
+              { emoji: <Angry className="h-8 w-8" />, label: "Angry", color: "bg-red-600" },
+              { emoji: <HeartCrack className="h-8 w-8" />, label: "Stressed", color: "bg-purple-600" },
+            ].map((mood) => (
+              <Button
+                key={mood.label}
+                variant="ghost"
+                className={`flex flex-col items-center p-6 rounded-lg border hover:border-[#B87333] hover:bg-[#1a1a20] transition-all ${
+                  currentMood === mood.label
+                    ? `border-[#B87333] bg-[#1a1a20]`
+                    : "border-gray-700"
+                }`}
+                onClick={() => handleMoodSelection(mood.label)}
+              >
+                <div className={`${mood.color} p-4 rounded-full mb-3`}>
+                  {mood.emoji}
+                </div>
+                <span className="text-lg">{mood.label}</span>
+              </Button>
+            ))}
+          </div>
+
+          {currentMood && (
+            <div className="mb-8 animate-fade-in">
+              <div className="bg-[#3a3a40] p-6 rounded-lg text-center">
+                <p className="text-xl mb-4">Thank you for sharing.</p>
+                <p className="text-[#B87333] text-lg italic">{moodFeedback}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="text-center">
+            <Button 
+              onClick={proceedToMainContent} 
+              variant="bronze" 
+              size="lg" 
+              className="mt-4"
+            >
+              Continue to Dashboard
+            </Button>
+          </div>
         </div>
       </div>
     );
