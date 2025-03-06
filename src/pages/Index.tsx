@@ -6,6 +6,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import SponsorChatbot from "@/components/SponsorChatbot";
 
 const features = [
   {
@@ -101,6 +102,7 @@ const Index = () => {
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
   const [henryDialogStep, setHenryDialogStep] = useState(0);
+  const [showHenryChatDialog, setShowHenryChatDialog] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -428,6 +430,18 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={showHenryChatDialog} onOpenChange={setShowHenryChatDialog}>
+        <DialogContent className="sm:max-w-4xl h-[80vh] p-0 flex flex-col" onCloseAutoFocus={() => {}}>
+          <SponsorChatbot 
+            selectedMood={selectedMood} 
+            selectedQualities={selectedQualities} 
+            selectedGoals={selectedGoals} 
+            contextType="general" 
+            className="h-full border-0"
+          />
+        </DialogContent>
+      </Dialog>
+
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
           <div className="floating-bg"></div>
@@ -454,7 +468,7 @@ const Index = () => {
                 onClick={() => setScreenState('mood')}
               >
                 Begin Your Journey
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button 
                 className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
@@ -971,15 +985,14 @@ const Index = () => {
           
           <div className="fixed bottom-6 right-6 z-50">
             <Button 
-              variant="bronze" 
-              className="rounded-full shadow-lg flex items-center gap-2 pl-3 pr-4 py-6 animate-bounce"
+              variant="animated_bronze" 
+              className="rounded-full shadow-lg flex items-center gap-2 pl-3 pr-4 py-6"
               onClick={() => {
-                setShowHenryDialog(true);
-                setHenryDialogStep(0);
+                setShowHenryChatDialog(true);
               }}
             >
               <Bot className="h-5 w-5" />
-              Meet H.E.N.R.Y.
+              Chat with H.E.N.R.Y.
             </Button>
           </div>
           
@@ -997,7 +1010,7 @@ const Index = () => {
               </p>
               <Button className="group hero-button">
                 Start Your Journey
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button 
                 className="ml-4 group bg-[#B87333] hover:bg-[#B87333]/80 flex items-center gap-2 hero-button"
@@ -1031,8 +1044,18 @@ const Index = () => {
                         setHenryDialogStep(0);
                       }}
                     >
-                      Introduce Yourself to H.E.N.R.Y.
+                      Learn About H.E.N.R.Y.
                       <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="outline_copper"
+                      className="w-full md:w-auto mt-2 md:mt-0 md:ml-2"
+                      onClick={() => {
+                        setShowHenryChatDialog(true);
+                      }}
+                    >
+                      Start Chatting
+                      <MessageCircle className="ml-2 h-4 w-4" />
                     </Button>
                   </div>
                 </div>

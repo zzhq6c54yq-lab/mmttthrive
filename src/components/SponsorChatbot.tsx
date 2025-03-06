@@ -15,11 +15,63 @@ type Message = {
   timestamp: Date;
 };
 
-const SponsorChatbot: React.FC = () => {
+interface SponsorChatbotProps {
+  selectedMood?: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
+  selectedQualities?: string[];
+  selectedGoals?: string[];
+  contextType?: 'general' | 'recovery';
+  className?: string;
+}
+
+const SponsorChatbot: React.FC<SponsorChatbotProps> = ({ 
+  selectedMood = null, 
+  selectedQualities = [], 
+  selectedGoals = [],
+  contextType = 'general',
+  className = ""
+}) => {
+  // Set initial message based on context and user preferences
+  const getInitialMessage = () => {
+    if (contextType === 'recovery') {
+      return "Hi there, I'm Henry, your digital sponsor. I'm here to support you in your recovery journey. How can I help you today?";
+    }
+    
+    let greeting = "Hello! I'm H.E.N.R.Y., your mental health companion. ";
+    
+    if (selectedMood) {
+      switch(selectedMood) {
+        case 'happy':
+          greeting += "I'm glad you're feeling happy today! How can I help you maintain this positive energy?";
+          break;
+        case 'ok':
+          greeting += "Even on just okay days, I'm here to listen and support you. What's on your mind?";
+          break;
+        case 'neutral':
+          greeting += "I'm here for you, whether your day is going well or you need some extra support. How can I assist you today?";
+          break;
+        case 'down':
+          greeting += "On the days when you're feeling down, remember you're not alone. What's troubling you?";
+          break;
+        case 'sad':
+          greeting += "I see you're having a difficult day. Remember, it's okay to not be okay, and I'm here to support you. Would you like to talk about what's going on?";
+          break;
+        case 'overwhelmed':
+          greeting += "When everything feels like too much, I'm here to help you find your center again. What's overwhelming you right now?";
+          break;
+        default:
+          greeting += "How are you feeling today, and how can I support you?";
+      }
+    } else {
+      greeting += "How are you feeling today, and how can I support you?";
+    }
+    
+    return greeting;
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      content: "Hi there, I'm Henry, your digital sponsor. I'm here to support you in your recovery journey. How can I help you today?",
+      content: getInitialMessage(),
       role: "assistant",
       timestamp: new Date(),
     },
@@ -37,37 +89,55 @@ const SponsorChatbot: React.FC = () => {
     }
   }, [messages]);
 
-  const handleSponsorResponse = async (userMessage: string) => {
+  const handleHenryResponse = async (userMessage: string) => {
     // Simulate a thinking delay
     setIsLoading(true);
     
     // This would typically be an API call to a language model
     await new Promise((resolve) => setTimeout(resolve, 1000));
     
-    // Predefined responses based on common recovery topics
     let response: string;
     
-    if (userMessage.toLowerCase().includes("craving") || userMessage.toLowerCase().includes("urge") || userMessage.toLowerCase().includes("relapse")) {
+    // Check if user is mentioning any emotions or mental health concerns
+    if (userMessage.toLowerCase().includes("anxious") || userMessage.toLowerCase().includes("anxiety") || userMessage.toLowerCase().includes("stressed")) {
+      response = "Anxiety and stress are common experiences. Have you tried any breathing exercises or grounding techniques? The 5-4-3-2-1 technique can be helpful: acknowledge 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
+    } 
+    // Handle recovery-specific topics if in recovery context
+    else if (contextType === 'recovery' && (userMessage.toLowerCase().includes("craving") || userMessage.toLowerCase().includes("urge") || userMessage.toLowerCase().includes("relapse"))) {
       response = "Cravings and urges are temporary, even though they may not feel like it. Try using the HALT method - ask yourself if you're Hungry, Angry, Lonely, or Tired. Remember your reasons for recovery and reach out to your support network. What specific triggers are you experiencing right now?";
-    } else if (userMessage.toLowerCase().includes("meeting") || userMessage.toLowerCase().includes("group")) {
-      response = "Meetings are a crucial part of recovery. They provide structure, support, and accountability. I encourage you to attend a meeting today if possible. Would you like me to help you find a meeting near you or online?";
-    } else if (userMessage.toLowerCase().includes("step") || userMessage.toLowerCase().includes("steps")) {
-      response = "The 12 steps provide a structured path to recovery. Which step are you currently working on? Remember, progress not perfection is what matters.";
-    } else if (userMessage.toLowerCase().includes("lonely") || userMessage.toLowerCase().includes("alone")) {
-      response = "You're never alone in this journey. Feelings of loneliness are common in recovery, but they will pass. Consider reaching out to someone in your support network or attending a meeting. What specific feelings are coming up for you?";
-    } else if (userMessage.toLowerCase().includes("grateful") || userMessage.toLowerCase().includes("gratitude")) {
-      response = "Practicing gratitude is powerful in recovery. Even in difficult moments, finding something to be grateful for can shift your perspective. Would you like to share three things you're grateful for today?";
-    } else {
-      response = "Thank you for sharing. Remember that recovery is a journey, not a destination. Take it one day at a time, and don't hesitate to reach out whenever you need support. Is there anything specific about your recovery that you'd like to discuss?";
+    }
+    // Check if talking about mood or emotions 
+    else if (userMessage.toLowerCase().includes("sad") || userMessage.toLowerCase().includes("depressed") || userMessage.toLowerCase().includes("down")) {
+      response = "I'm sorry to hear you're feeling this way. Depression and sadness can be incredibly difficult. Have you been able to talk to anyone else about these feelings? Sometimes simply expressing ourselves can help lighten the burden. Would you like to explore some self-care activities that might help?";
+    }
+    // Check if asking about help resources
+    else if (userMessage.toLowerCase().includes("help") || userMessage.toLowerCase().includes("resource") || userMessage.toLowerCase().includes("therapy")) {
+      response = "There are many resources available to support mental health. Would you like to explore therapy options through ThriveMT? You can also access our mental wellness tools which include guided meditations, mood tracking, and cognitive behavioral therapy exercises.";
+    }
+    // Check if mentioning sleep issues
+    else if (userMessage.toLowerCase().includes("sleep") || userMessage.toLowerCase().includes("insomnia") || userMessage.toLowerCase().includes("tired")) {
+      response = "Sleep is crucial for mental health. Some helpful sleep hygiene tips include maintaining a consistent sleep schedule, creating a restful environment, limiting screen time before bed, and avoiding caffeine late in the day. Would you like more specific strategies for improving your sleep?";
+    }
+    // Check if discussing relationships
+    else if (userMessage.toLowerCase().includes("relationship") || userMessage.toLowerCase().includes("friend") || userMessage.toLowerCase().includes("family")) {
+      response = "Relationships can significantly impact our mental health. Whether it's setting boundaries, improving communication, or processing difficult interactions, there are strategies that can help. Would you like to discuss a specific relationship challenge?";
+    }
+    // Check if talking about the HENRY acronym
+    else if (userMessage.toLowerCase().includes("henry") && userMessage.toLowerCase().includes("acronym") || userMessage.toLowerCase().includes("what does henry stand for")) {
+      response = "My name HENRY stands for:\n\nHope: Cultivating a sense of hope for recovery and resilience\nEmotional Awareness: Understanding and recognizing your emotions\nNurturing Relationships: Building supportive connections\nResilience: Developing the ability to bounce back from challenges\nYou Matter: Remembering that you are valuable and deserving of care\n\nHow can I help you with any of these aspects today?";
+    }
+    // Default supportive response
+    else {
+      response = "Thank you for sharing that with me. Your mental health journey matters, and I'm here to support you every step of the way. Is there something specific about what you've mentioned that you'd like to explore further?";
     }
     
     setIsLoading(false);
     
-    // Add the sponsor's response to the messages
+    // Add Henry's response to the messages
     setMessages((prev) => [
       ...prev,
       {
-        id: `sponsor-${Date.now()}`,
+        id: `henry-${Date.now()}`,
         content: response,
         role: "assistant",
         timestamp: new Date(),
@@ -91,15 +161,15 @@ const SponsorChatbot: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     
-    // Generate the sponsor's response
-    await handleSponsorResponse(userMessage.content);
+    // Generate Henry's response
+    await handleHenryResponse(userMessage.content);
   };
 
   return (
-    <Card className="w-full h-[600px] flex flex-col border border-[#B87333]/20 bg-white/5 backdrop-blur-md">
+    <Card className={`w-full h-[600px] flex flex-col border border-[#B87333]/20 bg-white/5 backdrop-blur-md ${className}`}>
       <div className="p-4 border-b border-[#B87333]/20 bg-[#B87333]/10">
-        <h3 className="text-lg font-medium text-white">Henry - Your Digital Sponsor</h3>
-        <p className="text-sm text-gray-300">Available 24/7 to support your recovery journey</p>
+        <h3 className="text-lg font-medium text-white">H.E.N.R.Y. - Your Mental Health Companion</h3>
+        <p className="text-sm text-gray-300">Available 24/7 to support your wellbeing journey</p>
       </div>
       
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
