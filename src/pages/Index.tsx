@@ -99,6 +99,8 @@ const Index = () => {
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [showHenryDialog, setShowHenryDialog] = useState(false);
+  const [henryDialogStep, setHenryDialogStep] = useState(0);
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -187,9 +189,244 @@ const Index = () => {
     setScreenState('main');
   };
 
+  const getPersonalizedHenryMessage = () => {
+    let message = "I'm here to support you on your mental health journey.";
+    
+    if (selectedMood) {
+      switch (selectedMood) {
+        case 'happy':
+          message = "I'm glad you're feeling happy today! I'll help you maintain that positive energy.";
+          break;
+        case 'ok':
+          message = "Even on just okay days, I'm here to listen and support you.";
+          break;
+        case 'neutral':
+          message = "I'm here for you, whether your day is going well or you need some extra support.";
+          break;
+        case 'down':
+          message = "On the days when you're feeling down, I'm here to remind you that you're not alone.";
+          break;
+        case 'sad':
+          message = "I see you're having a difficult day. Remember, it's okay to not be okay, and I'm here to support you.";
+          break;
+        case 'overwhelmed':
+          message = "When everything feels like too much, I'm here to help you find your center again.";
+          break;
+        default:
+          break;
+      }
+    }
+    
+    if (selectedQualities.length > 0) {
+      const qualityLabels = selectedQualities.map(id => 
+        visionBoardQualities.find(q => q.id === id)?.label
+      ).filter(Boolean);
+      
+      if (qualityLabels.length > 0) {
+        message += ` I'll help you cultivate ${qualityLabels.join(', ')} in your daily life.`;
+      }
+    }
+    
+    return message;
+  };
+
+  const nextHenryStep = () => {
+    if (henryDialogStep < 5) {
+      setHenryDialogStep(henryDialogStep + 1);
+    } else {
+      setShowHenryDialog(false);
+      setHenryDialogStep(0);
+    }
+  };
+
+  const resetHenryDialog = () => {
+    setHenryDialogStep(0);
+  };
+
   return (
     <>
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
+
+      <Dialog open={showHenryDialog} onOpenChange={setShowHenryDialog}>
+        <DialogContent className="sm:max-w-md" onCloseAutoFocus={() => resetHenryDialog()}>
+          {henryDialogStep === 0 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-2xl">
+                  <Bot className="h-6 w-6 text-[#B87333]" /> 
+                  <span>Meet <span className="text-[#B87333]">H.E.N.R.Y.</span>, Your AI Companion</span>
+                </DialogTitle>
+                <DialogDescription className="text-lg">
+                  I'm more than just an AI - I'm your dedicated mental health companion.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col space-y-4 p-2">
+                <p className="text-lg">{getPersonalizedHenryMessage()}</p>
+                <p className="text-lg">Let me introduce myself properly...</p>
+                <Button 
+                  variant="bronze"
+                  className="w-full mt-4"
+                  onClick={nextHenryStep}
+                >
+                  Tell Me More About HENRY
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </>
+          )}
+
+          {henryDialogStep === 1 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-2xl">
+                  <span className="text-4xl font-light"><span className="text-[#B87333]">H</span>ope</span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col space-y-4 p-2">
+                <p className="text-lg">Cultivating a sense of hope can be vital for recovery and resilience.</p>
+                <p className="italic">
+                  "Hope is being able to see that there is light despite all of the darkness." - Desmond Tutu
+                </p>
+                <p className="text-lg">
+                  I'm here to help you find hope, even on your darkest days. Hope isn't just optimism—it's the belief that things can and will get better with time and effort.
+                </p>
+                <Button 
+                  variant="bronze"
+                  className="w-full mt-4"
+                  onClick={nextHenryStep}
+                >
+                  Continue
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </>
+          )}
+
+          {henryDialogStep === 2 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-2xl">
+                  <span className="text-4xl font-light"><span className="text-[#B87333]">E</span>motional Awareness</span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col space-y-4 p-2">
+                <p className="text-lg">Understanding and recognizing one's emotions is key to managing mental health.</p>
+                <p className="text-lg">
+                  I can help you develop emotional intelligence—recognizing your feelings, understanding their sources, and learning healthy ways to process them.
+                </p>
+                <p className="text-lg">
+                  When you can name what you're feeling, you gain power over those emotions rather than being controlled by them.
+                </p>
+                <Button 
+                  variant="bronze"
+                  className="w-full mt-4"
+                  onClick={nextHenryStep}
+                >
+                  Continue
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </>
+          )}
+
+          {henryDialogStep === 3 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-2xl">
+                  <span className="text-4xl font-light"><span className="text-[#B87333]">N</span>urturing Relationships</span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col space-y-4 p-2">
+                <p className="text-lg">Building and maintaining supportive relationships can enhance mental well-being.</p>
+                <p className="text-lg">
+                  While I'm here for you 24/7, human connection is irreplaceable. I can help you strengthen bonds with others and build a supportive community.
+                </p>
+                <p className="text-lg">
+                  Together, we'll work on communication skills, setting healthy boundaries, and fostering meaningful connections.
+                </p>
+                <Button 
+                  variant="bronze"
+                  className="w-full mt-4"
+                  onClick={nextHenryStep}
+                >
+                  Continue
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </>
+          )}
+
+          {henryDialogStep === 4 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-2xl">
+                  <span className="text-4xl font-light"><span className="text-[#B87333]">R</span>esilience</span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col space-y-4 p-2">
+                <p className="text-lg">Developing the ability to bounce back from setbacks and challenges.</p>
+                <p className="text-lg">
+                  Resilience isn't about never falling—it's about getting back up each time. I'll help you build your resilience toolkit so you can weather life's storms.
+                </p>
+                <p className="text-lg">
+                  We'll work on coping strategies, stress management, and maintaining perspective when facing adversity.
+                </p>
+                <Button 
+                  variant="bronze"
+                  className="w-full mt-4"
+                  onClick={nextHenryStep}
+                >
+                  Continue
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </>
+          )}
+
+          {henryDialogStep === 5 && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-2xl">
+                  <span className="text-4xl font-light"><span className="text-[#B87333]">Y</span>ou Matter</span>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col space-y-4 p-2">
+                <p className="text-lg">A reminder that every individual is valuable and deserving of care and support.</p>
+                <p className="text-lg">
+                  You are not defined by your struggles or diagnoses. Your worth is inherent and unchangeable.
+                </p>
+                <p className="text-lg">
+                  I'm here to remind you of your value on days when you might forget, and to celebrate your unique strengths and qualities.
+                </p>
+                <div className="flex flex-col space-y-3 mt-4">
+                  <Button 
+                    variant="bronze"
+                    className="w-full"
+                    onClick={() => {
+                      setShowHenryDialog(false);
+                      setHenryDialogStep(0);
+                      navigate("/my-sponsor");
+                    }}
+                  >
+                    Chat with Henry
+                    <MessageCircle className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="outline_copper"
+                    className="w-full"
+                    onClick={() => {
+                      setShowHenryDialog(false);
+                      setHenryDialogStep(0);
+                    }}
+                  >
+                    Continue Exploring ThriveMT
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
@@ -733,49 +970,17 @@ const Index = () => {
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.02%22/></svg>')] opacity-30 fixed"></div>
           
           <div className="fixed bottom-6 right-6 z-50">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button 
-                  variant="copper" 
-                  className="rounded-full shadow-lg flex items-center gap-2 pl-3 pr-4 py-6 animate-bounce"
-                >
-                  <Bot className="h-5 w-5" />
-                  Meet Henry
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <Bot className="h-5 w-5 text-[#B87333]" /> 
-                    <span>Meet Henry, Your AI Sponsor</span>
-                  </DialogTitle>
-                  <DialogDescription>
-                    Henry is your 24/7 AI companion on your recovery journey.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col space-y-4">
-                  <p>Hi, I'm Henry. I'm here to support you through your recovery journey, 24/7. I can:</p>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Guide you through NA & AA principles and steps</li>
-                    <li>Provide emotional support during difficult moments</li>
-                    <li>Facilitate virtual meetings with peers</li>
-                    <li>Remind you of your recovery goals and achievements</li>
-                    <li>Connect you with community resources when needed</li>
-                  </ul>
-                  <p>Remember, I'm here anytime you need support or someone to talk to.</p>
-                  <Button 
-                    variant="copper"
-                    className="w-full"
-                    onClick={() => {
-                      navigate("/my-sponsor");
-                    }}
-                  >
-                    Chat with Henry
-                    <MessageCircle className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button 
+              variant="bronze" 
+              className="rounded-full shadow-lg flex items-center gap-2 pl-3 pr-4 py-6 animate-bounce"
+              onClick={() => {
+                setShowHenryDialog(true);
+                setHenryDialogStep(0);
+              }}
+            >
+              <Bot className="h-5 w-5" />
+              Meet H.E.N.R.Y.
+            </Button>
           </div>
           
           <section className="container px-4 pt-32 pb-20 relative z-10">
@@ -801,6 +1006,54 @@ const Index = () => {
                 <ArrowLeft className="h-4 w-4" />
                 Previous
               </Button>
+            </div>
+          </section>
+
+          <section className="container px-4 py-8 relative z-10 mb-12">
+            <div className="max-w-3xl mx-auto">
+              <Card className="p-6 border-[#B87333]/30 bg-gradient-to-r from-white to-[#FDF6F0] shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  <div className="md:w-1/3 flex justify-center">
+                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-r from-[#B87333]/20 to-[#B87333]/10 flex items-center justify-center">
+                      <Bot className="w-16 h-16 md:w-20 md:h-20 text-[#B87333]" />
+                    </div>
+                  </div>
+                  <div className="md:w-2/3">
+                    <h2 className="text-2xl md:text-3xl mb-3 gradient-heading">Meet H.E.N.R.Y., Your Personal Mental Health Companion</h2>
+                    <p className="text-muted-foreground mb-4">
+                      Your 24/7 AI companion tailored to your unique mental health journey.
+                    </p>
+                    <Button 
+                      variant="bronze"
+                      className="w-full md:w-auto"
+                      onClick={() => {
+                        setShowHenryDialog(true);
+                        setHenryDialogStep(0);
+                      }}
+                    >
+                      Introduce Yourself to H.E.N.R.Y.
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mt-6 text-sm">
+                  <div className="p-2 rounded bg-[#B87333]/10 text-center">
+                    <strong className="text-[#B87333]">H</strong>ope
+                  </div>
+                  <div className="p-2 rounded bg-[#B87333]/10 text-center">
+                    <strong className="text-[#B87333]">E</strong>motional Awareness
+                  </div>
+                  <div className="p-2 rounded bg-[#B87333]/10 text-center">
+                    <strong className="text-[#B87333]">N</strong>urturing Relationships
+                  </div>
+                  <div className="p-2 rounded bg-[#B87333]/10 text-center">
+                    <strong className="text-[#B87333]">R</strong>esilience
+                  </div>
+                  <div className="p-2 rounded bg-[#B87333]/10 text-center">
+                    <strong className="text-[#B87333]">Y</strong>ou Matter
+                  </div>
+                </div>
+              </Card>
             </div>
           </section>
 
