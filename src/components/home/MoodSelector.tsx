@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Smile, Meh, Frown, Annoyed, HeartCrack } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -12,6 +12,17 @@ interface MoodSelectorProps {
 
 const MoodSelector: React.FC<MoodSelectorProps> = ({ onMoodSelect, onBack, onContinue }) => {
   const { toast } = useToast();
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+
+  const handleMoodSelect = (mood: string) => {
+    setSelectedMood(mood);
+    onMoodSelect(mood);
+    
+    toast({
+      title: `You're feeling ${mood}`,
+      description: "Thank you for sharing how you feel.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
@@ -30,9 +41,9 @@ const MoodSelector: React.FC<MoodSelectorProps> = ({ onMoodSelect, onBack, onCon
           ].map((mood) => (
             <Button
               key={mood.label}
-              variant="ghost"
+              variant={selectedMood === mood.label ? "bronze" : "ghost"}
               className="flex flex-col items-center justify-center py-2 px-4 rounded-xl hover:scale-110 transition-all"
-              onClick={() => onMoodSelect(mood.label)}
+              onClick={() => handleMoodSelect(mood.label)}
             >
               <div className="mb-1 text-[#B87333] flex items-center justify-center h-14">
                 {mood.emoji}
@@ -54,6 +65,7 @@ const MoodSelector: React.FC<MoodSelectorProps> = ({ onMoodSelect, onBack, onCon
             onClick={onContinue} 
             variant="bronze" 
             size="lg"
+            disabled={!selectedMood}
           >
             Continue <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
