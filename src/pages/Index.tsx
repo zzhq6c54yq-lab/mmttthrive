@@ -264,7 +264,7 @@ const Index = () => {
             <span className="copper-text">Thrive MT</span>
           </h1>
           <h2 className="intro-logo-text text-2xl md:text-3xl font-semibold mb-4">
-            <span className="text-white">New Beginning</span>
+            <span className="text-white">New Beginnings</span>
           </h2>
           <p className="intro-tagline text-xl md:text-2xl text-[#B87333] mb-4">
             because life should be more then just surviving
