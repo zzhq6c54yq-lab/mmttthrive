@@ -11,6 +11,7 @@ import TherapistQuestionnaire from "@/pages/TherapistQuestionnaire";
 import TherapistMatches from "@/pages/TherapistMatches";
 import WorkshopDetail from "@/pages/WorkshopDetail";
 import Workshops from "@/pages/Workshops";
+import VirtualMeetings from "@/pages/VirtualMeetings";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/therapist-matches" element={<TherapistMatches />} />
         <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
+        <Route path="/virtual-meetings" element={<VirtualMeetings />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />

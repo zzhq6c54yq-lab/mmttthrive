@@ -845,6 +845,83 @@ const Index = () => {
             </div>
           </section>
 
+          {/* Virtual Classes & Meetings Section */}
+          <section className="container px-4 py-12 bg-muted/10 relative z-10">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-medium">
+                  Virtual Classes & Meetings
+                </h2>
+                <Button 
+                  variant="outline" 
+                  className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
+                  onClick={() => navigate('/virtual-meetings')}
+                >
+                  View All
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+              
+              <Card className="border border-gray-200 shadow-sm">
+                <CardHeader className="cursor-pointer pb-3">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="text-xl text-gray-800">24-Hour Schedule</CardTitle>
+                      <CardDescription>
+                        Join virtual classes and AA meetings in 30-minute increments
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                
+                <CardContent>
+                  <div className="space-y-4">
+                    <p className="text-gray-600">
+                      Access virtual mental health classes and support group meetings throughout the day.
+                      All sessions are led by certified professionals and facilitators.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                      <div className="p-4 border rounded-lg bg-blue-50/50 flex flex-col items-center text-center">
+                        <div className="p-2 rounded-full bg-blue-100 mb-2">
+                          <Brain className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <h3 className="font-medium mb-1">Mental Health Classes</h3>
+                        <p className="text-sm text-gray-600">30-minute guided sessions with mental health experts</p>
+                      </div>
+                      
+                      <div className="p-4 border rounded-lg bg-purple-50/50 flex flex-col items-center text-center">
+                        <div className="p-2 rounded-full bg-purple-100 mb-2">
+                          <Users className="h-5 w-5 text-purple-600" />
+                        </div>
+                        <h3 className="font-medium mb-1">AA Meetings</h3>
+                        <p className="text-sm text-gray-600">60-minute support groups for alcohol recovery</p>
+                      </div>
+                      
+                      <div className="p-4 border rounded-lg bg-green-50/50 flex flex-col items-center text-center">
+                        <div className="p-2 rounded-full bg-green-100 mb-2">
+                          <HeartHandshake className="h-5 w-5 text-green-600" />
+                        </div>
+                        <h3 className="font-medium mb-1">NA Meetings</h3>
+                        <p className="text-sm text-gray-600">60-minute support groups for substance recovery</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6">
+                      <Button 
+                        className="w-full md:w-auto hero-button"
+                        onClick={() => navigate('/virtual-meetings')}
+                      >
+                        Browse Available Sessions
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           {/* Features Section */}
           <section className="container px-4 py-16 bg-muted/30 relative z-10">
             <div className="max-w-6xl mx-auto">
@@ -921,3 +998,4 @@ const Index = () => {
 };
 
 export default Index;
+
