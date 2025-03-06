@@ -13,6 +13,7 @@ import TherapistQuestionnaire from "./pages/TherapistQuestionnaire";
 import TherapistMatches from "./pages/TherapistMatches";
 import MySponsor from "./pages/MySponsor";
 import VirtualClasses from "./pages/VirtualClasses";
+import HomeButton from "./components/HomeButton";
 
 const queryClient = new QueryClient();
 

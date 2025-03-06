@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { 
   Calendar, 
   Clock, 
@@ -8,8 +9,7 @@ import {
   ArrowLeft,
   Video,
   BellRing,
-  Coffee,
-  Bot
+  Coffee
 } from "lucide-react";
 import { format, addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,6 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } fr
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { generateTodayClasses, VirtualClass } from "@/data/toolCategories";
 import { useToast } from "@/hooks/use-toast";
-import HomeButton from "@/components/HomeButton";
 
 const VirtualClasses = () => {
   const [classes, setClasses] = useState<VirtualClass[]>([]);
@@ -29,17 +28,12 @@ const VirtualClasses = () => {
   const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
   const [reminderSet, setReminderSet] = useState<Set<string>>(new Set());
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Generate today's schedule
     const todayClasses = generateTodayClasses();
     setClasses(todayClasses);
   }, []);
-
-  const navigateToMainMenu = () => {
-    navigate("/", { state: { skipToMain: true } });
-  };
 
   const getTypeColor = (type: VirtualClass['type']): string => {
     switch (type) {
@@ -162,14 +156,11 @@ const VirtualClasses = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white">
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center mb-6">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="mr-4 h-8 w-8 text-white"
-            onClick={navigateToMainMenu}
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
+          <Link to="/" className="mr-4">
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-white">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
           <h1 className="text-3xl font-bold">
             <Video className="inline-block mr-2 h-8 w-8 text-[#B87333]" />
             Virtual Classes & Meetings

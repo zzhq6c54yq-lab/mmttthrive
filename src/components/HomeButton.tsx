@@ -12,8 +12,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const handleHomeClick = () => {
-    // Navigate to home and set the state to skip to the main menu screen
-    navigate("/", { state: { skipToMain: true } });
+    // Navigate to home and set the state to 'intro'
+    navigate("/", { state: { returnToIntro: true } });
   };
 
   return (
@@ -22,8 +22,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       size="icon"
       className={`rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border-white/10 ${className}`}
       onClick={handleHomeClick}
-      aria-label="Return to main menu"
-      title="Return to main menu"
+      aria-label="Return to intro screen"
+      title="Return to intro screen"
     >
       <House className="h-5 w-5 text-[#B87333]" />
     </Button>
