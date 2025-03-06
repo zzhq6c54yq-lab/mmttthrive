@@ -172,6 +172,21 @@ const VirtualClasses = () => {
           guided meditation, coping skills workshops, and AA/NA recovery meetings.
         </p>
         
+        <div className="mb-6 bg-slate-800/50 border border-slate-700 rounded-lg p-4">
+          <h2 className="text-xl font-semibold text-white mb-3 flex items-center">
+            <Bot className="h-5 w-5 mr-2 text-[#B87333]" />
+            Henry's Mental Health Wisdom
+          </h2>
+          <p className="text-gray-300 mb-3">
+            "Attending group sessions can significantly enhance your mental wellness journey. 
+            Connect with others who understand your experiences, share perspectives, and build a 
+            community of support on your path to recovery."
+          </p>
+          <p className="text-sm text-gray-400 italic">
+            Set reminders for classes you'd like to attend and join them directly from this page.
+          </p>
+        </div>
+
         <Tabs defaultValue="today" className="mb-8" onValueChange={setSelectedDay}>
           <TabsList className="bg-slate-800 border border-slate-700">
             <TabsTrigger value="today">Today</TabsTrigger>

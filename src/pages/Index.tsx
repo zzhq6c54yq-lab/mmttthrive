@@ -1,3 +1,4 @@
+<lov-code>
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing } from "lucide-react";
@@ -114,10 +115,6 @@ const Index = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const [classes, setClasses] = useState<VirtualClass[]>([]);
-  const [selectedClass, setSelectedClass] = useState<VirtualClass | null>(null);
-  const [reminderDialogOpen, setReminderDialogOpen] = useState(false);
-  const [reminderSet, setReminderSet] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (location.state && location.state.returnToIntro) {
@@ -250,104 +247,6 @@ const Index = () => {
 
   const resetHenryDialog = () => {
     setHenryDialogStep(0);
-  };
-
-  useEffect(() => {
-    const todayClasses = generateTodayClasses();
-    setClasses(todayClasses);
-  }, []);
-
-  const getTypeColor = (type: VirtualClass['type']): string => {
-    switch (type) {
-      case 'mental_health':
-        return "bg-blue-100 text-blue-800";
-      case 'meditation':
-        return "bg-purple-100 text-purple-800";
-      case 'aa_meeting':
-        return "bg-amber-100 text-amber-800";
-      case 'na_meeting':
-        return "bg-emerald-100 text-emerald-800";
-      case 'workshop':
-        return "bg-pink-100 text-pink-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const getTypeLabel = (type: VirtualClass['type']): string => {
-    switch (type) {
-      case 'mental_health':
-        return "Mental Health";
-      case 'meditation':
-        return "Meditation";
-      case 'aa_meeting':
-        return "AA Meeting";
-      case 'na_meeting':
-        return "NA Meeting";
-      case 'workshop':
-        return "Workshop";
-      default:
-        return type;
-    }
-  };
-
-  const openReminderDialog = (classItem: VirtualClass, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setSelectedClass(classItem);
-    setReminderDialogOpen(true);
-  };
-
-  const setReminder = (minutes: number) => {
-    if (!selectedClass) return;
-    
-    const classTime = new Date(selectedClass.startTime);
-    const reminderTime = new Date(classTime.getTime() - minutes * 60000);
-    const now = new Date();
-    
-    if (reminderTime < now) {
-      toast({
-        title: "Cannot set reminder",
-        description: "This time has already passed. Please select a future class.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if ('Notification' in window) {
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          const timeDiff = reminderTime.getTime() - now.getTime();
-          
-          setTimeout(() => {
-            new Notification(`Class Starting Soon: ${selectedClass.title}`, {
-              body: `Your class begins in ${minutes} minutes. Get ready to join!`,
-              icon: '/favicon.ico'
-            });
-          }, timeDiff);
-          
-          setReminderSet(prev => new Set(prev).add(selectedClass.id));
-          
-          toast({
-            title: "Reminder Set",
-            description: `You'll be notified ${minutes} minutes before "${selectedClass.title}"`,
-          });
-        } else {
-          toast({
-            title: "Permission Denied",
-            description: "Please enable notifications in your browser settings.",
-            variant: "destructive",
-          });
-        }
-      });
-    } else {
-      toast({
-        title: "Notifications Not Supported",
-        description: "Your browser doesn't support notifications.",
-        variant: "destructive",
-      });
-    }
-    
-    setReminderDialogOpen(false);
   };
 
   return (
@@ -725,6 +624,58 @@ const Index = () => {
                 Some days are just "okay" - and that's perfectly fine.
               </p>
               <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
-                You don't have to be at your best or
+                You don't have to be at your best or worst to deserve support.
+              </p>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
 
-</initial_code>
+      {screenState === 'moodResponse' && selectedMood === 'neutral' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#FFFFFF] to-[#FFFFFF]/70 animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <Meh className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg" style={{animation: 'floatAnimation 4s ease-in-out infinite'}} />
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Acknowledging Neutrality</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                It's perfectly valid to feel neutral.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                Not every day needs to be filled with extreme emotions.
+              </p>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'moodResponse' && selectedMood === 'down' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#E8EAF6] to-[#E8EAF6]/70 animate-fade-in relative overflow-
