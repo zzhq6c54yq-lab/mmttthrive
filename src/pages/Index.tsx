@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -470,12 +470,15 @@ const Index = () => {
                 Begin Your Journey
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button 
-                className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
-                onClick={handleSkip}
-              >
-                Skip to Main
-              </Button>
+              <Link to="/virtual-classes">
+                <Button 
+                  variant="animated_bronze" 
+                  className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
+                  onClick={handleSkip}
+                >
+                  Skip to Main
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
