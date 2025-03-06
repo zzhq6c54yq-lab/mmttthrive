@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing } from "lucide-react";
@@ -199,6 +198,15 @@ const Index = () => {
 
   const handleSkip = () => {
     setScreenState('main');
+  };
+
+  const handleSkipRegistration = () => {
+    setScreenState('visionBoard');
+    
+    toast({
+      title: "Registration skipped",
+      description: "You can register later to save your progress.",
+    });
   };
 
   const getPersonalizedHenryMessage = () => {
@@ -829,13 +837,21 @@ const Index = () => {
                   />
                 </div>
               </div>
-              <div className="flex justify-center gap-4 mt-6">
+              <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
                   type="submit"
                 >
                   Register
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button 
+                  variant="neutral"
+                  className="group"
+                  onClick={handleSkipRegistration}
+                  type="button"
+                >
+                  Skip for now
                 </Button>
                 <Button 
                   className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
