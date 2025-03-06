@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Crown } from "lucide-react";
 import FeaturedWorkshops from "./FeaturedWorkshops";
 import ToolsFeatures from "./ToolsFeatures";
-import DashboardMoodTracker from "./DashboardMoodTracker";
 import EmergencyResources from "./EmergencyResources";
 import SubscriptionPlansDialog from "./SubscriptionPlansDialog";
 import { VirtualClass } from "@/data/toolCategories";
@@ -54,11 +53,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         <FeaturedWorkshops workshops={workshops} />
         <ToolsFeatures features={features} />
-        <DashboardMoodTracker 
-          currentMood={currentMood}
-          encouragementMessage={randomEncouragement}
-          onMoodSelect={onMoodSelect}
-        />
         <EmergencyResources 
           resources={emergencyResources}
           onVisionBoardClick={onVisionBoardClick}
