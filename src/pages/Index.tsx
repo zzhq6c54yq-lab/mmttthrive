@@ -324,7 +324,7 @@ const Index = () => {
         <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
           <h1 className="text-4xl font-bold mb-8 text-center">How are you feeling today?</h1>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-10">
+          <div className="flex flex-wrap justify-center gap-6 mb-10">
             {[
               { emoji: <Smile className="h-20 w-20" />, label: "Happy" },
               { emoji: <Meh className="h-20 w-20" />, label: "Just ok" },
