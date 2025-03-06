@@ -306,14 +306,14 @@ const Index = () => {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             {[
-              { emoji: <Smile className="h-12 w-12" />, label: "Happy", color: "bg-green-600" },
-              { emoji: <Meh className="h-12 w-12" />, label: "Just ok", color: "bg-blue-600" },
-              { emoji: <Meh className="h-12 w-12" />, label: "Neutral", color: "bg-gray-500" },
-              { emoji: <Frown className="h-12 w-12 rotate-180" />, label: "Not great", color: "bg-yellow-600" },
-              { emoji: <Frown className="h-12 w-12" />, label: "Sad", color: "bg-indigo-600" },
-              { emoji: <Annoyed className="h-12 w-12" />, label: "Anxious", color: "bg-purple-600" },
-              { emoji: <Angry className="h-12 w-12" />, label: "Angry", color: "bg-red-600" },
-              { emoji: <HeartCrack className="h-12 w-12" />, label: "Overwhelmed", color: "bg-pink-600" },
+              { emoji: <Smile className="h-12 w-12" />, label: "Happy", color: "bg-[#2a2a30]" },
+              { emoji: <Meh className="h-12 w-12" />, label: "Just ok", color: "bg-[#2a2a30]" },
+              { emoji: <Meh className="h-12 w-12" />, label: "Neutral", color: "bg-[#2a2a30]" },
+              { emoji: <Frown className="h-12 w-12 rotate-180" />, label: "Not great", color: "bg-[#2a2a30]" },
+              { emoji: <Frown className="h-12 w-12" />, label: "Sad", color: "bg-[#2a2a30]" },
+              { emoji: <Annoyed className="h-12 w-12" />, label: "Anxious", color: "bg-[#2a2a30]" },
+              { emoji: <Angry className="h-12 w-12" />, label: "Angry", color: "bg-[#2a2a30]" },
+              { emoji: <HeartCrack className="h-12 w-12" />, label: "Overwhelmed", color: "bg-[#2a2a30]" },
             ].map((mood) => (
               <Button
                 key={mood.label}
@@ -325,7 +325,7 @@ const Index = () => {
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className={`${mood.color} p-6 rounded-full mb-4`}>
+                <div className={`${mood.color} p-6 rounded-full mb-4 flex items-center justify-center text-[#B87333]`}>
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
@@ -567,3 +567,4 @@ const Index = () => {
 };
 
 export default Index;
+
