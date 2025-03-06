@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
@@ -184,13 +185,13 @@ const selfPacedClasses: VirtualClass[] = [
 ];
 
 const moodAffirmations = {
-  "Content": "Your positive energy creates a ripple effect of joy! Embrace this wonderful feeling and share it with others.",
-  "Moderate": "Finding balance is a strength. You're doing great, and each step forward is a victory worth celebrating!",
-  "Neutral": "Being centered gives you clarity. This balanced state allows you to make mindful choices and appreciate the present moment.",
-  "Uneasy": "It's okay to feel uncertain sometimes. Remember your inner strength - you've navigated challenges before and grown from them!",
-  "Distressed": "Every feeling is temporary and valid. Be gentle with yourself today - brighter moments are always on the horizon.",
-  "Anxious": "Take a deep breath and remember you are stronger than you think. This feeling will pass, and you have the tools to navigate it.",
-  "Overwhelmed": "You don't have to carry everything at once. Break things into smaller steps, celebrate each victory, and remember how resilient you truly are."
+  "Content": "Your positive energy creates a beautiful ripple effect of joy all around you! Embrace this wonderful feeling and let it fuel your day. Remember, you deserve every moment of happiness, and your smile can inspire others to find their own joy.",
+  "Moderate": "Finding balance is a remarkable strength that not everyone possesses. You're navigating life's challenges with grace and stability. Each step forward is a significant victory worth celebrating, and your steady progress is building a foundation for lasting well-being.",
+  "Neutral": "Being centered gives you a unique clarity that many seek but few achieve. This balanced state allows you to make mindful choices and fully appreciate the present moment. Notice how this emotional equilibrium provides you space to choose your next steps with intention.",
+  "Uneasy": "It's perfectly okay to feel uncertain sometimes. Remember your inner strength and resilience - you've successfully navigated challenging waters before and grown stronger from each experience. This feeling is temporary, and brighter moments await just around the corner.",
+  "Distressed": "Every feeling is valid and temporary. Be especially gentle with yourself today - take the smallest steps toward comfort, and acknowledge each one. Brighter moments are always on the horizon, and this discomfort is teaching you something valuable about your needs.",
+  "Anxious": "Take a deep, nurturing breath and remember you are infinitely stronger than you realize in this moment. This feeling will pass, and you already possess all the tools and wisdom to navigate through it. Your awareness itself is the first step toward relief.",
+  "Overwhelmed": "You don't have to carry everything at once - it's okay to set some burdens down. Break challenges into the smallest possible steps, celebrate each tiny victory, and remember how incredibly resilient you truly are. Each time you've felt this way before, you've found your way through."
 };
 
 const emergencySupport = {
@@ -386,8 +387,8 @@ const Index = () => {
             {[
               { emoji: <Smile className="h-12 w-12 stroke-[2.25]" />, label: "Content" },
               { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Moderate" },
-              { emoji: <Meh className="h-12 w-12 stroke-[2.25] rotate-180" />, label: "Neutral" },
-              { emoji: <Frown className="h-12 w-12 stroke-[2.25] rotate-180" />, label: "Uneasy" },
+              { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Neutral" },
+              { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Uneasy" },
               { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Distressed" },
               { emoji: <Annoyed className="h-12 w-12 stroke-[2.25]" />, label: "Anxious" },
               { emoji: <HeartCrack className="h-12 w-12 stroke-[2.25]" />, label: "Overwhelmed" },
@@ -395,10 +396,10 @@ const Index = () => {
               <Button
                 key={mood.label}
                 variant="ghost"
-                className="flex flex-col items-center justify-center py-3 px-4 rounded-xl hover:scale-110 transition-all"
+                className="flex flex-col items-center justify-center py-2 px-4 rounded-xl hover:scale-110 transition-all"
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className="mb-2 text-[#B87333] flex items-center justify-center h-14">
+                <div className="mb-1 text-[#B87333] flex items-center justify-center h-14">
                   {mood.emoji}
                 </div>
                 <span className="text-lg font-medium">{mood.label}</span>
