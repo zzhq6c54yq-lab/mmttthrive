@@ -1,17 +1,18 @@
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import CoPayCreditPopup from "@/components/CoPayCreditPopup";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import SponsorChatbot from "@/components/SponsorChatbot";
+import { Brain, MessageCircle, Calendar, Shield, HeartHandshake, Video } from "lucide-react";
 import { VirtualClass } from "@/data/toolCategories";
-import { Badge } from "@/components/ui/badge";
-import SubscriptionCard from "@/components/SubscriptionCard";
 
+// Import our new components
+import IntroScreen from "@/components/home/IntroScreen";
+import MoodSelector from "@/components/home/MoodSelector";
+import MoodResponse from "@/components/home/MoodResponse";
+import VisionBoard from "@/components/home/VisionBoard";
+import Dashboard from "@/components/home/Dashboard";
+
+// App data
 const features = [
   {
     title: "Mental Wellness Tools", 
@@ -222,7 +223,6 @@ const Index = () => {
   const [currentMoodResponse, setCurrentMoodResponse] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
@@ -234,14 +234,12 @@ const Index = () => {
     
     const randomEncIndex = Math.floor(Math.random() * encouragementMessages.length);
     setRandomEncouragement(encouragementMessages[randomEncIndex]);
-    
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-      setShowMoodScreen(true);
-    }, 8000);
-    
-    return () => clearTimeout(timer);
   }, []);
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    setShowMoodScreen(true);
+  };
 
   const handleMoodSelection = (mood: string) => {
     setCurrentMood(mood);
@@ -279,26 +277,6 @@ const Index = () => {
     setShowVisionBoard(false);
   };
 
-  const handleToolClick = (path: string) => {
-    navigate(path);
-  };
-
-  const toggleQuality = (qualityId: string) => {
-    setSelectedQualities(prev => 
-      prev.includes(qualityId) 
-        ? prev.filter(id => id !== qualityId) 
-        : [...prev, qualityId]
-    );
-  };
-
-  const toggleGoal = (goalId: string) => {
-    setSelectedGoals(prev => 
-      prev.includes(goalId) 
-        ? prev.filter(id => id !== goalId) 
-        : [...prev, goalId]
-    );
-  };
-
   const saveVisionBoard = () => {
     toast({
       title: "Vision Board Updated",
@@ -307,365 +285,59 @@ const Index = () => {
     setShowVisionBoard(false);
   };
 
+  // Render the appropriate component based on the current state
   if (showIntro) {
-    return (
-      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white">
-        <div className="text-center">
-          <div className="intro-logo-icon mb-4">
-            <img 
-              src="/lovable-uploads/7d06dcc4-22d6-4a52-8d1a-ad5febe60afb.png" 
-              alt="Thrive MT Logo" 
-              className="h-64 w-auto mx-auto" 
-              style={{ filter: "brightness(0) saturate(100%) invert(100%) sepia(43%) saturate(1352%) hue-rotate(337deg) brightness(89%) contrast(91%)" }}
-            />
-          </div>
-          <h1 className="intro-logo-text text-5xl md:text-7xl font-bold mb-2">
-            <span className="copper-text">Thrive MT</span>
-          </h1>
-          <h2 className="intro-logo-text text-2xl md:text-3xl font-semibold mb-4">
-            <span className="text-white">New Beginnings</span>
-          </h2>
-          <p className="intro-tagline text-xl md:text-2xl text-[#B87333] mb-4">
-            because life should be more then just surviving
-          </p>
-        </div>
-      </div>
-    );
+    return <IntroScreen onComplete={handleIntroComplete} />;
   }
 
   if (showMoodScreen) {
     if (showMoodResponse) {
       return (
-        <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
-          <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
-            <h1 className="text-3xl font-bold mb-6 text-center copper-text">
-              {currentMood ? `You're feeling ${currentMoodResponse}` : "How are you feeling today?"}
-            </h1>
-            
-            <p className="mb-8 text-center text-lg">
-              {moodFeedback}
-            </p>
-            
-            {showEmergencyResources && (
-              <div className="mt-4 space-y-4 mb-8">
-                <h3 className="text-xl font-semibold text-[#B87333]">Resources that might help:</h3>
-                <div className="grid grid-cols-1 gap-3">
-                  {emergencyResourcesForMood.map((resource, index) => (
-                    <div key={index} className="border border-[#3a3a40] rounded-lg p-4 bg-[#1a1a20]">
-                      <h4 className="font-semibold">{resource.name}</h4>
-                      <p className="text-[#B87333] font-bold">{resource.contact}</p>
-                      <p className="text-sm text-gray-400">{resource.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            <div className="flex justify-between mt-6">
-              <Button 
-                variant="ghost" 
-                onClick={() => setShowMoodResponse(false)}
-                className="text-[#B87333] p-2"
-              >
-                <ArrowLeft className="h-6 w-6" />
-              </Button>
-              <Button onClick={proceedToMainContent} variant="bronze">
-                Continue <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
+        <MoodResponse 
+          mood={currentMoodResponse}
+          feedback={moodFeedback}
+          showEmergencyResources={showEmergencyResources}
+          emergencyResourcesForMood={emergencyResourcesForMood}
+          onBack={() => setShowMoodResponse(false)}
+          onContinue={proceedToMainContent}
+        />
       );
     }
     
     return (
-      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
-        <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
-          <h1 className="text-4xl font-bold mb-12 text-center copper-text">How are you feeling today?</h1>
-          
-          <div className="flex flex-wrap justify-center gap-10 mb-12">
-            {[
-              { emoji: <Smile className="h-12 w-12 stroke-[2.25]" />, label: "Content" },
-              { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Moderate" },
-              { emoji: <Meh className="h-12 w-12 stroke-[2.25]" />, label: "Neutral" },
-              { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Uneasy" },
-              { emoji: <Frown className="h-12 w-12 stroke-[2.25]" />, label: "Distressed" },
-              { emoji: <Annoyed className="h-12 w-12 stroke-[2.25]" />, label: "Anxious" },
-              { emoji: <HeartCrack className="h-12 w-12 stroke-[2.25]" />, label: "Overwhelmed" },
-            ].map((mood) => (
-              <Button
-                key={mood.label}
-                variant="ghost"
-                className="flex flex-col items-center justify-center py-2 px-4 rounded-xl hover:scale-110 transition-all"
-                onClick={() => handleMoodSelection(mood.label)}
-              >
-                <div className="mb-1 text-[#B87333] flex items-center justify-center h-14">
-                  {mood.emoji}
-                </div>
-                <span className="text-lg font-medium">{mood.label}</span>
-              </Button>
-            ))}
-          </div>
-          
-          <div className="flex justify-between mt-8">
-            <Button 
-              variant="ghost" 
-              onClick={() => setShowIntro(true)}
-              className="text-[#B87333] p-2"
-            >
-              <ArrowLeft className="h-6 w-6" />
-            </Button>
-            <Button 
-              onClick={goToVisionBoard} 
-              variant="bronze" 
-              size="lg"
-            >
-              Continue <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+      <MoodSelector 
+        onMoodSelect={handleMoodSelection}
+        onBack={() => setShowIntro(true)}
+        onContinue={goToVisionBoard}
+      />
     );
   }
 
   if (showVisionBoard) {
     return (
-      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white p-4">
-        <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
-          <div className="flex justify-between items-center mb-6">
-            <Button 
-              variant="ghost" 
-              onClick={goBackToMainContent}
-              className="text-[#B87333] p-2"
-            >
-              <ArrowLeft className="h-6 w-6" />
-            </Button>
-            <h1 className="text-3xl font-bold text-center copper-text flex items-center">
-              <BookOpen className="mr-2 h-6 w-6 text-[#B87333]" />
-              My Vision Board
-            </h1>
-            <div className="w-10"></div> {/* Spacer for alignment */}
-          </div>
-          
-          <p className="text-gray-400 mb-8 text-center">
-            Select the qualities you want to embody and the goals you're working toward.
-          </p>
-
-          <div className="mb-8">
-            <h3 className="font-semibold mb-4 text-xl">I want to be:</h3>
-            <div className="flex flex-wrap gap-3">
-              {visionBoardQualities.map((quality) => (
-                <Button
-                  key={quality.id}
-                  variant={selectedQualities.includes(quality.id) ? "copper" : "outline_copper"}
-                  size="sm"
-                  onClick={() => toggleQuality(quality.id)}
-                  className="mb-2"
-                >
-                  {quality.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h3 className="font-semibold mb-4 text-xl">I'm working on:</h3>
-            <div className="flex flex-wrap gap-3">
-              {visionBoardGoals.map((goal) => (
-                <Button
-                  key={goal.id}
-                  variant={selectedGoals.includes(goal.id) ? "copper" : "outline_copper"}
-                  size="sm"
-                  onClick={() => toggleGoal(goal.id)}
-                  className="mb-2"
-                >
-                  {goal.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <Button onClick={saveVisionBoard} variant="bronze" className="w-full">
-            Save My Vision Board
-          </Button>
-        </div>
-      </div>
+      <VisionBoard 
+        qualities={visionBoardQualities}
+        goals={visionBoardGoals}
+        onBack={goBackToMainContent}
+        onSave={saveVisionBoard}
+        initialSelectedQualities={selectedQualities}
+        initialSelectedGoals={selectedGoals}
+      />
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a20] text-white">
-      <section className="container mx-auto px-4 py-12 md:py-24">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">Your Mental Health Journey Starts Here</h1>
-          <p className="text-xl md:text-2xl text-[#B87333] mb-8">Evidence-based tools, therapy, and support - all in one place</p>
-          
-          <Dialog open={isSubDialogOpen} onOpenChange={setIsSubDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="animated_bronze" size="lg" className="px-8 mb-8">
-                View Subscription Plans <Crown className="ml-2" size={18} />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-full max-w-3xl" size="default">
-              <DialogHeader>
-                <DialogTitle className="text-xl md:text-2xl text-white mb-2">
-                  Choose Your Mental Wellness Plan
-                </DialogTitle>
-                <DialogDescription>
-                  Select the plan that best fits your needs and recovery journey
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                {subscriptionPlans.map((plan) => (
-                  <SubscriptionCard
-                    key={plan.title}
-                    title={plan.title}
-                    price={plan.price}
-                    features={plan.features}
-                    coPayCredit={plan.coPayCredit}
-                    recommended={plan.recommended}
-                    buttonVariant={plan.buttonVariant as any}
-                    buttonText={plan.buttonText}
-                  />
-                ))}
-              </div>
-              
-              <div className="flex justify-end mt-4">
-                <Button variant="ghost" onClick={() => setIsSubDialogOpen(false)}>
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-          
-          <div className="bg-[#2a2a30] p-4 rounded-lg shadow-lg max-w-xl mx-auto mb-8">
-            <p className="text-lg font-light italic text-gray-300">{randomAffirmation}</p>
-          </div>
-        </div>
-
-        <div className="mb-12">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">Self-Paced Workshops</h2>
-            <Link to="/virtual-classes" className="text-[#B87333] flex items-center hover:underline">
-              View All <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {selfPacedWorkshops.map((workshop, index) => (
-              <Card key={index} className="bg-[#2a2a30] border-[#3a3a40] overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg text-white">{workshop.title}</h3>
-                    <Badge variant="outline" className="text-[#B87333] border-[#B87333]">
-                      {workshop.type.replace('_', ' ')}
-                    </Badge>
-                  </div>
-                  
-                  <p className="text-gray-300 text-sm mb-4">{workshop.description}</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-400">
-                      <User className="h-4 w-4 mr-1" /> 
-                      <span>{workshop.facilitator}</span>
-                    </div>
-                    <Button variant="outline_copper" size="sm" className="ml-auto" onClick={() => navigate("/virtual-classes")}>
-                      Start Now
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Tools & Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="bg-[#2a2a30] border-[#3a3a40] hover:border-[#B87333] transition-colors cursor-pointer"
-                onClick={() => handleToolClick(feature.path)}
-              >
-                <div className="p-6">
-                  <div className="mb-4 bg-[#3a3a40] h-12 w-12 rounded-lg flex items-center justify-center">
-                    <feature.icon className="h-6 w-6 text-[#B87333]" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-gray-400 mb-4">{feature.description}</p>
-                  <div className="flex items-center text-[#B87333]">
-                    <span className="mr-2">Explore</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-12 bg-[#2a2a30] rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-4">How are you feeling today?</h2>
-          <p className="text-gray-400 mb-6">{randomEncouragement}</p>
-          
-          <div className="flex flex-wrap gap-3 justify-center">
-            {[
-              { emoji: <Smile className="h-6 w-6" />, label: "Content", color: "bg-[#2a2a30]" },
-              { emoji: <Meh className="h-6 w-6" />, label: "Moderate", color: "bg-[#2a2a30]" },
-              { emoji: <Meh className="h-6 w-6" />, label: "Neutral", color: "bg-[#2a2a30]" },
-              { emoji: <Frown className="h-6 w-6 rotate-180" />, label: "Uneasy", color: "bg-[#2a2a30]" },
-              { emoji: <Frown className="h-6 w-6" />, label: "Distressed", color: "bg-[#2a2a30]" },
-              { emoji: <Annoyed className="h-6 w-6" />, label: "Anxious", color: "bg-[#2a2a30]" },
-              { emoji: <Angry className="h-6 w-6" />, label: "Angry", color: "bg-[#2a2a30]" },
-              { emoji: <HeartCrack className="h-6 w-6" />, label: "Overwhelmed", color: "bg-[#2a2a30]" },
-            ].map((mood) => (
-              <Button
-                key={mood.label}
-                variant="ghost"
-                className={`flex flex-col items-center p-4 rounded-lg border ${
-                  currentMood === mood.label
-                    ? `border-[#B87333] bg-[#B87333]/10`
-                    : "border-gray-700 hover:border-[#B87333]/50"
-                }`}
-                onClick={() => handleMoodSelection(mood.label)}
-              >
-                <div className={`${mood.color} p-2 rounded-full mb-1 flex items-center justify-center text-[#B87333]`}>
-                  {mood.emoji}
-                </div>
-                <span>{mood.label}</span>
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-[#2a2a30] rounded-lg p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold flex items-center">
-              <Bell className="mr-2 h-6 w-6 text-[#B87333]" />
-              Emergency Resources
-            </h2>
-            <Button 
-              variant="copper"
-              onClick={goToVisionBoard}
-            >
-              My Vision Board <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-          
-          <p className="text-gray-400 mb-6">If you're experiencing a crisis, please reach out for immediate help:</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {emergencyResources.map((resource, index) => (
-              <div key={index} className="border border-[#3a3a40] rounded-lg p-4 bg-[#1a1a20]">
-                <h3 className="font-semibold mb-1">{resource.name}</h3>
-                <p className="text-[#B87333] font-bold">{resource.contact}</p>
-                <p className="text-sm text-gray-400">{resource.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+    <Dashboard 
+      workshops={selfPacedWorkshops}
+      features={features}
+      randomAffirmation={randomAffirmation}
+      randomEncouragement={randomEncouragement}
+      emergencyResources={emergencyResources}
+      subscriptionPlans={subscriptionPlans}
+      currentMood={currentMood}
+      onMoodSelect={handleMoodSelection}
+      onVisionBoardClick={goToVisionBoard}
+    />
   );
 };
 
