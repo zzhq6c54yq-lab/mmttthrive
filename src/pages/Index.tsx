@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing, Crown, Star, BookOpen, Lightbulb, Flame } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -9,7 +8,6 @@ import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import SponsorChatbot from "@/components/SponsorChatbot";
 import { VirtualClass } from "@/data/toolCategories";
-import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import SubscriptionCard from "@/components/SubscriptionCard";
 
@@ -149,42 +147,44 @@ const subscriptionPlans = [
   }
 ];
 
-// Manual mock for virtual classes to avoid date issues
-const mockTodayClasses = [
+const selfPacedClasses: VirtualClass[] = [
   {
-    id: 1,
+    id: "class-1",
     title: "Mindfulness Meditation",
-    description: "Learn techniques to stay present and reduce anxiety",
-    category: "Meditation",
-    startTime: new Date(new Date().setHours(10, 0, 0, 0)),
-    endTime: new Date(new Date().setHours(11, 0, 0, 0)),
-    participants: 24,
-    instructor: "Dr. Sarah Chen"
+    description: "Learn techniques to stay present and reduce anxiety in your daily life",
+    startTime: new Date(), // Placeholder date (not shown in UI)
+    duration: 0, // Self-paced
+    facilitator: "Dr. Sarah Chen",
+    type: "meditation",
+    capacity: 0, // Unlimited
+    attendees: 0 // Not tracked
   },
   {
-    id: 2,
+    id: "class-2",
     title: "Anxiety Management",
-    description: "Practical strategies to manage anxiety in daily life",
-    category: "Stress Relief",
-    startTime: new Date(new Date().setHours(14, 30, 0, 0)),
-    endTime: new Date(new Date().setHours(15, 30, 0, 0)),
-    participants: 18,
-    instructor: "Michael Rodriguez, LMFT"
+    description: "Practical strategies to manage anxiety through self-guided exercises",
+    startTime: new Date(), // Placeholder date (not shown in UI)
+    duration: 0, // Self-paced
+    facilitator: "Michael Rodriguez, LMFT",
+    type: "mental_health",
+    capacity: 0, // Unlimited
+    attendees: 0 // Not tracked
   },
   {
-    id: 3,
-    title: "Supportive Group Session",
-    description: "Share experiences and build connection in a safe space",
-    category: "Support Group",
-    startTime: new Date(new Date().setHours(18, 0, 0, 0)),
-    endTime: new Date(new Date().setHours(19, 0, 0, 0)),
-    participants: 12,
-    instructor: "Lisa Thompson, PhD"
+    id: "class-3",
+    title: "Building Resilience",
+    description: "Develop skills to bounce back from challenges at your own pace",
+    startTime: new Date(), // Placeholder date (not shown in UI)
+    duration: 0, // Self-paced
+    facilitator: "Lisa Thompson, PhD",
+    type: "workshop",
+    capacity: 0, // Unlimited
+    attendees: 0 // Not tracked
   }
 ];
 
 const Index = () => {
-  const [todayClasses, setTodayClasses] = useState<VirtualClass[]>([]);
+  const [selfPacedWorkshops, setSelfPacedWorkshops] = useState<VirtualClass[]>([]);
   const [currentMood, setCurrentMood] = useState<string | null>(null);
   const [randomAffirmation, setRandomAffirmation] = useState("");
   const [randomEncouragement, setRandomEncouragement] = useState("");
@@ -193,10 +193,8 @@ const Index = () => {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
 
   useEffect(() => {
-    // Use mock classes instead of the generator function
-    setTodayClasses(mockTodayClasses);
+    setSelfPacedWorkshops(selfPacedClasses);
     
-    // Select random affirmation and encouragement
     const randomAffIndex = Math.floor(Math.random() * positiveAffirmations.length);
     setRandomAffirmation(positiveAffirmations[randomAffIndex]);
     
@@ -219,13 +217,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#1a1a20] text-white">
-      {/* Hero Section */}
       <section className="container mx-auto px-4 py-12 md:py-24">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">Your Mental Health Journey Starts Here</h1>
           <p className="text-xl md:text-2xl text-[#B87333] mb-8">Evidence-based tools, therapy, and support - all in one place</p>
           
-          {/* Subscription Plans Dialog */}
           <Dialog open={isSubDialogOpen} onOpenChange={setIsSubDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="animated_bronze" size="lg" className="px-8 mb-8">
@@ -258,43 +254,39 @@ const Index = () => {
             </DialogContent>
           </Dialog>
           
-          {/* Daily quote */}
           <div className="bg-[#2a2a30] p-4 rounded-lg shadow-lg max-w-xl mx-auto mb-8">
             <p className="text-lg font-light italic text-gray-300">{randomAffirmation}</p>
           </div>
         </div>
 
-        {/* Today's Virtual Classes */}
         <div className="mb-12">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">Today's Virtual Classes</h2>
+            <h2 className="text-2xl font-bold">Self-Paced Workshops</h2>
             <Link to="/virtual-classes" className="text-[#B87333] flex items-center hover:underline">
               View All <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {todayClasses.map((classItem, index) => (
+            {selfPacedWorkshops.map((workshop, index) => (
               <Card key={index} className="bg-[#2a2a30] border-[#3a3a40] overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg text-white">{classItem.title}</h3>
+                    <h3 className="font-semibold text-lg text-white">{workshop.title}</h3>
                     <Badge variant="outline" className="text-[#B87333] border-[#B87333]">
-                      {classItem.category}
+                      {workshop.type.replace('_', ' ')}
                     </Badge>
                   </div>
-                  <div className="text-gray-400 text-sm mb-3 flex items-center gap-1">
-                    <Clock className="h-4 w-4" /> 
-                    {format(classItem.startTime, "h:mm a")} - {format(classItem.endTime, "h:mm a")}
-                  </div>
-                  <p className="text-gray-300 text-sm mb-4">{classItem.description}</p>
+                  
+                  <p className="text-gray-300 text-sm mb-4">{workshop.description}</p>
+                  
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-sm text-gray-400">
-                      <Users className="h-4 w-4 mr-1" /> 
-                      <span>{classItem.participants} attending</span>
+                      <User className="h-4 w-4 mr-1" /> 
+                      <span>{workshop.facilitator}</span>
                     </div>
                     <Button variant="outline_copper" size="sm" className="ml-auto" onClick={() => navigate("/virtual-classes")}>
-                      Join
+                      Start Now
                     </Button>
                   </div>
                 </div>
@@ -303,7 +295,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Features Grid */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Tools & Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -329,7 +320,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Mood Tracker */}
         <div className="mb-12 bg-[#2a2a30] rounded-lg p-6">
           <h2 className="text-2xl font-bold mb-4">How are you feeling today?</h2>
           <p className="text-gray-400 mb-6">{randomEncouragement}</p>
@@ -362,7 +352,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Emergency Resources */}
         <div className="bg-[#2a2a30] rounded-lg p-6">
           <h2 className="text-2xl font-bold mb-4 flex items-center">
             <Bell className="mr-2 h-6 w-6 text-[#B87333]" />
