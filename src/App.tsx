@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -9,6 +10,7 @@ import Page from "@/components/Page";
 import TherapistQuestionnaire from "@/pages/TherapistQuestionnaire";
 import TherapistMatches from "@/pages/TherapistMatches";
 import WorkshopDetail from "@/pages/WorkshopDetail";
+import Workshops from "@/pages/Workshops";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
         <Route path="/my-sponsor" element={<MySponsor />} />
         <Route path="/therapist-questionnaire" element={<TherapistQuestionnaire />} />
         <Route path="/therapist-matches" element={<TherapistMatches />} />
+        <Route path="/workshops" element={<Workshops />} />
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

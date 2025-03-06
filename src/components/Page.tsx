@@ -7,24 +7,27 @@ import { useNavigate } from "react-router-dom";
 interface PageProps {
   title: string;
   children?: React.ReactNode;
+  showBackButton?: boolean;
 }
 
-const Page: React.FC<PageProps> = ({ title, children }) => {
+const Page: React.FC<PageProps> = ({ title, children, showBackButton = true }) => {
   const navigate = useNavigate();
   
   return (
     <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            className="flex items-center gap-2"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back
-          </Button>
-        </div>
+        {showBackButton && (
+          <div className="mb-8">
+            <Button 
+              variant="ghost" 
+              className="flex items-center gap-2"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+          </div>
+        )}
         
         <h1 className="text-3xl md:text-4xl font-medium mb-6">{title}</h1>
         
