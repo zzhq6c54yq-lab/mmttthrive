@@ -1,3 +1,4 @@
+
 import { 
   BarChart4, 
   Brain, 
@@ -17,8 +18,7 @@ import {
   Landmark,
   Pencil,
   HeartHandshake,
-  ScrollText,
-  Video
+  ScrollText
 } from "lucide-react";
 
 export interface ToolCategory {
@@ -297,135 +297,4 @@ export const toolCategories = [
     cta: "Learn More",
     keywords: ["health-wellness", "finding-purpose", "resilient", "focused"]
   },
-  {
-    title: "Virtual Classes & Meetings",
-    description: "Join live virtual sessions facilitated by H.E.N.R.Y. on various mental wellness topics.",
-    icon: Video,
-    features: [
-      "Live guided meditation sessions",
-      "Mental health workshops",
-      "AA and NA recovery meetings",
-      "Coping skills practice groups",
-      "Reminder notifications"
-    ],
-    cta: "View Schedule",
-    keywords: ["community", "learning", "support", "recovery", "skills", "real-time", "interactive"]
-  }
 ];
-
-export interface VirtualClass {
-  id: string;
-  title: string;
-  description: string;
-  startTime: Date;
-  duration: number; // in minutes
-  facilitator: string;
-  type: 'mental_health' | 'meditation' | 'aa_meeting' | 'na_meeting' | 'workshop';
-  capacity: number;
-  attendees: number;
-}
-
-// Function to generate today's schedule
-export const generateTodayClasses = (): VirtualClass[] => {
-  const now = new Date();
-  const classes: VirtualClass[] = [];
-  
-  // Start at 9am
-  const startHour = 9;
-  const classTypes: Array<VirtualClass['type']> = [
-    'mental_health', 'meditation', 'aa_meeting', 'mental_health', 
-    'workshop', 'na_meeting', 'meditation', 'mental_health',
-    'workshop', 'aa_meeting', 'mental_health', 'na_meeting'
-  ];
-  
-  const titles = {
-    mental_health: [
-      "Stress Management Techniques", 
-      "Understanding Anxiety", 
-      "Healthy Boundaries Workshop", 
-      "Managing Depression",
-      "Emotional Regulation Skills"
-    ],
-    meditation: [
-      "Mindfulness Meditation", 
-      "Body Scan Relaxation", 
-      "Breathing Techniques", 
-      "Guided Visualization"
-    ],
-    aa_meeting: [
-      "AA Daily Reflections", 
-      "AA Step Study"
-    ],
-    na_meeting: [
-      "NA Recovery Meeting", 
-      "NA Step Working Guide"
-    ],
-    workshop: [
-      "Building Resilience", 
-      "Self-Compassion Practice", 
-      "Effective Communication", 
-      "Grief and Loss Support"
-    ]
-  };
-  
-  const descriptions = {
-    mental_health: [
-      "Learn practical techniques to manage stress in daily life.", 
-      "Understand the physiological basis of anxiety and learn coping strategies.", 
-      "Define healthy boundaries in relationships and practice setting them.", 
-      "Explore evidence-based approaches to managing depression symptoms.",
-      "Develop skills to regulate emotions effectively in challenging situations."
-    ],
-    meditation: [
-      "A guided practice focusing on present-moment awareness.", 
-      "Progressive relaxation to release tension throughout the body.", 
-      "Learn breathing patterns that promote relaxation and focus.", 
-      "Guided imagery practice for mental relaxation and stress reduction."
-    ],
-    aa_meeting: [
-      "Daily reflection on recovery principles and sharing experiences in sobriety.", 
-      "In-depth exploration of the 12 Steps of Alcoholics Anonymous."
-    ],
-    na_meeting: [
-      "Open discussion meeting focusing on recovery from addiction.", 
-      "Working through the NA steps with guidance and peer support."
-    ],
-    workshop: [
-      "Building skills to bounce back from life's challenges.", 
-      "Developing a kind and understanding relationship with yourself.", 
-      "Enhancing communication skills for healthier relationships.", 
-      "Finding support and coping strategies for dealing with loss."
-    ]
-  };
-  
-  // Generate classes every 45 minutes
-  for (let i = 0; i < 12; i++) {
-    const classHour = startHour + Math.floor((i * 45) / 60);
-    const classMinute = (i * 45) % 60;
-    
-    const startTime = new Date(now);
-    startTime.setHours(classHour, classMinute, 0);
-    
-    // If the time has passed today, set it for tomorrow
-    if (startTime < now) {
-      startTime.setDate(startTime.getDate() + 1);
-    }
-    
-    const type = classTypes[i];
-    const titleIndex = Math.floor(Math.random() * titles[type].length);
-    
-    classes.push({
-      id: `class-${i}`,
-      title: titles[type][titleIndex],
-      description: descriptions[type][titleIndex],
-      startTime,
-      duration: 45,
-      facilitator: "H.E.N.R.Y.",
-      type,
-      capacity: 20,
-      attendees: Math.floor(Math.random() * 15) + 1
-    });
-  }
-  
-  return classes;
-};
