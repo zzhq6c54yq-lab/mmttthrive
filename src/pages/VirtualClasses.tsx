@@ -9,7 +9,8 @@ import {
   ArrowLeft,
   Video,
   BellRing,
-  Coffee
+  Coffee,
+  Bot
 } from "lucide-react";
 import { format, addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
