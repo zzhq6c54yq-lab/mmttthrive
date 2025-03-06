@@ -11,7 +11,7 @@ interface EmergencyResource {
 
 interface EmergencyResourcesProps {
   resources: EmergencyResource[];
-  onVisionBoardClick: () => void;
+  onVisionBoardClick?: () => void; // Making this prop optional
 }
 
 const EmergencyResources: React.FC<EmergencyResourcesProps> = ({
@@ -25,12 +25,14 @@ const EmergencyResources: React.FC<EmergencyResourcesProps> = ({
           <Bell className="mr-2 h-6 w-6 text-[#B87333]" />
           Emergency Resources
         </h2>
-        <Button 
-          variant="copper"
-          onClick={onVisionBoardClick}
-        >
-          My Vision Board <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        {onVisionBoardClick && (
+          <Button 
+            variant="copper"
+            onClick={onVisionBoardClick}
+          >
+            My Vision Board <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        )}
       </div>
       
       <p className="text-gray-400 mb-6">If you're experiencing a crisis, please reach out for immediate help:</p>

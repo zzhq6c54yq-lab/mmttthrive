@@ -20,7 +20,6 @@ interface DashboardProps {
   subscriptionPlans: any[];
   currentMood: string | null;
   onMoodSelect: (mood: string) => void;
-  onVisionBoardClick?: () => void;  // Make this optional since we're removing the button
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
@@ -32,7 +31,6 @@ const Dashboard: React.FC<DashboardProps> = ({
   subscriptionPlans,
   currentMood,
   onMoodSelect,
-  onVisionBoardClick,
 }) => {
   const [isSubDialogOpen, setIsSubDialogOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
