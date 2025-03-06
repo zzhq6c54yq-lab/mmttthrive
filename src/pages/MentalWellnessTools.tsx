@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { 
@@ -108,10 +107,14 @@ const MentalWellnessTools = () => {
         <div className="floating-bg animate-pulse"></div>
         <div className="container px-4 max-w-6xl mx-auto relative z-10">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
+            <Button
+              variant="ghost"
+              className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors p-0"
+              onClick={() => navigate("/", { state: { skipToMain: true } })}
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
+              Back to Main Menu
+            </Button>
             <HomeButton />
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4 gradient-heading">Mental Wellness Tools</h1>
@@ -122,7 +125,6 @@ const MentalWellnessTools = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        {/* Personalized Recommendations section - moved to the top */}
         <div className="mb-10 bg-[#F1F0FB] rounded-xl p-8 text-center">
           <h2 className="text-3xl font-light mb-4">Your Personalized Wellness Journey</h2>
           <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto">

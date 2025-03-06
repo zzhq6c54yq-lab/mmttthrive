@@ -122,8 +122,13 @@ const Index = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (location.state && location.state.returnToIntro) {
-      setScreenState('intro');
+    if (location.state) {
+      const { returnToIntro, skipToMain } = location.state as { returnToIntro?: boolean, skipToMain?: boolean };
+      if (returnToIntro) {
+        setScreenState('intro');
+      } else if (skipToMain) {
+        setScreenState('main');
+      }
       window.history.replaceState({}, document.title);
     } else {
       const timer = setTimeout(() => {
