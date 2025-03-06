@@ -1,7 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface VisionBoardItem {
@@ -28,7 +28,13 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
 }) => {
   const [selectedQualities, setSelectedQualities] = useState<string[]>(initialSelectedQualities);
   const [selectedGoals, setSelectedGoals] = useState<string[]>(initialSelectedGoals);
+  const [isValid, setIsValid] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if at least one quality and one goal is selected
+    setIsValid(selectedQualities.length > 0 && selectedGoals.length > 0);
+  }, [selectedQualities, selectedGoals]);
 
   const toggleQuality = (qualityId: string) => {
     setSelectedQualities(prev => 
@@ -47,6 +53,15 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
   };
 
   const handleSave = () => {
+    if (!isValid) {
+      toast({
+        title: "Selection Required",
+        description: "Please select at least one quality and one goal.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     toast({
       title: "Vision Board Updated",
       description: "Your personal vision board has been saved.",
@@ -73,7 +88,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
         </div>
         
         <p className="text-gray-400 mb-8 text-center">
-          Select the qualities you want to embody and the goals you're working toward.
+          Select the qualities you want to embody and the goals you're working toward. <span className="text-[#B87333]">*Please select at least one from each section</span>
         </p>
 
         <div className="mb-8">
@@ -91,6 +106,9 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
               </Button>
             ))}
           </div>
+          {selectedQualities.length === 0 && (
+            <p className="text-sm text-red-400 mt-2">Please select at least one quality</p>
+          )}
         </div>
 
         <div className="mb-8">
@@ -108,11 +126,29 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
               </Button>
             ))}
           </div>
+          {selectedGoals.length === 0 && (
+            <p className="text-sm text-red-400 mt-2">Please select at least one goal</p>
+          )}
         </div>
 
-        <Button onClick={handleSave} variant="bronze" className="w-full">
-          Save My Vision Board
-        </Button>
+        <div className="flex justify-between mt-8">
+          <Button 
+            variant="ghost" 
+            onClick={onBack}
+            className="text-[#B87333]"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Menu
+          </Button>
+          
+          <Button 
+            onClick={handleSave} 
+            variant="bronze" 
+            disabled={!isValid}
+            className={!isValid ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            Continue <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

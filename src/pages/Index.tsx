@@ -5,10 +5,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Brain, MessageCircle, Calendar, Shield, HeartHandshake, Video } from "lucide-react";
 import { VirtualClass } from "@/data/toolCategories";
 
-// Import our new components
+// Import our components
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodSelector from "@/components/home/MoodSelector";
 import MoodResponse from "@/components/home/MoodResponse";
+import Registration from "@/components/home/Registration";
 import VisionBoard from "@/components/home/VisionBoard";
 import Dashboard from "@/components/home/Dashboard";
 
@@ -211,6 +212,7 @@ const emergencySupport = {
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showMoodScreen, setShowMoodScreen] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
   const [showVisionBoard, setShowVisionBoard] = useState(false);
   const [selfPacedWorkshops, setSelfPacedWorkshops] = useState<VirtualClass[]>([]);
   const [currentMood, setCurrentMood] = useState<string | null>(null);
@@ -264,22 +266,28 @@ const Index = () => {
 
   const proceedToMainContent = () => {
     setShowMoodScreen(false);
+    setShowRegistration(false);
     setShowVisionBoard(false);
     setShowMoodResponse(false);
+  };
+
+  // Navigation functions - all back buttons go to main menu
+  const goToMainMenu = () => {
+    setShowIntro(false);
+    setShowMoodScreen(false);
+    setShowRegistration(false);
+    setShowVisionBoard(false);
+    setShowMoodResponse(false);
+  };
+
+  const goToRegistration = () => {
+    setShowMoodResponse(false);
+    setShowRegistration(true);
   };
 
   const goToVisionBoard = () => {
-    setShowMoodScreen(false);
+    setShowRegistration(false);
     setShowVisionBoard(true);
-  };
-
-  const continueMoodToVisionBoard = () => {
-    setShowMoodResponse(false);
-    setShowVisionBoard(true);
-  };
-
-  const goBackToMainContent = () => {
-    setShowVisionBoard(false);
   };
 
   const saveVisionBoard = () => {
@@ -287,7 +295,7 @@ const Index = () => {
       title: "Vision Board Updated",
       description: "Your personal vision board has been saved.",
     });
-    setShowVisionBoard(false);
+    goToMainMenu(); // Go to main menu after saving
   };
 
   if (showIntro) {
@@ -302,8 +310,8 @@ const Index = () => {
           feedback={moodFeedback}
           showEmergencyResources={showEmergencyResources}
           emergencyResourcesForMood={emergencyResourcesForMood}
-          onBack={() => setShowMoodResponse(false)}
-          onContinue={continueMoodToVisionBoard}
+          onBack={goToMainMenu}
+          onContinue={goToRegistration}
         />
       );
     }
@@ -311,8 +319,18 @@ const Index = () => {
     return (
       <MoodSelector 
         onMoodSelect={handleMoodSelection}
-        onBack={() => setShowIntro(true)}
+        onBack={goToMainMenu}
+        onContinue={goToRegistration}
+      />
+    );
+  }
+
+  if (showRegistration) {
+    return (
+      <Registration
+        onBack={goToMainMenu}
         onContinue={goToVisionBoard}
+        onSkip={goToVisionBoard}
       />
     );
   }
@@ -322,7 +340,7 @@ const Index = () => {
       <VisionBoard 
         qualities={visionBoardQualities}
         goals={visionBoardGoals}
-        onBack={goBackToMainContent}
+        onBack={goToMainMenu}
         onSave={saveVisionBoard}
         initialSelectedQualities={selectedQualities}
         initialSelectedGoals={selectedGoals}
@@ -340,7 +358,6 @@ const Index = () => {
       subscriptionPlans={subscriptionPlans}
       currentMood={currentMood}
       onMoodSelect={handleMoodSelection}
-      onVisionBoardClick={goToVisionBoard}
     />
   );
 };

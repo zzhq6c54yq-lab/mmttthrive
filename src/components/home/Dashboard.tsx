@@ -20,7 +20,7 @@ interface DashboardProps {
   subscriptionPlans: any[];
   currentMood: string | null;
   onMoodSelect: (mood: string) => void;
-  onVisionBoardClick: () => void;
+  onVisionBoardClick?: () => void;  // Make this optional since we're removing the button
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
@@ -88,7 +88,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         <EmergencyResources 
           resources={emergencyResources}
-          onVisionBoardClick={onVisionBoardClick}
         />
       </section>
     </div>
