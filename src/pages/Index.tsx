@@ -1,4 +1,3 @@
-<lov-code>
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing } from "lucide-react";
@@ -466,7 +465,7 @@ const Index = () => {
             <p className="intro-tagline text-xl md:text-2xl text-gray-300">
               because life should be more than just surviving
             </p>
-            <div className="mt-10 flex justify-center gap-4">
+            <div className="mt-10 flex justify-center">
               <Button 
                 className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button"
                 onClick={() => setScreenState('mood')}
@@ -474,15 +473,6 @@ const Index = () => {
                 Begin Your Journey
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Link to="/virtual-classes">
-                <Button 
-                  variant="animated_bronze" 
-                  className="group bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10"
-                  onClick={handleSkip}
-                >
-                  Skip to Main
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
@@ -678,4 +668,276 @@ const Index = () => {
       )}
 
       {screenState === 'moodResponse' && selectedMood === 'down' && (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#E8EAF6] to-[#E8EAF6]/70 animate-fade-in relative overflow-
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#E8EAF6] to-[#E8EAF6]/70 animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <HeartCrack className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg" style={{animation: 'floatAnimation 4s ease-in-out infinite'}} />
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Feeling Down</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                It's okay to feel down sometimes.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                Remember, you're not alone and there are people who care about you.
+              </p>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'moodResponse' && selectedMood === 'sad' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#E8EAF6] to-[#E8EAF6]/70 animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <Frown className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg" style={{animation: 'floatAnimation 4s ease-in-out infinite'}} />
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Sadness</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                It's okay to feel sad sometimes.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                Remember, you're not alone and there are people who care about you.
+              </p>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'moodResponse' && selectedMood === 'overwhelmed' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#E8EAF6] to-[#E8EAF6]/70 animate-fade-in relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <Angry className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg" style={{animation: 'floatAnimation 4s ease-in-out infinite'}} />
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Overwhelmed</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                It's okay to feel overwhelmed sometimes.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                Remember, you're not alone and there are people who care about you.
+              </p>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'register' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
+          <div className="floating-bg"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Register Now</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                Fill out the form below to get started on your mental health journey.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                Your information will be kept confidential and secure.
+              </p>
+            </div>
+            <form onSubmit={handleRegister}>
+              <div className="space-y-4">
+                <div className="flex flex-col space-y-2">
+                  <label htmlFor="name">Name</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value={userInfo.name} 
+                    onChange={handleUserInfoChange}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label htmlFor="email">Email</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value={userInfo.email} 
+                    onChange={handleUserInfoChange}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label htmlFor="password">Password</label>
+                  <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    value={userInfo.password} 
+                    onChange={handleUserInfoChange}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+              <Button 
+                className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+                type="submit"
+              >
+                Register
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'visionBoard' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
+          <div className="floating-bg"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Vision Board</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                Choose your top 3 vision board qualities and goals.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                These will guide your mental health journey and help you achieve your goals.
+              </p>
+            </div>
+            <div className="flex flex-col space-y-4">
+              <div className="flex flex-wrap justify-center gap-4">
+                {visionBoardQualities.map(quality => (
+                  <button 
+                    key={quality.id} 
+                    onClick={() => toggleQuality(quality.id)}
+                    className={`mood-button group ${selectedQualities.includes(quality.id) ? 'bg-[#B87333]/80' : 'bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10'}`}
+                  >
+                    <Badge className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" variant="outline">
+                      {quality.label}
+                    </Badge>
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap justify-center gap-4">
+                {visionBoardGoals.map(goal => (
+                  <button 
+                    key={goal.id} 
+                    onClick={() => toggleGoal(goal.id)}
+                    className={`mood-button group ${selectedGoals.includes(goal.id) ? 'bg-[#B87333]/80' : 'bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10'}`}
+                  >
+                    <Badge className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" variant="outline">
+                      {goal.label}
+                    </Badge>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('main')}
+            >
+              Continue to Main
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {screenState === 'main' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
+          <div className="floating-bg"></div>
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Main Menu</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
+                Explore our mental health resources and tools.
+              </p>
+              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
+                Connect with licensed therapists and access virtual classes.
+              </p>
+            </div>
+            <div className="flex flex-col space-y-4">
+              <button 
+                onClick={() => navigate("/mental-wellness-tools")}
+                className="mood-button group"
+              >
+                <Brain className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
+                <span className="text-xs text-white mt-1 block">Mental Wellness Tools</span>
+              </button>
+              <button 
+                onClick={() => navigate("/real-time-therapy")}
+                className="mood-button group"
+              >
+                <MessageCircle className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
+                <span className="text-xs text-white mt-1 block">Real-Time Therapy</span>
+              </button>
+              <button 
+                onClick={() => navigate("/my-sponsor")}
+                className="mood-button group"
+              >
+                <HeartHandshake className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
+                <span className="text-xs text-white mt-1 block">My Sponsor</span>
+              </button>
+              <button 
+                onClick={() => navigate("/scheduling")}
+                className="mood-button group"
+              >
+                <Calendar className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
+                <span className="text-xs text-white mt-1 block">Flexible Scheduling</span>
+              </button>
+              <button 
+                onClick={() => navigate("/privacy-security")}
+                className="mood-button group"
+              >
+                <Shield className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
+                <span className="text-xs text-white mt-1 block">Private & Secure</span>
+              </button>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('visionBoard')}
+            >
+              Start Your Vision Board
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Index;
