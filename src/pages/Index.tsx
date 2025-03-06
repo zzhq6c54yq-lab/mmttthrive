@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound, Play, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -91,6 +92,30 @@ const visionBoardGoals = [
   { id: "finding-purpose", label: "Finding purpose" },
   { id: "building-confidence", label: "Building confidence" },
   { id: "work-life-balance", label: "Work-life balance" },
+];
+
+const workshops = [
+  {
+    title: "Stress Management",
+    description: "Learn effective techniques to manage daily stress and build resilience.",
+    time: "45 minutes",
+    icon: Brain,
+    color: "bg-[#9b87f5]/10 border-[#9b87f5]/30 text-[#9b87f5]"
+  },
+  {
+    title: "Mindful Communication",
+    description: "Develop mindfulness skills for healthier relationships and conversations.",
+    time: "45 minutes",
+    icon: MessageCircle,
+    color: "bg-[#F97316]/10 border-[#F97316]/30 text-[#F97316]"
+  },
+  {
+    title: "Emotional Regulation",
+    description: "Discover tools to understand and regulate your emotional responses.",
+    time: "45 minutes",
+    icon: HeartHandshake,
+    color: "bg-[#0EA5E9]/10 border-[#0EA5E9]/30 text-[#0EA5E9]"
+  }
 ];
 
 const Index = () => {
@@ -735,7 +760,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.02%22/></svg>')] opacity-30 fixed"></div>
           
           {/* Hero Section */}
-          <section className="container px-4 pt-32 pb-20 relative z-10">
+          <section className="container px-4 pt-32 pb-12 relative z-10">
             <div className="max-w-3xl mx-auto text-center animate-fade-up">
               <span className="px-3 py-1 text-sm font-medium tracking-wider rounded-full bg-primary/10 text-primary inline-block mb-4 uppercase">
                 Welcome to Thrive MT
@@ -771,8 +796,56 @@ const Index = () => {
             </div>
           </section>
 
+          {/* Workshops Section */}
+          <section className="container px-4 py-10 relative z-10">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-medium">
+                  Active Mental Health Workshops For You
+                </h2>
+                <Button 
+                  variant="outline" 
+                  className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
+                  onClick={() => setShowHenryIntro(true)}
+                >
+                  <UserRound className="mr-2 h-4 w-4" />
+                  Navigated by Henry
+                </Button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {workshops.map((workshop, index) => (
+                  <Card 
+                    key={index}
+                    className={`p-6 border ${workshop.color} transition-all duration-300 hover:shadow-md cursor-pointer`}
+                    onClick={() => toast({
+                      title: "Workshop Selected",
+                      description: `You've selected the ${workshop.title} workshop.`
+                    })}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <workshop.icon className={`h-10 w-10 ${workshop.color.split(' ').pop()}`} />
+                      <div className="flex items-center gap-2 text-gray-500 text-sm">
+                        <Clock className="h-4 w-4" />
+                        <span>{workshop.time}</span>
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-medium mb-2">{workshop.title}</h3>
+                    <p className="text-gray-600 mb-4">{workshop.description}</p>
+                    <Button 
+                      className="w-full bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 group"
+                    >
+                      <Play className="h-4 w-4 mr-2 text-green-500" />
+                      Start Workshop
+                      <ArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* Features Section */}
-          <section className="container px-4 py-20 bg-muted/30 relative z-10">
+          <section className="container px-4 py-16 bg-muted/30 relative z-10">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {features.map((feature, index) => (
