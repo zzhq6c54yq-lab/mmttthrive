@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, Bot, Video, Clock, Users, Bell, BellRing } from "lucide-react";
@@ -42,6 +43,12 @@ const features = [
     icon: Shield,
     path: "/privacy-security"
   },
+  {
+    title: "Virtual Classes",
+    description: "Join live sessions and meetings facilitated by mental health experts.",
+    icon: Video,
+    path: "/virtual-classes"
+  }
 ];
 
 const positiveAffirmations = [
@@ -786,46 +793,59 @@ const Index = () => {
             <form onSubmit={handleRegister}>
               <div className="space-y-4">
                 <div className="flex flex-col space-y-2">
-                  <label htmlFor="name">Name</label>
+                  <label htmlFor="name" className="text-white text-left">Name</label>
                   <input 
                     type="text" 
                     id="name" 
                     name="name" 
                     value={userInfo.name} 
                     onChange={handleUserInfoChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-800 text-white"
+                    placeholder="Enter your name"
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email" className="text-white text-left">Email</label>
                   <input 
                     type="email" 
                     id="email" 
                     name="email" 
                     value={userInfo.email} 
                     onChange={handleUserInfoChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-800 text-white"
+                    placeholder="Enter your email"
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password" className="text-white text-left">Password</label>
                   <input 
                     type="password" 
                     id="password" 
                     name="password" 
                     value={userInfo.password} 
                     onChange={handleUserInfoChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-800 text-white"
+                    placeholder="Create a password"
                   />
                 </div>
               </div>
-              <Button 
-                className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                type="submit"
-              >
-                Register
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <div className="flex justify-center gap-4 mt-6">
+                <Button 
+                  className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+                  type="submit"
+                >
+                  Register
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button 
+                  className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+                  onClick={handlePrevious}
+                  type="button"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+              </div>
             </form>
           </div>
         </div>
@@ -835,50 +855,65 @@ const Index = () => {
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
           <div className="floating-bg"></div>
           <div className="text-center max-w-2xl mx-auto px-4 z-10">
-            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Vision Board</h2>
-            <div className="space-y-4 mb-10">
-              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
-                Choose your top 3 vision board qualities and goals.
-              </p>
-              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
-                These will guide your mental health journey and help you achieve your goals.
-              </p>
-            </div>
-            <div className="flex flex-col space-y-4">
-              <div className="flex flex-wrap justify-center gap-4">
-                {visionBoardQualities.map(quality => (
-                  <button 
-                    key={quality.id} 
-                    onClick={() => toggleQuality(quality.id)}
-                    className={`mood-button group ${selectedQualities.includes(quality.id) ? 'bg-[#B87333]/80' : 'bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10'}`}
-                  >
-                    <Badge className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" variant="outline">
+            <h2 className="text-3xl md:text-4xl mb-4 gradient-heading">Create Your Vision Board</h2>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8">Select up to 5 qualities and goals that matter most to you</p>
+            
+            <div className="space-y-6 mb-10">
+              <div>
+                <h3 className="text-2xl font-light text-[#B87333] mb-4">Qualities I Want To Cultivate</h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {visionBoardQualities.map(quality => (
+                    <button 
+                      key={quality.id} 
+                      onClick={() => toggleQuality(quality.id)}
+                      className={`vision-board-item px-4 py-2 rounded-full text-sm md:text-base transition-all duration-300 ${
+                        selectedQualities.includes(quality.id) 
+                          ? 'bg-gradient-to-r from-[#CD7F32] to-[#B87333] text-white shadow-lg transform scale-105' 
+                          : 'bg-[#2a2a30] text-gray-300 hover:bg-[#2a2a30]/80 border border-[#B87333]/30'
+                      }`}
+                    >
                       {quality.label}
-                    </Badge>
-                  </button>
-                ))}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap justify-center gap-4">
-                {visionBoardGoals.map(goal => (
-                  <button 
-                    key={goal.id} 
-                    onClick={() => toggleGoal(goal.id)}
-                    className={`mood-button group ${selectedGoals.includes(goal.id) ? 'bg-[#B87333]/80' : 'bg-transparent border border-[#B87333] text-[#B87333] hover:bg-[#B87333]/10'}`}
-                  >
-                    <Badge className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" variant="outline">
+              
+              <div>
+                <h3 className="text-2xl font-light text-[#B87333] mb-4">Goals For My Journey</h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {visionBoardGoals.map(goal => (
+                    <button 
+                      key={goal.id} 
+                      onClick={() => toggleGoal(goal.id)}
+                      className={`vision-board-item px-4 py-2 rounded-full text-sm md:text-base transition-all duration-300 ${
+                        selectedGoals.includes(goal.id) 
+                          ? 'bg-gradient-to-r from-[#B87333] to-[#CD7F32] text-white shadow-lg transform scale-105' 
+                          : 'bg-[#2a2a30] text-gray-300 hover:bg-[#2a2a30]/80 border border-[#B87333]/30'
+                      }`}
+                    >
                       {goal.label}
-                    </Badge>
-                  </button>
-                ))}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-            <Button 
-              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-              onClick={() => setScreenState('main')}
-            >
-              Continue to Main
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button 
+                className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+                onClick={() => setScreenState('main')}
+              >
+                Continue to Main Menu
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button 
+                className="group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -886,60 +921,52 @@ const Index = () => {
       {screenState === 'main' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
           <div className="floating-bg"></div>
-          <div className="text-center max-w-2xl mx-auto px-4 z-10">
-            <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Main Menu</h2>
-            <div className="space-y-4 mb-10">
-              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.2s'}}>
-                Explore our mental health resources and tools.
-              </p>
-              <p className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{animation: 'fadeInText 1s ease-out forwards', opacity: 0, animationDelay: '0.4s'}}>
-                Connect with licensed therapists and access virtual classes.
+          <div className="max-w-4xl mx-auto px-4 py-10 z-10">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-light mb-6 gradient-heading">Welcome to ThriveMT</h2>
+              <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">
+                Your comprehensive mental health platform. Explore our services designed to support your journey to wellness.
               </p>
             </div>
-            <div className="flex flex-col space-y-4">
-              <button 
-                onClick={() => navigate("/mental-wellness-tools")}
-                className="mood-button group"
+
+            <div className="mb-10">
+              <Button 
+                variant="outline_copper"
+                className="group mb-8 mx-auto flex items-center"
+                onClick={() => setShowHenryDialog(true)}
               >
-                <Brain className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-                <span className="text-xs text-white mt-1 block">Mental Wellness Tools</span>
-              </button>
-              <button 
-                onClick={() => navigate("/real-time-therapy")}
-                className="mood-button group"
-              >
-                <MessageCircle className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-                <span className="text-xs text-white mt-1 block">Real-Time Therapy</span>
-              </button>
-              <button 
-                onClick={() => navigate("/my-sponsor")}
-                className="mood-button group"
-              >
-                <HeartHandshake className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-                <span className="text-xs text-white mt-1 block">My Sponsor</span>
-              </button>
-              <button 
-                onClick={() => navigate("/scheduling")}
-                className="mood-button group"
-              >
-                <Calendar className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-                <span className="text-xs text-white mt-1 block">Flexible Scheduling</span>
-              </button>
-              <button 
-                onClick={() => navigate("/privacy-security")}
-                className="mood-button group"
-              >
-                <Shield className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
-                <span className="text-xs text-white mt-1 block">Private & Secure</span>
-              </button>
+                <Bot className="mr-2 h-5 w-5 text-[#B87333]" />
+                Meet H.E.N.R.Y., Your AI Companion
+              </Button>
             </div>
-            <Button 
-              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-              onClick={() => setScreenState('visionBoard')}
-            >
-              Start Your Vision Board
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <Card 
+                    key={index}
+                    className="feature-card bg-[#2a2a30] border-[#3a3a40] hover:border-[#B87333]/50 overflow-hidden"
+                  >
+                    <Link to={feature.path} className="block p-6">
+                      <div className="flex items-start mb-4">
+                        <div className="bg-[#333338] p-3 rounded-full mr-4">
+                          <Icon className="w-6 h-6 text-[#B87333]" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 mb-4">{feature.description}</p>
+                      <div className="flex items-center text-[#B87333] text-sm font-medium">
+                        Explore
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </Link>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
