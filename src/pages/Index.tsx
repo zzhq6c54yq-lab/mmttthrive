@@ -298,56 +298,53 @@ const Index = () => {
 
   if (showMoodScreen) {
     return (
-      <div className="min-h-screen bg-[#1a1a20] flex flex-col items-center justify-center text-white px-4">
-        <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-lg animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center">How are you feeling today?</h1>
+      <div className="min-h-screen bg-[#1a1a20] flex items-center justify-center text-white px-4">
+        <div className="w-full max-w-4xl bg-[#2a2a30] rounded-lg p-8 shadow-xl">
+          <h1 className="text-4xl font-bold mb-8 text-center">How are you feeling today?</h1>
           
-          <p className="text-center text-gray-300 mb-8 text-lg">{randomEncouragement}</p>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 mb-10">
             {[
-              { emoji: <Smile className="h-12 w-12" />, label: "Happy", color: "bg-[#2a2a30]" },
-              { emoji: <Meh className="h-12 w-12" />, label: "Just ok", color: "bg-[#2a2a30]" },
-              { emoji: <Meh className="h-12 w-12" />, label: "Neutral", color: "bg-[#2a2a30]" },
-              { emoji: <Frown className="h-12 w-12 rotate-180" />, label: "Not great", color: "bg-[#2a2a30]" },
-              { emoji: <Frown className="h-12 w-12" />, label: "Sad", color: "bg-[#2a2a30]" },
-              { emoji: <Annoyed className="h-12 w-12" />, label: "Anxious", color: "bg-[#2a2a30]" },
-              { emoji: <Angry className="h-12 w-12" />, label: "Angry", color: "bg-[#2a2a30]" },
-              { emoji: <HeartCrack className="h-12 w-12" />, label: "Overwhelmed", color: "bg-[#2a2a30]" },
+              { emoji: <Smile className="h-16 w-16" />, label: "Happy" },
+              { emoji: <Meh className="h-16 w-16" />, label: "Just ok" },
+              { emoji: <Meh className="h-16 w-16" />, label: "Neutral" },
+              { emoji: <Frown className="h-16 w-16 rotate-180" />, label: "Not great" },
+              { emoji: <Frown className="h-16 w-16" />, label: "Sad" },
+              { emoji: <Annoyed className="h-16 w-16" />, label: "Anxious" },
+              { emoji: <Angry className="h-16 w-16" />, label: "Angry" },
+              { emoji: <HeartCrack className="h-16 w-16" />, label: "Overwhelmed" },
             ].map((mood) => (
               <Button
                 key={mood.label}
                 variant="ghost"
-                className={`flex flex-col items-center p-8 rounded-lg border hover:border-[#B87333] hover:bg-[#1a1a20] transition-all ${
+                className={`flex flex-col items-center justify-center p-6 rounded-lg border hover:border-[#B87333] hover:bg-[#1a1a20]/50 transition-all ${
                   currentMood === mood.label
-                    ? `border-[#B87333] bg-[#1a1a20]`
+                    ? `border-[#B87333] bg-[#1a1a20]/50`
                     : "border-gray-700"
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className={`${mood.color} p-6 rounded-full mb-4 flex items-center justify-center text-[#B87333]`}>
+                <div className="bg-[#2a2a30] p-6 rounded-full mb-3 flex items-center justify-center text-[#B87333]">
                   {mood.emoji}
                 </div>
-                <span className="text-lg font-medium">{mood.label}</span>
+                <span className="text-lg font-medium text-center">{mood.label}</span>
               </Button>
             ))}
           </div>
 
           {currentMood && (
-            <div className="mb-8 animate-fade-in">
+            <div className="animate-fade-in mb-8">
               <div className="bg-[#3a3a40] p-6 rounded-lg text-center">
-                <p className="text-xl mb-4">Thank you for sharing.</p>
+                <p className="text-xl text-white mb-3">Thank you for sharing how you feel.</p>
                 <p className="text-[#B87333] text-lg italic">{moodFeedback}</p>
               </div>
             </div>
           )}
 
-          <div className="text-center">
+          <div className="text-center mt-6">
             <Button 
               onClick={proceedToMainContent} 
               variant="bronze" 
-              size="lg" 
-              className="mt-4"
+              size="lg"
             >
               Continue to Dashboard
             </Button>
@@ -468,14 +465,14 @@ const Index = () => {
           
           <div className="flex flex-wrap gap-3 justify-center">
             {[
-              { emoji: <Smile className="h-6 w-6" />, label: "Happy", color: "bg-green-600" },
-              { emoji: <Meh className="h-6 w-6" />, label: "Just ok", color: "bg-blue-600" },
-              { emoji: <Meh className="h-6 w-6" />, label: "Neutral", color: "bg-gray-500" },
-              { emoji: <Frown className="h-6 w-6 rotate-180" />, label: "Not great", color: "bg-yellow-600" },
-              { emoji: <Frown className="h-6 w-6" />, label: "Sad", color: "bg-indigo-600" },
-              { emoji: <Annoyed className="h-6 w-6" />, label: "Anxious", color: "bg-purple-600" },
-              { emoji: <Angry className="h-6 w-6" />, label: "Angry", color: "bg-red-600" },
-              { emoji: <HeartCrack className="h-6 w-6" />, label: "Overwhelmed", color: "bg-pink-600" },
+              { emoji: <Smile className="h-6 w-6" />, label: "Happy", color: "bg-[#2a2a30]" },
+              { emoji: <Meh className="h-6 w-6" />, label: "Just ok", color: "bg-[#2a2a30]" },
+              { emoji: <Meh className="h-6 w-6" />, label: "Neutral", color: "bg-[#2a2a30]" },
+              { emoji: <Frown className="h-6 w-6 rotate-180" />, label: "Not great", color: "bg-[#2a2a30]" },
+              { emoji: <Frown className="h-6 w-6" />, label: "Sad", color: "bg-[#2a2a30]" },
+              { emoji: <Annoyed className="h-6 w-6" />, label: "Anxious", color: "bg-[#2a2a30]" },
+              { emoji: <Angry className="h-6 w-6" />, label: "Angry", color: "bg-[#2a2a30]" },
+              { emoji: <HeartCrack className="h-6 w-6" />, label: "Overwhelmed", color: "bg-[#2a2a30]" },
             ].map((mood) => (
               <Button
                 key={mood.label}
@@ -487,7 +484,7 @@ const Index = () => {
                 }`}
                 onClick={() => handleMoodSelection(mood.label)}
               >
-                <div className={`${mood.color} p-3 rounded-full mb-2`}>
+                <div className={`${mood.color} p-3 rounded-full mb-2 flex items-center justify-center text-[#B87333]`}>
                   {mood.emoji}
                 </div>
                 <span>{mood.label}</span>
@@ -567,4 +564,3 @@ const Index = () => {
 };
 
 export default Index;
-
