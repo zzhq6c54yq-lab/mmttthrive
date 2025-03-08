@@ -14,13 +14,13 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
   const { toast } = useToast();
 
   const handleHomeClick = () => {
-    // Navigate to home and set the state to 'intro'
     toast({
       title: "Returning to Home",
-      description: "Taking you back to the home page"
+      description: "Taking you back to the main page"
     });
     
-    navigate("/", { state: { returnToIntro: true } });
+    // Navigate to home but set the state to 'main' instead of 'intro'
+    navigate("/", { state: { screenState: 'main' } });
   };
 
   return (
@@ -29,8 +29,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       size="icon"
       className={`rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border-white/10 ${className}`}
       onClick={handleHomeClick}
-      aria-label="Return to intro screen"
-      title="Return to intro screen"
+      aria-label="Return to main screen"
+      title="Return to main screen"
     >
       <House className="h-5 w-5 text-[#B87333]" />
     </Button>

@@ -12,6 +12,7 @@ import TherapistMatches from "@/pages/TherapistMatches";
 import WorkshopDetail from "@/pages/WorkshopDetail";
 import Workshops from "@/pages/Workshops";
 import VirtualMeetings from "@/pages/VirtualMeetings";
+import ToolDetail from "@/pages/ToolDetail";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
+        <Route path="/mental-wellness-tools/:toolId" element={<ToolDetail />} />
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
         <Route path="/scheduling" element={<Page title="Flexible Scheduling" />} />
         <Route path="/privacy-security" element={<Page title="Private & Secure" />} />

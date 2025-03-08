@@ -1,26 +1,41 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { toolCategories } from '@/data/toolCategories';
+import { toolCategories, ToolCategory } from '@/data/toolCategories';
 import { Button } from '@/components/ui/button';
 import HomeButton from '@/components/HomeButton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 
 const ToolDetail = () => {
   const { toolId } = useParams<{ toolId: string }>();
   const navigate = useNavigate();
-  const [tool, setTool] = useState(null);
+  const { toast } = useToast();
+  const [tool, setTool] = useState<ToolCategory | null>(null);
 
   useEffect(() => {
-    const foundTool = toolCategories.find(tool => 
-      tool.title.toLowerCase().replace(/\s+/g, '-') === toolId
-    );
-    setTool(foundTool);
-  }, [toolId]);
+    if (toolId) {
+      const foundTool = toolCategories.find(tool => 
+        tool.title.toLowerCase().replace(/\s+/g, '-') === toolId
+      );
+      
+      setTool(foundTool || null);
+      
+      if (!foundTool) {
+        toast({
+          title: "Tool Not Found",
+          description: "The requested resource could not be found.",
+          variant: "destructive"
+        });
+      }
+    }
+  }, [toolId, toast]);
 
   if (!tool) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded shadow-md">
+        <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
           <h2 className="text-2xl font-semibold mb-4">Tool Not Found</h2>
           <p className="text-gray-700 mb-4">
             The requested tool could not be found. Please check the URL or return to the tools directory.
@@ -32,6 +47,13 @@ const ToolDetail = () => {
       </div>
     );
   }
+
+  const handleToolInteraction = () => {
+    toast({
+      title: `${tool.title} Activated`,
+      description: "Starting your wellness activity...",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -53,17 +75,28 @@ const ToolDetail = () => {
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
         <div className="mb-8">
-          <h2 className="text-3xl font-light mb-4">Features</h2>
-          <ul className="list-disc list-inside text-lg">
+          <h2 className="text-3xl font-light mb-6">Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tool.features.map((feature, index) => (
-              <li key={index} className="mb-2">{feature}</li>
+              <Card key={index} className="border-[#B87333]/30 bg-white/80 hover:shadow-md transition-all">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-xl">{feature}</CardTitle>
+                </CardHeader>
+              </Card>
             ))}
-          </ul>
+          </div>
         </div>
 
-        <div>
-          <h2 className="text-3xl font-light mb-4">How to Use</h2>
-          <p className="text-lg">{tool.howToUse}</p>
+        <div className="mt-12 flex flex-col items-center justify-center">
+          <p className="text-lg mb-6 text-center max-w-2xl">
+            Ready to start your {tool.title.toLowerCase()} journey? Click the button below to begin.
+          </p>
+          <Button 
+            className="bg-[#B87333] hover:bg-[#B87333]/90 px-8 py-6 text-lg hero-button"
+            onClick={handleToolInteraction}
+          >
+            {tool.cta}
+          </Button>
         </div>
       </div>
     </div>

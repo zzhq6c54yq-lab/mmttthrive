@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { 
@@ -122,7 +121,6 @@ const MentalWellnessTools = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        {/* Personalized Recommendations section - moved to the top */}
         <div className="mb-10 bg-[#F1F0FB] rounded-xl p-8 text-center">
           <h2 className="text-3xl font-light mb-4">Your Personalized Wellness Journey</h2>
           <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto">
