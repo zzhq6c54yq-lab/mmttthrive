@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, ArrowRight, Target, PuzzlePiece, Activity, Dices, FlameKindling, Brain as BrainIcon } from "lucide-react";
+import { Brain, ArrowRight, Target, Puzzle, Activity, Dices, FlameKindling, Brain as BrainIcon } from "lucide-react";
 import Page from "@/components/Page";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -50,8 +50,8 @@ const MentalHealthGames = () => {
   // Initialize Memory Match game
   const startMemoryGame = () => {
     setActiveGame("memory");
-    const emojis = ["🌟", "🌈", "🌻", "🌞", "🦋", "🐢", "🐬", "🦁"];
-    const shuffledCards = [...emojis, ...emojis]
+    const emojiList = ["🌟", "🌈", "🌻", "🌞", "🦋", "🐢", "🐬", "🦁"];
+    const shuffledCards = [...emojiList, ...emojiList]
       .map((content, id) => ({ id, content, flipped: false, matched: false }))
       .sort(() => Math.random() - 0.5);
     
@@ -93,7 +93,7 @@ const MentalHealthGames = () => {
         setFlippedCards([]);
         
         // Check if all pairs are matched
-        if (matchedPairs + 1 === emojis.length) {
+        if (matchedPairs + 1 === emojiList.length) {
           toast({
             title: "Congratulations!",
             description: `You completed the Memory Match game in ${memoryMoves + 1} moves!`,
@@ -202,6 +202,8 @@ const MentalHealthGames = () => {
     });
   };
   
+  const emojiList = ["🌟", "🌈", "🌻", "🌞", "🦋", "🐢", "🐬", "🦁"];
+  
   const games = [
     {
       title: "Memory Match",
@@ -265,7 +267,7 @@ const MentalHealthGames = () => {
                     onClick={game.startFunction}
                   >
                     Play Now
-                    <Play className="ml-2 h-4 w-4" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
               </Card>
@@ -288,7 +290,7 @@ const MentalHealthGames = () => {
                 <span>Improve overall mental well-being</span>
               </li>
               <li className="flex items-start gap-2">
-                <PuzzlePiece className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
+                <Puzzle className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
                 <span>Enhance problem-solving abilities</span>
               </li>
               <li className="flex items-start gap-2">
