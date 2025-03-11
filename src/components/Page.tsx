@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import { ArrowLeft, CircleHelp, X } from "lucide-react";
+import { ArrowLeft, CircleHelp, Sparkle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
@@ -34,7 +35,8 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         
-        <div className="flex items-center justify-between mb-8">
+        {/* Title and H.E.N.R.Y Button in Header */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-4">
             {showBackButton && (
               <Button 
@@ -52,18 +54,20 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
             </h1>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
               <PopoverTrigger asChild>
                 <Button
-                  variant="bronze"
-                  size="sm"
-                  className="flex items-center gap-2 hover:shadow-[0_0_10px_rgba(184,115,51,0.5)]"
+                  variant="ghost"
+                  size="lg"
+                  className="bg-gradient-to-r from-[#9b87f5] to-[#B87333] text-white font-medium rounded-xl px-5 transition-all duration-300 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.5)] hover:scale-105 group animate-pulse hover:animate-none"
                 >
-                  <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
-                    <span className="text-sm">H</span>
+                  <div className="h-7 w-7 mr-2 rounded-full flex items-center justify-center bg-white text-[#9b87f5] font-bold shadow-inner group-hover:scale-110 transition-transform">
+                    <span>H</span>
                   </div>
-                  Meet H.E.N.R.Y
+                  <span className="mr-1">Meet</span>
+                  <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white group-hover:from-white group-hover:to-white">H.E.N.R.Y</span>
+                  <Sparkle className="h-4 w-4 ml-1 text-yellow-300 group-hover:rotate-12 transition-transform" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-80 p-0 bg-black/85 backdrop-blur-md border border-[#B87333]/50">
