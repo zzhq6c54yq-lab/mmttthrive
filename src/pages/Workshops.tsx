@@ -12,7 +12,7 @@ import {
   CardFooter
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Play } from "lucide-react";
+import { ChevronDown, ChevronUp, Play, Clock } from "lucide-react";
 
 const Workshops = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -43,32 +43,69 @@ const Workshops = () => {
           {isExpanded && (
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                {workshopData.map((workshop) => (
-                  <Card key={workshop.id} className={`border ${workshop.color.split(' ')[0]} shadow-sm`}>
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg ${workshop.color}`}>
-                          <workshop.icon className="h-5 w-5" />
+                {workshopData.map((workshop) => {
+                  // Extract color code for styling
+                  const colorClass = workshop.color.split(' ')[0];
+                  const accentColor = colorClass.includes('bg-[#') 
+                    ? colorClass.replace('bg-[', '').replace(']/10', '') 
+                    : '#9b87f5';
+                    
+                  return (
+                    <div 
+                      key={workshop.id}
+                      className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group"
+                      style={{
+                        background: `linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%)`,
+                        borderLeft: `4px solid ${accentColor}`
+                      }}
+                    >
+                      <div className="p-6">
+                        <div className="flex justify-between items-start mb-3">
+                          <div 
+                            className="p-3 rounded-full"
+                            style={{ background: `${accentColor}15` }}
+                          >
+                            <workshop.icon className="h-6 w-6" style={{ color: accentColor }} />
+                          </div>
+                          <div className="flex items-center text-gray-500 text-sm">
+                            <Clock className="h-4 w-4 mr-1" />
+                            <span>{workshop.duration}</span>
+                          </div>
                         </div>
-                        <div>
-                          <CardTitle className="text-base">{workshop.title}</CardTitle>
-                          <CardDescription className="text-sm">{workshop.duration}</CardDescription>
-                        </div>
+                        
+                        <h3 className="text-xl font-semibold mb-2" style={{ color: accentColor }}>
+                          {workshop.title}
+                        </h3>
+                        
+                        <p className="text-gray-600 mb-6 text-sm">
+                          {workshop.description}
+                        </p>
+                        
+                        <Link 
+                          to={`/workshop/${workshop.id}`} 
+                          className="block"
+                        >
+                          <Button 
+                            className="w-full flex items-center justify-center gap-2 hover:shadow-md"
+                            style={{ 
+                              backgroundColor: accentColor,
+                              color: '#fff'
+                            }}
+                          >
+                            Join Now
+                            <Play className="h-4 w-4 ml-1" />
+                          </Button>
+                        </Link>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-4">{workshop.description}</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Link to={`/workshop/${workshop.id}`} className="w-full">
-                        <Button className="w-full flex items-center justify-center gap-2">
-                          Join Now
-                          <Play className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </CardFooter>
-                  </Card>
-                ))}
+                      
+                      {/* Highlight effect on hover */}
+                      <div 
+                        className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                        style={{ background: accentColor }}
+                      ></div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           )}
