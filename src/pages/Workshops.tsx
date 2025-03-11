@@ -8,10 +8,11 @@ import {
   CardContent, 
   CardDescription, 
   CardHeader, 
-  CardTitle 
+  CardTitle,
+  CardFooter
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Play } from "lucide-react";
 
 const Workshops = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -57,10 +58,15 @@ const Workshops = () => {
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-gray-600 mb-4">{workshop.description}</p>
-                      <Link to={`/workshop/${workshop.id}`}>
-                        <Button className="w-full">Start Workshop</Button>
-                      </Link>
                     </CardContent>
+                    <CardFooter>
+                      <Link to={`/workshop/${workshop.id}`} className="w-full">
+                        <Button className="w-full flex items-center justify-center gap-2">
+                          Join Now
+                          <Play className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </CardFooter>
                   </Card>
                 ))}
               </div>
