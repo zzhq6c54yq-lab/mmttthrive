@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
-import { ArrowLeft, CircleHelp } from "lucide-react";
+import React from "react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
+import HelpButton from "./HelpButton";
 
 interface PageProps {
   title: string;
@@ -72,6 +73,9 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           />
         </div>
       </div>
+      
+      {/* The floating Help button */}
+      <HelpButton />
     </div>
   );
 };
