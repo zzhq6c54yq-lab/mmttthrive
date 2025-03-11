@@ -14,6 +14,10 @@ import Workshops from "@/pages/Workshops";
 import VirtualMeetings from "@/pages/VirtualMeetings";
 import ToolDetail from "@/pages/ToolDetail";
 import MentalHealthGames from "@/pages/MentalHealthGames";
+import PersonalizedContent from "@/pages/PersonalizedContent";
+import CommunitySupport from "@/pages/CommunitySupport";
+import ResourceLibrary from "@/pages/ResourceLibrary";
+import ProgressReports from "@/pages/ProgressReports";
 
 function App() {
   return (
@@ -32,6 +36,10 @@ function App() {
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
         <Route path="/mental-health-games" element={<MentalHealthGames />} />
+        <Route path="/personalized-content" element={<PersonalizedContent />} />
+        <Route path="/community-support" element={<CommunitySupport />} />
+        <Route path="/resource-library" element={<ResourceLibrary />} />
+        <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />

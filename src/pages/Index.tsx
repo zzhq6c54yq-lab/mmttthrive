@@ -1,7 +1,8 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound, Play, Clock, Users, Check, Package, BadgeDollarSign, BadgePercent, Trophy, Gem, Gamepad } from "lucide-react";
+import { ArrowRight, MessageCircle, Brain, Calendar, Shield, Smile, Meh, Frown, User, Mail, Lock, ArrowLeft, Annoyed, HeartCrack, Angry, HeartHandshake, UserRound, Play, Clock, Users, Check, Package, BadgeDollarSign, BadgePercent, Trophy, Gem, Gamepad, FileText, Activity, Star, Book, MessagesSquare } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +27,30 @@ const features = [
     description: "Access NA program resources and connect with a digital sponsor anytime.",
     icon: HeartHandshake,
     path: "/my-sponsor"
+  },
+  {
+    title: "Personalized Content",
+    description: "Tailored articles, videos, and exercises based on your preferences and progress.",
+    icon: Star,
+    path: "/personalized-content"
+  },
+  {
+    title: "Community Support",
+    description: "Forums and chat groups where you can connect and share experiences with others.",
+    icon: MessagesSquare,
+    path: "/community-support"
+  },
+  {
+    title: "Resource Library",
+    description: "Access to helpful resources such as hotlines, articles, and self-help guides.",
+    icon: Book,
+    path: "/resource-library"
+  },
+  {
+    title: "Feedback & Progress",
+    description: "Regular updates on your progress and insights based on your activities.",
+    icon: Activity,
+    path: "/progress-reports"
   },
   {
     title: "Flexible Scheduling",
