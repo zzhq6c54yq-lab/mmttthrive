@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -22,12 +21,7 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Always show on root path (main menu)
-    if (location.pathname === '/') {
-      return true;
-    }
-    
-    // Exclude specific screens
+    // Define excluded paths
     const excludedPaths = [
       '/initial-screen',
       '/vision-board',
@@ -38,9 +32,21 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
       '/creator'
     ];
     
-    // Check if current path starts with any of the excluded paths
-    return !excludedPaths.some(path => location.pathname.startsWith(path));
+    // Check if current path exactly matches or starts with any of the excluded paths
+    for (const path of excludedPaths) {
+      if (location.pathname === path || location.pathname.startsWith(`${path}/`)) {
+        return false;
+      }
+    }
+    
+    // Show the button on all other paths
+    return true;
   };
+  
+  // Don't render the component at all if it shouldn't be shown
+  if (!shouldShowButton()) {
+    return null;
+  }
   
   useEffect(() => {
     const updatePosition = (e: MouseEvent) => {
@@ -110,9 +116,6 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
     
     setInput("");
   };
-
-  // If we shouldn't show the button, return null
-  if (!shouldShowButton()) return null;
 
   return (
     <>
