@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -22,7 +21,13 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Exclude initial screens and vision boards
+    // Only show on main page and child pages, not on intro screens
+    if (location.pathname === '/') {
+      // Check if we're on the main welcome screen, not intro screens
+      return document.querySelector('.max-w-6xl') !== null;
+    }
+    
+    // Exclude specific screens
     const excludedPaths = [
       '/initial-screen',
       '/vision-board',

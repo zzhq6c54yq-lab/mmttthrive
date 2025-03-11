@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
-import HenryButton from "@/components/HenryButton";
+import HenryDialog from "@/components/HenryDialog";
 
 const features = [
   {
@@ -418,10 +418,9 @@ const Index = () => {
     <div className="relative">
       <CoPayCreditPopup open={showCoPayCredit} onOpenChange={setShowCoPayCredit} />
       
-      <HenryButton 
+      <HenryDialog 
         isOpen={showHenry} 
         onOpenChange={setShowHenry}
-        userName={userInfo.name}
       />
 
       {screenState === 'intro' && (
@@ -1051,7 +1050,7 @@ const Index = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {workshops.map((workshop) => (
-                    <Card key={workshop.id} className={`overflow-hidden hover:shadow-lg transition-all duration-300 border hover:scale-[1.02] border-${workshop.color} h-full`}>
+                    <Card key={workshop.id} className={`overflow-hidden hover:shadow-lg transition-all duration-300 border hover-[#B87333]/50 hover:scale-[1.02] border-${workshop.color} h-full`}>
                       <CardHeader className="p-4 pb-2">
                         <div className="flex justify-between items-start">
                           <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
