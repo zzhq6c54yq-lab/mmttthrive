@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Heart, Brain, Smile, Sparkles, ArrowRight } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Send } from "lucide-react";
 
 interface HenryButtonProps {
   className?: string;
@@ -18,179 +19,112 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   onOpenChange,
   userName
 }) => {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState(false);
-  const henryRef = useRef<HTMLDivElement>(null);
-  const isMoving = useRef(false);
+  const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([]);
+  const [input, setInput] = useState("");
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({
-        x: e.clientX,
-        y: e.clientY
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 500);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      clearTimeout(timer);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-    
-    if (isOpen) return;
-    
-    const targetX = Math.max(20, Math.min(cursorPosition.x + 20, window.innerWidth - 60));
-    const targetY = Math.max(20, Math.min(cursorPosition.y - 50, window.innerHeight - 60));
-    
-    const lerp = (start: number, end: number, factor: number) => {
-      return start + (end - start) * factor;
-    };
-    
-    if (!isMoving.current) {
-      isMoving.current = true;
-      
-      const moveHenry = () => {
-        setButtonPosition(prev => {
-          const newX = lerp(prev.x, targetX, 0.08);
-          const newY = lerp(prev.y, targetY, 0.08);
-          
-          const isCloseEnough = 
-            Math.abs(newX - targetX) < 0.5 && 
-            Math.abs(newY - targetY) < 0.5;
-            
-          if (isCloseEnough) {
-            isMoving.current = false;
-            return { x: targetX, y: targetY };
-          }
-          
-          requestAnimationFrame(moveHenry);
-          return { x: newX, y: newY };
-        });
-      };
-      
-      requestAnimationFrame(moveHenry);
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current;
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
-  }, [cursorPosition, isVisible, isOpen]);
-
-  const handleOpen = () => {
-    onOpenChange(true);
-  };
+  }, [messages]);
 
   const getGreeting = () => {
-    if (userName) {
-      return `Hi ${userName}! I'm Henry, your personal guide.`;
+    const hour = new Date().getHours();
+    let timeOfDay = "";
+    
+    if (hour < 12) timeOfDay = "morning";
+    else if (hour < 17) timeOfDay = "afternoon";
+    else timeOfDay = "evening";
+    
+    const greeting = userName 
+      ? `Good ${timeOfDay}, ${userName}! How can I help you on your journey today?`
+      : `Good ${timeOfDay}! How can I help you on your journey today?`;
+      
+    return greeting;
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      setMessages([{ text: getGreeting(), isUser: false }]);
     }
-    return "Hi there! I'm Henry, your personal guide.";
+  }, [isOpen]);
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    // Add user message
+    setMessages(prev => [...prev, { text: input, isUser: true }]);
+    
+    // Simulate Henry's response (this would be replaced with actual AI response logic)
+    setTimeout(() => {
+      setMessages(prev => [...prev, { 
+        text: "I'm here to help you. Let me know what's on your mind.", 
+        isUser: false 
+      }]);
+    }, 1000);
+    
+    setInput("");
   };
 
   return (
-    <>
-      {isVisible && !isOpen && (
-        <div 
-          ref={henryRef}
-          className="fixed z-50 transition-all duration-300"
-          style={{ 
-            transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
-            opacity: isVisible ? 1 : 0,
-          }}
-        >
-          <div 
-            onClick={handleOpen}
-            className={`cursor-pointer flex items-center justify-center p-1 rounded-full bg-black/70 backdrop-blur-md border border-[#B87333]/40 hover:border-[#B87333] hover:shadow-[0_0_15px_rgba(184,115,51,0.4)] transition-all duration-300 ${className}`}
-          >
-            <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-inner">
-              <span className="text-lg font-bold">H</span>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
+        <DialogHeader className="text-center">
+          <div className="flex justify-center mb-2">
+            <div className="h-24 w-24 rounded-full flex items-center justify-center border-4 border-[#B87333]/50 bg-[#B87333] text-white">
+              <span className="text-3xl font-bold">H</span>
             </div>
           </div>
-        </div>
-      )}
-
-      <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
-          <DialogHeader className="text-center">
-            <div className="flex justify-center mb-2">
-              <div className="h-24 w-24 rounded-full flex items-center justify-center border-4 border-[#B87333]/50 bg-[#B87333] text-white">
-                <span className="text-3xl font-bold">H</span>
+          <DialogTitle className="text-2xl gradient-heading">Chat with Henry</DialogTitle>
+        </DialogHeader>
+        
+        <ScrollArea className="h-[400px] overflow-auto pr-4" ref={scrollAreaRef}>
+          <div className="space-y-4">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex ${message.isUser ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-lg p-3 ${
+                    message.isUser
+                      ? "bg-[#B87333] text-white"
+                      : "bg-gray-700 text-white"
+                  }`}
+                >
+                  <p className="text-sm">{message.text}</p>
+                </div>
               </div>
-            </div>
-            <DialogTitle className="text-2xl gradient-heading">Meet Henry</DialogTitle>
-            <DialogDescription className="text-base text-white">
-              {getGreeting()}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <ScrollArea className="max-h-[60vh] overflow-auto pr-4">
-            <div className="space-y-4 text-white">
-              <p className="leading-relaxed">
-                I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT.
-              </p>
-              
-              <div className="bg-white/10 p-4 rounded-lg">
-                <h3 className="font-medium text-lg text-[#B87333] mb-2">My name stands for:</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
-                    <Heart className="h-5 w-5 text-[#B87333]" />
-                    <span><span className="font-bold text-[#B87333]">H</span>elpful guidance through your mental health journey</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Brain className="h-5 w-5 text-[#B87333]" />
-                    <span><span className="font-bold text-[#B87333]">E</span>vidence-based strategies for emotional wellbeing</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Smile className="h-5 w-5 text-[#B87333]" />
-                    <span><span className="font-bold text-[#B87333]">N</span>urturing support whenever you need it</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-[#B87333]" />
-                    <span><span className="font-bold text-[#B87333]">R</span>eliable resources tailored to your needs</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Heart className="h-5 w-5 text-[#B87333]" />
-                    <span><span className="font-bold text-[#B87333]">Y</span>our companion on the path to mental wellness</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="font-medium text-lg text-[#B87333] mb-2">How I can help:</h3>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Navigate the app's features and resources</li>
-                  <li>Provide personalized mental health guidance</li>
-                  <li>Support you during difficult moments</li>
-                  <li>Connect you with appropriate resources</li>
-                  <li>Track your progress and celebrate wins</li>
-                </ul>
-              </div>
-              
-              <p className="italic text-gray-300 mt-2">
-                I'll be following along as you navigate Thrive MT, always ready to help when you need me!
-              </p>
-            </div>
-          </ScrollArea>
-          
-          <DialogFooter className="sm:justify-center mt-4">
-            <Button 
-              variant="gold"
-              className="group w-full sm:w-auto"
-              onClick={() => onOpenChange(false)}
-            >
-              Start Your Journey With Henry
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+            ))}
+          </div>
+        </ScrollArea>
+        
+        <form onSubmit={handleSendMessage} className="flex gap-2 mt-4">
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage(e);
+              }
+            }}
+          />
+          <Button 
+            type="submit" 
+            size="icon"
+            className="h-10 w-10 bg-[#B87333] hover:bg-[#B87333]/80"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

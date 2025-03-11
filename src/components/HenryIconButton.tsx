@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface HenryIconButtonProps {
   className?: string;
@@ -13,12 +13,19 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   onClick
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { screenState?: string } | null;
+
+  // Don't show the button on initial screens
+  if (!state?.screenState || state.screenState !== 'main') {
+    return null;
+  }
 
   const handleClick = () => {
     if (onClick) {
       onClick();
     } else {
-      navigate("/", { state: { screenState: 'main' } });
+      navigate("/", { state: { screenState: 'main', showHenry: true } });
     }
   };
 
@@ -28,8 +35,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
       size="h-icon"
       className={`rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 p-0 ${className}`}
       onClick={handleClick}
-      aria-label="Henry Assistant"
-      title="Henry Assistant"
+      aria-label="Ask Henry for Help"
+      title="Ask Henry for Help"
     >
       <div className="h-full w-full flex items-center justify-center">
         <div className="relative h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
