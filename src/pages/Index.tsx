@@ -249,6 +249,7 @@ const Index = () => {
   useEffect(() => {
     if (screenState === 'main') {
       setShowCoPayCredit(true);
+      setShowHenry(false);
     }
   }, [screenState]);
 
@@ -1018,14 +1019,13 @@ const Index = () => {
                   <img 
                     src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                     alt="Thrive MT Logo" 
-                    className="h-12 mr-3 filter drop-shadow-[0_0_3px_rgba(184,115,51,0.4)]"
+                    className="h-16 mr-3 filter drop-shadow-[0_0_3px_rgba(184,115,51,0.4)] intro-logo-icon"
                   />
                   <div>
                     <h1 className="text-3xl md:text-4xl font-bold">
-                      <span className="text-white">Thrive</span>
-                      <span className="gradient-heading ml-2">MT</span>
+                      <span className="gradient-heading">Thrive MT</span>
                     </h1>
-                    <p className="text-[#B87333] text-sm md:text-base">
+                    <p className="gradient-heading text-sm md:text-base font-light">
                       Your personalized mental wellness journey begins here
                     </p>
                   </div>
@@ -1058,7 +1058,7 @@ const Index = () => {
                         <div className="flex justify-between items-start">
                           <div>
                             <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
-                            <CardDescription className="mt-1">{workshop.description}</CardDescription>
+                            <CardDescription className="mt-2">{workshop.description}</CardDescription>
                           </div>
                           <div className={`p-2 rounded-full ${workshop.color}`}>
                             <workshop.icon className="h-6 w-6" />
