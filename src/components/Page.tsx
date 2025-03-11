@@ -58,7 +58,6 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           
           <div className="flex items-center gap-2">
             <HomeButton className="bg-white/5 hover:bg-white/15" />
-            <HenryIconButton onClick={handleHenryClick} />
           </div>
         </div>
         
@@ -78,6 +77,9 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           />
         </div>
       </div>
+      
+      {/* The floating Henry help button */}
+      <HenryIconButton onClick={handleHenryClick} />
     </div>
   );
 };

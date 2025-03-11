@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { Send, X } from "lucide-react";
 
 interface HenryButtonProps {
   className?: string;
@@ -39,8 +39,8 @@ const HenryButton: React.FC<HenryButtonProps> = ({
     else timeOfDay = "evening";
     
     const greeting = userName 
-      ? `Good ${timeOfDay}, ${userName}! How can I help you on your journey today?`
-      : `Good ${timeOfDay}! How can I help you on your journey today?`;
+      ? `Good ${timeOfDay}, ${userName}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`
+      : `Good ${timeOfDay}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`;
       
     return greeting;
   };
@@ -60,8 +60,16 @@ const HenryButton: React.FC<HenryButtonProps> = ({
     
     // Simulate Henry's response (this would be replaced with actual AI response logic)
     setTimeout(() => {
+      const responses = [
+        "I'm here to help guide you through Thrive MT. What specific feature are you looking for?",
+        "Recovery is a journey, and I'm here to help you navigate it. What can I assist you with today?",
+        "Thank you for sharing. Remember, each step forward is progress. How else can I support you?",
+        "Thrive MT has many resources available. Would you like to explore our workshops, tools, or support options?",
+        "That's a great question. Let me help you find the information you need."
+      ];
+      
       setMessages(prev => [...prev, { 
-        text: "I'm here to help you. Let me know what's on your mind.", 
+        text: responses[Math.floor(Math.random() * responses.length)], 
         isUser: false 
       }]);
     }, 1000);
@@ -72,13 +80,24 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
-        <DialogHeader className="text-center">
+        <DialogHeader className="text-center relative">
+          <Button 
+            className="absolute right-0 top-0 p-1 h-8 w-8 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+            variant="ghost"
+            size="icon"
+            onClick={() => onOpenChange(false)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
           <div className="flex justify-center mb-2">
-            <div className="h-24 w-24 rounded-full flex items-center justify-center border-4 border-[#B87333]/50 bg-[#B87333] text-white">
+            <div className="h-24 w-24 rounded-full flex items-center justify-center border-4 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
               <span className="text-3xl font-bold">H</span>
             </div>
           </div>
           <DialogTitle className="text-2xl gradient-heading">Chat with Henry</DialogTitle>
+          <DialogDescription className="text-white/70">
+            Your helpful navigator through Thrive MT
+          </DialogDescription>
         </DialogHeader>
         
         <ScrollArea className="h-[400px] overflow-auto pr-4" ref={scrollAreaRef}>
@@ -95,6 +114,14 @@ const HenryButton: React.FC<HenryButtonProps> = ({
                       : "bg-gray-700 text-white"
                   }`}
                 >
+                  {!message.isUser && (
+                    <div className="flex items-center mb-1">
+                      <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white mr-2">
+                        <span className="text-xs font-bold">H</span>
+                      </div>
+                      <span className="text-xs text-white/70">Henry</span>
+                    </div>
+                  )}
                   <p className="text-sm">{message.text}</p>
                 </div>
               </div>
