@@ -1,11 +1,10 @@
 
 import React, { useState } from "react";
-import { ArrowLeft, CircleHelp, Sparkle } from "lucide-react";
+import { ArrowLeft, CircleHelp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
 import HenryIconButton from "./HenryIconButton";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface PageProps {
   title: string;
@@ -16,7 +15,6 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onBackClick }) => {
   const navigate = useNavigate();
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   
   const handleBack = () => {
     if (onBackClick) {
@@ -35,7 +33,7 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         
-        {/* Title and H.E.N.R.Y Button in Header */}
+        {/* Title in Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-4">
             {showBackButton && (
@@ -55,56 +53,6 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           </div>
           
           <div className="flex items-center gap-3">
-            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  className="bg-gradient-to-r from-[#9b87f5] to-[#B87333] text-white font-medium rounded-xl px-5 transition-all duration-300 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.5)] hover:scale-105 group animate-pulse hover:animate-none"
-                >
-                  <div className="h-7 w-7 mr-2 rounded-full flex items-center justify-center bg-white text-[#9b87f5] font-bold shadow-inner group-hover:scale-110 transition-transform">
-                    <span>H</span>
-                  </div>
-                  <span className="mr-1">Meet</span>
-                  <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white group-hover:from-white group-hover:to-white">H.E.N.R.Y</span>
-                  <Sparkle className="h-4 w-4 ml-1 text-yellow-300 group-hover:rotate-12 transition-transform" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-0 bg-black/85 backdrop-blur-md border border-[#B87333]/50">
-                <div className="p-6">
-                  <div className="flex flex-col items-center text-center gap-4">
-                    <div className="h-16 w-16 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
-                      <span className="text-2xl font-bold">H</span>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1]">
-                        H.E.N.R.Y
-                      </h3>
-                      <p className="text-sm text-white/70 mt-1">
-                        <span className="font-medium">H</span>elpful 
-                        <span className="font-medium"> E</span>lectronic 
-                        <span className="font-medium"> N</span>avigator 
-                        <span className="font-medium"> R</span>esponding 
-                        <span className="font-medium"> Y</span>es
-                      </p>
-                    </div>
-                    
-                    <div className="text-sm text-white/80">
-                      <p>
-                        I'm your dedicated virtual assistant for the Thrive MT platform. 
-                        My purpose is to help you navigate through your mental wellness journey
-                        with personalized guidance and support.
-                      </p>
-                      <p className="mt-2">
-                        You can find me throughout the app ready to answer questions,
-                        provide resources, and assist you with any features you need help with.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
             <HomeButton className="bg-white/5 hover:bg-white/15" />
           </div>
         </div>
