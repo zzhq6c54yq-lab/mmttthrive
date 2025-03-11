@@ -8,8 +8,6 @@ export const useButtonVisibility = () => {
   const shouldShowButton = () => {
     // Initial setup screens where button should NOT appear
     const initialScreens = [
-      '/',  // Adding root path (initial screen)
-      '/index',
       '/initial-screen',
       '/vision-board',
       '/onboarding',
@@ -18,6 +16,19 @@ export const useButtonVisibility = () => {
       '/cheese-plant',
       '/creator'
     ];
+    
+    // Explicitly include routes where the button SHOULD appear
+    const featureRoutes = [
+      '/',  // Main menu
+      '/index',
+      '/mental-wellness-tools',
+      '/workshops'
+    ];
+    
+    // If the current path is one of the feature routes, show the button
+    if (featureRoutes.includes(location.pathname)) {
+      return true;
+    }
     
     // Check if current path is one of the initial screens (exact match)
     if (initialScreens.includes(location.pathname)) {
