@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -434,6 +435,7 @@ const Index = () => {
         </div>
       )}
 
+      {/* Intro Screen */}
       {screenState === 'intro' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
           <div className="floating-bg"></div>
@@ -473,6 +475,7 @@ const Index = () => {
         </div>
       )}
 
+      {/* Mood Selection Screen */}
       {screenState === 'mood' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] animate-fade-in relative overflow-hidden">
           <div className="floating-bg"></div>
@@ -563,6 +566,7 @@ const Index = () => {
         </div>
       )}
 
+      {/* Happy Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'happy' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F2FCE2] to-[#F2FCE2]/70 animate-fade-in relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
@@ -598,6 +602,7 @@ const Index = () => {
         </div>
       )}
 
+      {/* Ok Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'ok' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#F1F0FB] to-[#F1F0FB]/70 animate-fade-in relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
@@ -633,6 +638,7 @@ const Index = () => {
         </div>
       )}
 
+      {/* Neutral Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'neutral' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F1F0FB] animate-fade-in">
           <div className="text-center max-w-2xl mx-auto px-4">
@@ -663,6 +669,7 @@ const Index = () => {
         </div>
       )}
 
+      {/* Down Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'down' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F5F7] animate-fade-in">
           <div className="text-center max-w-2xl mx-auto px-4">
@@ -697,7 +704,495 @@ const Index = () => {
         </div>
       )}
 
+      {/* Sad Mood Response */}
       {screenState === 'moodResponse' && selectedMood === 'sad' && (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#221F26] text-white animate-fade-in relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23ea384c%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
-          <div className="text-center max-w-2xl mx-auto px-4 z-1
+          <div className="text-center max-w-2xl mx-auto px-4 z-10">
+            <Frown className="w-20 h-20 mx-auto mb-8 text-[#ea384c] filter drop-shadow-lg" style={{animation: 'pulseGlow 2s infinite'}} />
+            <h2 className="text-3xl md:text-4xl mb-8 text-white">When Sadness Feels Heavy</h2>
+            <div className="space-y-4 mb-10">
+              <p className="text-xl md:text-2xl font-light">
+                Your feelings are valid, and it's okay to not be okay sometimes.
+              </p>
+              <p className="text-xl md:text-2xl font-light">
+                Sadness is a natural response to life's challenges, not a failure.
+              </p>
+              <p className="text-xl md:text-2xl font-light">
+                Reaching out for support is a sign of strength, not weakness.
+              </p>
+            </div>
+            <div className="bg-black/20 rounded-lg p-6 mb-8">
+              <h3 className="text-xl font-medium mb-4 text-[#ea384c]">Emergency Resources</h3>
+              <ul className="space-y-3 text-left">
+                {emergencyResources.map((resource, index) => (
+                  <li key={index} className="flex flex-col">
+                    <span className="font-medium">{resource.name}</span>
+                    <span className="text-white/80">{resource.contact} - {resource.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue to Register
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Overwhelmed Mood Response */}
+      {screenState === 'moodResponse' && selectedMood === 'overwhelmed' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1e1c24] text-white animate-fade-in">
+          <div className="text-center max-w-2xl mx-auto px-4">
+            <Angry className="w-20 h-20 mx-auto mb-8 text-[#B87333]" />
+            <h2 className="text-3xl md:text-4xl mb-8">When It All Feels Too Much</h2>
+            <div className="space-y-6 mb-10">
+              <div className="bg-white/5 rounded-lg p-5">
+                <h3 className="text-xl font-medium mb-2">Breathe</h3>
+                <p className="text-lg">Take 5 deep breaths, in through your nose for 4 counts, hold for 4, out through your mouth for 6.</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-5">
+                <h3 className="text-xl font-medium mb-2">Ground Yourself</h3>
+                <p className="text-lg">Name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, 1 you can taste.</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-5">
+                <h3 className="text-xl font-medium mb-2">One Thing at a Time</h3>
+                <p className="text-lg">Focus on just one small, manageable task that you can accomplish right now.</p>
+              </div>
+            </div>
+            <Button 
+              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => setScreenState('register')}
+            >
+              Continue When Ready
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button 
+              className="ml-4 group bg-[#B87333]/20 hover:bg-[#B87333]/30 flex items-center gap-2"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Registration Screen */}
+      {screenState === 'register' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA] animate-fade-in">
+          <div className="max-w-md w-full mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-2">Create Your Account</h2>
+              <p className="text-gray-600">Join Thrive MT to start your mental wellness journey</p>
+            </div>
+            <form onSubmit={handleRegister} className="space-y-4 bg-white p-6 rounded-lg shadow-md">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input 
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={userInfo.name}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none"
+                    placeholder="John Doe"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input 
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={userInfo.email}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none"
+                    placeholder="john@example.com"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input 
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={userInfo.password}
+                    onChange={handleUserInfoChange}
+                    className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+              <div className="pt-2">
+                <Button 
+                  type="submit"
+                  className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
+                >
+                  Register
+                </Button>
+              </div>
+            </form>
+            <div className="flex justify-between mt-6">
+              <Button 
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={handleSkip}
+              >
+                Skip for Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Subscription Screen */}
+      {screenState === 'subscription' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a35] text-white animate-fade-in py-10">
+          <div className="max-w-5xl w-full mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">Choose Your Plan</h2>
+              <p className="text-xl text-gray-300">Select the subscription that best fits your mental wellness needs</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+              {subscriptionPlans.map((plan) => (
+                <div 
+                  key={plan.title}
+                  className={`${plan.color} rounded-xl overflow-hidden transition-all duration-300 transform ${selectedPlan === plan.title ? 'scale-105 ring-2 ring-[#B87333]' : 'hover:scale-102'}`}
+                  onClick={() => handleSubscriptionSelect(plan.title)}
+                >
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-2xl font-bold">{plan.title}</h3>
+                        <p className="text-xl font-semibold">{plan.price}</p>
+                      </div>
+                      <plan.icon className="h-8 w-8" />
+                    </div>
+                    <p className="mb-4 text-sm">{plan.description}</p>
+                    <ul className="space-y-2">
+                      {plan.features.map((feature, index) => (
+                        <li key={index} className="flex items-start">
+                          <Check className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className={`p-4 border-t ${plan.recommended ? 'bg-[#B87333]/20 border-[#B87333]/30' : 'bg-black/5 border-gray-700/20'}`}>
+                    <Button 
+                      className={`w-full ${selectedPlan === plan.title ? 'bg-[#B87333] hover:bg-[#B87333]/90' : 'bg-black/30 hover:bg-black/40'}`}
+                      onClick={() => handleSubscriptionSelect(plan.title)}
+                    >
+                      {selectedPlan === plan.title ? 'Selected' : 'Select Plan'}
+                    </Button>
+                  </div>
+                  {plan.recommended && (
+                    <div className="absolute top-0 right-0 bg-[#B87333] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                      Recommended
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex justify-center space-x-4 mt-8">
+              <Button 
+                variant="outline"
+                className="border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                className="bg-[#B87333] hover:bg-[#B87333]/90 flex items-center gap-2"
+                onClick={handleSubscriptionContinue}
+              >
+                Continue
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost"
+                onClick={handleSkip}
+              >
+                Skip for Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Vision Board Screen */}
+      {screenState === 'visionBoard' && (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5F5F7] animate-fade-in py-10">
+          <div className="max-w-4xl w-full mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3 text-[#1a1a1f]">Create Your Vision Board</h2>
+              <p className="text-xl text-gray-600">Select qualities you want to embody and goals you want to achieve</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+              <div>
+                <h3 className="text-2xl font-semibold mb-6 text-[#B87333]">Qualities I Want to Embody</h3>
+                <div className="flex flex-wrap gap-3">
+                  {visionBoardQualities.map((quality) => (
+                    <button
+                      key={quality.id}
+                      onClick={() => toggleQuality(quality.id)}
+                      className={`py-2 px-4 rounded-full text-sm font-medium transition-all ${
+                        selectedQualities.includes(quality.id)
+                          ? 'bg-[#B87333] text-white'
+                          : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                      }`}
+                    >
+                      {quality.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-semibold mb-6 text-[#B87333]">Goals I Want to Achieve</h3>
+                <div className="flex flex-wrap gap-3">
+                  {visionBoardGoals.map((goal) => (
+                    <button
+                      key={goal.id}
+                      onClick={() => toggleGoal(goal.id)}
+                      className={`py-2 px-4 rounded-full text-sm font-medium transition-all ${
+                        selectedGoals.includes(goal.id)
+                          ? 'bg-[#B87333] text-white'
+                          : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                      }`}
+                    >
+                      {goal.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-center space-x-4 mt-8">
+              <Button 
+                variant="outline"
+                className="border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 flex items-center gap-2"
+                onClick={handlePrevious}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </Button>
+              <Button 
+                className="bg-[#B87333] hover:bg-[#B87333]/90 flex items-center gap-2"
+                onClick={handleVisionBoardContinue}
+              >
+                Create My Journey
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost"
+                onClick={handleSkip}
+              >
+                Skip for Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Dashboard Screen */}
+      {screenState === 'main' && (
+        <div className="min-h-screen bg-[#F5F7FA] pt-6 pb-20 animate-fade-in">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="text-center mb-10">
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">Welcome to Thrive MT</h1>
+              <p className="text-xl text-gray-600">Your personalized mental wellness journey begins here</p>
+            </div>
+
+            <div className="mb-12">
+              <h2 className="text-2xl font-semibold mb-6 flex items-center">
+                <Calendar className="mr-2 h-6 w-6 text-[#B87333]" />
+                Monthly Featured Workshops
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {workshops.map((workshop) => (
+                  <Card key={workshop.id} className={`overflow-hidden hover:shadow-md transition-shadow duration-300 border-2 ${workshop.color}`}>
+                    <CardHeader className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
+                          <CardDescription className="mt-1">{workshop.description}</CardDescription>
+                        </div>
+                        <div className={`p-2 rounded-full ${workshop.color}`}>
+                          <workshop.icon className="h-6 w-6" />
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                      <div className="flex items-center text-sm text-gray-500 mb-4">
+                        <Clock className="mr-2 h-4 w-4" />
+                        {workshop.time}
+                      </div>
+                    </CardContent>
+                    <CardFooter className="p-4 pt-0 justify-end">
+                      <Button
+                        className={`text-white`}
+                        style={{ backgroundColor: workshop.accentColor }}
+                        onClick={() => navigate(`/workshop/${workshop.id}`)}
+                      >
+                        Join Now
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            <h2 className="text-2xl font-semibold mb-6 flex items-center">
+              <Gem className="mr-2 h-6 w-6 text-[#B87333]" />
+              Mental Wellness Features
+            </h2>
+            
+            <Tabs defaultValue="all" className="mb-12">
+              <TabsList className="mb-6">
+                <TabsTrigger value="all">All Features</TabsTrigger>
+                <TabsTrigger value="recommended">Recommended For You</TabsTrigger>
+                <TabsTrigger value="popular">Most Popular</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="all" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {features.map((feature, index) => (
+                    <Card 
+                      key={index}
+                      className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer h-full"
+                      onClick={() => navigateToFeature(feature.path)}
+                    >
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <CardTitle>{feature.title}</CardTitle>
+                            <CardDescription className="mt-2">{feature.description}</CardDescription>
+                          </div>
+                          <div className="bg-[#B87333]/10 p-2 rounded-full">
+                            <feature.icon className="h-6 w-6 text-[#B87333]" />
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardFooter className="pt-0 flex justify-end">
+                        <Button 
+                          variant="ghost" 
+                          className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => navigateToFeature(feature.path)}
+                        >
+                          Explore
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="recommended">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {features.slice(0, 6).map((feature, index) => (
+                    <Card 
+                      key={index}
+                      className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
+                      onClick={() => navigateToFeature(feature.path)}
+                    >
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <CardTitle>{feature.title}</CardTitle>
+                            <CardDescription className="mt-2">{feature.description}</CardDescription>
+                          </div>
+                          <div className="bg-[#B87333]/10 p-2 rounded-full">
+                            <feature.icon className="h-6 w-6 text-[#B87333]" />
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardFooter className="pt-0 flex justify-end">
+                        <Button 
+                          variant="ghost" 
+                          className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => navigateToFeature(feature.path)}
+                        >
+                          Explore
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="popular">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {features.slice(3, 9).map((feature, index) => (
+                    <Card 
+                      key={index}
+                      className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
+                      onClick={() => navigateToFeature(feature.path)}
+                    >
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <CardTitle>{feature.title}</CardTitle>
+                            <CardDescription className="mt-2">{feature.description}</CardDescription>
+                          </div>
+                          <div className="bg-[#B87333]/10 p-2 rounded-full">
+                            <feature.icon className="h-6 w-6 text-[#B87333]" />
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardFooter className="pt-0 flex justify-end">
+                        <Button 
+                          variant="ghost" 
+                          className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => navigateToFeature(feature.path)}
+                        >
+                          Explore
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Index;
