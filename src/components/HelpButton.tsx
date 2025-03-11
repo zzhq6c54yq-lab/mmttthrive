@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -21,8 +22,9 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Define excluded paths
+    // Define excluded paths - exact matches
     const excludedPaths = [
+      '/',               // index route
       '/initial-screen',
       '/vision-board',
       '/onboarding',
@@ -32,9 +34,14 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
       '/creator'
     ];
     
-    // Check if current path exactly matches or starts with any of the excluded paths
+    // Check if current path is in excluded paths
+    if (excludedPaths.includes(location.pathname)) {
+      return false;
+    }
+    
+    // Also check for paths that start with the excluded paths
     for (const path of excludedPaths) {
-      if (location.pathname === path || location.pathname.startsWith(`${path}/`)) {
+      if (path !== '/' && location.pathname.startsWith(`${path}/`)) {
         return false;
       }
     }
