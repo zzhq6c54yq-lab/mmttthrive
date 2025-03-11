@@ -21,10 +21,9 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Only show on main page and child pages, not on intro screens
+    // Always show on root path (main menu)
     if (location.pathname === '/') {
-      // Check if we're on the main welcome screen, not intro screens
-      return document.querySelector('.max-w-6xl') !== null;
+      return true;
     }
     
     // Exclude specific screens
