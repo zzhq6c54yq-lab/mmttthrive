@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Heart, Brain, Smile, Sparkles, ArrowRight } from "lucide-react";
+import { Heart, Brain, Smile, Sparkles, ArrowRight, Info } from "lucide-react";
 
 interface HenryButtonProps {
   className?: string;
@@ -17,11 +17,32 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   isOpen,
   onOpenChange
 }) => {
+  const [introShown, setIntroShown] = useState(false);
+
+  const handleOpen = () => {
+    onOpenChange(true);
+    
+    // Only show the intro animation once per session
+    if (!introShown) {
+      setIntroShown(true);
+    }
+  };
+
   return (
     <>
-      <div className="relative flex flex-col items-center cursor-pointer" onClick={() => onOpenChange(true)}>
+      <div 
+        className={`relative flex flex-col items-center cursor-pointer ${introShown ? 'animate-none' : 'animate-bounce'}`} 
+        onClick={handleOpen}
+      >
+        <div className="absolute -top-3 -right-3">
+          {!introShown && (
+            <div className="bg-[#B87333] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
+              <Info className="h-3 w-3" />
+            </div>
+          )}
+        </div>
         <Avatar 
-          className={`h-14 w-14 border-4 border-[#B87333]/50 transition-all hover:scale-110 ${className}`}
+          className={`h-14 w-14 border-4 border-[#B87333]/50 transition-all hover:scale-110 ${className} ${introShown ? '' : 'animate-pulse'}`}
         >
           <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
           <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
@@ -37,7 +58,7 @@ const HenryButton: React.FC<HenryButtonProps> = ({
       </div>
 
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20">
+        <DialogContent className="sm:max-w-md bg-black/85 backdrop-blur-md border border-[#B87333]/50">
           <DialogHeader className="text-center">
             <div className="flex justify-center mb-2">
               <Avatar className="h-24 w-24 border-4 border-[#B87333]/50">
@@ -95,12 +116,17 @@ const HenryButton: React.FC<HenryButtonProps> = ({
                   <li>Track your progress and celebrate wins</li>
                 </ul>
               </div>
+              
+              <p className="italic text-gray-300 mt-2">
+                I'll be following along as you navigate Thrive MT, always ready to help when you need me!
+              </p>
             </div>
           </ScrollArea>
           
           <DialogFooter className="sm:justify-center mt-4">
             <Button 
-              className="group hero-button bg-[#B87333] hover:bg-[#B87333]/80 w-full sm:w-auto"
+              variant="gold"
+              className="group w-full sm:w-auto"
               onClick={() => onOpenChange(false)}
             >
               Start Your Journey With Henry

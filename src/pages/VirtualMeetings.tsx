@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 const generateMeetings = (): Meeting[] => {
   const meetings: Meeting[] = [];
@@ -138,7 +140,10 @@ const VirtualMeetings = () => {
   const allMeetings = generateMeetings();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [meetingType, setMeetingType] = useState<string>("all");
+  const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
+  const [showMeetingDialog, setShowMeetingDialog] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const filteredMeetings = allMeetings.filter(meeting => {
     const isSameDate = date ? 
@@ -167,8 +172,23 @@ const VirtualMeetings = () => {
     return timeA.getTime() - timeB.getTime();
   });
   
+  const handleJoinMeeting = (meeting: Meeting) => {
+    setSelectedMeeting(meeting);
+    setShowMeetingDialog(true);
+  };
+  
   const handleBack = () => {
     navigate("/");
+  };
+  
+  const handleConfirmJoin = () => {
+    if (selectedMeeting) {
+      toast({
+        title: "Meeting Joined!",
+        description: `You've successfully joined ${selectedMeeting.title}. A confirmation email has been sent with meeting details.`,
+      });
+      setShowMeetingDialog(false);
+    }
   };
   
   return (
@@ -258,7 +278,11 @@ const VirtualMeetings = () => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {groupedMeetings[timeSlot].map(meeting => (
-                    <ScheduleCard key={meeting.id} meeting={meeting} />
+                    <ScheduleCard 
+                      key={meeting.id} 
+                      meeting={meeting} 
+                      onJoin={() => handleJoinMeeting(meeting)}
+                    />
                   ))}
                 </div>
               </div>
@@ -273,6 +297,48 @@ const VirtualMeetings = () => {
           </div>
         )}
       </div>
+      
+      <Dialog open={showMeetingDialog} onOpenChange={setShowMeetingDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{selectedMeeting?.title}</DialogTitle>
+            <DialogDescription>
+              {selectedMeeting?.description}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium">Meeting Details</h3>
+              <p className="text-sm text-gray-500">
+                <span className="font-medium">Time:</span> {selectedMeeting && format(selectedMeeting.startTime, "PPP")} at {selectedMeeting && format(selectedMeeting.startTime, "h:mm a")}
+              </p>
+              <p className="text-sm text-gray-500">
+                <span className="font-medium">Duration:</span> {selectedMeeting?.duration} minutes
+              </p>
+              <p className="text-sm text-gray-500">
+                <span className="font-medium">Available Spots:</span> {selectedMeeting?.availableSpots} out of {selectedMeeting?.totalSpots}
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium">What to Expect</h3>
+              <p className="text-sm text-gray-500">
+                This 45-minute session includes videos, exercises, and information designed to help you understand and practice the concepts. You'll be able to interact with the instructor and other participants.
+              </p>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowMeetingDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="gold" onClick={handleConfirmJoin}>
+              Confirm & Join
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Page>
   );
 };
