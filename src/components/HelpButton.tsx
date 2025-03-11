@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -31,6 +32,10 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
       '/initial-screen',
       '/vision-board',
       '/onboarding',
+      '/emotional-check',
+      '/registration',
+      '/cheese-plant',
+      '/creator'
     ];
     
     // Check if current path starts with any of the excluded paths
