@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,8 +14,28 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([]);
   const [input, setInput] = useState("");
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
-  // Get appropriate greeting based on time of day
+  useEffect(() => {
+    const updatePosition = (e: MouseEvent) => {
+      setIsTransitioning(true);
+      setPosition({
+        x: Math.min(Math.max(e.clientX - 28, 0), window.innerWidth - 56),
+        y: Math.min(Math.max(e.clientY - 28, 0), window.innerHeight - 56)
+      });
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isTransitioning) {
+        requestAnimationFrame(() => updatePosition(e));
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [isTransitioning]);
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     let timeOfDay = "";
@@ -30,7 +49,6 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
       : `Good ${timeOfDay}! I'm Henry (Helpful Electronic Navigator Responding Yes), your Thrive navigator. How can I help you on your journey today?`;
   };
 
-  // Initialize the chat with Henry's greeting when opened
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (open) {
@@ -38,15 +56,12 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
     }
   };
 
-  // Handle sending a message
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Add user message
     setMessages(prev => [...prev, { text: input, isUser: true }]);
     
-    // Simulate Henry's response with pre-defined answers
     setTimeout(() => {
       const responses = [
         "I'm here to help guide you through Thrive MT. What specific feature are you looking for?",
@@ -61,7 +76,6 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
         isUser: false 
       }]);
       
-      // Show toast notification for new message
       toast({
         title: "New message from Henry",
         description: "Henry has responded to your question.",
@@ -74,16 +88,20 @@ const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
 
   return (
     <>
-      {/* Floating help button */}
       <Button
         onClick={() => handleOpenChange(true)} 
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50"
+        className="fixed h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50"
         size="icon"
+        style={{
+          left: `${position.x}px`,
+          top: `${position.y}px`,
+          transition: 'all 0.3s ease-out'
+        }}
+        onTransitionEnd={() => setIsTransitioning(false)}
       >
         <span className="text-2xl font-bold">H</span>
       </Button>
       
-      {/* Chat dialog */}
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent className="sm:max-w-md sm:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-4">
           <div className="absolute right-2 top-2 z-10">
