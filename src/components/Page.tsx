@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CircleHelp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
@@ -23,6 +23,10 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
       // Always navigate to home with main screenState to avoid showing intro screens
       navigate("/", { state: { screenState: 'main' } });
     }
+  };
+  
+  const handleMeetHenry = () => {
+    navigate("/", { state: { screenState: 'main', showHenry: true } });
   };
   
   return (
@@ -53,6 +57,17 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
           </div>
           
           <div className="flex items-center gap-2">
+            <Button
+              variant="bronze"
+              size="sm"
+              className="flex items-center gap-2 hover:shadow-[0_0_10px_rgba(184,115,51,0.5)]"
+              onClick={handleMeetHenry}
+            >
+              <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
+                <span className="text-sm">H</span>
+              </div>
+              Meet H.E.N.R.Y
+            </Button>
             <HomeButton className="bg-white/5 hover:bg-white/15" />
           </div>
         </div>
@@ -74,7 +89,7 @@ const Page: React.FC<PageProps> = ({ title, children, showBackButton = true, onB
         </div>
       </div>
       
-      {/* The Henry button is now only rendered as a floating button */}
+      {/* The floating Help (Henry) button */}
       <HenryIconButton />
     </div>
   );

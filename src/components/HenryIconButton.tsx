@@ -8,6 +8,7 @@ interface HenryIconButtonProps {
   onClick?: () => void;
 }
 
+// This is the floating Help button (still named HenryIconButton for code consistency)
 const HenryIconButton: React.FC<HenryIconButtonProps> = ({ 
   className = "",
   onClick
@@ -18,7 +19,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Don't show the button on initial screens
+  // Don't show the help button on initial screens
   if (!state?.screenState || state.screenState !== 'main') {
     return null;
   }
@@ -27,6 +28,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     if (onClick) {
       onClick();
     } else {
+      // This opens the Henry chat dialog
       navigate("/", { state: { screenState: 'main', showHenry: true } });
     }
   };
@@ -59,8 +61,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
       size="h-icon"
       className={`rounded-full fixed z-50 flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
       onClick={handleClick}
-      aria-label="Ask Henry for Help"
-      title="Ask Henry for Help"
+      aria-label="Ask for Help"
+      title="Ask for Help"
       style={{ 
         bottom: '30px', 
         right: '30px'
