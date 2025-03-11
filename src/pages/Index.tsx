@@ -1006,21 +1006,21 @@ const Index = () => {
 
       {screenState === 'main' && (
         <div className="min-h-screen animate-fade-in">
-          <div className="bg-black py-12 border-b border-[#B87333]/30">
+          <div className="bg-black py-16 border-b border-[#B87333]/30">
             <div className="max-w-6xl mx-auto px-4">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center mb-4 md:mb-0">
                   <img 
                     src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                     alt="Thrive MT Logo" 
-                    className="h-24 w-24 mr-5 filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)] intro-logo-icon"
+                    className="h-32 w-32 mr-6 filter drop-shadow-[0_0_12px_rgba(184,115,51,0.6)] intro-logo-icon"
                   />
                   <div>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                    <h1 className="text-5xl md:text-6xl font-bold mb-2">
                       <span className="text-white">Welcome to </span>
                       <span className="gradient-heading">Thrive MT</span>
                     </h1>
-                    <p className="gradient-heading text-sm md:text-base font-light">
+                    <p className="gradient-heading text-lg md:text-xl font-light">
                       {userInfo.name ? `${userInfo.name}'s personalized mental wellness journey begins here` : 
                       "Your personalized mental wellness journey begins here"}
                     </p>
@@ -1032,7 +1032,7 @@ const Index = () => {
                     variant="henry"
                     className="group flex items-center gap-2"
                   >
-                    <div className="h-8 w-8 rounded-full flex items-center justify-center bg-[#B87333] text-white border-2 border-[#B87333]/50 group-hover:border-[#B87333] transition-all">
+                    <div className="h-8 w-8 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white border-2 border-[#B87333]/50 group-hover:border-[#B87333] transition-all">
                       <span className="text-md font-bold">H</span>
                     </div>
                     <span className="text-white group-hover:text-[#B87333]/90 transition-colors">Meet Henry</span>
@@ -1045,26 +1045,24 @@ const Index = () => {
           <div className="bg-white py-10">
             <div className="max-w-6xl mx-auto px-4">
               <div className="mb-12">
-                <h2 className="text-2xl font-semibold mb-6 flex items-center text-gray-800">
+                <h2 className="text-2xl font-semibold mb-6 flex items-center text-gray-800 border-b border-gray-100 pb-2">
                   <Calendar className="mr-2 h-6 w-6 text-[#B87333]" />
-                  Monthly Featured Workshops
+                  <span className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] bg-clip-text text-transparent">Monthly Featured Workshops</span>
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {workshops.map((workshop) => (
-                    <Card key={workshop.id} className={`overflow-hidden hover:shadow-md transition-shadow duration-300 border-2 ${workshop.color}`}>
-                      <CardHeader className="p-4">
+                    <Card key={workshop.id} className={`overflow-hidden hover:shadow-lg transition-all duration-300 border hover:scale-[1.02] border-${workshop.color} h-full`}>
+                      <CardHeader className="p-4 pb-2">
                         <div className="flex justify-between items-start">
-                          <div>
-                            <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
-                            <CardDescription className="mt-2">{workshop.description}</CardDescription>
-                          </div>
+                          <CardTitle className="text-lg font-semibold">{workshop.title}</CardTitle>
                           <div className={`p-2 rounded-full ${workshop.color}`}>
-                            <workshop.icon className="h-6 w-6" />
+                            <workshop.icon className="h-5 w-5" />
                           </div>
                         </div>
+                        <CardDescription className="mt-1">{workshop.description}</CardDescription>
                       </CardHeader>
                       <CardContent className="p-4 pt-0">
-                        <div className="flex items-center text-sm text-gray-500 mb-4">
+                        <div className="flex items-center text-sm text-gray-500">
                           <Clock className="mr-2 h-4 w-4" />
                           {workshop.time}
                         </div>
@@ -1083,41 +1081,39 @@ const Index = () => {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-semibold mb-6 flex items-center text-gray-800">
+              <h2 className="text-2xl font-semibold mb-6 flex items-center text-gray-800 border-b border-gray-100 pb-2">
                 <Gem className="mr-2 h-6 w-6 text-[#B87333]" />
-                Mental Wellness Features
+                <span className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] bg-clip-text text-transparent">Mental Wellness Features</span>
               </h2>
               
               <Tabs defaultValue="all" className="mb-12">
-                <TabsList className="mb-6">
-                  <TabsTrigger value="all">All Features</TabsTrigger>
-                  <TabsTrigger value="recommended">Recommended For You</TabsTrigger>
-                  <TabsTrigger value="popular">Most Popular</TabsTrigger>
+                <TabsList className="mb-6 bg-gray-100/80 p-1 rounded-full">
+                  <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-[#B87333] data-[state=active]:text-white">All Features</TabsTrigger>
+                  <TabsTrigger value="recommended" className="rounded-full data-[state=active]:bg-[#B87333] data-[state=active]:text-white">Recommended For You</TabsTrigger>
+                  <TabsTrigger value="popular" className="rounded-full data-[state=active]:bg-[#B87333] data-[state=active]:text-white">Most Popular</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="all" className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <TabsContent value="all" className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {features.map((feature, index) => (
                       <Card 
                         key={index}
-                        className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer h-full"
+                        className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-[#B87333]/50 hover:scale-[1.02] cursor-pointer h-full"
                         onClick={() => navigateToFeature(feature.path)}
                       >
-                        <CardHeader>
+                        <CardHeader className="p-4 pb-2">
                           <div className="flex items-start justify-between">
-                            <div>
-                              <CardTitle>{feature.title}</CardTitle>
-                              <CardDescription className="mt-2">{feature.description}</CardDescription>
-                            </div>
+                            <CardTitle className="text-lg">{feature.title}</CardTitle>
                             <div className="bg-[#B87333]/10 p-2 rounded-full">
-                              <feature.icon className="h-6 w-6 text-[#B87333]" />
+                              <feature.icon className="h-5 w-5 text-[#B87333]" />
                             </div>
                           </div>
+                          <CardDescription className="mt-1">{feature.description}</CardDescription>
                         </CardHeader>
-                        <CardFooter className="pt-0 flex justify-end">
+                        <CardFooter className="p-4 pt-2 flex justify-end">
                           <Button 
                             variant="ghost" 
-                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10 p-2 h-auto"
                             onClick={() => navigateToFeature(feature.path)}
                           >
                             Explore
@@ -1130,28 +1126,26 @@ const Index = () => {
                 </TabsContent>
                 
                 <TabsContent value="recommended">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {features.slice(0, 6).map((feature, index) => (
                       <Card 
                         key={index}
-                        className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
+                        className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-[#B87333]/50 hover:scale-[1.02] cursor-pointer h-full"
                         onClick={() => navigateToFeature(feature.path)}
                       >
-                        <CardHeader>
+                        <CardHeader className="p-4 pb-2">
                           <div className="flex items-start justify-between">
-                            <div>
-                              <CardTitle>{feature.title}</CardTitle>
-                              <CardDescription className="mt-2">{feature.description}</CardDescription>
-                            </div>
+                            <CardTitle className="text-lg">{feature.title}</CardTitle>
                             <div className="bg-[#B87333]/10 p-2 rounded-full">
-                              <feature.icon className="h-6 w-6 text-[#B87333]" />
+                              <feature.icon className="h-5 w-5 text-[#B87333]" />
                             </div>
                           </div>
+                          <CardDescription className="mt-1">{feature.description}</CardDescription>
                         </CardHeader>
-                        <CardFooter className="pt-0 flex justify-end">
+                        <CardFooter className="p-4 pt-2 flex justify-end">
                           <Button 
                             variant="ghost" 
-                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10 p-2 h-auto"
                             onClick={() => navigateToFeature(feature.path)}
                           >
                             Explore
@@ -1164,28 +1158,26 @@ const Index = () => {
                 </TabsContent>
                 
                 <TabsContent value="popular">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {features.slice(3, 9).map((feature, index) => (
                       <Card 
                         key={index}
-                        className="overflow-hidden hover:shadow-md transition-all duration-300 hover:border-[#B87333]/50 cursor-pointer"
+                        className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-[#B87333]/50 hover:scale-[1.02] cursor-pointer h-full"
                         onClick={() => navigateToFeature(feature.path)}
                       >
-                        <CardHeader>
+                        <CardHeader className="p-4 pb-2">
                           <div className="flex items-start justify-between">
-                            <div>
-                              <CardTitle>{feature.title}</CardTitle>
-                              <CardDescription className="mt-2">{feature.description}</CardDescription>
-                            </div>
+                            <CardTitle className="text-lg">{feature.title}</CardTitle>
                             <div className="bg-[#B87333]/10 p-2 rounded-full">
-                              <feature.icon className="h-6 w-6 text-[#B87333]" />
+                              <feature.icon className="h-5 w-5 text-[#B87333]" />
                             </div>
                           </div>
+                          <CardDescription className="mt-1">{feature.description}</CardDescription>
                         </CardHeader>
-                        <CardFooter className="pt-0 flex justify-end">
+                        <CardFooter className="p-4 pt-2 flex justify-end">
                           <Button 
                             variant="ghost" 
-                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10"
+                            className="text-[#B87333] hover:text-[#B87333] hover:bg-[#B87333]/10 p-2 h-auto"
                             onClick={() => navigateToFeature(feature.path)}
                           >
                             Explore
@@ -1206,4 +1198,3 @@ const Index = () => {
 };
 
 export default Index;
-

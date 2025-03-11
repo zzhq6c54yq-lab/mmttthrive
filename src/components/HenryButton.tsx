@@ -21,7 +21,6 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const [isGlowing, setIsGlowing] = useState(false);
   const henryRef = useRef<HTMLDivElement>(null);
   const isMoving = useRef(false);
   
@@ -83,15 +82,6 @@ const HenryButton: React.FC<HenryButtonProps> = ({
     }
   }, [cursorPosition, isVisible, isOpen]);
 
-  useEffect(() => {
-    const glowInterval = setInterval(() => {
-      setIsGlowing(true);
-      setTimeout(() => setIsGlowing(false), 2000);
-    }, 5000);
-    
-    return () => clearInterval(glowInterval);
-  }, []);
-
   const handleOpen = () => {
     onOpenChange(true);
   };
@@ -116,16 +106,11 @@ const HenryButton: React.FC<HenryButtonProps> = ({
         >
           <div 
             onClick={handleOpen}
-            className={`group cursor-pointer flex items-center gap-2 p-1.5 rounded-full bg-[#221F26]/80 backdrop-blur-md border border-[#B87333]/20 hover:border-[#B87333]/50 transition-all duration-300 ${
-              isGlowing ? 'animate-pulse shadow-[0_0_15px_rgba(184,115,51,0.5)]' : ''
-            } ${className}`}
+            className={`cursor-pointer flex items-center justify-center p-1 rounded-full bg-black/70 backdrop-blur-md border border-[#B87333]/40 hover:border-[#B87333] hover:shadow-[0_0_15px_rgba(184,115,51,0.4)] transition-all duration-300 ${className}`}
           >
-            <div className="h-8 w-8 rounded-full flex items-center justify-center border-2 border-[#B87333]/50 bg-[#B87333] text-white group-hover:border-[#B87333] transition-all">
-              <span className="text-md font-bold">H</span>
+            <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-inner">
+              <span className="text-lg font-bold">H</span>
             </div>
-            <span className="pr-2 text-xs font-medium text-white opacity-70 group-hover:opacity-100">
-              Need help?
-            </span>
           </div>
         </div>
       )}

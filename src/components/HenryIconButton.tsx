@@ -32,9 +32,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
       title="Henry Assistant"
     >
       <div className="h-full w-full flex items-center justify-center">
-        <div className="relative h-6 w-6 rounded-full flex items-center justify-center bg-[#B87333] text-white font-semibold shadow-inner">
+        <div className="relative h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold shadow-inner">
           <span className="text-sm">H</span>
-          <div className="absolute inset-0 rounded-full border-2 border-[#B87333]/50 animate-ping opacity-40"></div>
         </div>
       </div>
     </Button>
