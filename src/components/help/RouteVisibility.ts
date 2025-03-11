@@ -6,13 +6,14 @@ export const useButtonVisibility = () => {
   
   // Determine if the button should be visible based on the current route
   const shouldShowButton = () => {
-    // Initial setup screens where button should NOT appear
+    // Initial screens where button should NEVER appear
     const initialScreens = [
       '/initial-screen',
-      '/vision-board',
-      '/onboarding',
       '/emotional-check',
       '/registration',
+      '/pricing-plan',
+      '/vision-board',
+      '/onboarding',
       '/cheese-plant',
       '/creator'
     ];
