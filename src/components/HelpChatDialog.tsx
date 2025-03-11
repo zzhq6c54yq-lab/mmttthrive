@@ -29,7 +29,7 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({
   useEffect(() => {
     if (isOpen) {
       setMessages([{ 
-        text: "Hello! I'm Henry. I hope your day has been as amazing as you are. How can I help you navigate your journey today?", 
+        text: "Hello! I'm Henry (Helpful Electronic Navigator Responding Yes). I hope your day has been as amazing as you are. How can I help you navigate your journey today?", 
         isUser: false 
       }]);
     }
