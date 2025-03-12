@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, Image, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling } from "lucide-react";
+import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link } from "react-router-dom";
@@ -50,7 +50,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       path: "/community-support"
     },
     {
-      title: "Holistic Wellness",
+      title: "Mental Wellness Tools",
       description: "Track nutrition, sleep, exercise, and mental wellbeing",
       icon: LeafyGreen,
       path: "/mental-wellness-tools"
@@ -114,20 +114,26 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       description: "Track and analyze your mental wellness journey",
       icon: ListChecks,
       path: "/progress-analytics"
+    },
+    {
+      title: "Holistic Wellness",
+      description: "Comprehensive approach to physical, mental, and spiritual wellbeing",
+      icon: LeafyGreen,
+      path: "/holistic-wellness"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0">
-      {/* Extended black header with copper gradient text */}
-      <div className="w-full bg-black py-4 px-6 shadow-md">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0 flex flex-col">
+      {/* Compact black header with copper gradient text */}
+      <div className="w-full bg-black py-3 px-6 shadow-md">
         <div className="container mx-auto max-w-6xl">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
               <img 
                 src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                 alt="Thrive MT Logo" 
-                className="h-16 w-16 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.7)]"
+                className="h-20 w-20 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.7)]"
               />
               <div>
                 <h1 className="text-3xl font-bold gradient-heading">Thrive MT</h1>
@@ -142,18 +148,18 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             </Button>
           </div>
           
-          <div className="pt-2 pb-8">
-            <h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+          <div className="pt-1 pb-4">
+            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
               Welcome to Thrive MT, {displayName}!
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl">
+            <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 max-w-3xl">
               Your personalized mental health platform designed to support your unique journey.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto max-w-6xl px-4 pt-8">
+      <div className="container mx-auto max-w-6xl px-4 pt-8 flex-grow">
         {/* Featured Workshops Section */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-gray-800">Monthly Featured Workshops</h2>
@@ -271,16 +277,27 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             </div>
           </div>
         )}
-
-        <div className="text-center mt-12 mb-8">
-          <Button 
-            onClick={onHenryToggle}
-            className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F]"
-          >
-            {showHenry ? "Hide Henry" : "Show Henry"}
-          </Button>
-        </div>
       </div>
+
+      {/* Black Footer */}
+      <footer className="w-full bg-black py-6 px-6 mt-8">
+        <div className="container mx-auto max-w-6xl flex flex-col items-center justify-center">
+          <div className="flex items-center gap-4 mb-2">
+            <img 
+              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+              alt="Thrive MT Logo" 
+              className="h-16 w-16 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.7)]"
+            />
+            <div>
+              <h2 className="text-2xl font-bold gradient-heading">Thrive MT</h2>
+              <p className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+                Your Mental Wellness Journey
+              </p>
+            </div>
+          </div>
+          <p className="text-gray-400 text-sm mt-2">© {new Date().getFullYear()} Thrive MT. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
