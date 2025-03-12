@@ -25,7 +25,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             <Smile className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Happy</span>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              I feel content and positive about things
+              I feel joyful and optimistic about today!
             </div>
           </button>
           <button 
@@ -36,7 +36,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             <Annoyed className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Just Ok</span>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              I'm getting by, but not particularly good or bad
+              I'm managing fine, with ups and downs today
             </div>
           </button>
           <button 
@@ -47,7 +47,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             <Meh className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Neutral</span>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              I feel neither positive nor negative today
+              I'm feeling balanced and steady today
             </div>
           </button>
         </div>
@@ -60,7 +60,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             <HeartCrack className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Feeling Down</span>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              I'm experiencing some sadness or low energy
+              I could use a little boost of positivity today
             </div>
           </button>
           <button 
@@ -71,7 +71,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             <Frown className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Sad</span>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              I feel deeply upset or unhappy today
+              I'm experiencing some heavier emotions today
             </div>
           </button>
           <button 
@@ -82,7 +82,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             <Angry className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Overwhelmed</span>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
-              I feel stressed, anxious, or unable to cope
+              Things feel intense, but I'm seeking balance
             </div>
           </button>
         </div>

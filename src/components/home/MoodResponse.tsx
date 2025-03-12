@@ -18,13 +18,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
             <div className="text-center max-w-2xl mx-auto px-4 z-10">
               <Smile className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Positive Affirmations</h2>
+              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Light Shines Bright Today!</h2>
               <div className="space-y-4 mb-10">
-                {["You are capable of amazing things.",
-                  "Every day is a new opportunity.",
-                  "You are strong, resilient, and worthy of happiness.",
-                  "Your potential is limitless.",
-                  "Small steps lead to big changes."].map((affirmation, index) => (
+                {["Your joy is contagious - spread it to everyone you meet today!",
+                  "This positive energy is your superpower. How will you use it?",
+                  "Your happiness creates ripples that reach farther than you know.",
+                  "Today's bright outlook opens doors to amazing possibilities.",
+                  "Remember this feeling - you've created it and can return to it anytime."].map((affirmation, index) => (
                   <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
                     animationDelay: `${index * 0.2}s`,
                     animation: 'fadeInText 1s ease-out forwards',
@@ -59,13 +59,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
             <div className="text-center max-w-2xl mx-auto px-4 z-10">
               <Annoyed className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Finding Balance</h2>
+              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Day Has Unlimited Potential</h2>
               <div className="space-y-4 mb-10">
-                {["It's okay to have ordinary days.",
-                  "Small moments of joy can brighten your perspective.",
-                  "Being content with where you are is a form of happiness.",
-                  "Today is a chance to find better balance.",
-                  "Every emotion has value in your journey."].map((message, index) => (
+                {["You're navigating today with strength and resilience - that's impressive!",
+                  "Even in the 'just okay' moments, you're building something meaningful.",
+                  "Your steady presence is a gift to yourself and those around you.",
+                  "This balanced state gives you clarity to see opportunities others might miss.",
+                  "You're exactly where you need to be right now - and that's perfect."].map((message, index) => (
                   <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
                     animationDelay: `${index * 0.2}s`,
                     animation: 'fadeInText 1s ease-out forwards',
@@ -100,13 +100,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
             <div className="text-center max-w-2xl mx-auto px-4 z-10">
               <Meh className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Mindful Reflection</h2>
+              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Calm Center Is Your Strength</h2>
               <div className="space-y-4 mb-10">
-                {["Neutrality can be a peaceful state of mind.",
-                  "This is a good time to check in with yourself.",
-                  "What small thing might bring you joy today?",
-                  "Neutral moments are perfect for mindfulness practice.",
-                  "Your emotions are valid, whatever they may be."].map((message, index) => (
+                {["This neutral space is fertile ground for creativity and insight.",
+                  "Your emotional balance today is a powerful foundation for whatever you choose.",
+                  "There's wisdom in the quiet moments - you're listening to your inner voice.",
+                  "From this centered place, you can deliberately shape your day's direction.",
+                  "Your steady presence creates a peaceful ripple effect for everyone around you."].map((message, index) => (
                   <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
                     animationDelay: `${index * 0.2}s`,
                     animation: 'fadeInText 1s ease-out forwards',
@@ -141,13 +141,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
             <div className="text-center max-w-2xl mx-auto px-4 z-10">
               <HeartCrack className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Gentle Reminders</h2>
+              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Resilience Is Remarkable</h2>
               <div className="space-y-4 mb-10">
-                {["It's okay to not feel okay sometimes.",
-                  "Your feelings are valid and worthy of compassion.",
-                  "This moment is temporary, and things will shift.",
-                  "Be gentle with yourself today.",
-                  "Small acts of self-care can make a difference."].map((message, index) => (
+                {["Even on difficult days, you're still showing up - that's true courage.",
+                  "This feeling is temporary, but the strength you're building lasts forever.",
+                  "Your sensitivity is actually a superpower - it connects you deeply to life.",
+                  "Every emotion you feel adds depth to your experience and wisdom.",
+                  "You've made it through every 'down' day so far - 100% success rate!"].map((message, index) => (
                   <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
                     animationDelay: `${index * 0.2}s`,
                     animation: 'fadeInText 1s ease-out forwards',
@@ -182,13 +182,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
             <div className="text-center max-w-2xl mx-auto px-4 z-10">
               <Frown className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Holding Space for Sadness</h2>
+              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Heart Has Immense Capacity</h2>
               <div className="space-y-4 mb-10">
-                {["Your sadness is a part of you, but it is not all of you.",
-                  "It takes courage to acknowledge difficult feelings.",
-                  "Reaching out is a sign of strength, not weakness.",
-                  "Healing isn't linear, and that's perfectly normal.",
-                  "We're here to support you through this."].map((message, index) => (
+                {["Your sadness is proof of how deeply you can love and connect.",
+                  "In acknowledging this feeling, you're already beginning to transform it.",
+                  "The world needs your sensitivity and emotional depth.",
+                  "This moment is teaching you something valuable about yourself.",
+                  "Tomorrow holds new light - and you're stronger than you realize."].map((message, index) => (
                   <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
                     animationDelay: `${index * 0.2}s`,
                     animation: 'fadeInText 1s ease-out forwards',
@@ -223,13 +223,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
             <div className="text-center max-w-2xl mx-auto px-4 z-10">
               <Angry className="w-20 h-20 mx-auto mb-8 text-[#B87333] filter drop-shadow-lg animate-pulse" />
-              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Finding Calm in the Storm</h2>
+              <h2 className="text-3xl md:text-4xl mb-8 gradient-heading">Your Inner Power Is Greater Than Any Challenge</h2>
               <div className="space-y-4 mb-10">
-                {["Take a deep breath - you don't have to handle everything at once.",
-                  "It's okay to set boundaries and prioritize your wellbeing.",
-                  "One moment, one task, one breath at a time.",
-                  "Your feelings are signals, not sentences.",
-                  "We all need support sometimes - you're not alone in this."].map((message, index) => (
+                {["The intensity you feel is also the fuel for breakthrough moments.",
+                  "You have permission to set boundaries and take care of yourself first.",
+                  "This overwhelm is temporary - your peace is permanent.",
+                  "Your awareness of these feelings shows your emotional intelligence.",
+                  "Just by being here now, you're already taking positive steps forward."].map((message, index) => (
                   <p key={index} className="text-xl md:text-2xl font-light transition-all duration-300 hover:scale-105" style={{
                     animationDelay: `${index * 0.2}s`,
                     animation: 'fadeInText 1s ease-out forwards',
