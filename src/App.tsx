@@ -20,6 +20,7 @@ import ResourceLibrary from "@/pages/ResourceLibrary";
 import ProgressReports from "@/pages/ProgressReports";
 import HolisticWellness from "@/pages/HolisticWellness";
 import HelpNavButton from "@/components/help/HelpNavButton";
+import BarterSystem from "@/pages/BarterSystem";
 
 function App() {
   return (
@@ -50,9 +51,11 @@ function App() {
         <Route path="/journaling" element={<Page title="Journaling" />} />
         <Route path="/crisis-support" element={<Page title="Crisis Support" />} />
         <Route path="/progress-analytics" element={<Page title="Progress Analytics" />} />
-        <Route path="/barter-system" element={<Page title="Barter System" />} />
+        <Route path="/barter-system" element={<BarterSystem />} />
         <Route path="/lead-bank" element={<Page title="Lead Bank" />} />
         <Route path="/copay-credits" element={<Page title="Co-Pay Credits" />} />
+        <Route path="/financial-assistance" element={<Page title="Financial Assistance Application" />} />
+        <Route path="/contact" element={<Page title="Contact Support" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpNavButton />
