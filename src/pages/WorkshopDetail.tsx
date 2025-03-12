@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { useParams, Navigate, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Workshop from "@/components/Workshop";
 import { workshopData } from "@/data/workshopData";
 import Page from "@/components/Page";
@@ -13,9 +13,18 @@ import { Progress } from "@/components/ui/progress";
 const WorkshopDetail = () => {
   const { workshopId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [isMuted, setIsMuted] = useState(false);
-  const [activeTab, setActiveTab] = useState("workshop");
+  const initialTab = location.state?.activeTab || "overview";
+  const [activeTab, setActiveTab] = useState(initialTab);
+  
+  // Use the location state to set the initial tab
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
   
   const workshop = workshopData.find(w => w.id === workshopId);
   

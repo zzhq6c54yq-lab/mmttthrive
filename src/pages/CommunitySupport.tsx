@@ -9,6 +9,7 @@ import { MessagesSquare, Heart, Reply, Flag, UserRound, Clock, Users, ArrowRight
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import HomeButton from "@/components/HomeButton";
+import ChatRoomDialog from "@/components/community/ChatRoomDialog";
 
 interface ForumPost {
   id: string;
@@ -43,6 +44,8 @@ const CommunitySupport = () => {
   const [newPostContent, setNewPostContent] = useState("");
   const [newPostTitle, setNewPostTitle] = useState("");
   const [showNewPost, setShowNewPost] = useState(false);
+  const [chatRoomOpen, setChatRoomOpen] = useState(false);
+  const [activeChatGroup, setActiveChatGroup] = useState<ChatGroup | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -279,6 +282,22 @@ const CommunitySupport = () => {
     });
   };
 
+  const openChatRoom = (group: ChatGroup) => {
+    if (!group.isJoined) {
+      // Auto-join the group if not already joined
+      toggleJoinGroup(group.id);
+    }
+    
+    setActiveChatGroup(group);
+    setChatRoomOpen(true);
+    
+    toast({
+      title: "Entering Chat Room",
+      description: `You've entered the ${group.name} chat room.`,
+      duration: 2000,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#f9f9f9]">
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4">
@@ -511,6 +530,7 @@ const CommunitySupport = () => {
                     <Button 
                       className="bg-[#B87333]/10 hover:bg-[#B87333]/20 text-[#B87333]"
                       disabled={!group.isJoined}
+                      onClick={() => openChatRoom(group)}
                     >
                       {group.isJoined ? (
                         <>
@@ -526,6 +546,16 @@ const CommunitySupport = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Chat Room Dialog */}
+      {activeChatGroup && (
+        <ChatRoomDialog
+          isOpen={chatRoomOpen}
+          onOpenChange={setChatRoomOpen}
+          groupName={activeChatGroup.name}
+          groupId={activeChatGroup.id}
+        />
+      )}
     </div>
   );
 };

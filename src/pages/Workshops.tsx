@@ -31,7 +31,8 @@ const Workshops = () => {
       duration: 1500,
     });
     
-    navigate(`/workshop/${workshopId}`);
+    // Navigate directly to the workshop content tab
+    navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop" } });
   };
 
   return (
