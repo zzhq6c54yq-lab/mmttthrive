@@ -1,7 +1,8 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, Image } from "lucide-react";
+import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, Image, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface MainDashboardProps {
@@ -27,27 +28,51 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const keyFeatures = [
     {
       title: "Personalized Content",
-      description: "Content tailored to your mental health journey",
+      description: "Content tailored to your mental health journey and cultural background",
       icon: Brain,
       path: "/personalized-content"
     },
     {
       title: "Resource Library",
-      description: "Extensive collection of mental health resources",
+      description: "Comprehensive mental health resources and educational content",
       icon: Library,
       path: "/resource-library"
     },
     {
       title: "Community Support",
-      description: "Connect with others on similar journeys",
+      description: "Connect with others and access culturally sensitive resources",
       icon: Users,
       path: "/community-support"
     },
     {
-      title: "Mental Wellness Tools",
-      description: "Tools and techniques for mental wellness",
-      icon: Heart,
+      title: "Holistic Wellness",
+      description: "Track nutrition, sleep, exercise, and mental wellbeing",
+      icon: LeafyGreen,
       path: "/mental-wellness-tools"
+    },
+    {
+      title: "Progress Tracking",
+      description: "Monitor your mental health journey over time",
+      icon: ListChecks,
+      path: "/progress-reports"
+    },
+    {
+      title: "Family Resources",
+      description: "Support tools for families and caregivers",
+      icon: HandHeart,
+      path: "/family-support"
+    },
+    {
+      title: "Alternative Therapies",
+      description: "Explore art, music, and nature-based healing approaches",
+      icon: FlameKindling,
+      path: "/alternative-therapies"
+    },
+    {
+      title: "Mindfulness & Sleep",
+      description: "Diverse meditation practices and sleep tracking",
+      icon: Moon,
+      path: "/mindfulness"
     },
     {
       title: "Therapy Options",

@@ -1,4 +1,3 @@
-
 import { 
   BarChart4, 
   Brain, 
@@ -297,4 +296,74 @@ export const toolCategories = [
     cta: "Learn More",
     keywords: ["health-wellness", "finding-purpose", "resilient", "focused"]
   },
+  {
+    title: "Cultural Wellness",
+    description: "Access culturally-sensitive mental health resources and support.",
+    icon: HandHeart,
+    features: [
+      "Multilingual resources",
+      "Cultural-specific coping strategies",
+      "Traditional healing practices",
+      "Community connection",
+      "Cultural identity support"
+    ],
+    cta: "Explore Resources",
+    keywords: ["cultural-sensitivity", "inclusive", "diverse", "community", "traditional"]
+  },
+  {
+    title: "Holistic Health Tracking",
+    description: "Monitor and improve your overall wellness journey.",
+    icon: LeafyGreen,
+    features: [
+      "Sleep quality monitoring",
+      "Nutrition tracking",
+      "Exercise logging",
+      "Stress level monitoring",
+      "Wellness insights"
+    ],
+    cta: "Start Tracking",
+    keywords: ["health-wellness", "balanced", "sleep", "nutrition", "exercise"]
+  },
+  {
+    title: "Family & Caregiver Support",
+    description: "Resources and guidance for supporting loved ones.",
+    icon: HandHeart,
+    features: [
+      "Communication guides",
+      "Support strategies",
+      "Self-care for caregivers",
+      "Family therapy resources",
+      "Crisis management"
+    ],
+    cta: "Access Support",
+    keywords: ["family", "caregiving", "support", "communication", "relationships"]
+  },
+  {
+    title: "Alternative Healing",
+    description: "Explore evidence-based alternative therapy approaches.",
+    icon: FlameKindling,
+    features: [
+      "Art therapy exercises",
+      "Music therapy sessions",
+      "Nature-based healing",
+      "Movement therapy",
+      "Creative expression"
+    ],
+    cta: "Discover Methods",
+    keywords: ["alternative-therapy", "creative", "healing", "nature", "expression"]
+  },
+  {
+    title: "Progress Analytics",
+    description: "Track and analyze your mental wellness journey.",
+    icon: ListChecks,
+    features: [
+      "Mood tracking analytics",
+      "Progress visualization",
+      "Custom reports",
+      "Goal achievement tracking",
+      "Healthcare provider sharing"
+    ],
+    cta: "View Progress",
+    keywords: ["tracking", "progress", "analytics", "goals", "improvement"]
+  }
 ];

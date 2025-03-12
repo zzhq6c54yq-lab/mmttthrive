@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -41,9 +40,11 @@ function App() {
         <Route path="/community-support" element={<CommunitySupport />} />
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
+        <Route path="/family-support" element={<Page title="Family & Caregiver Support" />} />
+        <Route path="/alternative-therapies" element={<Page title="Alternative Therapies" />} />
+        <Route path="/mindfulness" element={<Page title="Mindfulness & Sleep" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {/* HelpButton will handle its own visibility based on route */}
       <HelpButton />
       <Toaster />
     </Router>
