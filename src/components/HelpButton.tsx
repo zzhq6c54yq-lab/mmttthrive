@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FloatingButton from "@/components/help/FloatingButton";
 import HelpDialog from "@/components/help/HelpDialog";
 import { useButtonVisibility } from "@/components/help/RouteVisibility";
@@ -11,6 +11,11 @@ interface HelpButtonProps {
 const HelpButton: React.FC<HelpButtonProps> = ({ userName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const shouldShow = useButtonVisibility();
+  
+  // Add debug logging to see the value of shouldShow
+  useEffect(() => {
+    console.log("Help button visibility:", shouldShow);
+  }, [shouldShow]);
   
   // If button shouldn't be shown, return null (don't render anything)
   if (!shouldShow) {

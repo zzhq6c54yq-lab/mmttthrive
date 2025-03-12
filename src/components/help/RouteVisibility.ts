@@ -43,21 +43,13 @@ export const useButtonVisibility = () => {
       '/creator'
     ];
     
-    // Check if current path is exactly a main menu route - show button
-    if (mainMenuRoutes.includes(location.pathname)) {
-      return true;
-    }
+    // Current path checking logic - debug output to see why button might still be showing
+    console.log("Current path:", location.pathname);
     
-    // Check if current path matches or is a sub-route of a feature route - show button
-    for (const route of featureRoutes) {
-      if (location.pathname === route || location.pathname.startsWith(`${route}/`)) {
-        return true;
-      }
-    }
-    
-    // Check if current path is or starts with a pre-main menu screen - hide button
+    // First, check if we're on a pre-main menu screen - if so, NEVER show the button
     for (const screen of preMainMenuScreens) {
       if (location.pathname === screen || location.pathname.startsWith(`${screen}/`)) {
+        console.log("Hiding button: On pre-main menu screen");
         return false;
       }
     }
@@ -67,12 +59,33 @@ export const useButtonVisibility = () => {
     
     for (const keyword of preMainMenuKeywords) {
       if (location.pathname.includes(keyword)) {
+        console.log("Hiding button: Path contains pre-main menu keyword:", keyword);
         return false;
       }
     }
     
-    // For any other routes, default to showing the button as they're likely post-main menu
-    return true;
+    // Check if current path is exactly a main menu route - show button
+    if (mainMenuRoutes.includes(location.pathname)) {
+      console.log("Showing button: On main menu");
+      return true;
+    }
+    
+    // Check if current path matches or is a sub-route of a feature route - show button
+    for (const route of featureRoutes) {
+      if (location.pathname === route || location.pathname.startsWith(`${route}/`)) {
+        console.log("Showing button: On feature route");
+        return true;
+      }
+    }
+    
+    // If we're on the first 5 screens, hide the button
+    // This is a fallback for any screens that might be before the main menu
+    // but aren't explicitly listed in preMainMenuScreens
+    console.log("Default visibility decision for path:", location.pathname);
+    
+    // For unknown paths, default to hiding the button to be safe
+    // This ensures the button only appears on known, post-main-menu screens
+    return false;
   };
 
   return shouldShowButton();
