@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -121,26 +122,36 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       path: "/holistic-wellness"
     }
   ];
+  
+  const handleFeatureClick = (path: string) => {
+    toast({
+      title: "Navigating...",
+      description: "Taking you to your selected feature",
+      duration: 1500,
+    });
+    
+    navigateToFeature(path);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0 flex flex-col">
       <div className="w-full bg-black py-4 px-6 shadow-lg">
         <div className="container mx-auto max-w-6xl">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+          <div className="flex items-center justify-center md:justify-between">
+            <div className="flex items-center justify-center">
               <img 
                 src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                 alt="Thrive MT Logo" 
-                className="h-24 w-24 filter drop-shadow-[0_0_8px_rgba(184,115,51,0.7)]"
+                className="h-32 w-32 filter drop-shadow-[0_0_12px_rgba(184,115,51,0.9)]"
               />
-              <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
-                Welcome to Thrive MT, {displayName}!
+              <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight ml-4">
+                Welcome {displayName}!
               </h1>
             </div>
             <Button 
               onClick={onHenryToggle}
               variant="bronze"
-              className="text-lg px-8 py-6"
+              className="text-lg px-8 py-6 hidden md:flex"
             >
               {showHenry ? "Hide Henry" : "Meet Henry"}
             </Button>
@@ -217,7 +228,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             <Card 
               key={index} 
               className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-[#B87333]/20 hover:border-[#B87333] transform hover:scale-[1.02]"
-              onClick={() => navigateToFeature(feature.path)}
+              onClick={() => handleFeatureClick(feature.path)}
             >
               <CardHeader className="pb-2">
                 <div className="rounded-full bg-[#B87333]/10 w-12 h-12 flex items-center justify-center mb-2 group-hover:bg-[#B87333]/20 transition-colors">
@@ -229,6 +240,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
               <CardContent>
                 <Button 
                   className="w-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFeatureClick(feature.path);
+                  }}
                 >
                   Explore
                 </Button>
