@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HelpNavButton from "@/components/help/HelpNavButton";
 
 interface MainDashboardProps {
@@ -25,6 +25,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   navigateToFeature
 }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const displayName = userName || "Friend";
 
   const featuredWorkshops = workshopData.slice(0, 3);
@@ -129,7 +130,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       duration: 1500,
     });
     
-    navigateToFeature(path);
+    navigate(path);
   };
 
   return (
@@ -142,7 +143,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                 <img 
                   src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                   alt="Thrive MT Logo" 
-                  className="h-32 w-32 filter drop-shadow-[0_0_12px_rgba(184,115,51,0.9)]"
+                  className="h-40 w-40 filter drop-shadow-[0_0_15px_rgba(184,115,51,0.9)]"
                 />
                 <div>
                   <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">

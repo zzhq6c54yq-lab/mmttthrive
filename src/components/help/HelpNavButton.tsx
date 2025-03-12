@@ -1,43 +1,38 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, ArrowUp, ArrowDown } from "lucide-react";
+import { HelpCircle, Fingerprint } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "./HelpDialog";
 
 const HelpNavButton: React.FC = () => {
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down' | null>(null);
-  const [scrollInterval, setScrollIntervalId] = useState<number | null>(null);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const { toast } = useToast();
 
-  const startScrolling = (direction: 'up' | 'down') => {
-    setIsScrolling(true);
-    setScrollDirection(direction);
-    
-    if (scrollInterval) {
-      window.clearInterval(scrollInterval);
-    }
-    
-    const intervalId = window.setInterval(() => {
-      if (direction === 'up') {
-        window.scrollBy(0, -40);
-      } else {
-        window.scrollBy(0, 40);
-      }
-    }, 50);
-    
-    setScrollIntervalId(intervalId);
+  // Track touch start position for swipe detection
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  
+  // Handle touch start event
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartY(e.touches[0].clientY);
   };
   
-  const stopScrolling = () => {
-    if (scrollInterval) {
-      window.clearInterval(scrollInterval);
-      setScrollIntervalId(null);
+  // Handle touch move event for scrolling
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartY === null) return;
+    
+    const touchY = e.touches[0].clientY;
+    const diff = touchStartY - touchY;
+    
+    // Scroll based on touch movement
+    if (Math.abs(diff) > 5) { // Small threshold to prevent accidental scrolls
+      window.scrollBy(0, diff);
     }
-    setIsScrolling(false);
-    setScrollDirection(null);
+  };
+  
+  // Handle touch end event
+  const handleTouchEnd = () => {
+    setTouchStartY(null);
   };
 
   const handleClick = () => {
@@ -49,51 +44,22 @@ const HelpNavButton: React.FC = () => {
     });
   };
 
-  React.useEffect(() => {
-    return () => {
-      if (scrollInterval) {
-        window.clearInterval(scrollInterval);
-      }
-    };
-  }, [scrollInterval]);
-
   return (
     <>
       <div className="fixed right-6 top-1/2 transform -translate-y-1/2 flex flex-col items-center gap-2 z-50">
         <Button
-          onClick={() => startScrolling('up')}
-          onMouseUp={stopScrolling}
-          onMouseLeave={stopScrolling}
-          className={`h-10 w-10 rounded-full ${
-            scrollDirection === 'up' 
-              ? 'bg-[#A56625]' 
-              : 'bg-gradient-to-br from-[#B87333] to-[#E5C5A1]'
-          } text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center`}
-          size="icon"
-        >
-          <ArrowUp className="h-5 w-5" />
-        </Button>
-        
-        <Button
           onClick={handleClick}
-          className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="h-16 w-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group relative"
           size="icon"
         >
-          <HelpCircle className="h-7 w-7 group-hover:scale-110 transition-transform" />
-        </Button>
-        
-        <Button
-          onClick={() => startScrolling('down')}
-          onMouseUp={stopScrolling}
-          onMouseLeave={stopScrolling}
-          className={`h-10 w-10 rounded-full ${
-            scrollDirection === 'down' 
-              ? 'bg-[#A56625]' 
-              : 'bg-gradient-to-br from-[#B87333] to-[#E5C5A1]'
-          } text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center`}
-          size="icon"
-        >
-          <ArrowDown className="h-5 w-5" />
+          <HelpCircle className="h-8 w-8 group-hover:scale-110 transition-transform absolute" />
+          <Fingerprint className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute animate-pulse" />
+          <span className="absolute -bottom-8 text-xs text-white bg-black/70 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Swipe to scroll
+          </span>
         </Button>
       </div>
       

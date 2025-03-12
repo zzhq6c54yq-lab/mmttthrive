@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -17,6 +18,7 @@ import PersonalizedContent from "@/pages/PersonalizedContent";
 import CommunitySupport from "@/pages/CommunitySupport";
 import ResourceLibrary from "@/pages/ResourceLibrary";
 import ProgressReports from "@/pages/ProgressReports";
+import HolisticWellness from "@/pages/HolisticWellness";
 import HelpButton from "@/components/HelpButton";
 
 function App() {
@@ -40,6 +42,7 @@ function App() {
         <Route path="/community-support" element={<CommunitySupport />} />
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
+        <Route path="/holistic-wellness" element={<HolisticWellness />} />
         <Route path="/family-support" element={<Page title="Family & Caregiver Support" />} />
         <Route path="/alternative-therapies" element={<Page title="Alternative Therapies" />} />
         <Route path="/mindfulness" element={<Page title="Mindfulness & Sleep" />} />
