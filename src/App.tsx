@@ -50,6 +50,9 @@ function App() {
         <Route path="/journaling" element={<Page title="Journaling" />} />
         <Route path="/crisis-support" element={<Page title="Crisis Support" />} />
         <Route path="/progress-analytics" element={<Page title="Progress Analytics" />} />
+        <Route path="/barter-system" element={<Page title="Barter System" />} />
+        <Route path="/lead-bank" element={<Page title="Lead Bank" />} />
+        <Route path="/copay-credits" element={<Page title="Co-Pay Credits" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpNavButton />

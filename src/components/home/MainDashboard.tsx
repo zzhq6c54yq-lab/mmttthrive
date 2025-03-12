@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling, Footprints, Play, Pause, Volume2, Volume, ExternalLink } from "lucide-react";
+import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling, Footprints, Play, Pause, Volume2, Volume, ExternalLink, WalletCards, Landmark, Handshake } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link, useNavigate } from "react-router-dom";
@@ -210,6 +210,40 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full bg-[#F8F8F8] border-y border-gray-200 py-4 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <h3 className="text-base font-semibold text-gray-800 mb-3">New Features</h3>
+          <div className="flex flex-wrap justify-center sm:justify-between gap-4">
+            <Button 
+              variant="bronze"
+              className="flex items-center gap-2 px-6 py-2 rounded-md"
+              onClick={() => navigate("/barter-system")}
+            >
+              <Handshake className="h-4 w-4" />
+              <span>Barter System</span>
+            </Button>
+            
+            <Button 
+              variant="bronze"
+              className="flex items-center gap-2 px-6 py-2 rounded-md"
+              onClick={() => navigate("/lead-bank")}
+            >
+              <Landmark className="h-4 w-4" />
+              <span>Lead Bank</span>
+            </Button>
+            
+            <Button 
+              variant="bronze"
+              className="flex items-center gap-2 px-6 py-2 rounded-md"
+              onClick={() => navigate("/copay-credits")}
+            >
+              <WalletCards className="h-4 w-4" />
+              <span>Co-Pay Credits</span>
+            </Button>
           </div>
         </div>
       </div>
