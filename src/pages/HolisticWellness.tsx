@@ -1,8 +1,7 @@
-
 import React from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Leaf, Brain, Heart, Nutrition, Meditation, BadgeCheck, ArrowRight, Dumbbell, Waves, HandHeart } from "lucide-react";
+import { Leaf, Brain, Heart, Apple, Sunset, BadgeCheck, ArrowRight, Dumbbell, Waves, HandHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
 
