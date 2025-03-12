@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -125,76 +124,6 @@ const Index = () => {
       title: `${planTitle} Plan Selected`,
       description: `You have selected the ${planTitle} subscription plan.`,
     });
-  };
-
-  const renderCurrentScreen = () => {
-    switch (screenState) {
-      case 'intro':
-        return <IntroScreen onContinue={() => setScreenState('mood')} />;
-      case 'mood':
-        return (
-          <MoodScreen
-            onMoodSelect={(mood) => {
-              setSelectedMood(mood);
-              setScreenState('moodResponse');
-            }}
-            onPrevious={() => setScreenState('intro')}
-          />
-        );
-      case 'moodResponse':
-        return (
-          <MoodResponse
-            selectedMood={selectedMood}
-            onContinue={() => setScreenState('register')}
-            onPrevious={() => setScreenState('mood')}
-          />
-        );
-      case 'register':
-        return (
-          <RegistrationScreen
-            userInfo={userInfo}
-            onUserInfoChange={handleUserInfoChange}
-            onSubmit={handleRegister}
-            onPrevious={() => setScreenState('moodResponse')}
-            onSkip={() => setScreenState('subscription')}
-          />
-        );
-      case 'subscription':
-        return (
-          <SubscriptionScreen
-            selectedPlan={selectedPlan}
-            onPlanSelect={handleSubscriptionSelect}
-            onContinue={() => setScreenState('visionBoard')}
-            onPrevious={() => setScreenState('register')}
-            onSkip={() => setScreenState('main')}
-          />
-        );
-      case 'visionBoard':
-        return (
-          <VisionBoard
-            selectedQualities={selectedQualities}
-            selectedGoals={selectedGoals}
-            onQualityToggle={toggleQuality}
-            onGoalToggle={toggleGoal}
-            onContinue={() => setScreenState('main')}
-            onPrevious={() => setScreenState('subscription')}
-            onSkip={() => setScreenState('main')}
-          />
-        );
-      case 'main':
-        return (
-          <MainDashboard
-            userName={userInfo.name}
-            showHenry={showHenry}
-            onHenryToggle={() => setShowHenry(prev => !prev)}
-            selectedQualities={selectedQualities}
-            selectedGoals={selectedGoals}
-            navigateToFeature={navigateToFeature}
-          />
-        );
-      default:
-        return null;
-    }
   };
 
   const toggleHenry = () => {

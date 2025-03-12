@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Film, Dumbbell, Star, Home, CheckCircle, Music, Brain, MessagesSquare, Clock, Calendar, Heart, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Film, Dumbbell, Star, CheckCircle, Music, Brain, MessagesSquare, Clock, Calendar, Heart, Sparkles } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import HomeButton from "@/components/HomeButton";
@@ -28,9 +28,7 @@ const PersonalizedContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+  
   useEffect(() => {
     if (location.state?.qualities && location.state?.goals) {
       setUserPreferences(location.state.qualities);
@@ -299,15 +297,6 @@ const PersonalizedContent = () => {
     }
   };
 
-  const contentCategories = [
-    { id: "mindfulness", name: "Mindfulness & Meditation", icon: Brain },
-    { id: "anxiety-relief", name: "Anxiety Relief", icon: Heart },
-    { id: "sleep", name: "Better Sleep", icon: Clock },
-    { id: "relationships", name: "Healthy Relationships", icon: MessagesSquare },
-    { id: "daily-practices", name: "Daily Wellness Practices", icon: Calendar },
-    { id: "self-discovery", name: "Self-Discovery", icon: Sparkles }
-  ];
-
   return (
     <div className="min-h-screen bg-[#f9f9f9]">
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4">
@@ -364,9 +353,9 @@ const PersonalizedContent = () => {
                     <CardFooter className="flex justify-between">
                       <Button 
                         className="bg-[#B87333]/10 hover:bg-[#B87333]/20 text-[#B87333]"
-                        onClick={() => setSelectedCategory(item.type)}
+                        onClick={() => navigate('/mental-wellness-tools')}
                       >
-                        View Similar
+                        View Similar Tools
                       </Button>
                       <Button 
                         className="bg-[#B87333] hover:bg-[#B87333]/90"
@@ -380,27 +369,6 @@ const PersonalizedContent = () => {
               </div>
             </div>
             
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-[#1a1a1f] flex items-center">
-                <Heart className="w-6 h-6 mr-2 text-[#B87333]" />
-                Wellness Categories
-              </h2>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {contentCategories.map(category => (
-                  <Button
-                    key={category.id}
-                    variant="outline"
-                    className={`h-auto py-6 flex flex-col items-center justify-center border ${selectedCategory === category.id ? 'border-[#B87333] bg-[#B87333]/5' : 'hover:border-[#B87333]/50'}`}
-                    onClick={() => setSelectedCategory(category.id === selectedCategory ? null : category.id)}
-                  >
-                    <category.icon className="h-8 w-8 mb-2 text-[#B87333]" />
-                    <span className="text-center text-sm">{category.name}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
-
             <Tabs defaultValue="recommended" className="w-full" onValueChange={setActiveTab}>
               <TabsList className="mb-6 w-full justify-start max-w-md">
                 <TabsTrigger value="recommended" className="flex-1">Recommended</TabsTrigger>
@@ -413,7 +381,7 @@ const PersonalizedContent = () => {
               
               <TabsContent value="recommended">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {content.slice(0, 6).map((item) => (
+                  {content.slice(0, 9).map((item) => (
                     <ContentCard 
                       key={item.id}
                       item={item}
@@ -503,12 +471,23 @@ const PersonalizedContent = () => {
                 ))}
               </div>
               
-              <Button 
-                className="mt-4 bg-[#B87333] hover:bg-[#B87333]/90"
-                onClick={() => navigate('/', { state: { screenState: 'visionBoard' } })}
-              >
-                Update Preferences
-              </Button>
+              <div className="flex gap-4">
+                <Button 
+                  className="mt-4 bg-[#B87333] hover:bg-[#B87333]/90"
+                  onClick={() => navigate('/', { state: { screenState: 'visionBoard' } })}
+                >
+                  Update Preferences
+                </Button>
+                
+                <Button 
+                  className="mt-4 bg-[#1a1a1f] hover:bg-[#1a1a1f]/90"
+                  onClick={() => navigate('/mental-wellness-tools', { 
+                    state: { qualities: userPreferences, goals: userGoals } 
+                  })}
+                >
+                  Explore Wellness Tools
+                </Button>
+              </div>
             </div>
           </>
         )}

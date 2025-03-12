@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { 
@@ -20,7 +21,9 @@ import {
   Landmark,
   Pencil,
   HeartHandshake,
-  ScrollText
+  ScrollText,
+  Clock, 
+  Calendar
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -38,6 +41,7 @@ const MentalWellnessTools = () => {
   const [showPersonalized, setShowPersonalized] = useState<boolean>(false);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   useEffect(() => {
     if (location.state) {
@@ -88,18 +92,57 @@ const MentalWellnessTools = () => {
     });
   };
 
+  const handleCategorySelect = (categoryId: string) => {
+    setActiveCategory(categoryId === activeCategory ? null : categoryId);
+    
+    // Filter tools based on the selected category
+    if (categoryId !== activeCategory) {
+      setCategoryFilter("category");
+      setSearchTerm("");
+    } else {
+      setCategoryFilter("all");
+    }
+  };
+
   const filteredTools = toolCategories.filter(tool => {
     const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          tool.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || recommendations.includes(tool.title);
     
-    return matchesSearch && (categoryFilter === "recommended" ? recommendations.includes(tool.title) : true);
+    // If a wellness category is selected, filter based on it
+    const matchesCategory = !activeCategory || 
+                           (categoryMapping[activeCategory] && 
+                            categoryMapping[activeCategory].some(keyword => 
+                              tool.keywords.includes(keyword)));
+    
+    const matchesRecommended = categoryFilter !== "recommended" || recommendations.includes(tool.title);
+    
+    return matchesSearch && matchesCategory && (categoryFilter !== "recommended" || matchesRecommended);
   });
 
   const categories = [
     { id: "all", label: "All Tools" },
     { id: "recommended", label: "Recommended For You" }
   ];
+
+  // Wellness categories moved from PersonalizedContent
+  const wellnessCategories = [
+    { id: "mindfulness", name: "Mindfulness & Meditation", icon: Brain },
+    { id: "anxiety-relief", name: "Anxiety Relief", icon: Heart },
+    { id: "sleep", name: "Better Sleep", icon: Clock },
+    { id: "relationships", name: "Healthy Relationships", icon: MessageCircle },
+    { id: "daily-practices", name: "Daily Wellness Practices", icon: Calendar },
+    { id: "self-discovery", name: "Self-Discovery", icon: Flower }
+  ];
+
+  // Mapping wellness categories to relevant keywords for filtering
+  const categoryMapping: Record<string, string[]> = {
+    "mindfulness": ["peaceful", "mindful", "present", "focused"],
+    "anxiety-relief": ["reducing-anxiety", "managing-stress", "emotional-regulation"],
+    "sleep": ["improving-sleep", "peaceful", "balanced"],
+    "relationships": ["better-relationships", "setting-boundaries", "empathetic"],
+    "daily-practices": ["health-wellness", "balanced", "joyful", "grateful"],
+    "self-discovery": ["finding-purpose", "building-confidence", "creative", "resilient"]
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -168,6 +211,27 @@ const MentalWellnessTools = () => {
             </div>
           </div>
         )}
+
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 text-[#1a1a1f] flex items-center">
+            <Heart className="w-6 h-6 mr-2 text-[#B87333]" />
+            Wellness Categories
+          </h2>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {wellnessCategories.map(category => (
+              <Button
+                key={category.id}
+                variant="outline"
+                className={`h-auto py-6 flex flex-col items-center justify-center border ${activeCategory === category.id ? 'border-[#B87333] bg-[#B87333]/5' : 'hover:border-[#B87333]/50'}`}
+                onClick={() => handleCategorySelect(category.id)}
+              >
+                <category.icon className="h-8 w-8 mb-2 text-[#B87333]" />
+                <span className="text-center text-sm">{category.name}</span>
+              </Button>
+            ))}
+          </div>
+        </div>
 
         <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center">
           <div className="relative flex-1">
