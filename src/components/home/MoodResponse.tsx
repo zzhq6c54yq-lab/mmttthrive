@@ -1,7 +1,8 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed, PhoneCall, MessageSquare, Headphones, SirenAlert } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -10,6 +11,79 @@ interface MoodResponseProps {
 }
 
 const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, onPrevious }) => {
+  const [showEmergencyServices, setShowEmergencyServices] = useState(false);
+  
+  const handleContinue = () => {
+    if (selectedMood === 'sad' || selectedMood === 'overwhelmed') {
+      setShowEmergencyServices(true);
+    } else {
+      onContinue();
+    }
+  };
+
+  const renderEmergencyServices = () => {
+    return (
+      <Dialog open={showEmergencyServices} onOpenChange={setShowEmergencyServices}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold text-center">
+              Support Services Available
+            </DialogTitle>
+            <DialogDescription className="text-center pt-2">
+              We want you to know that help is available if you need it.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 my-4">
+            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
+              <PhoneCall className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+              <div>
+                <h3 className="font-medium">Crisis Helpline</h3>
+                <p className="text-sm text-gray-600">Talk with a trained counselor 24/7: 988</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
+              <MessageSquare className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+              <div>
+                <h3 className="font-medium">Text Support</h3>
+                <p className="text-sm text-gray-600">Text HOME to 741741 to connect with a Crisis Counselor</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
+              <Headphones className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+              <div>
+                <h3 className="font-medium">Suicide Prevention Lifeline</h3>
+                <p className="text-sm text-gray-600">Call 1-800-273-8255 for support</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start p-3 bg-[#F9F5FF] rounded-lg">
+              <SirenAlert className="text-[#B87333] mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+              <div>
+                <h3 className="font-medium">Emergency Services</h3>
+                <p className="text-sm text-gray-600">For immediate help, please call 911</p>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="flex justify-center">
+            <Button 
+              className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
+              onClick={() => {
+                setShowEmergencyServices(false);
+                onContinue();
+              }}
+            >
+              Continue to Registration
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   const renderMoodContent = () => {
     switch (selectedMood) {
       case 'happy':
@@ -37,7 +111,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               <div className="flex gap-4 justify-center">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
                   Continue to Register
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -78,7 +152,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               <div className="flex gap-4 justify-center">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
                   Continue to Register
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -119,7 +193,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               <div className="flex gap-4 justify-center">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
                   Continue to Register
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -160,7 +234,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               <div className="flex gap-4 justify-center">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
                   Continue to Register
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -201,9 +275,9 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               <div className="flex gap-4 justify-center">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
-                  Continue to Register
+                  Continue
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
                 <Button 
@@ -215,6 +289,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                 </Button>
               </div>
             </div>
+            {renderEmergencyServices()}
           </div>
         );
       case 'overwhelmed':
@@ -242,9 +317,9 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               <div className="flex gap-4 justify-center">
                 <Button 
                   className="group hero-button bg-[#B87333] hover:bg-[#B87333]/90"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
-                  Continue to Register
+                  Continue
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
                 <Button 
@@ -256,6 +331,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                 </Button>
               </div>
             </div>
+            {renderEmergencyServices()}
           </div>
         );
       default:
