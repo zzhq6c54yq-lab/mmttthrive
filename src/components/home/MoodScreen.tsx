@@ -20,46 +20,70 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           <button 
             onClick={() => onMoodSelect('happy')}
             className="mood-button group"
+            aria-label="I'm feeling happy"
           >
             <Smile className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Happy</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
+              I feel content and positive about things
+            </div>
           </button>
           <button 
             onClick={() => onMoodSelect('ok')}
             className="mood-button group"
+            aria-label="I'm feeling just ok"
           >
             <Annoyed className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Just Ok</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
+              I'm getting by, but not particularly good or bad
+            </div>
           </button>
           <button 
             onClick={() => onMoodSelect('neutral')}
             className="mood-button group"
+            aria-label="I'm feeling neutral"
           >
             <Meh className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Neutral</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
+              I feel neither positive nor negative today
+            </div>
           </button>
         </div>
         <div className="flex flex-wrap justify-center gap-4 md:gap-4">
           <button 
             onClick={() => onMoodSelect('down')}
             className="mood-button group"
+            aria-label="I'm feeling down"
           >
             <HeartCrack className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Feeling Down</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
+              I'm experiencing some sadness or low energy
+            </div>
           </button>
           <button 
             onClick={() => onMoodSelect('sad')}
             className="mood-button group"
+            aria-label="I'm feeling sad"
           >
             <Frown className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Sad</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
+              I feel deeply upset or unhappy today
+            </div>
           </button>
           <button 
             onClick={() => onMoodSelect('overwhelmed')}
             className="mood-button group"
+            aria-label="I'm feeling overwhelmed"
           >
             <Angry className="w-12 h-12 md:w-14 md:h-14 text-[#B87333] transition-all duration-300" />
             <span className="text-xs text-white mt-1 block">Overwhelmed</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-16 bg-[#222] p-2 rounded-md text-xs text-white w-36 pointer-events-none">
+              I feel stressed, anxious, or unable to cope
+            </div>
           </button>
         </div>
         <div className="mt-10 flex justify-center gap-4">
