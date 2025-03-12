@@ -15,7 +15,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
   const handleHomeClick = () => {
     toast({
       title: "Returning to Home",
-      description: "Taking you back to the main page"
+      description: "Taking you back to the main menu"
     });
     
     // Always navigate to main screen with the 'main' screenState to avoid intro screens

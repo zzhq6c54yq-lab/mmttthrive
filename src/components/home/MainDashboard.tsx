@@ -89,14 +89,19 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <Image className="h-12 w-12 text-[#B87333]" />
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0">
+      {/* New black header with copper gradient text */}
+      <div className="w-full bg-black py-4 px-6 shadow-md mb-6">
+        <div className="container mx-auto max-w-6xl flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <img 
+              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+              alt="Thrive MT Logo" 
+              className="h-12 w-12 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.7)]"
+            />
             <div>
-              <h1 className="text-2xl font-bold text-[#B87333]">Thrive MT</h1>
-              <p className="text-sm text-gray-600">Your Mental Wellness Journey</p>
+              <h1 className="text-2xl font-bold gradient-heading">Thrive MT</h1>
+              <p className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">Your Mental Wellness Journey</p>
             </div>
           </div>
           <Button 
@@ -106,7 +111,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             {showHenry ? "Hide Henry" : "Meet Henry"}
           </Button>
         </div>
+      </div>
 
+      <div className="container mx-auto max-w-6xl px-4 pt-4">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to Thrive MT, {displayName}!</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -165,7 +172,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
           </div>
         )}
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 mb-8">
           <Button 
             onClick={onHenryToggle}
             className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F]"
