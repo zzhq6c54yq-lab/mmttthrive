@@ -1,8 +1,10 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 
@@ -14,6 +16,21 @@ interface HelpDialogProps {
 
 const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName }) => {
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([]);
+  const navigate = useNavigate();
+
+  // Knowledge base for Henry responses
+  const knowledgeBase = {
+    "workshop": "Workshops offer interactive learning experiences on mental health topics. You can join live or recorded sessions, with exercises and resources.",
+    "community": "The Community Support section lets you connect with others in forums and chat groups based on specific mental health topics.",
+    "tools": "Mental Wellness Tools provides resources for anxiety, depression, stress management, and more. Try guided meditations, journaling, or mood tracking.",
+    "sponsor": "Your sponsor provides personal support on your mental health journey. You can chat with them and schedule meetings.",
+    "therapist": "Find a therapist through our matching system. Fill out a questionnaire about your needs and preferences to get personalized matches.",
+    "games": "Mental Health Games provide fun, interactive ways to practice coping skills and mindfulness techniques.",
+    "progress": "Track your mental wellness journey with Progress Reports that show your mood trends, workshop completion, and goal achievement.",
+    "navigate": "Use the Home button to return to the main dashboard. The arrows help you scroll through content on the page.",
+    "meetings": "Virtual Meetings connect you with mental health professionals and support groups in real-time video sessions.",
+    "help": "I'm Henry, your guide through Thrive MT. Ask me anything about mental wellness or how to use the platform!"
+  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -35,20 +52,90 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
     }
   };
 
+  const generateResponse = (message: string) => {
+    const lowerMessage = message.toLowerCase();
+    
+    // Check if message contains keywords from our knowledge base
+    for (const [keyword, response] of Object.entries(knowledgeBase)) {
+      if (lowerMessage.includes(keyword)) {
+        return response;
+      }
+    }
+    
+    // Navigation assistance
+    if (lowerMessage.includes("go to") || lowerMessage.includes("find") || lowerMessage.includes("where")) {
+      if (lowerMessage.includes("workshop")) {
+        return "I can take you to our Workshops section. Would you like to go there now?";
+      } else if (lowerMessage.includes("community") || lowerMessage.includes("chat") || lowerMessage.includes("forum")) {
+        return "Our Community Support section has forums and chat groups. Would you like me to navigate you there?";
+      } else if (lowerMessage.includes("tool")) {
+        return "Our Mental Wellness Tools section has resources for various mental health needs. Would you like to explore them?";
+      }
+    }
+    
+    // Default responses if no keywords match
+    const defaultResponses = [
+      "I'm here to help guide you through Thrive MT. What specific feature are you looking for?",
+      "Recovery is a journey, and I'm here to help you navigate it. What can I assist you with today?",
+      "Thank you for sharing. Remember, each step forward is progress. How else can I support you?",
+      "Thrive MT has many resources available. Would you like to explore our workshops, tools, or support options?",
+      "That's a great question. Let me help you find the information you need."
+    ];
+    
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+  };
+
+  const navigateToSection = (section: string) => {
+    if (section === "workshop" || section === "workshops") {
+      navigate("/workshops");
+      onOpenChange(false);
+    } else if (section === "community" || section === "chat" || section === "forum") {
+      navigate("/community-support");
+      onOpenChange(false);
+    } else if (section === "tools") {
+      navigate("/mental-wellness-tools");
+      onOpenChange(false);
+    } else if (section === "therapist") {
+      navigate("/therapist-questionnaire");
+      onOpenChange(false);
+    }
+  };
+
   const handleSendMessage = (message: string) => {
     setMessages(prev => [...prev, { text: message, isUser: true }]);
     
+    // Check for navigation commands
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes("take me to") || lowerMessage.includes("go to")) {
+      if (lowerMessage.includes("workshop")) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, { 
+            text: "Taking you to the Workshops section now.", 
+            isUser: false 
+          }]);
+          
+          setTimeout(() => navigateToSection("workshops"), 1000);
+        }, 500);
+        return;
+      } else if (lowerMessage.includes("community") || lowerMessage.includes("chat") || lowerMessage.includes("forum")) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, { 
+            text: "Taking you to the Community Support section now.", 
+            isUser: false 
+          }]);
+          
+          setTimeout(() => navigateToSection("community"), 1000);
+        }, 500);
+        return;
+      }
+    }
+    
+    // Generate normal response
     setTimeout(() => {
-      const responses = [
-        "I'm here to help guide you through Thrive MT. What specific feature are you looking for?",
-        "Recovery is a journey, and I'm here to help you navigate it. What can I assist you with today?",
-        "Thank you for sharing. Remember, each step forward is progress. How else can I support you?",
-        "Thrive MT has many resources available. Would you like to explore our workshops, tools, or support options?",
-        "That's a great question. Let me help you find the information you need."
-      ];
+      const response = generateResponse(message);
       
       setMessages(prev => [...prev, { 
-        text: responses[Math.floor(Math.random() * responses.length)], 
+        text: response, 
         isUser: false 
       }]);
       
@@ -88,6 +175,41 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange, userName 
         
         <MessageList messages={messages} />
         <MessageInput onSendMessage={handleSendMessage} />
+        
+        <div className="mt-4 flex flex-wrap gap-2 justify-center">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            onClick={() => handleSendMessage("Tell me about workshops")}
+          >
+            Workshops <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            onClick={() => handleSendMessage("Tell me about community support")}
+          >
+            Community <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            onClick={() => handleSendMessage("How do I find tools?")}
+          >
+            Tools <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs"
+            onClick={() => handleSendMessage("How do I track progress?")}
+          >
+            Progress <ArrowRight className="ml-1 h-3 w-3" />
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

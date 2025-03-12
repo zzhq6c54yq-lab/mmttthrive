@@ -19,7 +19,7 @@ import CommunitySupport from "@/pages/CommunitySupport";
 import ResourceLibrary from "@/pages/ResourceLibrary";
 import ProgressReports from "@/pages/ProgressReports";
 import HolisticWellness from "@/pages/HolisticWellness";
-import HelpButton from "@/components/HelpButton";
+import HelpNavButton from "@/components/help/HelpNavButton";
 
 function App() {
   return (
@@ -52,7 +52,7 @@ function App() {
         <Route path="/progress-analytics" element={<Page title="Progress Analytics" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <HelpButton />
+      <HelpNavButton />
       <Toaster />
     </Router>
   );
