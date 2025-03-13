@@ -1,15 +1,14 @@
 
 import React from "react";
-import { Brain, TrendingUp, AlertCircle } from "lucide-react";
+import { Brain, TrendingUp, AlertCircle, Clock } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 
 const InsightsSection = () => {
   // Mock data for insights
   const moodData = {
     average: 7.2,
     improvement: "+12%",
-    triggers: ["Work stress", "Poor sleep"],
+    triggers: ["Work stress", "Poor sleep", "Social media"],
     patterns: [
       { day: "Mon", value: 45 },
       { day: "Tue", value: 65 },
@@ -19,6 +18,11 @@ const InsightsSection = () => {
       { day: "Sat", value: 85 },
       { day: "Sun", value: 90 },
     ],
+    timeOfDay: [
+      { time: "Morning", mood: "7.5" },
+      { time: "Afternoon", mood: "6.8" },
+      { time: "Evening", mood: "7.4" },
+    ]
   };
 
   return (
@@ -61,6 +65,21 @@ const InsightsSection = () => {
                     style={{ height: `${day.value}px` }} 
                   />
                   <span className="text-xs mt-1">{day.day}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="text-sm text-muted-foreground">Time of Day Impact</span>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {moodData.timeOfDay.map((time, index) => (
+                <div key={index} className="text-center p-1.5 bg-[#B87333]/5 rounded-md">
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#B87333]">
+                    <Clock className="h-3 w-3" />
+                    {time.time}
+                  </div>
+                  <div className="font-medium mt-1">{time.mood}</div>
                 </div>
               ))}
             </div>

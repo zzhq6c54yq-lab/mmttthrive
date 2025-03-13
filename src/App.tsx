@@ -22,6 +22,7 @@ import HolisticWellness from "@/pages/HolisticWellness";
 import HelpNavButton from "@/components/help/HelpNavButton";
 import BarterSystem from "@/pages/BarterSystem";
 import LifestyleIntegration from "@/pages/LifestyleIntegration";
+import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
         <Route path="/financial-assistance" element={<Page title="Financial Assistance Application" />} />
         <Route path="/contact" element={<Page title="Contact Support" />} />
         <Route path="/lifestyle-integration" element={<LifestyleIntegration />} />
+        <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
         <Route path="/settings" element={<Page title="User Settings" />} />
         <Route path="/profile" element={<Page title="User Profile" />} />
         <Route path="*" element={<NotFound />} />

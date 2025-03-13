@@ -44,6 +44,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       path: "/personalized-content"
     },
     {
+      title: "Games & Quizzes",
+      description: "Fun and therapeutic games and quizzes to boost mental wellbeing",
+      icon: Puzzle,
+      path: "/games-and-quizzes"
+    },
+    {
       title: "Resource Library",
       description: "Comprehensive mental health resources and educational content",
       icon: Library,
