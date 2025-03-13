@@ -58,6 +58,8 @@ function App() {
         <Route path="/financial-assistance" element={<Page title="Financial Assistance Application" />} />
         <Route path="/contact" element={<Page title="Contact Support" />} />
         <Route path="/lifestyle-integration" element={<LifestyleIntegration />} />
+        <Route path="/settings" element={<Page title="User Settings" />} />
+        <Route path="/profile" element={<Page title="User Profile" />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpNavButton />

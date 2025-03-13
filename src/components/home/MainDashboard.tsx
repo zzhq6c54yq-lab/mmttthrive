@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +6,10 @@ import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link, useNavigate } from "react-router-dom";
 import HelpNavButton from "@/components/help/HelpNavButton";
+import Header from "@/components/layout/Header";
+import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
+import InsightsSection from "@/components/dashboard/InsightsSection";
+import QuizzesSection from "@/components/dashboard/QuizzesSection";
 
 interface MainDashboardProps {
   userName: string;
@@ -162,6 +165,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-0 px-0 flex flex-col">
+      <Header />
+      
       <div className="w-full relative overflow-hidden py-0">
         <div className="absolute inset-0 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]"></div>
         <div className="absolute inset-0 opacity-20">
@@ -256,6 +261,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       </div>
 
       <div className="container mx-auto max-w-6xl px-4 pt-8 flex-grow">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <UpcomingAppointments />
+          <InsightsSection />
+          <QuizzesSection />
+        </div>
+        
         <div className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-gray-800">Monthly Featured Workshops</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
