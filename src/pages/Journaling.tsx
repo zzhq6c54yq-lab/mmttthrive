@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, List, Calendar, Clock, Save } from "lucide-react";
+import { ArrowLeft, BookOpen, List, Calendar, Clock, Save, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,7 @@ const Journaling = () => {
   const { toast } = useToast();
   const [journalEntry, setJournalEntry] = useState("");
   const [activeTab, setActiveTab] = useState("write");
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
   const handleSaveEntry = () => {
     if (journalEntry.trim()) {
@@ -20,6 +21,17 @@ const Journaling = () => {
         title: "Journal Entry Saved",
         description: "Your journal entry has been saved successfully.",
       });
+      
+      // Create downloadable content for the entry
+      const entryDate = new Date().toLocaleDateString();
+      const entryTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const content = `Journal Entry - ${entryDate} ${entryTime}\n\n${journalEntry}`;
+      
+      // Create a blob and URL for downloading
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      setDownloadUrl(url);
+      
       setJournalEntry("");
     } else {
       toast({
@@ -42,6 +54,13 @@ const Journaling = () => {
   const handlePromptSelect = (prompt: string) => {
     setJournalEntry(prompt + "\n\n");
     setActiveTab("write");
+  };
+
+  const handleDownload = () => {
+    toast({
+      title: "Entry Downloaded",
+      description: "Your journal entry has been downloaded successfully.",
+    });
   };
 
   return (
@@ -94,13 +113,27 @@ const Journaling = () => {
                   value={journalEntry}
                   onChange={(e) => setJournalEntry(e.target.value)}
                 />
-                <Button 
-                  className="w-full"
-                  onClick={handleSaveEntry}
-                >
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Entry
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  <Button 
+                    className="flex-1"
+                    onClick={handleSaveEntry}
+                  >
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Entry
+                  </Button>
+                  {downloadUrl && (
+                    <Button 
+                      variant="outline"
+                      className="flex-1"
+                      asChild
+                    >
+                      <a href={downloadUrl} download={`journal-entry-${new Date().toISOString().split('T')[0]}.txt`} onClick={handleDownload}>
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Entry
+                      </a>
+                    </Button>
+                  )}
+                </div>
               </CardContent>
             </Card>
 

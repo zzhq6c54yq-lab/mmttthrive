@@ -1,12 +1,14 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, User, Calendar, Award, BookOpen, ChevronRight, Edit2 } from "lucide-react";
+import { ArrowLeft, User, Mail, Phone, Calendar, Edit, Camera, Badge } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HomeButton from "@/components/HomeButton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge as UIBadge } from "@/components/ui/badge";
+import HomeButton from "@/components/HomeButton";
 
 const UserProfile = () => {
   return (
@@ -14,7 +16,7 @@ const UserProfile = () => {
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
         <div className="container px-4 max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Link>
@@ -22,144 +24,179 @@ const UserProfile = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-light mb-4">My Profile</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">View and manage your personal information and progress.</p>
+          <p className="text-xl text-gray-300 max-w-3xl">Manage your personal information and achievements.</p>
         </div>
       </div>
 
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-1">
-            <Card>
-              <CardHeader className="text-center">
-                <div className="flex justify-center mb-4">
-                  <Avatar className="h-24 w-24">
-                    <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" alt="John Doe" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                </div>
-                <CardTitle>John Doe</CardTitle>
-                <CardDescription>Member since January 2024</CardDescription>
-              </CardHeader>
-              <CardContent className="text-center">
-                <Button variant="outline" className="mt-2">
-                  <Edit2 className="mr-2 h-4 w-4" />
-                  Edit Profile
+      <div className="container px-4 py-12 max-w-5xl mx-auto">
+        <Card className="mb-8">
+          <CardContent className="p-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <div className="relative">
+                <Avatar className="h-32 w-32">
+                  <AvatarImage src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80" />
+                  <AvatarFallback>JP</AvatarFallback>
+                </Avatar>
+                <Button size="icon" className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-[#B87333] hover:bg-[#B87333]/90">
+                  <Camera className="h-4 w-4" />
                 </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Quick Stats</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-500">Profile Completion</span>
-                    <span className="text-sm font-medium">85%</span>
-                  </div>
-                  <Progress value={85} className="h-2" />
+              </div>
+              
+              <div className="flex-1 text-center md:text-left">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                  <h2 className="text-2xl font-semibold">Jane Portman</h2>
+                  <Button variant="outline" className="mt-2 md:mt-0">
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit Profile
+                  </Button>
                 </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-500">Wellness Score</span>
-                    <span className="text-sm font-medium">72%</span>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div className="flex items-center">
+                    <Mail className="h-4 w-4 text-muted-foreground mr-2" />
+                    <span>jane.portman@example.com</span>
                   </div>
-                  <Progress value={72} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-500">Goal Progress</span>
-                    <span className="text-sm font-medium">60%</span>
+                  <div className="flex items-center">
+                    <Phone className="h-4 w-4 text-muted-foreground mr-2" />
+                    <span>(555) 123-4567</span>
                   </div>
-                  <Progress value={60} className="h-2" />
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 text-muted-foreground mr-2" />
+                    <span>Member since June 2023</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Badge className="h-4 w-4 text-muted-foreground mr-2" />
+                    <span>Premium Member</span>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="md:col-span-2 space-y-6">
+                
+                <div className="flex flex-wrap gap-2">
+                  <UIBadge className="bg-[#B87333] hover:bg-[#B87333]/90">60-Day Streak</UIBadge>
+                  <UIBadge variant="outline">Mindfulness Expert</UIBadge>
+                  <UIBadge variant="outline">Journal Master</UIBadge>
+                  <UIBadge variant="outline">Workshop Enthusiast</UIBadge>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Tabs defaultValue="activity">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="achievements">Achievements</TabsTrigger>
+            <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="activity">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-blue-500" />
-                  Personal Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <dl className="space-y-4">
-                  <div className="flex justify-between py-3 border-b">
-                    <dt className="text-gray-500">Email</dt>
-                    <dd className="font-medium">john.doe@example.com</dd>
-                  </div>
-                  <div className="flex justify-between py-3 border-b">
-                    <dt className="text-gray-500">Phone</dt>
-                    <dd className="font-medium">+1 (555) 123-4567</dd>
-                  </div>
-                  <div className="flex justify-between py-3 border-b">
-                    <dt className="text-gray-500">Location</dt>
-                    <dd className="font-medium">New York, USA</dd>
-                  </div>
-                  <div className="flex justify-between py-3">
-                    <dt className="text-gray-500">Time Zone</dt>
-                    <dd className="font-medium">Eastern Time (ET)</dd>
-                  </div>
-                </dl>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-blue-500" />
-                  Recent Activity
-                </CardTitle>
+                <CardTitle>Recent Activity</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {[
-                    { date: "2024-03-14", activity: "Completed weekly check-in" },
-                    { date: "2024-03-12", activity: "Attended therapy session" },
-                    { date: "2024-03-10", activity: "Completed mindfulness exercise" },
-                    { date: "2024-03-08", activity: "Updated wellness goals" }
-                  ].map((item, index) => (
-                    <div key={index} className="flex justify-between items-center py-3 border-b last:border-0">
-                      <div className="flex items-center gap-4">
-                        <div className="text-sm text-gray-500">{item.date}</div>
-                        <div>{item.activity}</div>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <div className="flex items-start gap-4">
+                    <div className="bg-[#B87333]/10 p-2 rounded-full">
+                      <Calendar className="h-5 w-5 text-[#B87333]" />
                     </div>
-                  ))}
+                    <div>
+                      <p className="font-medium">Attended Stress Management Workshop</p>
+                      <p className="text-sm text-muted-foreground">2 days ago</p>
+                    </div>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="bg-[#B87333]/10 p-2 rounded-full">
+                      <User className="h-5 w-5 text-[#B87333]" />
+                    </div>
+                    <div>
+                      <p className="font-medium">Completed Mental Health Assessment</p>
+                      <p className="text-sm text-muted-foreground">1 week ago</p>
+                    </div>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="bg-[#B87333]/10 p-2 rounded-full">
+                      <Badge className="h-5 w-5 text-[#B87333]" />
+                    </div>
+                    <div>
+                      <p className="font-medium">Earned "30-Day Streak" Badge</p>
+                      <p className="text-sm text-muted-foreground">2 weeks ago</p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-
+          </TabsContent>
+          
+          <TabsContent value="achievements">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="h-5 w-5 text-blue-500" />
-                  Achievements
-                </CardTitle>
+                <CardTitle>Your Achievements</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    { title: "Early Bird", description: "Completed 5 morning check-ins" },
-                    { title: "Mindfulness Master", description: "30 days of meditation" },
-                    { title: "Goal Getter", description: "Achieved first wellness goal" },
-                    { title: "Consistent Care", description: "Attended 10 therapy sessions" }
-                  ].map((achievement, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <h3 className="font-medium mb-1">{achievement.title}</h3>
-                      <p className="text-sm text-gray-500">{achievement.description}</p>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card className="border-[#B87333]/20">
+                    <CardContent className="p-4 text-center">
+                      <div className="bg-[#B87333]/10 p-4 rounded-full mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                        <Badge className="h-6 w-6 text-[#B87333]" />
+                      </div>
+                      <h3 className="font-medium mb-2">60-Day Streak</h3>
+                      <p className="text-sm text-muted-foreground">Consistently engaged with the platform for 60 days</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="p-4 text-center">
+                      <div className="bg-gray-100 p-4 rounded-full mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                        <Badge className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <h3 className="font-medium mb-2">Meditation Master</h3>
+                      <p className="text-sm text-muted-foreground">Complete 50 meditation sessions (32/50)</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="p-4 text-center">
+                      <div className="bg-gray-100 p-4 rounded-full mx-auto w-16 h-16 flex items-center justify-center mb-4">
+                        <Badge className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <h3 className="font-medium mb-2">Workshop Expert</h3>
+                      <p className="text-sm text-muted-foreground">Attend 10 different workshops (7/10)</p>
+                    </CardContent>
+                  </Card>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </TabsContent>
+          
+          <TabsContent value="preferences">
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Preferences</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4">Personalize what content you see based on your interests and needs.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Button variant="outline" className="justify-start">Anxiety Management</Button>
+                  <Button variant="outline" className="justify-start">Stress Reduction</Button>
+                  <Button variant="outline" className="justify-start">Sleep Improvement</Button>
+                  <Button variant="outline" className="justify-start">Mindfulness</Button>
+                  <Button variant="outline" className="justify-start">Depression Support</Button>
+                  <Button variant="outline" className="justify-start">Work-Life Balance</Button>
+                </div>
+                
+                <Button className="mt-6 bg-[#B87333] hover:bg-[#B87333]/90">
+                  Update Preferences
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
