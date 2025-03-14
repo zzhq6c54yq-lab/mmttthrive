@@ -1,0 +1,166 @@
+
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Phone, MessageSquare, Hospital, Clock, AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import HomeButton from "@/components/HomeButton";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+const CrisisSupport = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
+      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
+        <div className="container px-4 max-w-6xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/" className="inline-flex items-center text-red-400 hover:text-red-300 transition-colors">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
+            <HomeButton />
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl font-light mb-4">Crisis Support</h1>
+          <p className="text-xl text-gray-300 max-w-3xl">Immediate resources and support for mental health emergencies.</p>
+        </div>
+      </div>
+
+      <div className="container px-4 py-12 max-w-6xl mx-auto">
+        <Alert variant="destructive" className="mb-8">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Emergency Notice</AlertTitle>
+          <AlertDescription>
+            If you or someone you know is in immediate danger, please call emergency services (911) or go to your nearest emergency room.
+          </AlertDescription>
+        </Alert>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="border-red-200">
+            <CardHeader className="bg-red-50">
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Phone className="h-5 w-5 text-red-500" />
+                Crisis Hotlines
+              </CardTitle>
+              <CardDescription>24/7 phone support for mental health crises</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <div className="p-4 border rounded-lg">
+                  <h3 className="font-medium mb-1">National Suicide Prevention Lifeline</h3>
+                  <p className="text-gray-700 mb-2">Free and confidential support for people in distress.</p>
+                  <Button variant="outline" className="w-full">
+                    <Phone className="mr-2 h-4 w-4" />
+                    988 or 1-800-273-8255
+                  </Button>
+                </div>
+                
+                <div className="p-4 border rounded-lg">
+                  <h3 className="font-medium mb-1">Crisis Text Line</h3>
+                  <p className="text-gray-700 mb-2">Text-based crisis support available 24/7.</p>
+                  <Button variant="outline" className="w-full">
+                    <MessageSquare className="mr-2 h-4 w-4" />
+                    Text HOME to 741741
+                  </Button>
+                </div>
+                
+                <div className="p-4 border rounded-lg">
+                  <h3 className="font-medium mb-1">Veterans Crisis Line</h3>
+                  <p className="text-gray-700 mb-2">Support for veterans and their loved ones.</p>
+                  <Button variant="outline" className="w-full">
+                    <Phone className="mr-2 h-4 w-4" />
+                    988 then press 1
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Hospital className="h-5 w-5 text-blue-500" />
+                Local Resources
+              </CardTitle>
+              <CardDescription>Find help in your community</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-medium mb-2">Emergency Rooms</h3>
+                  <p className="text-gray-700 mb-3">
+                    For immediate life-threatening situations, go to your nearest emergency room or call 911.
+                  </p>
+                  <Button className="w-full">Find Nearest ER</Button>
+                </div>
+                
+                <div>
+                  <h3 className="font-medium mb-2">Crisis Centers</h3>
+                  <p className="text-gray-700 mb-3">
+                    Walk-in crisis centers can provide immediate assessment and support.
+                  </p>
+                  <Button className="w-full">Find Crisis Centers</Button>
+                </div>
+                
+                <div>
+                  <h3 className="font-medium mb-2">Mobile Crisis Units</h3>
+                  <p className="text-gray-700 mb-3">
+                    Teams that can come to your location to provide emergency mental health services.
+                  </p>
+                  <Button className="w-full">Find Mobile Crisis Units</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-xl flex items-center gap-2">
+              <Clock className="h-5 w-5 text-green-500" />
+              Crisis Safety Planning
+            </CardTitle>
+            <CardDescription>Be prepared before a crisis occurs</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="p-4 border rounded-lg">
+                <h3 className="font-medium mb-2">Personal Safety Plan</h3>
+                <p className="text-gray-700 mb-3">
+                  Create a plan to help you navigate moments of crisis. Include warning signs, coping strategies, and emergency contacts.
+                </p>
+                <Button className="w-full">Create Safety Plan</Button>
+              </div>
+              
+              <div className="p-4 border rounded-lg">
+                <h3 className="font-medium mb-2">Crisis Support Network</h3>
+                <p className="text-gray-700 mb-3">
+                  Identify friends, family members, or professionals who can support you during difficult times.
+                </p>
+                <Button className="w-full">Build Support Network</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-light mb-6 text-center">Speak with a Crisis Counselor</h2>
+          <p className="text-gray-700 mb-6 text-center">
+            Our trained crisis counselors are available to help you navigate difficult situations.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" className="bg-red-600 hover:bg-red-700">
+              <Phone className="mr-2 h-5 w-5" />
+              Call Now
+            </Button>
+            <Button size="lg" variant="outline">
+              <MessageSquare className="mr-2 h-5 w-5" />
+              Text Chat
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CrisisSupport;

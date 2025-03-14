@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Heart, Users, BookOpen, MessageCircle, Video, Calendar, Download, Lightbulb } from "lucide-react";
+import { ArrowLeft, Heart, Users, BookOpen, MessageCircle, Video, Calendar, Download, Lightbulb, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
