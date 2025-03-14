@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { 
   ArrowLeft, BookOpen, ExternalLink, Search, 
   Download, Shield, Heart, Users, Phone, FileText,
-  Bookmark, Filter, ChevronDown, Check
+  Bookmark, Filter, ChevronDown, Check, MessageSquare,
+  Tool as ToolIcon, CheckSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

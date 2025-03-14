@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   Calendar, Clock, Filter, Search, User, ArrowLeft, 
-  ChevronDown, Check
+  ChevronDown, Check, Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

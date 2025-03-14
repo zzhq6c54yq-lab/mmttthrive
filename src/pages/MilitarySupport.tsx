@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { 
   Shield, Award, Users, BookOpen, Heart, Phone, 
-  Calendar, MessageSquare, Flag
+  Calendar, MessageSquare, Flag, Mail, Clock, User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
