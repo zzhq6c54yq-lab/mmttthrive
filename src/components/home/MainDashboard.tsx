@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling, Footprints, Play, Pause, Volume2, Volume, ExternalLink, WalletCards, Landmark, Handshake, Calendar, Puzzle, HeartHandshake } from "lucide-react";
+import { Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen, Moon, HandHeart, ListChecks, FlameKindling, Footprints, Play, Pause, Volume2, Volume, ExternalLink, WalletCards, Landmark, Handshake, Calendar, Puzzle, HeartHandshake, Shield, Briefcase, Building } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { workshopData } from "@/data/workshopData";
 import { Link, useNavigate } from "react-router-dom";
@@ -145,6 +144,24 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       description: "Comprehensive approach to physical, mental, and spiritual wellbeing",
       icon: LeafyGreen,
       path: "/holistic-wellness"
+    },
+    {
+      title: "Department of Defense",
+      description: "Resources and support for military personnel and veterans",
+      icon: Shield,
+      path: "/department-of-defense"
+    },
+    {
+      title: "Small Business",
+      description: "Mental health resources for entrepreneurs and small business owners",
+      icon: Briefcase,
+      path: "/small-business"
+    },
+    {
+      title: "The College Experience",
+      description: "Support for students navigating the challenges of college life",
+      icon: GraduationCap,
+      path: "/college-experience"
     }
   ];
   
@@ -296,7 +313,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {featuredWorkshops.map((workshop, index) => {
               const colorClass = workshop.color.split(' ')[0];
-              const accentColor = colorClass.includes('bg-[#') 
+              const accentColor = colorClass.includes('bg-[') 
                 ? colorClass.replace('bg-[', '').replace(']/10', '') 
                 : '#9b87f5';
               const isActive = activeVideoIndex === index;
