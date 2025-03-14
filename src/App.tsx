@@ -38,6 +38,11 @@ import FinancialAssistance from "@/pages/FinancialAssistance";
 import ContactSupport from "@/pages/ContactSupport";
 import UserSettings from "@/pages/UserSettings";
 import UserProfile from "@/pages/UserProfile";
+import MilitarySupport from "@/pages/MilitarySupport";
+import MilitaryWorkshops from "@/pages/MilitaryWorkshops";
+import MilitaryResources from "@/pages/MilitaryResources";
+import MilitaryAffirmations from "@/pages/MilitaryAffirmations";
+import MilitaryBlog from "@/pages/MilitaryBlog";
 
 function App() {
   return (
@@ -78,6 +83,14 @@ function App() {
         <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
         <Route path="/settings" element={<UserSettings />} />
         <Route path="/profile" element={<UserProfile />} />
+        
+        {/* Military Support Section */}
+        <Route path="/military-support" element={<MilitarySupport />} />
+        <Route path="/military-workshops" element={<MilitaryWorkshops />} />
+        <Route path="/military-resources" element={<MilitaryResources />} />
+        <Route path="/military-affirmations" element={<MilitaryAffirmations />} />
+        <Route path="/military-blog" element={<MilitaryBlog />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
       <HelpNavButton />
