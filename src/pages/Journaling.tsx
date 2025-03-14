@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, List, Calendar, Clock, Save } from "lucide-react";
@@ -61,7 +62,7 @@ const Journaling = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <Tabs defaultValue="write" className="w-full">
+        <Tabs defaultValue="write" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="write">Write</TabsTrigger>
             <TabsTrigger value="prompts">Prompts</TabsTrigger>

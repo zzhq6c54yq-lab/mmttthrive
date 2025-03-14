@@ -1,23 +1,21 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Settings, Bell, Lock, Eye, EyeOff, Save } from "lucide-react";
+import { ArrowLeft, Settings, Bell, Lock, Eye, Globe, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
 const UserSettings = () => {
   const { toast } = useToast();
-  const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleSaveSettings = () => {
+  const handleToggle = (setting: string) => {
     toast({
-      title: "Settings Saved",
-      description: "Your settings have been updated successfully.",
+      title: `${setting} setting updated`,
+      description: "Your settings have been saved successfully.",
     });
   };
 
@@ -33,65 +31,56 @@ const UserSettings = () => {
             <HomeButton />
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Account Settings</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">Customize your account preferences and security settings.</p>
+          <h1 className="text-4xl md:text-5xl font-light mb-4">Settings</h1>
+          <p className="text-xl text-gray-300 max-w-3xl">Customize your experience and preferences.</p>
         </div>
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <Tabs defaultValue="general" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="general">General</TabsTrigger>
+        <Tabs defaultValue="account" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsTrigger value="account">Account</TabsTrigger>
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="privacy">Privacy</TabsTrigger>
+            <TabsTrigger value="appearance">Appearance</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="general" className="space-y-6">
+          <TabsContent value="account" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Settings className="h-5 w-5 text-blue-500" />
-                  General Settings
+                  Account Settings
                 </CardTitle>
                 <CardDescription>
-                  Manage your account information and preferences.
+                  Manage your account details and preferences
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">Full Name</label>
-                  <Input id="name" defaultValue="John Doe" />
+                <div className="space-y-1">
+                  <h3 className="font-medium">Personal Information</h3>
+                  <p className="text-sm text-gray-500">Update your name, email, and other account details</p>
+                  <Button variant="outline" className="mt-2">Edit Profile</Button>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email Address</label>
-                  <Input id="email" type="email" defaultValue="john.doe@example.com" />
+                
+                <div className="space-y-1">
+                  <h3 className="font-medium">Change Password</h3>
+                  <p className="text-sm text-gray-500">Update your password for added security</p>
+                  <Button variant="outline" className="mt-2">Change Password</Button>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="timezone" className="text-sm font-medium">Timezone</label>
-                  <select id="timezone" className="w-full p-2 border rounded-md">
-                    <option>Eastern Time (ET)</option>
-                    <option>Central Time (CT)</option>
-                    <option>Mountain Time (MT)</option>
-                    <option>Pacific Time (PT)</option>
-                  </select>
+                
+                <div className="space-y-1">
+                  <h3 className="font-medium">Connected Accounts</h3>
+                  <p className="text-sm text-gray-500">Manage connections to other services</p>
+                  <Button variant="outline" className="mt-2">Manage Connections</Button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Dark Mode</span>
-                  <Switch />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Accessibility Mode</span>
-                  <Switch />
+                
+                <div className="space-y-1">
+                  <h3 className="font-medium">Delete Account</h3>
+                  <p className="text-sm text-gray-500">Permanently delete your account and all data</p>
+                  <Button variant="destructive" className="mt-2">Delete Account</Button>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={handleSaveSettings}
-                >
-                  Save Changes
-                </Button>
-              </CardFooter>
             </Card>
           </TabsContent>
           
@@ -103,116 +92,159 @@ const UserSettings = () => {
                   Notification Preferences
                 </CardTitle>
                 <CardDescription>
-                  Choose how and when you'd like to be notified.
+                  Control when and how you receive notifications
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent>
                 <div className="space-y-4">
-                  <h3 className="font-medium">Email Notifications</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Appointment Reminders</span>
-                      <Switch defaultChecked />
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Email Notifications</h3>
+                      <p className="text-sm text-gray-500">Receive notifications via email</p>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Therapy Session Summaries</span>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">New Resources Available</span>
-                      <Switch defaultChecked />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Weekly Progress Reports</span>
-                      <Switch />
-                    </div>
+                    <Switch onCheckedChange={() => handleToggle("Email notifications")} />
                   </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="font-medium">In-App Notifications</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Message Notifications</span>
-                      <Switch defaultChecked />
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Appointment Reminders</h3>
+                      <p className="text-sm text-gray-500">Get reminded about upcoming therapy sessions</p>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Daily Check-in Reminders</span>
-                      <Switch defaultChecked />
+                    <Switch defaultChecked onCheckedChange={() => handleToggle("Appointment reminders")} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Wellness Reminders</h3>
+                      <p className="text-sm text-gray-500">Regular reminders for wellness activities</p>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Community Activity</span>
-                      <Switch />
+                    <Switch defaultChecked onCheckedChange={() => handleToggle("Wellness reminders")} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Community Updates</h3>
+                      <p className="text-sm text-gray-500">Notifications about community events and posts</p>
                     </div>
+                    <Switch onCheckedChange={() => handleToggle("Community updates")} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3">
+                    <div>
+                      <h3 className="font-medium">Marketing Communications</h3>
+                      <p className="text-sm text-gray-500">Receive promotional content and offers</p>
+                    </div>
+                    <Switch onCheckedChange={() => handleToggle("Marketing communications")} />
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={handleSaveSettings}
-                >
-                  Save Preferences
-                </Button>
-              </CardFooter>
             </Card>
           </TabsContent>
           
-          <TabsContent value="security" className="space-y-6">
+          <TabsContent value="privacy" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="h-5 w-5 text-blue-500" />
-                  Security Settings
+                  Privacy Settings
                 </CardTitle>
                 <CardDescription>
-                  Manage your password and security preferences.
+                  Control your data and privacy preferences
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="current-password" className="text-sm font-medium">Current Password</label>
-                  <div className="relative">
-                    <Input 
-                      id="current-password" 
-                      type={showPassword ? "text" : "password"} 
-                      defaultValue="password123" 
-                    />
-                    <button 
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-500" />
-                      ) : (
-                        <Eye className="h-4 w-4 text-gray-500" />
-                      )}
-                    </button>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Profile Visibility</h3>
+                      <p className="text-sm text-gray-500">Control who can see your profile information</p>
+                    </div>
+                    <Button variant="outline" onClick={() => handleToggle("Profile visibility")}>
+                      <Eye className="h-4 w-4 mr-2" />
+                      Manage
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Data Usage</h3>
+                      <p className="text-sm text-gray-500">Control how your data is used to improve services</p>
+                    </div>
+                    <Switch defaultChecked onCheckedChange={() => handleToggle("Data usage")} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Cookie Preferences</h3>
+                      <p className="text-sm text-gray-500">Manage cookie settings for your browsing experience</p>
+                    </div>
+                    <Button variant="outline" onClick={() => handleToggle("Cookie preferences")}>Manage</Button>
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3">
+                    <div>
+                      <h3 className="font-medium">Download Your Data</h3>
+                      <p className="text-sm text-gray-500">Get a copy of all your personal data</p>
+                    </div>
+                    <Button variant="outline" onClick={() => handleToggle("Data download")}>Download</Button>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="new-password" className="text-sm font-medium">New Password</label>
-                  <Input id="new-password" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="confirm-password" className="text-sm font-medium">Confirm New Password</label>
-                  <Input id="confirm-password" type="password" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Two-Factor Authentication</span>
-                  <Switch />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="appearance" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Moon className="h-5 w-5 text-blue-500" />
+                  Appearance Settings
+                </CardTitle>
+                <CardDescription>
+                  Customize the look and feel of the application
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Dark Mode</h3>
+                      <p className="text-sm text-gray-500">Switch between light and dark theme</p>
+                    </div>
+                    <Switch onCheckedChange={() => handleToggle("Dark mode")} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Text Size</h3>
+                      <p className="text-sm text-gray-500">Adjust the size of text throughout the app</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={() => handleToggle("Text size")}>A-</Button>
+                      <Button variant="outline" size="sm" onClick={() => handleToggle("Text size")}>A+</Button>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <h3 className="font-medium">Language</h3>
+                      <p className="text-sm text-gray-500">Choose your preferred language</p>
+                    </div>
+                    <Button variant="outline" onClick={() => handleToggle("Language")}>
+                      <Globe className="h-4 w-4 mr-2" />
+                      English (US)
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-3">
+                    <div>
+                      <h3 className="font-medium">Animations</h3>
+                      <p className="text-sm text-gray-500">Enable or disable interface animations</p>
+                    </div>
+                    <Switch defaultChecked onCheckedChange={() => handleToggle("Animations")} />
+                  </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button 
-                  className="w-full"
-                  onClick={handleSaveSettings}
-                >
-                  <Save className="mr-2 h-4 w-4" />
-                  Update Security Settings
-                </Button>
-              </CardFooter>
             </Card>
           </TabsContent>
         </Tabs>
