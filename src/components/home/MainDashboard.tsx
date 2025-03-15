@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -306,6 +305,15 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             >
               <WalletCards className="h-4 w-4" />
               <span>Co-Pay Credits</span>
+            </Button>
+            
+            <Button 
+              variant="bronze"
+              className="flex items-center gap-2 px-6 py-2 rounded-md"
+              onClick={() => navigate("/workplace-mental-health")}
+            >
+              <Building className="h-4 w-4" />
+              <span>Workplace Mental Health</span>
             </Button>
           </div>
         </div>
