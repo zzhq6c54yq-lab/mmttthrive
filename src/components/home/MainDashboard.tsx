@@ -166,13 +166,13 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                   </CardContent>
                 </Card>
                 
-                <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigateToFeature("/mindfulness")}>
+                <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigateToFeature("/workplace-mental-health")}>
                   <CardHeader className="p-4">
-                    <Flower2 className="h-6 w-6 text-amber-500" />
+                    <Briefcase className="h-6 w-6 text-amber-500" />
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
-                    <CardTitle className="text-base">Mindfulness</CardTitle>
-                    <CardDescription className="text-xs mt-1">Present-moment awareness</CardDescription>
+                    <CardTitle className="text-base">Small Business</CardTitle>
+                    <CardDescription className="text-xs mt-1">Work-life balance support</CardDescription>
                   </CardContent>
                 </Card>
               </div>
