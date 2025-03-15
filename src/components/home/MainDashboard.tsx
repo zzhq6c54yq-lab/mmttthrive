@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { 
   Heart, 
@@ -54,7 +53,13 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold">Welcome back, {displayName}</h1>
-            <HenryButton isActive={showHenry} onClick={onHenryToggle} />
+            <Button 
+              variant="ghost" 
+              onClick={onHenryToggle}
+              className="text-white hover:bg-white/10"
+            >
+              {showHenry ? "Hide Henry" : "Show Henry"}
+            </Button>
           </div>
           <p className="text-lg text-blue-100">Your journey to better mental health continues today</p>
           
@@ -122,10 +127,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2">
                 <UpcomingAppointments />
-                <QuizzesSection navigateToFeature={navigateToFeature} />
+                <QuizzesSection />
               </div>
               <div className="md:col-span-1">
-                <InsightsSection goals={selectedGoals} />
+                <InsightsSection />
               </div>
             </div>
             
