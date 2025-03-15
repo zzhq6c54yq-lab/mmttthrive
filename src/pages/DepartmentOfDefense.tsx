@@ -6,17 +6,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Shield, UserRound, Phone, BookOpen, Calendar, Heart, Award, LifeBuoy, BarChart, ListChecks, Briefcase, Footprints, Flag } from "lucide-react";
+import { 
+  Shield, UserRound, Phone, BookOpen, Calendar, Heart, Award, LifeBuoy, 
+  BarChart, ListChecks, Briefcase, Footprints, Flag, Lightbulb, BookMarked,
+  GraduationCap, Medal, Puzzle, Users, BookOpen as BookOpenIcon, Brain, CheckSquare
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 import Page from "@/components/Page";
 import CrisisResourcesBar from "@/components/military/CrisisResourcesBar";
+import { 
+  educationalContent, 
+  inspirationalQuotes, 
+  successStories 
+} from "@/data/militaryEducationalData";
 
 const DepartmentOfDefense = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showWelcome, setShowWelcome] = useState(true);
+  const [currentQuote, setCurrentQuote] = useState(0);
 
   useEffect(() => {
     // Auto-hide welcome screen after 4 seconds
@@ -27,6 +37,14 @@ const DepartmentOfDefense = () => {
       return () => clearTimeout(timer);
     }
   }, [showWelcome]);
+
+  useEffect(() => {
+    // Rotate quotes every 8 seconds
+    const interval = setInterval(() => {
+      setCurrentQuote(prev => (prev + 1) % inspirationalQuotes.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -127,9 +145,25 @@ const DepartmentOfDefense = () => {
 
           <CrisisResourcesBar />
 
+          {/* Quote of the Day */}
+          <div className="my-6 bg-gradient-to-r from-[#0A1929] via-[#1c2e4a] to-[#0A1929] p-6 rounded-lg border border-[#B87333]/30">
+            <div className="flex items-start">
+              <div className="mr-4 p-2 bg-[#B87333]/20 rounded-full">
+                <Lightbulb className="h-6 w-6 text-[#B87333]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-[#B87333] mb-1">Quote of the Day</h3>
+                <div className="min-h-[60px] transition-all duration-500">
+                  <p className="text-white italic mb-2">"{inspirationalQuotes[currentQuote].text}"</p>
+                  <p className="text-sm text-gray-400">— {inspirationalQuotes[currentQuote].author}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="my-8">
             <Tabs defaultValue="dashboard" className="w-full" onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-5 mb-8 bg-[#0A1929]/50 p-1 border border-[#B87333]/30">
+              <TabsList className="grid grid-cols-6 mb-8 bg-[#0A1929]/50 p-1 border border-[#B87333]/30">
                 <TabsTrigger 
                   value="dashboard" 
                   className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
@@ -141,6 +175,12 @@ const DepartmentOfDefense = () => {
                   className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
                 >
                   Resources
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="education" 
+                  className="data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow"
+                >
+                  Education
                 </TabsTrigger>
                 <TabsTrigger 
                   value="assessments" 
@@ -288,6 +328,42 @@ const DepartmentOfDefense = () => {
                     </CardContent>
                   </Card>
                 </div>
+
+                {/* Success Stories */}
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Medal className="h-5 w-5 text-[#B87333]" />
+                      Success Stories
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Real stories from service members who've overcome challenges
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {successStories.slice(0, 2).map((story, index) => (
+                        <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10">
+                          <h3 className="font-semibold text-[#B87333] text-lg mb-2">{story.title}</h3>
+                          <p className="text-gray-300 text-sm mb-3">{story.summary}</p>
+                          <div className="flex items-center">
+                            <Badge className="bg-[#B87333]/20 text-[#B87333] border-none">
+                              {story.serviceType}
+                            </Badge>
+                            <span className="text-xs text-gray-400 ml-auto">{story.readTime} min read</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      className="w-full mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                      onClick={() => setActiveTab("education")}
+                    >
+                      View All Success Stories
+                    </Button>
+                  </CardContent>
+                </Card>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
@@ -510,6 +586,32 @@ const DepartmentOfDefense = () => {
                           <div className="text-sm text-gray-300">Civilian life adjustment resources</div>
                         </div>
                       </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-resources")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <Users className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Family Support</div>
+                          <div className="text-sm text-gray-300">Resources for military families</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-resources")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <Brain className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Resilience Building</div>
+                          <div className="text-sm text-gray-300">Mental fortitude techniques</div>
+                        </div>
+                      </Button>
                     </div>
                     <div className="mt-6">
                       <Button 
@@ -519,6 +621,238 @@ const DepartmentOfDefense = () => {
                       >
                         View All Military Resources
                       </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* New: Digital Library */}
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BookMarked className="h-5 w-5 text-[#B87333]" />
+                      Digital Library
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      E-books, audiobooks, and research papers on military mental health
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {educationalContent.filter(c => c.type === "E-Book").slice(0, 3).map((resource, index) => (
+                        <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
+                          <div className="flex justify-between items-start mb-2">
+                            <Badge variant="outline" className="bg-[#B87333]/10 text-[#B87333] border-none">
+                              {resource.type}
+                            </Badge>
+                            <Badge variant="outline" className="bg-transparent text-gray-400 border-gray-600">
+                              {resource.length}
+                            </Badge>
+                          </div>
+                          <h3 className="font-semibold text-white mb-2">{resource.title}</h3>
+                          <p className="text-sm text-gray-300 mb-4 line-clamp-2">{resource.description}</p>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                            onClick={() => handleButtonClick(`View ${resource.title}`)}
+                          >
+                            Read Now
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                      onClick={() => setActiveTab("education")}
+                    >
+                      Browse Full Library
+                    </Button>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* New Education Tab */}
+              <TabsContent value="education" className="space-y-8">
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <GraduationCap className="h-5 w-5 text-[#B87333]" />
+                      Educational Resources
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Learn about mental health topics relevant to military personnel
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <h3 className="text-lg font-semibold text-[#B87333] mb-4">Featured Courses</h3>
+                        <div className="space-y-4">
+                          {educationalContent.filter(c => c.type === "Course").slice(0, 3).map((course, index) => (
+                            <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
+                              <div className="flex justify-between items-center mb-2">
+                                <h4 className="font-medium text-white">{course.title}</h4>
+                                <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                                  {course.length}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-300 mb-3 line-clamp-2">{course.description}</p>
+                              <div className="flex justify-between items-center">
+                                <Badge className="bg-[#B87333]/20 text-[#B87333] border-none">
+                                  {course.category}
+                                </Badge>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  className="border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                                  onClick={() => handleButtonClick(`Enroll in ${course.title}`)}
+                                >
+                                  Enroll
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h3 className="text-lg font-semibold text-[#B87333] mb-4">Quick Learning</h3>
+                        <div className="space-y-4">
+                          {educationalContent.filter(c => c.type === "Article" || c.type === "Video").slice(0, 4).map((resource, index) => (
+                            <div key={index} className="p-3 bg-[#0A1929] rounded-lg border border-[#B87333]/10 flex items-start">
+                              <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                                {resource.type === "Video" ? (
+                                  <BookOpenIcon className="h-4 w-4 text-[#B87333]" />
+                                ) : (
+                                  <FileText className="h-4 w-4 text-[#B87333]" />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex justify-between items-center">
+                                  <h4 className="font-medium text-white text-sm">{resource.title}</h4>
+                                  <Badge variant="outline" className="text-xs bg-transparent border-none text-gray-400">
+                                    {resource.length}
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-gray-300 mt-1">{resource.category}</p>
+                              </div>
+                            </div>
+                          ))}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                            onClick={() => handleButtonClick("View all resources")}
+                          >
+                            View All Resources
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Success Stories */}
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Medal className="h-5 w-5 text-[#B87333]" />
+                      Success Stories
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Inspirational stories from military personnel who've overcome mental health challenges
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {successStories.map((story, index) => (
+                        <div key={index} className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:shadow-md hover:border-[#B87333]/30 transition-all duration-300">
+                          <h3 className="font-semibold text-[#B87333] text-lg mb-2">{story.title}</h3>
+                          <p className="text-gray-300 text-sm mb-3 line-clamp-3">{story.summary}</p>
+                          <div className="flex items-center justify-between">
+                            <Badge className="bg-[#B87333]/20 text-[#B87333] border-none">
+                              {story.serviceType}
+                            </Badge>
+                            <span className="text-xs text-gray-400">{story.readTime} min read</span>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full mt-3 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                            onClick={() => handleButtonClick(`Read ${story.title}`)}
+                          >
+                            Read Full Story
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Interactive Learning Tools */}
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Puzzle className="h-5 w-5 text-[#B87333]" />
+                      Interactive Learning Tools
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Engage with mental health concepts through interactive activities
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
+                        <div className="bg-[#B87333]/20 p-3 rounded-lg mb-3 flex justify-center">
+                          <Brain className="h-8 w-8 text-[#B87333]" />
+                        </div>
+                        <h3 className="font-semibold text-white text-center mb-2">Stress Response Simulator</h3>
+                        <p className="text-sm text-gray-300 mb-3 text-center">
+                          Interactive tool that visualizes how stress affects the mind and body during combat situations.
+                        </p>
+                        <Button 
+                          variant="outline"
+                          className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Launch Stress Response Simulator")}
+                        >
+                          Launch Tool
+                        </Button>
+                      </div>
+                      
+                      <div className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
+                        <div className="bg-[#B87333]/20 p-3 rounded-lg mb-3 flex justify-center">
+                          <CheckSquare className="h-8 w-8 text-[#B87333]" />
+                        </div>
+                        <h3 className="font-semibold text-white text-center mb-2">Coping Skills Trainer</h3>
+                        <p className="text-sm text-gray-300 mb-3 text-center">
+                          Practice and master coping techniques with real-time feedback and guided exercises.
+                        </p>
+                        <Button 
+                          variant="outline"
+                          className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Launch Coping Skills Trainer")}
+                        >
+                          Launch Tool
+                        </Button>
+                      </div>
+                      
+                      <div className="p-4 bg-[#0A1929] rounded-lg border border-[#B87333]/10 hover:border-[#B87333]/30 transition-all duration-300">
+                        <div className="bg-[#B87333]/20 p-3 rounded-lg mb-3 flex justify-center">
+                          <Users className="h-8 w-8 text-[#B87333]" />
+                        </div>
+                        <h3 className="font-semibold text-white text-center mb-2">Communication Scenarios</h3>
+                        <p className="text-sm text-gray-300 mb-3 text-center">
+                          Practice difficult conversations with family and teammates through guided role-playing.
+                        </p>
+                        <Button 
+                          variant="outline"
+                          className="w-full border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Launch Communication Scenarios")}
+                        >
+                          Launch Tool
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -580,6 +914,55 @@ const DepartmentOfDefense = () => {
                           variant="outline" 
                           className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
                           onClick={() => handleButtonClick("Sleep Assessment")}
+                        >
+                          Start Assessment
+                        </Button>
+                      </div>
+                      
+                      {/* New assessments */}
+                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h3 className="font-medium text-white">Moral Injury Assessment</h3>
+                            <p className="text-sm text-gray-300">15 minutes | Confidential</p>
+                          </div>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Moral Injury Assessment")}
+                        >
+                          Start Assessment
+                        </Button>
+                      </div>
+                      
+                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h3 className="font-medium text-white">Family Relationship Evaluation</h3>
+                            <p className="text-sm text-gray-300">10 minutes | Confidential</p>
+                          </div>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Family Relationship Assessment")}
+                        >
+                          Start Assessment
+                        </Button>
+                      </div>
+                      
+                      <div className="p-4 border border-[#B87333]/30 rounded-lg hover:bg-[#B87333]/10 cursor-pointer">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h3 className="font-medium text-white">Resilience Strength Finder</h3>
+                            <p className="text-sm text-gray-300">10-15 minutes | Confidential</p>
+                          </div>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Resilience Assessment")}
                         >
                           Start Assessment
                         </Button>
@@ -669,6 +1052,58 @@ const DepartmentOfDefense = () => {
                           variant="outline" 
                           className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
                           onClick={() => handleButtonClick("Family Resilience Program")}
+                        >
+                          Learn More & Enroll
+                        </Button>
+                      </div>
+                      
+                      {/* New Program */}
+                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
+                        <h3 className="text-xl font-semibold text-white">Moral Injury Healing Path</h3>
+                        <p className="text-gray-300 mt-2">
+                          Specialized program addressing the unique spiritual and ethical wounds that can occur during military service, particularly in combat situations.
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                            Spiritual Support
+                          </Badge>
+                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                            Guided Reflection
+                          </Badge>
+                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                            Peer Discussion
+                          </Badge>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Moral Injury Program")}
+                        >
+                          Learn More & Enroll
+                        </Button>
+                      </div>
+                      
+                      {/* New Program */}
+                      <div className="p-4 bg-[#0A1929] border border-[#B87333]/30 rounded-lg">
+                        <h3 className="text-xl font-semibold text-white">Sleep & Recovery Bootcamp</h3>
+                        <p className="text-gray-300 mt-2">
+                          An intensive 3-week program designed to reset disrupted sleep patterns and establish sustainable sleep hygiene practices for military personnel.
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                            Sleep Tracking
+                          </Badge>
+                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                            Daily Practices
+                          </Badge>
+                          <Badge variant="outline" className="bg-transparent border-[#B87333]/30 text-[#B87333]">
+                            Expert Guidance
+                          </Badge>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4 border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+                          onClick={() => handleButtonClick("Sleep Recovery Program")}
                         >
                           Learn More & Enroll
                         </Button>
