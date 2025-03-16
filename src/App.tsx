@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
 import MentalWellnessTools from "@/pages/MentalWellnessTools";
@@ -94,6 +94,9 @@ function App() {
         
         {/* DoD Portal Section */}
         <Route path="/dod-portal" element={<DoDPortal />} />
+        
+        {/* Add redirect from department-of-defense to dod-portal */}
+        <Route path="/department-of-defense" element={<Navigate to="/dod-portal" replace />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>

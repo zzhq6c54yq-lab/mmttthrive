@@ -7,7 +7,7 @@ type ToasterToast = ToastProps & {
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
-  duration?: number; // Added duration property
+  duration?: number;
 };
 
 const TOAST_LIMIT = 5;
@@ -112,6 +112,13 @@ function dispatch(action: Action) {
   });
 }
 
+type ToastProps = {
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  variant?: "default" | "destructive";
+  duration?: number;
+};
+
 function useToast() {
   const [state, setState] = React.useState<ToasterToastState>(memoryState);
 
@@ -127,12 +134,7 @@ function useToast() {
 
   return {
     ...state,
-    toast: (props: {
-      title?: React.ReactNode;
-      description?: React.ReactNode;
-      variant?: "default" | "destructive";
-      duration?: number; // Added duration property
-    }) => {
+    toast: (props: ToastProps) => {
       const id = genId();
 
       const update = (props: Partial<ToasterToast>) =>
@@ -145,12 +147,12 @@ function useToast() {
       dispatch({
         type: "ADD_TOAST",
         toast: {
-          ...props,
           id,
           open: true,
           onOpenChange: (open: boolean) => {
             if (!open) dismiss();
           },
+          ...props
         },
       });
 
@@ -167,12 +169,7 @@ function useToast() {
 export { useToast, type ToasterToast };
 
 // Export a simpler toast function for direct use
-export const toast = (props: {
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  variant?: "default" | "destructive";
-  duration?: number; // Added duration property
-}) => {
+export const toast = (props: ToastProps) => {
   const { toast } = useToast();
   return toast(props);
 };

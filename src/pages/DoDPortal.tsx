@@ -74,7 +74,10 @@ const DoDPortal: React.FC = () => {
     toast({
       title: "Welcome to the Military Support Portal",
       description: "Accessing your personalized dashboard...",
+      duration: 3000
     });
+    
+    // Navigate to the correct path that exists in our routes
     navigate("/military-support");
   };
 
