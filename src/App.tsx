@@ -43,6 +43,7 @@ import MilitaryWorkshops from "@/pages/MilitaryWorkshops";
 import MilitaryResources from "@/pages/MilitaryResources";
 import MilitaryAffirmations from "@/pages/MilitaryAffirmations";
 import MilitaryBlog from "@/pages/MilitaryBlog";
+import DoDPortal from "@/pages/DoDPortal";
 
 function App() {
   return (
@@ -90,6 +91,9 @@ function App() {
         <Route path="/military-resources" element={<MilitaryResources />} />
         <Route path="/military-affirmations" element={<MilitaryAffirmations />} />
         <Route path="/military-blog" element={<MilitaryBlog />} />
+        
+        {/* DoD Portal Section */}
+        <Route path="/dod-portal" element={<DoDPortal />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
