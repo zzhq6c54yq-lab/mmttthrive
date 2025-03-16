@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet";
@@ -428,7 +429,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <Award className="h-5 w-5 text-[#B87333]" />
                         Achievements & Goals
-                      CardTitle>
+                      </CardTitle>
                       <CardDescription className="text-gray-300">
                         Track your progress and set new goals
                       </CardDescription>
@@ -482,7 +483,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <BarChart className="h-5 w-5 text-[#B87333]" />
                         Resources For You
-                      CardTitle>
+                      </CardTitle>
                       <CardDescription className="text-gray-300">
                         Personalized recommendations based on your profile
                       </CardDescription>
@@ -533,7 +534,7 @@ const DepartmentOfDefense = () => {
                     <CardTitle className="flex items-center gap-2">
                       <LifeBuoy className="h-5 w-5 text-[#B87333]" />
                       Quick Support Options
-                    CardTitle>
+                    </CardTitle>
                     <CardDescription className="text-gray-300">
                       Get help when you need it most
                     </CardDescription>
@@ -867,4 +868,3 @@ const DepartmentOfDefense = () => {
 };
 
 export default DepartmentOfDefense;
-
