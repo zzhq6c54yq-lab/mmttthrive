@@ -426,7 +426,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <Award className="h-5 w-5 text-[#B87333]" />
                         Achievements & Goals
-                      </CardTitle>
+                      CardTitle>
                       <CardDescription className="text-gray-300">
                         Track your progress and set new goals
                       </CardDescription>
@@ -480,7 +480,7 @@ const DepartmentOfDefense = () => {
                       <CardTitle className="flex items-center gap-2">
                         <BarChart className="h-5 w-5 text-[#B87333]" />
                         Resources For You
-                      </CardTitle>
+                      CardTitle>
                       <CardDescription className="text-gray-300">
                         Personalized recommendations based on your profile
                       </CardDescription>
@@ -531,7 +531,7 @@ const DepartmentOfDefense = () => {
                     <CardTitle className="flex items-center gap-2">
                       <LifeBuoy className="h-5 w-5 text-[#B87333]" />
                       Quick Support Options
-                    </CardTitle>
+                    CardTitle>
                     <CardDescription className="text-gray-300">
                       Get help when you need it most
                     </CardDescription>
@@ -637,3 +637,184 @@ const DepartmentOfDefense = () => {
                           <Briefcase className="h-5 w-5 text-[#B87333]" />
                         </div>
                         <div className="text-left">
+                          <div className="font-medium">Career Development</div>
+                          <div className="text-sm text-gray-300">Guides and resources for career advancement</div>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="education" className="space-y-8">
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle>Education & Resources</CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Learn about mental health and wellness
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-education")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <GraduationCap className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Education</div>
+                          <div className="text-sm text-gray-300">Courses and workshops on mental health</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-resources")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <BookOpenIcon className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Books</div>
+                          <div className="text-sm text-gray-300">Recommended books on mental health</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-resources")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <Puzzle className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Games</div>
+                          <div className="text-sm text-gray-300">Interactive games to improve mental health</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-resources")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <Users className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Support Groups</div>
+                          <div className="text-sm text-gray-300">Connect with others who are going through similar experiences</div>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="assessments" className="space-y-8">
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle>Mental Health Assessments</CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Professional-grade assessments tailored for military personnel
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-gray-300">
+                      Complete these confidential assessments to help identify areas where you might benefit from additional support.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-assessments")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <CheckSquare className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">PTSD Assessment</div>
+                          <div className="text-sm text-gray-300">Assessments for PTSD</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-assessments")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <Brain className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Anxiety Assessment</div>
+                          <div className="text-sm text-gray-300">Assessments for anxiety</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-assessments")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <FileText className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Depression Assessment</div>
+                          <div className="text-sm text-gray-300">Assessments for depression</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-assessments")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <BookOpenIcon className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Inventory</div>
+                          <div className="text-sm text-gray-300">Assessments for overall mental health</div>
+                        </div>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="programs" className="space-y-8">
+                <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
+                  <CardHeader>
+                    <CardTitle>Specialized Programs</CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Programs designed for the unique needs of military personnel
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-programs")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <GraduationCap className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Training</div>
+                          <div className="text-sm text-gray-300">Training programs for mental health professionals</div>
+                        </div>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="justify-start border-[#B87333]/30 text-white hover:bg-[#B87333]/10 h-auto py-3"
+                        onClick={() => handleNavigate("/military-programs")}
+                      >
+                        <div className="mr-3 p-2 bg-[#B87333]/20 rounded-full">
+                          <Award className="h-5 w-5 text-[#B87333]" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">Mental Health Awards</div>
+                          <div className="text-sm text-gray-300">Recognition for mental health achievements</div
+
