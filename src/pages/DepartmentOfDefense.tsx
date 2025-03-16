@@ -194,42 +194,42 @@ const DepartmentOfDefense = () => {
               <TabsTrigger 
                 value="dashboard" 
                 onClick={() => handleTabChange("dashboard")}
-                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "dashboard" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+                className={activeTab === "dashboard" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}
               >
                 Dashboard
               </TabsTrigger>
               <TabsTrigger 
                 value="resources" 
                 onClick={() => handleTabChange("resources")}
-                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "resources" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+                className={activeTab === "resources" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}
               >
                 Resources
               </TabsTrigger>
               <TabsTrigger 
                 value="education" 
                 onClick={() => handleTabChange("education")}
-                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "education" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+                className={activeTab === "education" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}
               >
                 Education
               </TabsTrigger>
               <TabsTrigger 
                 value="assessments" 
                 onClick={() => handleTabChange("assessments")}
-                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "assessments" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+                className={activeTab === "assessments" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}
               >
                 Assessments
               </TabsTrigger>
               <TabsTrigger 
                 value="programs" 
                 onClick={() => handleTabChange("programs")}
-                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "programs" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+                className={activeTab === "programs" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}
               >
                 Programs
               </TabsTrigger>
               <TabsTrigger 
                 value="profile" 
                 onClick={() => handleTabChange("profile")}
-                className={`data-[state=active]:bg-[#B87333]/20 data-[state=active]:text-[#B87333] data-[state=active]:shadow ${activeTab === "profile" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}`}
+                className={activeTab === "profile" ? "bg-[#B87333]/20 text-[#B87333] shadow" : ""}
               >
                 My Profile
               </TabsTrigger>
@@ -255,8 +255,8 @@ const DepartmentOfDefense = () => {
           </div>
 
           <div className="my-8">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              {/* Tab content would go here - I'll include just a placeholder since it's very long */}
+            <Tabs value={activeTab} className="w-full">
+              {/* Tab Content */}
               <TabsContent value="dashboard" className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border-[#B87333]/30 text-white shadow-md">
