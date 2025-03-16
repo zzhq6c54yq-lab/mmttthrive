@@ -28,27 +28,20 @@ const DepartmentOfDefense = () => {
   const [currentQuote, setCurrentQuote] = useState(0);
 
   useEffect(() => {
-    // Show initial deep message for 8 seconds instead of 4
+    // Show initial deep message for 8 seconds, then transition to welcome
     if (showInitialMessage) {
       console.log("Showing initial message");
       const timer = setTimeout(() => {
-        console.log("Timer expired, hiding initial message");
+        console.log("Timer expired, transitioning to welcome screen");
         setShowInitialMessage(false);
         setShowWelcome(true);
       }, 8000); // 8 seconds
       return () => clearTimeout(timer);
     }
     
-    // Then show welcome screen for 4 seconds
-    if (showWelcome) {
-      console.log("Showing welcome message");
-      const timer = setTimeout(() => {
-        console.log("Timer expired, hiding welcome message");
-        setShowWelcome(false);
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [showInitialMessage, showWelcome]);
+    // Welcome screen stays until user clicks Enter Portal
+    // No automatic transition anymore
+  }, [showInitialMessage]);
 
   useEffect(() => {
     // Rotate quotes every 8 seconds
@@ -106,7 +99,7 @@ const DepartmentOfDefense = () => {
     );
   }
 
-  // Welcome screen that fades out
+  // Welcome screen that stays until user clicks Enter Portal
   if (showWelcome) {
     console.log("Rendering welcome screen");
     return (
@@ -165,7 +158,7 @@ const DepartmentOfDefense = () => {
     );
   }
 
-  // Main content
+  // Main content - only shown after clicking Enter Portal
   console.log("Rendering main DoD content");
   return (
     <div className="min-h-screen bg-[#0A1929] text-white">
