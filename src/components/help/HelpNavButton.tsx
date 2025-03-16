@@ -1,7 +1,8 @@
 
-import React, { useState } from "react";
+import React from "react";
 import FloatingButton from "./FloatingButton";
 import HelpDialog from "./HelpDialog";
+import { useState } from "react";
 import { useButtonVisibility } from "./RouteVisibility";
 import { useLocation } from "react-router-dom";
 
@@ -11,14 +12,7 @@ const HelpNavButton: React.FC = () => {
   const location = useLocation();
   
   // Check if we're on the index page with a specific screen state
-  // or on the Department of Defense page
   const isOnExcludedScreen = () => {
-    // Check if on DoD page
-    if (location.pathname === "/department-of-defense") {
-      return true;
-    }
-    
-    // Check for index page with specific states
     if (location.pathname === "/" || location.pathname === "/index") {
       const state = location.state as { screenState?: string } | null;
       const screenState = state?.screenState;
