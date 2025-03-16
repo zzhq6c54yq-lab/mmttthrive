@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { inspirationalQuotes } from "@/data/militaryEducationalData";
+import HomeButton from "@/components/HomeButton";
 
 // Imported components
 import InitialMessage from "@/components/military/InitialMessage";
@@ -88,7 +89,10 @@ const DepartmentOfDefense = () => {
         <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[#0A1929]/80 to-transparent z-0"></div>
         
         <div className="container mx-auto px-4 pt-8 pb-16 relative z-10">
-          <PortalHeader />
+          <div className="flex justify-between items-center mb-6">
+            <PortalHeader />
+            <HomeButton className="bg-[#0A1929]/80 border border-[#B87333]/30" />
+          </div>
 
           {/* Persistent Menu Bar - Always visible under header */}
           <div className="sticky top-0 z-30 bg-[#0A1929]/95 border-b border-[#B87333]/30 mb-6 pb-2 backdrop-blur-sm">
@@ -110,35 +114,40 @@ const DepartmentOfDefense = () => {
               <TabsContent value="resources" className="space-y-8">
                 <GenericTabContent 
                   title="Military-Specific Resources" 
-                  description="Curated content for service members and veterans" 
+                  description="Curated content for service members and veterans"
+                  type="resources" 
                 />
               </TabsContent>
               
               <TabsContent value="education" className="space-y-8">
                 <GenericTabContent 
                   title="Education & Resources" 
-                  description="Learn about mental health and wellness" 
+                  description="Learn about mental health and wellness"
+                  type="education" 
                 />
               </TabsContent>
               
               <TabsContent value="assessments" className="space-y-8">
                 <GenericTabContent 
                   title="Mental Health Assessments" 
-                  description="Professional-grade assessments tailored for military personnel" 
+                  description="Professional-grade assessments tailored for military personnel"
+                  type="assessments" 
                 />
               </TabsContent>
               
               <TabsContent value="programs" className="space-y-8">
                 <GenericTabContent 
                   title="Specialized Programs" 
-                  description="Programs designed for the unique needs of military personnel" 
+                  description="Programs designed for the unique needs of military personnel"
+                  type="programs" 
                 />
               </TabsContent>
               
               <TabsContent value="profile" className="space-y-8">
                 <GenericTabContent 
                   title="My Profile" 
-                  description="View and update your personal information" 
+                  description="View and update your personal information"
+                  type="profile" 
                 />
               </TabsContent>
             </Tabs>

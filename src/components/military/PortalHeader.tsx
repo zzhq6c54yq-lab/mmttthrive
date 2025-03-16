@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 
 const PortalHeader = () => {
   return (
-    <div className="flex items-center mb-6">
+    <div className="flex items-center">
       <div className="mr-4 p-2 bg-[#0A1929]/80 rounded-full border-2 border-[#B87333]">
         <Shield className="h-10 w-10 text-[#B87333]" />
       </div>
