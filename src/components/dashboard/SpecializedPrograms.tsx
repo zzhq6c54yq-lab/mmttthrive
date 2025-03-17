@@ -30,7 +30,7 @@ const SpecializedPrograms: React.FC = () => {
       title: "Small Business",
       description: "Mental health resources for entrepreneurs and small business owners",
       icon: Briefcase,
-      path: "/small-business",
+      path: "/small-business-portal",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316"
     }

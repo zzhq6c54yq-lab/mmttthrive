@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -46,6 +45,8 @@ import MilitaryBlog from "@/pages/MilitaryBlog";
 import DoDPortal from "@/pages/DoDPortal";
 import CollegePortal from "@/pages/CollegePortal";
 import CollegeExperience from "@/pages/CollegeExperience";
+import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
+import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
 
 function App() {
   return (
@@ -104,8 +105,12 @@ function App() {
         <Route path="/college-portal" element={<CollegePortal />} />
         <Route path="/college-experience" element={<CollegeExperience />} />
         
-        {/* Add redirect from small-business to college-portal */}
-        <Route path="/small-business" element={<Navigate to="/college-portal" replace />} />
+        {/* Small Business Section - Add these new routes */}
+        <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
+        <Route path="/small-business-experience" element={<SmallBusinessExperience />} />
+        
+        {/* Update this redirect to our new portal */}
+        <Route path="/small-business" element={<Navigate to="/small-business-portal" replace />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
