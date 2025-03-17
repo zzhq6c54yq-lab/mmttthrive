@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Briefcase, Building, BarChart, Calendar, CopyCheck, Lightbulb, 
   Users, Heart, Shield, DollarSign, HandHeart, ArrowRight, 
-  MapPin, Clock, FileText, CalendarDays, AlertTriangle
+  MapPin, Clock, FileText, CalendarDays, AlertTriangle, Compass
 } from "lucide-react";
 
 const SmallBusinessExperience: React.FC = () => {
