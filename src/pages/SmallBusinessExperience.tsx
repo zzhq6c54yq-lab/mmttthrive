@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,7 +36,6 @@ const SmallBusinessExperience: React.FC = () => {
     console.log(`Navigating to: ${path}`);
   };
   
-  // Sample data for the page
   const businessResources = [
     {
       title: "Entrepreneur Mental Health Guide",
@@ -153,8 +151,7 @@ const SmallBusinessExperience: React.FC = () => {
 
   return (
     <Page title="Small Business Mental Health Resources" fullWidth={true}>
-      <div className="space-y-10 w-full">
-        {/* Hero Section */}
+      <div className="space-y-8 w-full">
         <div className="bg-gradient-to-r from-[#F97316]/30 to-[#FB923C]/30 p-6 rounded-xl w-full">
           <div className="flex flex-col md:flex-row gap-6 items-center">
             <div className="md:w-2/3">
@@ -192,7 +189,6 @@ const SmallBusinessExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs Section */}
         <div className="w-full mb-8">
           <div className="bg-[#1A1F2C]/80 p-6 rounded-xl border border-[#F97316]/30">
             <h3 className="text-white font-medium mb-6 text-center text-xl">Navigate Business Wellness Resources</h3>
@@ -229,7 +225,7 @@ const SmallBusinessExperience: React.FC = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <div className="mt-8">
+              <div className="mt-8 w-full">
                 {activeTab === "resources" && (
                   <TabsContent value="resources" className="mt-0 pt-0">
                     <div className="mb-8 w-full">
@@ -460,7 +456,6 @@ const SmallBusinessExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Quick Access Section */}
         <div className="mt-10 w-full">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Compass className="h-5 w-5 text-[#FB923C]" />
@@ -506,7 +501,6 @@ const SmallBusinessExperience: React.FC = () => {
           </div>
         </div>
         
-        {/* Success Stories Section */}
         <div className="mt-10 bg-gradient-to-r from-[#F97316]/20 to-[#FB923C]/20 p-6 rounded-xl w-full">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Users className="h-5 w-5 text-[#F97316]" />
