@@ -10,7 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Backpack, BookOpen, Brain, Calendar, Compass, CopyCheck, GraduationCap, 
   HeartHandshake, Lightbulb, MapPin, PartyPopper, Sparkles, 
-  User, Users, Coffee, Moon, Clock, Utensils, Dumbbell 
+  User, Users, Coffee, Moon, Clock, Utensils, Dumbbell, 
+  FileText, CalendarDays, Building, AlertTriangle
 } from "lucide-react";
 
 const CollegeExperience: React.FC = () => {
@@ -210,14 +211,41 @@ const CollegeExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Main content with tabs */}
+        {/* Redesigned Tabs Navigation */}
         <Tabs defaultValue="resources" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-6 w-full bg-[#1A1F2C]/80">
-            <TabsTrigger value="resources" className="text-white data-[state=active]:bg-[#8B5CF6]">Resources</TabsTrigger>
-            <TabsTrigger value="workshops" className="text-white data-[state=active]:bg-[#8B5CF6]">Workshops</TabsTrigger>
-            <TabsTrigger value="services" className="text-white data-[state=active]:bg-[#8B5CF6]">Campus Services</TabsTrigger>
-            <TabsTrigger value="crisis" className="text-white data-[state=active]:bg-[#8B5CF6]">Crisis Support</TabsTrigger>
-          </TabsList>
+          <div className="bg-[#1A1F2C]/80 p-4 rounded-xl border border-[#8B5CF6]/30 mb-6">
+            <h3 className="text-white font-medium mb-3 text-center">Navigate College Wellness Resources</h3>
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full bg-transparent">
+              <TabsTrigger 
+                value="resources" 
+                className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
+              >
+                <FileText className="h-5 w-5" />
+                <span>Resources</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="workshops" 
+                className="bg-[#1A1F2C] text-white border border-[#D946EF]/30 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#D946EF] data-[state=active]:border-[#D946EF] hover:bg-[#D946EF]/20 transition-all duration-200"
+              >
+                <CalendarDays className="h-5 w-5" />
+                <span>Workshops</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="services" 
+                className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
+              >
+                <Building className="h-5 w-5" />
+                <span>Campus Services</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="crisis" 
+                className="bg-[#1A1F2C] text-white border border-[#F87171]/50 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#F87171] data-[state=active]:border-[#F87171] hover:bg-[#F87171]/20 transition-all duration-200"
+              >
+                <AlertTriangle className="h-5 w-5" />
+                <span>Crisis Support</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
           
           <TabsContent value="resources" className="space-y-6 w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
