@@ -12,15 +12,15 @@ const WelcomeScreen: React.FC = () => {
         Military Mental Health Portal
       </h1>
       <div className="max-w-2xl">
-        <p className="text-xl mb-6 text-white/90">
+        <p className="text-xl mb-6 text-white/90 font-medium">
           Thank you for your service and sacrifice. Your mental health matters deeply 
           to us, and we're honored to support your journey toward wellness.
         </p>
-        <p className="text-lg mb-6 text-white/80">
+        <p className="text-lg mb-6 text-white/90 font-medium">
           Here, you'll find resources tailored specifically for active duty members, veterans, 
           and military families facing the unique challenges of military life.
         </p>
-        <p className="text-lg text-white/80">
+        <p className="text-lg text-white/90 font-medium">
           You are not alone in this journey. We're here to support you every step of the way.
         </p>
       </div>
@@ -35,11 +35,11 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
         Welcome to Your Military Support Portal
       </h1>
       <div className="max-w-2xl mb-8">
-        <p className="text-xl mb-6 text-white/90">
+        <p className="text-xl mb-6 text-white/90 font-medium">
           This secure space is designed specifically for service members, veterans, 
           and their families to access mental health resources.
         </p>
-        <p className="text-lg mb-8 text-white/80">
+        <p className="text-lg mb-8 text-white/90 font-medium">
           Click below to access specialized resources, connect with peers, 
           and discover tools to support your mental health journey.
         </p>
@@ -63,7 +63,7 @@ const DoDPortal: React.FC = () => {
     if (screenState === 'welcome') {
       const timer = setTimeout(() => {
         setScreenState('intro');
-      }, 8000);
+      }, 4000); // Reduced from 8000 to 4000 for better user experience
       return () => clearTimeout(timer);
     }
   }, [screenState]);

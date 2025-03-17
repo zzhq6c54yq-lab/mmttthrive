@@ -13,15 +13,15 @@ const WelcomeScreen: React.FC = () => {
         College Mental Health Portal
       </h1>
       <div className="max-w-2xl">
-        <p className="text-xl mb-6 text-white/90">
+        <p className="text-xl mb-6 text-white/90 font-medium">
           Welcome to your dedicated mental health space. College is exciting but can also be 
           challenging – we're here to support your journey.
         </p>
-        <p className="text-lg mb-6 text-white/80">
+        <p className="text-lg mb-6 text-white/90 font-medium">
           Here, you'll find resources tailored specifically for college students facing 
           academic pressure, social challenges, and personal growth opportunities.
         </p>
-        <p className="text-lg text-white/80">
+        <p className="text-lg text-white/90 font-medium">
           Your mental wellbeing matters as much as your GPA. Let's prioritize both together.
         </p>
       </div>
@@ -36,11 +36,11 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
         Welcome to Your College Wellness Hub
       </h1>
       <div className="max-w-2xl mb-8">
-        <p className="text-xl mb-6 text-white/90">
+        <p className="text-xl mb-6 text-white/90 font-medium">
           This space is designed specifically for students like you, balancing academics, 
           social life, and personal wellbeing.
         </p>
-        <p className="text-lg mb-8 text-white/80">
+        <p className="text-lg mb-8 text-white/90 font-medium">
           Click below to access specialized resources, peer support networks, 
           and tools designed with campus life in mind.
         </p>
@@ -64,7 +64,7 @@ const CollegePortal: React.FC = () => {
     if (screenState === 'welcome') {
       const timer = setTimeout(() => {
         setScreenState('intro');
-      }, 8000);
+      }, 4000); // Reduced from 8000 to 4000 for better user experience
       return () => clearTimeout(timer);
     }
   }, [screenState]);
