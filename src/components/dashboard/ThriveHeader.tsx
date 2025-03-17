@@ -1,0 +1,82 @@
+
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Footprints } from "lucide-react";
+
+interface ThriveHeaderProps {
+  userName: string;
+  showHenry: boolean;
+  onHenryToggle: () => void;
+}
+
+const ThriveHeader: React.FC<ThriveHeaderProps> = ({
+  userName,
+  showHenry,
+  onHenryToggle
+}) => {
+  const displayName = userName || "Friend";
+  
+  return (
+    <div className="w-full relative overflow-hidden py-0 z-10">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]"></div>
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/25 to-[#B87333]/15 transform -skew-y-3 animate-pulse" style={{animationDuration: '8s'}}></div>
+        <div className="absolute top-10 left-0 right-0 h-28 bg-gradient-to-r from-[#E5C5A1]/10 via-[#B87333]/15 to-[#E5C5A1]/10 transform skew-y-2 animate-pulse" style={{animationDuration: '12s', animationDelay: '0.5s'}}></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%220.5%22 fill=%22%23ffffff%22 fill-opacity=%220.3%22/></svg>')] opacity-10"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/20 to-[#B87333]/15 transform -skew-y-2 animate-pulse" style={{animationDuration: '10s'}}></div>
+      </div>
+      <div className="container mx-auto max-w-6xl relative z-10">
+        <div className="flex flex-col items-center pt-12 pb-16 px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between w-full">
+            <div className="flex items-center gap-8 mb-6 md:mb-0">
+              <div className="relative group">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/40 to-[#E5C5A1]/40 blur-xl animate-pulse"></div>
+                <div className="absolute inset-[-8px] rounded-full border-2 border-[#B87333]/30 animate-spin" style={{animationDuration: '20s'}}></div>
+                <div className="absolute inset-[-4px] rounded-full bg-gradient-to-br from-[#B87333]/50 to-[#E5C5A1]/30 blur-sm"></div>
+                <img 
+                  src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                  alt="Thrive MT Logo" 
+                  className="relative h-28 w-28 object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.7)] transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              <div className="text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
+                    Welcome to
+                  </span>
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] via-[#B87333] to-[#E5C5A1] animate-gradient-x" style={{backgroundSize: '200% auto', animationDelay: '0.5s'}}>
+                    Thrive MT
+                  </span>
+                </h1>
+                <p className="mt-3 text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1]/90 to-[#B87333]/90">
+                  Hey {displayName}! Let's work on your mental health journey
+                </p>
+              </div>
+            </div>
+            <div>
+              <Button 
+                onClick={onHenryToggle}
+                variant="outline"
+                className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden"
+              >
+                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#B87333]/80 rounded-b-md"></div>
+                <div className="absolute top-1 left-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
+                <div className="absolute top-1 right-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
+                <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-[#B87333]/20 rounded-r-full"></div>
+                <div className="flex items-center gap-2">
+                  <Footprints className="h-5 w-5 text-[#B87333] group-hover:scale-110 transition-transform" />
+                  <span className="relative z-10 text-white">
+                    {showHenry ? "Hide Henry" : "Meet Henry"}
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ThriveHeader;
