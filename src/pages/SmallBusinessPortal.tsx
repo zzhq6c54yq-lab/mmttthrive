@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Briefcase, Building, BarChart, Calendar, CopyCheck, Lightbulb, Users, Heart, Shield, DollarSign, HandHeart } from "lucide-react";
 
 const WelcomeScreen: React.FC = () => {
   return (
@@ -57,16 +56,23 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
 const SmallBusinessPortal: React.FC = () => {
   const [screenState, setScreenState] = useState<'welcome' | 'intro' | 'portal'>('welcome');
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
+    // Check if we're coming from another page with state
+    if (location.state && location.state.screenState === 'main') {
+      setScreenState('intro');
+      return;
+    }
+    
     if (screenState === 'welcome') {
       const timer = setTimeout(() => {
         setScreenState('intro');
       }, 4000); // Changed from 8000 to 4000 to match DoD and College portals
       return () => clearTimeout(timer);
     }
-  }, [screenState]);
+  }, [screenState, location.state]);
 
   const handleEnterPortal = () => {
     toast({

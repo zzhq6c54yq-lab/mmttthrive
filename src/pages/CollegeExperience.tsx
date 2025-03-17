@@ -210,6 +210,7 @@ const CollegeExperience: React.FC = () => {
               </p>
               <Button 
                 className="bg-[#D946EF] hover:bg-[#D946EF]/80 text-white font-medium shadow-lg group transition-all duration-300 hover:translate-x-1"
+                onClick={() => navigate("/student-mindfulness")}
               >
                 Start Your Journey <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform"/>
               </Button>
@@ -271,16 +272,16 @@ const CollegeExperience: React.FC = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <div className="mt-4">
+              <div className="mt-6">
                 {activeTab === "resources" && (
-                  <TabsContent value="resources" className="mt-0 pt-0">
-                    <div className="mb-8 w-full">
-                      <h3 className="text-xl font-semibold mb-6 text-white flex items-center gap-2">
+                  <TabsContent value="resources" className="mt-0">
+                    <div className="mb-6">
+                      <h3 className="text-xl font-semibold mb-4 text-white flex items-center gap-2">
                         <FileText className="h-5 w-5 text-[#8B5CF6]" />
                         <span>Mental Health Resources</span>
                       </h3>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredResources.map((resource, index) => (
                           <Card 
                             key={index}
@@ -313,7 +314,7 @@ const CollegeExperience: React.FC = () => {
                       </div>
                       
                       {filteredResources.length === 0 && (
-                        <div className="text-center py-8 w-full">
+                        <div className="text-center py-8">
                           <p className="text-white font-medium">No resources found matching "{searchTerm}". Try a different search term.</p>
                         </div>
                       )}
@@ -322,7 +323,7 @@ const CollegeExperience: React.FC = () => {
                 )}
                 
                 {activeTab === "workshops" && (
-                  <TabsContent value="workshops" className="mt-0 pt-0">
+                  <TabsContent value="workshops" className="mt-0">
                     <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-6 mb-4 w-full">
                       <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
                         <Calendar className="h-5 w-5 text-[#D946EF]" />
@@ -381,7 +382,7 @@ const CollegeExperience: React.FC = () => {
                 )}
                 
                 {activeTab === "services" && (
-                  <TabsContent value="services" className="mt-0 pt-0">
+                  <TabsContent value="services" className="mt-0">
                     <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-6 w-full">
                       <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
                         <MapPin className="h-5 w-5 text-[#8B5CF6]" />
@@ -436,7 +437,7 @@ const CollegeExperience: React.FC = () => {
                 )}
                 
                 {activeTab === "crisis" && (
-                  <TabsContent value="crisis" className="mt-0 pt-0">
+                  <TabsContent value="crisis" className="mt-0">
                     <div className="bg-[#F87171]/20 border border-[#F87171]/40 rounded-lg p-6 w-full">
                       <h3 className="text-xl font-medium mb-4 text-white">Immediate Crisis Support</h3>
                       <p className="mb-6 text-white font-medium">
@@ -515,16 +516,17 @@ const CollegeExperience: React.FC = () => {
         </div>
 
         {/* Quick Access Section */}
-        <div className="mt-8 w-full">
+        <div className="mt-6">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Compass className="h-5 w-5 text-[#D946EF]" />
             <span>Quick Access</span>
           </h3>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
+              onClick={() => navigate("/campus-services")}
             >
               <GraduationCap className="h-5 w-5" />
               <span>Academic Support</span>
@@ -534,6 +536,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
+              onClick={() => navigate("/peer-support")}
             >
               <HeartHandshake className="h-5 w-5" />
               <span>Peer Counseling</span>
@@ -543,6 +546,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#8B5CF6]/40 bg-[#1A1F2C]/50 hover:bg-[#8B5CF6]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
+              onClick={() => navigate("/student-resources")}
             >
               <Backpack className="h-5 w-5" />
               <span>Student Resources</span>
@@ -552,6 +556,7 @@ const CollegeExperience: React.FC = () => {
             <Button 
               variant="outline" 
               className="border-[#D946EF]/40 bg-[#1A1F2C]/50 hover:bg-[#D946EF]/30 h-auto py-4 flex flex-col gap-2 text-white transition-all duration-300 hover:scale-105"
+              onClick={() => navigate("/self-care")}
             >
               <Sparkles className="h-5 w-5" />
               <span>Self-Care Ideas</span>
@@ -561,7 +566,7 @@ const CollegeExperience: React.FC = () => {
         </div>
         
         {/* Student Stories Section */}
-        <div className="mt-8 bg-gradient-to-r from-[#6E59A5]/20 to-[#D946EF]/20 p-5 rounded-xl w-full">
+        <div className="mt-6 bg-gradient-to-r from-[#6E59A5]/20 to-[#D946EF]/20 p-5 rounded-xl">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Users className="h-5 w-5 text-[#8B5CF6]" />
             <span>Student Stories</span>
@@ -575,6 +580,7 @@ const CollegeExperience: React.FC = () => {
           
           <Button 
             className="mt-5 bg-[#8B5CF6]/30 hover:bg-[#8B5CF6]/50 text-white font-medium border border-[#8B5CF6]/50 transition-all duration-300 group"
+            onClick={() => navigate("/share-story")}
           >
             <span>Share Your Story</span>
             <Plus className="ml-1 h-4 w-4 group-hover:rotate-90 transition-transform" />
