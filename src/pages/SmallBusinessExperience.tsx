@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,9 +7,9 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  Briefcase, Building, BarChart, Calendar, ChartLine, Clipboard, Compass, 
-  CopyCheck, DollarSign, HandHeart, HandshakeIcon, Heart, Lightbulb, 
-  LifeBuoy, MessageSquare, Money, Shield, UserCircle, Users 
+  Briefcase, Building, BarChart, Calendar, ChartLine, Clipboard, Compass, Clock,
+  CopyCheck, DollarSign, HandHeart, Handshake, Heart, Lightbulb, MapPin,
+  LifeBuoy, MessageSquare, Shield, UserCircle, Users 
 } from "lucide-react";
 
 const SmallBusinessExperience: React.FC = () => {
