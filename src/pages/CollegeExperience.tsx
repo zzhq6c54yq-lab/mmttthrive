@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -175,9 +176,9 @@ const CollegeExperience: React.FC = () => {
 
   return (
     <Page title="College Mental Health Resources">
-      <div className="space-y-8">
+      <div className="space-y-8 w-full">
         {/* Header section with intro and search */}
-        <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#D946EF]/10 p-6 rounded-xl">
+        <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#D946EF]/10 p-6 rounded-xl w-full">
           <div className="flex flex-col md:flex-row gap-6 items-center">
             <div className="md:w-2/3">
               <h2 className="text-2xl font-medium mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
@@ -199,11 +200,11 @@ const CollegeExperience: React.FC = () => {
             <Input
               type="search"
               placeholder="Search for resources, topics, or concerns..."
-              className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/70"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <p className="mt-2 text-sm text-white/70">
+            <p className="mt-2 text-sm text-white">
               Try searching for: stress, sleep, anxiety, exams, social, time management
             </p>
           </div>
@@ -211,15 +212,15 @@ const CollegeExperience: React.FC = () => {
 
         {/* Main content with tabs */}
         <Tabs defaultValue="resources" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-6">
+          <TabsList className="grid grid-cols-4 mb-6 w-full">
             <TabsTrigger value="resources">Resources</TabsTrigger>
             <TabsTrigger value="workshops">Workshops</TabsTrigger>
             <TabsTrigger value="services">Campus Services</TabsTrigger>
             <TabsTrigger value="crisis">Crisis Support</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="resources" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <TabsContent value="resources" className="space-y-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {filteredResources.map((resource, index) => (
                 <Card 
                   key={index}
@@ -236,7 +237,7 @@ const CollegeExperience: React.FC = () => {
                       </span>
                     </div>
                     <CardTitle className="mt-3 text-lg font-medium text-white">{resource.title}</CardTitle>
-                    <CardDescription className="text-white/90">{resource.description}</CardDescription>
+                    <CardDescription className="text-white">{resource.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button 
@@ -251,40 +252,40 @@ const CollegeExperience: React.FC = () => {
             </div>
             
             {filteredResources.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-white/80">No resources found matching "{searchTerm}". Try a different search term.</p>
+              <div className="text-center py-8 w-full">
+                <p className="text-white">No resources found matching "{searchTerm}". Try a different search term.</p>
               </div>
             )}
           </TabsContent>
           
-          <TabsContent value="workshops" className="space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
+          <TabsContent value="workshops" className="space-y-6 w-full">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4 w-full">
               <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
                 <Calendar className="h-5 w-5 text-[#D946EF]" />
                 <span>Upcoming Mental Health Workshops</span>
               </h3>
-              <p className="text-white/90 mb-4">
+              <p className="text-white mb-4">
                 All workshops are free for enrolled students. Register early as spots fill quickly.
               </p>
               
-              <div className="space-y-4">
+              <div className="space-y-4 w-full">
                 {upcomingWorkshops.map((workshop, index) => (
                   <div 
                     key={index} 
-                    className="border border-white/10 rounded-lg p-4 hover:bg-white/5 transition-colors"
+                    className="border border-white/10 rounded-lg p-4 hover:bg-white/5 transition-colors w-full"
                   >
                     <div className="flex flex-col md:flex-row justify-between md:items-center">
                       <div>
                         <h4 className="font-medium text-[#8B5CF6]">{workshop.title}</h4>
-                        <p className="text-white/90 text-sm">{workshop.description}</p>
-                        <div className="flex items-center gap-4 mt-2">
-                          <span className="text-xs flex items-center gap-1 text-white/90">
+                        <p className="text-white text-sm">{workshop.description}</p>
+                        <div className="flex flex-wrap items-center gap-4 mt-2">
+                          <span className="text-xs flex items-center gap-1 text-white">
                             <Calendar className="h-3 w-3" /> {workshop.date}
                           </span>
-                          <span className="text-xs flex items-center gap-1 text-white/90">
+                          <span className="text-xs flex items-center gap-1 text-white">
                             <Clock className="h-3 w-3" /> {workshop.time}
                           </span>
-                          <span className="text-xs flex items-center gap-1 text-white/90">
+                          <span className="text-xs flex items-center gap-1 text-white">
                             <MapPin className="h-3 w-3" /> {workshop.location}
                           </span>
                         </div>
@@ -293,7 +294,7 @@ const CollegeExperience: React.FC = () => {
                         <Button variant="outline" className="hover:bg-[#D946EF]/20 border-[#D946EF]/30 text-white">
                           Join Workshop
                         </Button>
-                        <div className="text-xs text-white/80 mt-1 text-center">
+                        <div className="text-xs text-white mt-1 text-center">
                           {typeof workshop.spots === 'number' ? `${workshop.spots} spots left` : workshop.spots}
                         </div>
                       </div>
@@ -308,34 +309,34 @@ const CollegeExperience: React.FC = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="services" className="space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+          <TabsContent value="services" className="space-y-6 w-full">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-4 w-full">
               <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
                 <MapPin className="h-5 w-5 text-[#8B5CF6]" />
                 <span>Campus Mental Health Services</span>
               </h3>
-              <p className="text-white/90 mb-4">
+              <p className="text-white mb-4">
                 Services available to all enrolled students, typically covered by your student health fee.
               </p>
               
-              <div className="space-y-4">
+              <div className="space-y-4 w-full">
                 {campusServices.map((service, index) => (
                   <div 
                     key={index} 
-                    className="border border-white/10 rounded-lg p-4 hover:bg-white/5 transition-colors"
+                    className="border border-white/10 rounded-lg p-4 hover:bg-white/5 transition-colors w-full"
                   >
                     <h4 className="font-medium text-[#8B5CF6]">{service.title}</h4>
-                    <p className="text-white/90 text-sm mt-1">{service.description}</p>
+                    <p className="text-white text-sm mt-1">{service.description}</p>
                     <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                      <div className="flex items-center gap-1 text-white/80">
+                      <div className="flex items-center gap-1 text-white">
                         <Clock className="h-3 w-3" /> 
                         <span>{service.hours}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-white/80">
+                      <div className="flex items-center gap-1 text-white">
                         <User className="h-3 w-3" /> 
                         <span>{service.contact}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-white/80">
+                      <div className="flex items-center gap-1 text-white">
                         <MapPin className="h-3 w-3" /> 
                         <span>{service.location}</span>
                       </div>
@@ -346,36 +347,36 @@ const CollegeExperience: React.FC = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="crisis" className="space-y-4">
-            <div className="bg-[#F87171]/10 border border-[#F87171]/30 rounded-lg p-6">
+          <TabsContent value="crisis" className="space-y-4 w-full">
+            <div className="bg-[#F87171]/10 border border-[#F87171]/30 rounded-lg p-6 w-full">
               <h3 className="text-xl font-medium mb-2 text-white">Immediate Crisis Support</h3>
-              <p className="mb-4 text-white/80">
+              <p className="mb-4 text-white">
                 If you're experiencing a mental health emergency, please use one of these resources for immediate help:
               </p>
               
-              <div className="space-y-4">
-                <div className="bg-[#F87171]/20 rounded-lg p-4">
+              <div className="space-y-4 w-full">
+                <div className="bg-[#F87171]/20 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">Campus Crisis Line (24/7)</h4>
                   <p className="text-2xl font-bold text-white mt-2">555-HELP (4357)</p>
                 </div>
                 
-                <div className="bg-white/10 rounded-lg p-4">
+                <div className="bg-white/10 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">National Crisis Text Line</h4>
-                  <p className="text-white/80 mt-1">Text HOME to 741741 to connect with a Crisis Counselor</p>
+                  <p className="text-white mt-1">Text HOME to 741741 to connect with a Crisis Counselor</p>
                 </div>
                 
-                <div className="bg-white/10 rounded-lg p-4">
+                <div className="bg-white/10 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">National Suicide Prevention Lifeline</h4>
-                  <p className="text-white/80 mt-1">1-800-273-8255 (Available 24/7)</p>
+                  <p className="text-white mt-1">1-800-273-8255 (Available 24/7)</p>
                 </div>
                 
-                <div className="bg-white/10 rounded-lg p-4">
+                <div className="bg-white/10 rounded-lg p-4 w-full">
                   <h4 className="font-medium text-white">Emergency Services</h4>
-                  <p className="text-white/80 mt-1">Call 911 or go to your nearest emergency room</p>
+                  <p className="text-white mt-1">Call 911 or go to your nearest emergency room</p>
                 </div>
               </div>
               
-              <div className="mt-6 border-t border-white/10 pt-4 text-white/70">
+              <div className="mt-6 border-t border-white/10 pt-4 text-white w-full">
                 <p>
                   For non-emergency support, please contact the Student Counseling Center during business hours
                   or schedule an appointment through the student portal.
@@ -386,16 +387,16 @@ const CollegeExperience: React.FC = () => {
         </Tabs>
 
         {/* Quick access links */}
-        <div className="mt-8">
-          <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+        <div className="mt-8 w-full">
+          <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Compass className="h-5 w-5 text-[#D946EF]" />
             <span>Quick Access</span>
           </h3>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
             <Button 
               variant="outline" 
-              className="border-[#8B5CF6]/20 hover:bg-[#8B5CF6]/10 h-auto py-4 flex flex-col gap-2"
+              className="border-[#8B5CF6]/20 hover:bg-[#8B5CF6]/10 h-auto py-4 flex flex-col gap-2 text-white"
             >
               <GraduationCap className="h-5 w-5" />
               <span>Academic Support</span>
@@ -403,7 +404,7 @@ const CollegeExperience: React.FC = () => {
             
             <Button 
               variant="outline" 
-              className="border-[#D946EF]/20 hover:bg-[#D946EF]/10 h-auto py-4 flex flex-col gap-2"
+              className="border-[#D946EF]/20 hover:bg-[#D946EF]/10 h-auto py-4 flex flex-col gap-2 text-white"
             >
               <HeartHandshake className="h-5 w-5" />
               <span>Peer Counseling</span>
@@ -411,7 +412,7 @@ const CollegeExperience: React.FC = () => {
             
             <Button 
               variant="outline" 
-              className="border-[#8B5CF6]/20 hover:bg-[#8B5CF6]/10 h-auto py-4 flex flex-col gap-2"
+              className="border-[#8B5CF6]/20 hover:bg-[#8B5CF6]/10 h-auto py-4 flex flex-col gap-2 text-white"
             >
               <Backpack className="h-5 w-5" />
               <span>Student Resources</span>
@@ -419,7 +420,7 @@ const CollegeExperience: React.FC = () => {
             
             <Button 
               variant="outline" 
-              className="border-[#D946EF]/20 hover:bg-[#D946EF]/10 h-auto py-4 flex flex-col gap-2"
+              className="border-[#D946EF]/20 hover:bg-[#D946EF]/10 h-auto py-4 flex flex-col gap-2 text-white"
             >
               <Sparkles className="h-5 w-5" />
               <span>Self-Care Ideas</span>
@@ -428,16 +429,16 @@ const CollegeExperience: React.FC = () => {
         </div>
         
         {/* Student testimonials */}
-        <div className="mt-8 bg-gradient-to-r from-[#8B5CF6]/5 to-[#D946EF]/5 p-6 rounded-xl">
-          <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+        <div className="mt-8 bg-gradient-to-r from-[#8B5CF6]/5 to-[#D946EF]/5 p-6 rounded-xl w-full">
+          <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Users className="h-5 w-5 text-[#8B5CF6]" />
             <span>Student Stories</span>
           </h3>
           
-          <div className="italic text-white/80 border-l-2 border-[#8B5CF6]/30 pl-4">
+          <div className="italic text-white border-l-2 border-[#8B5CF6]/30 pl-4">
             "The mindfulness workshops helped me manage my anxiety during midterms. I went from 
             constant panic to being able to focus and perform much better on exams."
-            <div className="mt-2 text-sm text-white/60">— Junior, Psychology</div>
+            <div className="mt-2 text-sm text-white/80">— Junior, Psychology</div>
           </div>
         </div>
       </div>
