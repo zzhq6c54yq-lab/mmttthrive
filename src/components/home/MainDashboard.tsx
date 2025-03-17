@@ -528,7 +528,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
                   "from-[#10B981]/80 to-[#34D399]/30",
                   "from-[#EC4899]/80 to-[#F472B6]/30",
                   "from-[#6366F1]/80 to-[#A5B4FC]/30",
-                  "from-[#84CC16]/80 to-[#BEF264]/30",
+                  "from-[#84CC16]/80 to-[#BEF264]/20",
                   "from-[#EF4444]/80 to-[#FCA5A5]/30",
                   "from-[#B87333]/80 to-[#E5C5A1]/30",
                 ];
