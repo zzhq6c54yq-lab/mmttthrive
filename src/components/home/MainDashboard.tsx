@@ -157,18 +157,18 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       borderColor: "#0EA5E9"
     },
     {
-      title: "Small Business",
-      description: "Mental health resources for entrepreneurs and small business owners",
-      icon: Briefcase,
-      path: "/small-business",
+      title: "The College Experience",
+      description: "Mental health support for students navigating campus life",
+      icon: GraduationCap,
+      path: "/college-portal",
       gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
       borderColor: "#8B5CF6"
     },
     {
-      title: "The College Experience",
-      description: "Support for students navigating the challenges of college life",
-      icon: GraduationCap,
-      path: "/college-experience",
+      title: "Small Business",
+      description: "Mental health resources for entrepreneurs and small business owners",
+      icon: Briefcase,
+      path: "/small-business",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316"
     }

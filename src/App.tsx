@@ -44,6 +44,8 @@ import MilitaryResources from "@/pages/MilitaryResources";
 import MilitaryAffirmations from "@/pages/MilitaryAffirmations";
 import MilitaryBlog from "@/pages/MilitaryBlog";
 import DoDPortal from "@/pages/DoDPortal";
+import CollegePortal from "@/pages/CollegePortal";
+import CollegeExperience from "@/pages/CollegeExperience";
 
 function App() {
   return (
@@ -97,6 +99,13 @@ function App() {
         
         {/* Add redirect from department-of-defense to dod-portal */}
         <Route path="/department-of-defense" element={<Navigate to="/dod-portal" replace />} />
+        
+        {/* College Experience Section */}
+        <Route path="/college-portal" element={<CollegePortal />} />
+        <Route path="/college-experience" element={<CollegeExperience />} />
+        
+        {/* Add redirect from small-business to college-portal */}
+        <Route path="/small-business" element={<Navigate to="/college-portal" replace />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
