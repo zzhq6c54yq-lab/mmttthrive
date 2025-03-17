@@ -496,151 +496,201 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
           </div>
         </div>
 
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
-                Key Features
-              </h2>
-              <p className="text-gray-400 mt-2">Tools and resources designed for your mental wellness journey</p>
+        <div className="mb-12 relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E2D]/50 to-[#2D2D3D]/50 rounded-3xl overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full opacity-20">
+              <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-[#B87333]/20 via-[#E5C5A1]/30 to-[#B87333]/20 transform -skew-y-3"></div>
+              <div className="absolute top-40 left-0 right-0 h-32 bg-gradient-to-r from-[#8B5CF6]/20 via-[#D946EF]/30 to-[#8B5CF6]/20 transform skew-y-3"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-r from-[#0EA5E9]/20 via-[#2563EB]/30 to-[#0EA5E9]/20 transform -skew-y-3"></div>
             </div>
-            <div className="hidden md:block">
-              <Sparkles className="h-12 w-12 text-[#E5C5A1] opacity-60 animate-pulse" />
-            </div>
+            <div className="absolute inset-0 backdrop-blur-[2px]"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {keyFeatures.slice(0, 9).map((feature, index) => {
-              const gradients = [
-                "from-[#B87333]/10 to-[#E5C5A1]/5",
-                "from-[#8B5CF6]/10 to-[#D946EF]/5",
-                "from-[#0EA5E9]/10 to-[#2563EB]/5",
-                "from-[#F97316]/10 to-[#F59E0B]/5",
-                "from-[#10B981]/10 to-[#34D399]/5",
-                "from-[#EC4899]/10 to-[#F472B6]/5",
-                "from-[#6366F1]/10 to-[#A5B4FC]/5",
-                "from-[#84CC16]/10 to-[#BEF264]/5",
-                "from-[#EF4444]/10 to-[#FCA5A5]/5",
-              ];
-              
-              const borderColors = [
-                "#B87333",
-                "#8B5CF6",
-                "#0EA5E9",
-                "#F97316",
-                "#10B981",
-                "#EC4899",
-                "#6366F1",
-                "#84CC16",
-                "#EF4444",
-              ];
-              
-              const iconColors = [
-                "#B87333",
-                "#8B5CF6",
-                "#0EA5E9",
-                "#F97316",
-                "#10B981",
-                "#EC4899",
-                "#6366F1",
-                "#84CC16",
-                "#EF4444",
-              ];
-              
-              const gradientIndex = index % gradients.length;
-              const borderColor = borderColors[gradientIndex];
-              const iconColor = iconColors[gradientIndex];
-              
-              const IconComponent = feature.icon;
-              
-              const CornerIcons = [Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee];
-              const CornerIcon = CornerIcons[index % CornerIcons.length];
-              
-              return (
-                <div 
-                  key={index}
-                  onClick={() => handleFeatureClick(feature.path)}
-                  className="relative group cursor-pointer overflow-hidden rounded-xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20 shadow-xl transition-all duration-300 hover:shadow-2xl transform hover:translate-y-[-5px]"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
-                  
-                  <div className="absolute top-3 right-3 opacity-30 group-hover:opacity-60 transition-opacity">
-                    <CornerIcon className="h-5 w-5" style={{ color: iconColor }} />
-                  </div>
-                  <div className="absolute bottom-0 left-0 w-full h-1" style={{ background: `linear-gradient(to right, transparent, ${borderColor}40, transparent)` }}></div>
-                  
-                  <div className="relative p-6 flex flex-col h-full min-h-[200px]">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-4">
+          <div className="relative z-10 px-4 pt-12 pb-10">
+            <div className="flex items-center justify-between mb-10">
+              <div>
+                <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
+                  Key Features
+                </h2>
+                <p className="text-gray-300 mt-2">Tools and resources designed for your mental wellness journey</p>
+              </div>
+              <div className="hidden md:block">
+                <Sparkles className="h-12 w-12 text-[#E5C5A1] opacity-60 animate-pulse" />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {keyFeatures.slice(0, 9).map((feature, index) => {
+                const gradients = [
+                  "from-[#9333EA]/80 to-[#D946EF]/30",
+                  "from-[#0EA5E9]/80 to-[#2563EB]/30",
+                  "from-[#F97316]/80 to-[#F59E0B]/30",
+                  "from-[#10B981]/80 to-[#34D399]/30",
+                  "from-[#EC4899]/80 to-[#F472B6]/30",
+                  "from-[#6366F1]/80 to-[#A5B4FC]/30",
+                  "from-[#84CC16]/80 to-[#BEF264]/30",
+                  "from-[#EF4444]/80 to-[#FCA5A5]/30",
+                  "from-[#B87333]/80 to-[#E5C5A1]/30",
+                ];
+                
+                const borderColors = [
+                  "#9333EA",
+                  "#0EA5E9",
+                  "#F97316",
+                  "#10B981",
+                  "#EC4899",
+                  "#6366F1",
+                  "#84CC16",
+                  "#EF4444",
+                  "#B87333",
+                ];
+                
+                const iconColors = [
+                  "#D946EF",
+                  "#2563EB",
+                  "#F59E0B",
+                  "#34D399",
+                  "#F472B6",
+                  "#A5B4FC",
+                  "#BEF264",
+                  "#FCA5A5",
+                  "#E5C5A1",
+                ];
+                
+                const gradientIndex = index % gradients.length;
+                const borderColor = borderColors[gradientIndex];
+                const iconColor = iconColors[gradientIndex];
+                
+                const IconComponent = feature.icon;
+                
+                const CornerIcons = [Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee];
+                const CornerIcon = CornerIcons[index % CornerIcons.length];
+                
+                return (
+                  <div 
+                    key={index}
+                    onClick={() => handleFeatureClick(feature.path)}
+                    className="relative group cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-lg transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-2 hover:scale-[1.02]"
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-90`}></div>
+                    
+                    <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+                    
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-bl-full transform translate-x-12 -translate-y-12 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-500"></div>
+                    
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="absolute top-3 right-3 opacity-40 group-hover:opacity-80 transition-opacity">
+                      <CornerIcon className="h-5 w-5" style={{ color: iconColor }} />
+                    </div>
+                    
+                    <div className="relative p-7 flex flex-col h-full min-h-[220px]">
+                      <div className="flex items-start gap-4 mb-4">
                         <div 
                           className="p-3 rounded-lg transform transition-transform group-hover:scale-110 group-hover:rotate-3"
                           style={{ 
-                            background: `${iconColor}20`,
-                            border: `1px solid ${iconColor}40`,
-                            boxShadow: `0 0 20px ${iconColor}20`
+                            background: `${iconColor}30`,
+                            border: `1px solid ${iconColor}50`,
+                            boxShadow: `0 0 20px ${iconColor}30`
                           }}
                         >
                           <IconComponent className="h-7 w-7" style={{ color: iconColor }} />
                         </div>
-                        <h3 className="text-xl font-semibold" style={{ color: iconColor }}>
+                        <h3 className="text-xl font-semibold text-white">
                           {feature.title}
                         </h3>
                       </div>
+                      
+                      <p className="text-white/80 mb-6 text-sm">
+                        {feature.description}
+                      </p>
+                      
+                      <div className="mt-auto flex justify-between items-center">
+                        <Button 
+                          className="group/btn flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-none"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFeatureClick(feature.path);
+                          }}
+                        >
+                          <span className="text-white">Explore</span>
+                          <ArrowRight className="h-4 w-4 text-white transition-transform group-hover/btn:translate-x-1" />
+                        </Button>
+                        
+                        <div 
+                          className="h-8 w-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          style={{ background: `${iconColor}30` }}
+                        >
+                          <ArrowRight className="h-4 w-4 text-white" />
+                        </div>
+                      </div>
                     </div>
                     
-                    <p className="text-gray-300 mb-6 text-sm">
-                      {feature.description}
-                    </p>
+                    <div 
+                      className="absolute inset-0 border-2 border-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                    ></div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {keyFeatures.slice(9).map((feature, index) => {
+                const gradients = [
+                  "from-[#9333EA]/60 to-[#D946EF]/20",
+                  "from-[#0EA5E9]/60 to-[#2563EB]/20",
+                  "from-[#F97316]/60 to-[#F59E0B]/20",
+                  "from-[#10B981]/60 to-[#34D399]/20",
+                  "from-[#EC4899]/60 to-[#F472B6]/20",
+                  "from-[#6366F1]/60 to-[#A5B4FC]/20",
+                  "from-[#84CC16]/60 to-[#BEF264]/20",
+                  "from-[#EF4444]/60 to-[#FCA5A5]/20",
+                  "from-[#B87333]/60 to-[#E5C5A1]/20",
+                ];
+                
+                const iconColors = [
+                  "#D946EF",
+                  "#2563EB",
+                  "#F59E0B",
+                  "#34D399",
+                  "#F472B6",
+                  "#A5B4FC",
+                  "#BEF264",
+                  "#FCA5A5",
+                  "#E5C5A1",
+                ];
+                
+                const gradientIndex = index % gradients.length;
+                const color = iconColors[gradientIndex];
+                
+                return (
+                  <div 
+                    key={index + 9}
+                    onClick={() => handleFeatureClick(feature.path)}
+                    className="relative group cursor-pointer overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br bg-black/40 backdrop-blur-md opacity-90 rounded-lg"></div>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-40 rounded-lg group-hover:opacity-60 transition-opacity`}></div>
                     
-                    <div className="mt-auto flex justify-between items-center">
-                      <Button 
-                        className="group/btn flex items-center gap-2 bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleFeatureClick(feature.path);
+                    <div className="flex items-center p-4 relative">
+                      <div 
+                        className="mr-4 p-2.5 rounded-md transition-transform group-hover:scale-110 group-hover:rotate-3"
+                        style={{ 
+                          background: `${color}20`,
+                          border: `1px solid ${color}40` 
                         }}
                       >
-                        <span className="text-white">Explore</span>
-                        <ArrowRight className="h-4 w-4 text-white transition-transform group-hover/btn:translate-x-1" />
-                      </Button>
-                      
-                      <div 
-                        className="h-8 w-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        style={{ background: `${iconColor}20` }}
-                      >
-                        <ArrowRight className="h-4 w-4" style={{ color: iconColor }} />
+                        <feature.icon className="h-5 w-5" style={{ color }} />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-white group-hover:text-white/90">{feature.title}</h3>
+                        <p className="text-xs text-white/70">{feature.description}</p>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {keyFeatures.slice(9).map((feature, index) => {
-              const colors = ["#B87333", "#8B5CF6", "#0EA5E9", "#F97316", "#10B981", "#EC4899"];
-              const color = colors[index % colors.length];
-              
-              return (
-                <div 
-                  key={index + 9}
-                  onClick={() => handleFeatureClick(feature.path)}
-                  className="flex items-center p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 cursor-pointer hover:bg-white/10 transition-all duration-300"
-                >
-                  <div 
-                    className="mr-4 p-2 rounded-md"
-                    style={{ background: `${color}20` }}
-                  >
-                    <feature.icon className="h-5 w-5" style={{ color }} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-white">{feature.title}</h3>
-                    <p className="text-xs text-gray-400">{feature.description}</p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
