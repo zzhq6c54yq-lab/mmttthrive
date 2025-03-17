@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -195,7 +194,7 @@ const CollegeExperience: React.FC = () => {
   }
 
   return (
-    <Page title="College Mental Health Resources">
+    <Page title="College Mental Health Resources" fullWidth={true}>
       <div className="space-y-10 w-full">
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-[#6E59A5]/30 to-[#D946EF]/30 p-6 rounded-xl w-full">
@@ -235,7 +234,7 @@ const CollegeExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs Section - Clear spacing and visual separation */}
+        {/* Navigation Tabs Section */}
         <div className="w-full mb-8">
           <div className="bg-[#1A1F2C]/80 p-6 rounded-xl border border-[#8B5CF6]/30">
             <h3 className="text-white font-medium mb-6 text-center text-xl">Navigate College Wellness Resources</h3>
@@ -272,7 +271,6 @@ const CollegeExperience: React.FC = () => {
                 </TabsTrigger>
               </TabsList>
               
-              {/* Tab Content with proper spacing and containment */}
               <div className="mt-8">
                 {activeTab === "resources" && (
                   <TabsContent value="resources" className="mt-0 pt-0">
@@ -516,7 +514,7 @@ const CollegeExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Quick Access Section - Clearly separated */}
+        {/* Quick Access Section */}
         <div className="mt-10 w-full">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Compass className="h-5 w-5 text-[#D946EF]" />
