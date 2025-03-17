@@ -217,43 +217,47 @@ const CollegeExperience: React.FC = () => {
           </div>
         </div>
 
-        {/* Redesigned Tabs Navigation */}
-        <Tabs defaultValue="resources" className="w-full">
-          <div className="bg-[#1A1F2C]/80 p-4 rounded-xl border border-[#8B5CF6]/30 mb-6">
-            <h3 className="text-white font-medium mb-3 text-center">Navigate College Wellness Resources</h3>
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full bg-transparent">
-              <TabsTrigger 
-                value="resources" 
-                className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
-              >
-                <FileText className="h-5 w-5" />
-                <span>Resources</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="workshops" 
-                className="bg-[#1A1F2C] text-white border border-[#D946EF]/30 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#D946EF] data-[state=active]:border-[#D946EF] hover:bg-[#D946EF]/20 transition-all duration-200"
-              >
-                <CalendarDays className="h-5 w-5" />
-                <span>Workshops</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="services" 
-                className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
-              >
-                <Building className="h-5 w-5" />
-                <span>Campus Services</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="crisis" 
-                className="bg-[#1A1F2C] text-white border border-[#F87171]/50 py-4 flex flex-col items-center gap-2 data-[state=active]:bg-[#F87171] data-[state=active]:border-[#F87171] hover:bg-[#F87171]/20 transition-all duration-200"
-              >
-                <AlertTriangle className="h-5 w-5" />
-                <span>Crisis Support</span>
-              </TabsTrigger>
-            </TabsList>
+        {/* Redesigned Navigation Section - Improved spacing and layout */}
+        <div className="w-full mb-8">
+          <div className="bg-[#1A1F2C]/80 p-5 rounded-xl border border-[#8B5CF6]/30 mb-4">
+            <h3 className="text-white font-medium mb-4 text-center text-lg">Navigate College Wellness Resources</h3>
+            
+            {/* Tabs with more spacing */}
+            <Tabs defaultValue="resources" className="w-full">
+              <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full bg-transparent p-0">
+                <TabsTrigger 
+                  value="resources" 
+                  className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
+                >
+                  <FileText className="h-6 w-6" />
+                  <span className="font-medium">Resources</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="workshops" 
+                  className="bg-[#1A1F2C] text-white border border-[#D946EF]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#D946EF] data-[state=active]:border-[#D946EF] hover:bg-[#D946EF]/20 transition-all duration-200"
+                >
+                  <CalendarDays className="h-6 w-6" />
+                  <span className="font-medium">Workshops</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="services" 
+                  className="bg-[#1A1F2C] text-white border border-[#8B5CF6]/30 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#8B5CF6] data-[state=active]:border-[#8B5CF6] hover:bg-[#8B5CF6]/20 transition-all duration-200"
+                >
+                  <Building className="h-6 w-6" />
+                  <span className="font-medium">Campus Services</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="crisis" 
+                  className="bg-[#1A1F2C] text-white border border-[#F87171]/50 py-5 px-4 flex flex-col items-center gap-3 data-[state=active]:bg-[#F87171] data-[state=active]:border-[#F87171] hover:bg-[#F87171]/20 transition-all duration-200"
+                >
+                  <AlertTriangle className="h-6 w-6" />
+                  <span className="font-medium">Crisis Support</span>
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
           
-          <TabsContent value="resources" className="space-y-6 w-full">
+          <TabsContent value="resources" className="space-y-6 w-full mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {filteredResources.map((resource, index) => (
                 <Card 
@@ -293,7 +297,7 @@ const CollegeExperience: React.FC = () => {
             )}
           </TabsContent>
           
-          <TabsContent value="workshops" className="space-y-6 w-full">
+          <TabsContent value="workshops" className="space-y-6 w-full mt-6">
             <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-4 mb-4 w-full">
               <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
                 <Calendar className="h-5 w-5 text-[#D946EF]" />
@@ -350,7 +354,7 @@ const CollegeExperience: React.FC = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="services" className="space-y-6 w-full">
+          <TabsContent value="services" className="space-y-6 w-full mt-6">
             <div className="bg-[#1A1F2C]/50 border border-[#8B5CF6]/30 rounded-lg p-4 w-full">
               <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-white">
                 <MapPin className="h-5 w-5 text-[#8B5CF6]" />
@@ -403,7 +407,7 @@ const CollegeExperience: React.FC = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="crisis" className="space-y-4 w-full">
+          <TabsContent value="crisis" className="space-y-4 w-full mt-6">
             <div className="bg-[#F87171]/20 border border-[#F87171]/40 rounded-lg p-6 w-full">
               <h3 className="text-xl font-medium mb-2 text-white">Immediate Crisis Support</h3>
               <p className="mb-4 text-white font-medium">
@@ -475,7 +479,7 @@ const CollegeExperience: React.FC = () => {
               </div>
             </div>
           </TabsContent>
-        </Tabs>
+        </div>
 
         {/* Quick access links */}
         <div className="mt-8 w-full">
@@ -523,17 +527,17 @@ const CollegeExperience: React.FC = () => {
           </div>
         </div>
         
-        {/* Student testimonials */}
+        {/* Student testimonials - with darker text */}
         <div className="mt-8 bg-gradient-to-r from-[#6E59A5]/20 to-[#D946EF]/20 p-6 rounded-xl w-full">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-white">
             <Users className="h-5 w-5 text-[#8B5CF6]" />
             <span>Student Stories</span>
           </h3>
           
-          <div className="italic text-white border-l-2 border-[#8B5CF6]/50 pl-4">
+          <div className="italic text-[#222222] font-medium bg-white/20 p-4 rounded-lg border-l-2 border-[#8B5CF6]/50 pl-4">
             "The mindfulness workshops helped me manage my anxiety during midterms. I went from 
             constant panic to being able to focus and perform much better on exams."
-            <div className="mt-2 text-sm text-[#D6BCFA]">— Junior, Psychology</div>
+            <div className="mt-2 text-sm text-[#403E43] font-semibold">— Junior, Psychology</div>
           </div>
           
           <Button 
