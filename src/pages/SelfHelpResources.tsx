@@ -1,10 +1,9 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Video, Download, FileText } from "lucide-react";
+import { Download, FileText, Video, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import Page from "@/components/Page";
 
 const SelfHelpResources = () => {
   const resources = [
@@ -47,23 +46,8 @@ const SelfHelpResources = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
-        <div className="container px-4 max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-teal-400 hover:text-teal-300 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-            <HomeButton />
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Self-Help Resources</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">Evidence-based tools and materials to support your mental health journey.</p>
-        </div>
-      </div>
-
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
+    <Page title="Self-Help Resources">
+      <div className="container px-4 py-6 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {resources.map((resource, index) => (
             <Card key={index} className="hover:shadow-md transition-all">
@@ -97,9 +81,9 @@ const SelfHelpResources = () => {
           ))}
         </div>
 
-        <div className="mt-12 bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-3xl font-light mb-6 text-center">Custom Resource Requests</h2>
-          <p className="text-gray-700 mb-6 text-center">
+        <div className="mt-12 bg-white/10 backdrop-blur-sm p-8 rounded-lg shadow-md">
+          <h2 className="text-3xl font-light mb-6 text-center text-white">Custom Resource Requests</h2>
+          <p className="text-gray-300 mb-6 text-center">
             Don't see what you're looking for? We can create customized resources tailored to your specific needs.
           </p>
           <div className="flex justify-center">
@@ -107,7 +91,7 @@ const SelfHelpResources = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

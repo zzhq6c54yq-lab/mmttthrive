@@ -46,7 +46,7 @@ const KeyFeatures: React.FC = () => {
     {
       title: "Lifestyle Integration",
       description: "Seamlessly blend mental wellness practices into your daily routine",
-      icon: Puzzle,
+      icon: Coffee,
       path: "/lifestyle-integration"
     },
     {
@@ -133,7 +133,6 @@ const KeyFeatures: React.FC = () => {
     navigate(path);
   };
 
-  // Updated to render all features with the same styling
   return (
     <div className="mb-12 relative">
       <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E2D]/50 to-[#2D2D3D]/50 rounded-3xl overflow-hidden">
@@ -158,7 +157,7 @@ const KeyFeatures: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {keyFeatures.map((feature, index) => {
             const gradients = [
               "from-[#9333EA]/70 to-[#D946EF]/30",
@@ -210,6 +209,7 @@ const KeyFeatures: React.FC = () => {
                 key={index}
                 onClick={() => handleFeatureClick(feature.path)}
                 className="relative group cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-lg transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-[1.01]"
+                style={{ minHeight: "150px" }}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-80`}></div>
                 
@@ -223,7 +223,7 @@ const KeyFeatures: React.FC = () => {
                   <CornerIcon className="h-5 w-5" style={{ color: iconColor }} />
                 </div>
                 
-                <div className="relative p-4 flex flex-col h-full min-h-[180px]">
+                <div className="relative p-4 flex flex-col h-full">
                   <div className="flex items-start gap-3 mb-2">
                     <div 
                       className="p-2 rounded-lg transform transition-transform group-hover:scale-110 group-hover:rotate-3"
@@ -235,7 +235,7 @@ const KeyFeatures: React.FC = () => {
                     >
                       <IconComponent className="h-5 w-5" style={{ color: iconColor }} />
                     </div>
-                    <h3 className="text-lg font-semibold text-white">
+                    <h3 className="text-md font-semibold text-white">
                       {feature.title}
                     </h3>
                   </div>

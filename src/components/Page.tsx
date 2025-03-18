@@ -63,7 +63,7 @@ const Page: React.FC<PageProps> = ({
             </h1>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div>
             <Button
               variant="outline"
               className="bg-white/5 hover:bg-white/15 border-white/10 text-white/90"
@@ -71,7 +71,6 @@ const Page: React.FC<PageProps> = ({
             >
               Main Menu
             </Button>
-            <HomeButton className="bg-white/5 hover:bg-white/15" />
           </div>
         </div>
         
