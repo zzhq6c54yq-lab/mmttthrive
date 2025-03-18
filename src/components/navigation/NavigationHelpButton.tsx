@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "@/components/help/HelpDialog";
 import { useLocation, useNavigate } from "react-router-dom";

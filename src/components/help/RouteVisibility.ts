@@ -8,29 +8,24 @@ export const useButtonVisibility = () => {
   const shouldShowButton = () => {
     console.log("Current path for button visibility check:", location.pathname);
     
-    // Check if the current path is the home path and there's a specific state related to screens
+    // On the index page, visibility is controlled by the screenState
     if (location.pathname === "/" || location.pathname === "/index") {
       // Get state from location if available
       const state = location.state as { screenState?: string } | null;
       const screenState = state?.screenState;
       
-      // Skip button on these specific screens - only show on main screen
+      // Hide button on initial onboarding screens
       const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
       
-      // Special case: For main welcome page, we want to show the button
-      if (!screenState || screenState === 'main') {
-        console.log("Showing button: On main dashboard or welcome page");
+      // Only show the button on the main dashboard after completing the onboarding
+      if (screenState === 'main') {
+        console.log("Showing button: On main dashboard");
         return true;
       }
       
-      if (excludedScreenStates.includes(screenState || '')) {
-        console.log("Hiding button: Home path with excluded screenState:", screenState);
-        return false;
-      }
-      
-      // Only show on main dashboard
-      console.log("Showing button: On main dashboard");
-      return true;
+      // Hide on all excluded screens (intro, mood, register, etc.)
+      console.log("Hiding button: Home path with excluded screenState:", screenState);
+      return false;
     }
     
     // Now we will show buttons on all screens except for these specific ones
