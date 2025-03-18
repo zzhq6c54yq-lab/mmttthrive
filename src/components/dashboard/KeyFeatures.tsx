@@ -133,6 +133,7 @@ const KeyFeatures: React.FC = () => {
     navigate(path);
   };
 
+  // Updated to render all features with the same styling
   return (
     <div className="mb-12 relative">
       <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E2D]/50 to-[#2D2D3D]/50 rounded-3xl overflow-hidden">
@@ -157,18 +158,18 @@ const KeyFeatures: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {keyFeatures.slice(0, 9).map((feature, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4">
+          {keyFeatures.map((feature, index) => {
             const gradients = [
-              "from-[#9333EA]/80 to-[#D946EF]/30",
-              "from-[#0EA5E9]/80 to-[#2563EB]/30",
-              "from-[#F97316]/80 to-[#F59E0B]/30",
-              "from-[#10B981]/80 to-[#34D399]/30",
-              "from-[#EC4899]/80 to-[#F472B6]/30",
-              "from-[#6366F1]/80 to-[#A5B4FC]/30",
-              "from-[#84CC16]/80 to-[#BEF264]/20",
-              "from-[#EF4444]/80 to-[#FCA5A5]/30",
-              "from-[#B87333]/80 to-[#E5C5A1]/30",
+              "from-[#9333EA]/70 to-[#D946EF]/30",
+              "from-[#0EA5E9]/70 to-[#2563EB]/30",
+              "from-[#F97316]/70 to-[#F59E0B]/30",
+              "from-[#10B981]/70 to-[#34D399]/30",
+              "from-[#EC4899]/70 to-[#F472B6]/30",
+              "from-[#6366F1]/70 to-[#A5B4FC]/30",
+              "from-[#84CC16]/70 to-[#BEF264]/20",
+              "from-[#EF4444]/70 to-[#FCA5A5]/30",
+              "from-[#B87333]/70 to-[#E5C5A1]/30",
             ];
             
             const borderColors = [
@@ -204,14 +205,13 @@ const KeyFeatures: React.FC = () => {
             const CornerIcons = [Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee];
             const CornerIcon = CornerIcons[index % CornerIcons.length];
             
-            // Main feature boxes are larger
             return (
               <div 
                 key={index}
                 onClick={() => handleFeatureClick(feature.path)}
-                className="relative group cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-lg transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-2 hover:scale-[1.02]"
+                className="relative group cursor-pointer overflow-hidden rounded-xl backdrop-blur-md shadow-lg transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-1 hover:scale-[1.01]"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-90`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-80`}></div>
                 
                 <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
                 
@@ -223,33 +223,33 @@ const KeyFeatures: React.FC = () => {
                   <CornerIcon className="h-5 w-5" style={{ color: iconColor }} />
                 </div>
                 
-                <div className="relative p-7 flex flex-col h-full min-h-[240px]">
-                  <div className="flex items-start gap-4 mb-4">
+                <div className="relative p-4 flex flex-col h-full min-h-[180px]">
+                  <div className="flex items-start gap-3 mb-2">
                     <div 
-                      className="p-3 rounded-lg transform transition-transform group-hover:scale-110 group-hover:rotate-3"
+                      className="p-2 rounded-lg transform transition-transform group-hover:scale-110 group-hover:rotate-3"
                       style={{ 
                         background: `${iconColor}30`,
                         border: `1px solid ${iconColor}50`,
                         boxShadow: `0 0 20px ${iconColor}30`
                       }}
                     >
-                      <IconComponent className="h-6 w-6" style={{ color: iconColor }} />
+                      <IconComponent className="h-5 w-5" style={{ color: iconColor }} />
                     </div>
-                    <h3 className="text-xl font-semibold text-white">
+                    <h3 className="text-lg font-semibold text-white">
                       {feature.title}
                     </h3>
                   </div>
                   
-                  <p className="text-white/80 mb-6 text-sm">
+                  <p className="text-white/80 mb-4 text-xs">
                     {feature.description}
                   </p>
                   
                   <div className="mt-auto">
                     <div 
-                      className="h-8 w-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ml-auto"
+                      className="h-6 w-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity ml-auto"
                       style={{ background: `${iconColor}30` }}
                     >
-                      <ArrowRight className="h-4 w-4 text-white" />
+                      <ArrowRight className="h-3 w-3 text-white" />
                     </div>
                   </div>
                 </div>
@@ -257,65 +257,6 @@ const KeyFeatures: React.FC = () => {
                 <div 
                   className="absolute inset-0 border-2 border-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
                 ></div>
-              </div>
-            );
-          })}
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {keyFeatures.slice(9).map((feature, index) => {
-            const gradients = [
-              "from-[#9333EA]/60 to-[#D946EF]/20",
-              "from-[#0EA5E9]/60 to-[#2563EB]/20",
-              "from-[#F97316]/60 to-[#F59E0B]/20",
-              "from-[#10B981]/60 to-[#34D399]/20",
-              "from-[#EC4899]/60 to-[#F472B6]/20",
-              "from-[#6366F1]/60 to-[#A5B4FC]/20",
-              "from-[#84CC16]/60 to-[#BEF264]/20",
-              "from-[#EF4444]/60 to-[#FCA5A5]/20",
-              "from-[#B87333]/60 to-[#E5C5A1]/20",
-            ];
-            
-            const iconColors = [
-              "#D946EF",
-              "#2563EB",
-              "#F59E0B",
-              "#34D399",
-              "#F472B6",
-              "#A5B4FC",
-              "#BEF264",
-              "#FCA5A5",
-              "#E5C5A1",
-            ];
-            
-            const gradientIndex = index % gradients.length;
-            const color = iconColors[gradientIndex];
-            
-            // Secondary smaller boxes
-            return (
-              <div 
-                key={index + 9}
-                onClick={() => handleFeatureClick(feature.path)}
-                className="relative group cursor-pointer overflow-hidden rounded-lg min-h-[90px] flex items-center"
-              >
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-md opacity-90"></div>
-                <div className={`absolute inset-0 bg-gradient-to-br ${gradients[gradientIndex]} opacity-40 group-hover:opacity-60 transition-opacity`}></div>
-                
-                <div className="flex items-center p-3 relative w-full">
-                  <div 
-                    className="mr-3 p-2 rounded-md transition-all duration-300 group-hover:scale-125 group-hover:rotate-3"
-                    style={{ 
-                      background: `${color}20`,
-                      border: `1px solid ${color}40` 
-                    }}
-                  >
-                    <feature.icon className="h-4 w-4" style={{ color }} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-white group-hover:text-white/90 text-sm">{feature.title}</h3>
-                    <p className="text-xs text-white/70">{feature.description}</p>
-                  </div>
-                </div>
               </div>
             );
           })}
