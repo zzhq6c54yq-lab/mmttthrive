@@ -7,9 +7,14 @@ import { Send, Loader2 } from "lucide-react";
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
   isProcessing?: boolean;
+  isEmergencyMode?: boolean;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, isProcessing = false }) => {
+const MessageInput: React.FC<MessageInputProps> = ({ 
+  onSendMessage, 
+  isProcessing = false,
+  isEmergencyMode = false
+}) => {
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,7 +30,10 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, isProcessing
       <Textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message..."
+        placeholder={isEmergencyMode 
+          ? "A human counselor is being connected. Please share how you're feeling..."
+          : "Type your message..."
+        }
         className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-sm"
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -38,7 +46,11 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, isProcessing
       <Button 
         type="submit" 
         size="icon"
-        className="h-10 w-10 bg-[#B87333] hover:bg-[#B87333]/80"
+        className={`h-10 w-10 ${
+          isEmergencyMode
+            ? "bg-red-600 hover:bg-red-700"
+            : "bg-[#B87333] hover:bg-[#B87333]/80"
+        }`}
         disabled={message.trim() === "" || isProcessing}
       >
         {isProcessing ? (
