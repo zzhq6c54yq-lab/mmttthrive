@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -67,6 +68,7 @@ function App() {
         <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         <Route path="/virtual-meetings" element={<VirtualMeetings />} />
         <Route path="/mental-health-games" element={<MentalHealthGames />} />
+        <Route path="/games-quizzes" element={<GamesAndQuizzes />} />
         <Route path="/personalized-content" element={<PersonalizedContent />} />
         <Route path="/community-support" element={<CommunitySupport />} />
         <Route path="/resource-library" element={<ResourceLibrary />} />

@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
