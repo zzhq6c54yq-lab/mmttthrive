@@ -1,14 +1,22 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import HelpDialog from "../help/HelpDialog";
 
 interface HenryButtonProps {
   userName?: string;
+  triggerInitialGreeting?: boolean;
 }
 
-const HenryButton: React.FC<HenryButtonProps> = ({ userName }) => {
+const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreeting }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  useEffect(() => {
+    // Open the dialog automatically if triggerInitialGreeting is true
+    if (triggerInitialGreeting) {
+      setIsDialogOpen(true);
+    }
+  }, [triggerInitialGreeting]);
   
   return (
     <>
