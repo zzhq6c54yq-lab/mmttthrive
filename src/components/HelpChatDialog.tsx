@@ -27,7 +27,16 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
     "meditation": "Meditation is a mindfulness practice that can help reduce stress, improve focus, and promote emotional wellbeing. Even a few minutes daily can make a difference.",
     "suicide": "If you're having thoughts of suicide, please call the National Suicide Prevention Lifeline at 988 or text HOME to 741741 to reach the Crisis Text Line. Help is available 24/7.",
     "crisis": "If you're experiencing a mental health crisis, please call 988 for immediate support, or text HOME to 741741. You can also visit our Crisis Support page for resources.",
-    "workshops": "Our workshops offer interactive learning experiences on various mental health topics. You can find topics ranging from anxiety management to building resilience."
+    "workshops": "Our workshops offer interactive learning experiences on various mental health topics. You can find topics ranging from anxiety management to building resilience.",
+    "feeling sad": "I'm sorry to hear you're feeling sad. That's a natural emotion, and it's okay to feel this way. Would you like to explore some activities that might help improve your mood?",
+    "feeling depressed": "I understand you're feeling depressed, and I want you to know you're not alone. Depression is treatable, and there are resources available to help. Would you like me to suggest some coping strategies or professional resources?",
+    "feeling anxious": "Anxiety can be challenging to deal with. Let's take a deep breath together. Would you like me to share some techniques that might help reduce anxiety in the moment?",
+    "feeling overwhelmed": "When everything feels overwhelming, it can help to focus on just one thing at a time. Would you like to try a simple grounding exercise to help center yourself?",
+    "greeting": "Hello! I'm Henry, your digital mental health counselor. How are you feeling today?",
+    "how are you": "I'm here and ready to support you in your mental wellness journey. How can I assist you today?",
+    "who are you": "I'm Henry, your digital mental health counselor. I'm here to provide support, information, and resources for your mental wellness journey.",
+    "thank you": "You're welcome! I'm glad I could help. Remember, I'm here for you whenever you need support.",
+    "help": "I'm here to help. Whether you need information, resources, or just someone to talk to, I'm available. What are you looking for today?"
   };
   
   useEffect(() => {
@@ -42,11 +51,60 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
     
     if (lowerMessage.includes("kill myself") || 
         lowerMessage.includes("suicide") || 
-        lowerMessage.includes("end my life")) {
+        lowerMessage.includes("end my life") ||
+        lowerMessage.includes("don't want to live")) {
       return true;
     }
     
     return false;
+  };
+
+  const checkEmotionalState = (message: string) => {
+    const lowerMessage = message.toLowerCase();
+    
+    if (lowerMessage.includes("sad") || lowerMessage.includes("unhappy") || lowerMessage.includes("down")) {
+      return "feeling sad";
+    }
+    
+    if (lowerMessage.includes("depress")) {
+      return "feeling depressed";
+    }
+    
+    if (lowerMessage.includes("anxious") || lowerMessage.includes("anxiety") || lowerMessage.includes("nervous") || lowerMessage.includes("worry")) {
+      return "feeling anxious";
+    }
+    
+    if (lowerMessage.includes("overwhelm") || lowerMessage.includes("too much") || lowerMessage.includes("can't handle")) {
+      return "feeling overwhelmed";
+    }
+    
+    return null;
+  };
+
+  const checkBasicQuestion = (message: string) => {
+    const lowerMessage = message.toLowerCase();
+    
+    if (lowerMessage.includes("hello") || lowerMessage.includes("hi ") || lowerMessage === "hi" || lowerMessage.includes("hey")) {
+      return "greeting";
+    }
+    
+    if (lowerMessage.includes("how are you")) {
+      return "how are you";
+    }
+    
+    if (lowerMessage.includes("who are you") || lowerMessage.includes("what are you")) {
+      return "who are you";
+    }
+    
+    if (lowerMessage.includes("thank you") || lowerMessage.includes("thanks")) {
+      return "thank you";
+    }
+    
+    if (lowerMessage === "help" || lowerMessage.includes("need help") || lowerMessage.includes("can you help")) {
+      return "help";
+    }
+    
+    return null;
   };
   
   const generateResponse = (message: string) => {
@@ -55,6 +113,18 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
     // Check for emergency
     if (checkForEmergency(message)) {
       return "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please call the National Suicide Prevention Lifeline at 988 right away. Would you like me to navigate you to our Crisis Support page?";
+    }
+    
+    // Check for emotional states
+    const emotionalState = checkEmotionalState(message);
+    if (emotionalState) {
+      return knowledgeBase[emotionalState];
+    }
+    
+    // Check for basic questions
+    const basicQuestion = checkBasicQuestion(message);
+    if (basicQuestion) {
+      return knowledgeBase[basicQuestion];
     }
     
     // Check knowledge base for mental health topics
