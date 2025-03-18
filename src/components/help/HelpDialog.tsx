@@ -15,13 +15,18 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([
     { text: "Hi there! I'm Henry, your digital counselor. How can I assist you today?", isUser: false }
   ]);
+  const [userInput, setUserInput] = useState("");
   const { toast } = useToast();
   
   // Mental health knowledge base
   const knowledgeBase = {
     "anxiety": "Anxiety is a normal response to stress, but when it becomes excessive, it may be an anxiety disorder. Deep breathing, mindfulness, and seeking professional help are effective approaches.",
     "depression": "Depression is more than just feeling sad. It's a persistent feeling of sadness or loss of interest that can interfere with daily activities. Professional support is important.",
-    "stress": "Stress is your body's reaction to pressure from a situation or event. Managing stress through exercise, meditation, and social connections can improve your wellbeing."
+    "stress": "Stress is your body's reaction to pressure from a situation or event. Managing stress through exercise, meditation, and social connections can improve your wellbeing.",
+    "therapy": "Therapy provides a safe space to explore feelings, beliefs, and behaviors with a trained professional. There are many types available based on your specific needs.",
+    "meditation": "Meditation is a mindfulness practice that can help reduce stress, improve focus, and promote emotional wellbeing. Even a few minutes daily can make a difference.",
+    "suicide": "If you're having thoughts of suicide, please call the National Suicide Prevention Lifeline at 988 or text HOME to 741741 to reach the Crisis Text Line. Help is available 24/7.",
+    "crisis": "If you're experiencing a mental health crisis, please call 988 for immediate support, or text HOME to 741741. You can also visit our Crisis Support page for resources."
   };
   
   useEffect(() => {
@@ -33,6 +38,13 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   
   const generateResponse = (message: string) => {
     const lowerMessage = message.toLowerCase();
+    
+    // Check for emergency
+    if (lowerMessage.includes("kill myself") || 
+        lowerMessage.includes("suicide") || 
+        lowerMessage.includes("end my life")) {
+      return "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please call the National Suicide Prevention Lifeline at 988 right away. Would you like me to navigate you to our Crisis Support page?";
+    }
     
     // Check knowledge base for mental health topics
     for (const [key, value] of Object.entries(knowledgeBase)) {
