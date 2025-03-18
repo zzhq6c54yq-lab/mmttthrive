@@ -14,13 +14,17 @@ export const useButtonVisibility = () => {
       const state = location.state as { screenState?: string } | null;
       const screenState = state?.screenState;
       
-      // Skip button on these specific screens
+      // Skip button on these specific screens - only show on main screen
       const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
       
-      if (!state || excludedScreenStates.includes(screenState || '')) {
+      if (screenState === undefined || excludedScreenStates.includes(screenState || '')) {
         console.log("Hiding button: Home path with excluded screenState:", screenState);
         return false;
       }
+      
+      // Only show on main dashboard
+      console.log("Showing button: On main dashboard");
+      return true;
     }
     
     // Now we will show buttons on all screens except for these specific ones

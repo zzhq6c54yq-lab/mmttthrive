@@ -52,7 +52,7 @@ const NavigationHelpButton: React.FC = () => {
       
       // These screens should not show the navigation help button
       const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
-      return !state || excludedScreenStates.includes(screenState || '');
+      return screenState === undefined || excludedScreenStates.includes(screenState || '');
     }
     return false;
   };
