@@ -30,14 +30,26 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           <div className="flex flex-col md:flex-row items-center justify-between w-full">
             <div className="flex items-center gap-8 mb-6 md:mb-0">
               <div className="relative group">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/60 to-[#E5C5A1]/60 blur-xl animate-pulse"></div>
-                <div className="absolute inset-[-12px] rounded-full border-3 border-[#B87333]/50 animate-spin" style={{animationDuration: '20s'}}></div>
-                <div className="absolute inset-[-6px] rounded-full bg-gradient-to-br from-[#B87333]/70 to-[#E5C5A1]/50 blur-sm"></div>
+                {/* Enhanced logo animations */}
+                <div className="absolute inset-[-20px] rounded-full bg-gradient-to-r from-[#B87333]/60 to-[#E5C5A1]/60 blur-xl animate-pulse" style={{animationDuration: '3s'}}></div>
+                <div className="absolute inset-[-30px] rounded-full border-2 border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>
+                <div className="absolute inset-[-15px] rounded-full border border-[#E5C5A1]/40 animate-spin" style={{animationDuration: '10s', animationDirection: 'reverse'}}></div>
+                <div className="absolute inset-[-8px] rounded-full bg-gradient-to-br from-[#B87333]/70 to-[#E5C5A1]/30 blur-sm animate-pulse" style={{animationDuration: '4s'}}></div>
+                
+                {/* Sparkling effect */}
+                <div className="absolute top-[-10px] left-[20px] w-2 h-2 bg-white rounded-full animate-ping" style={{animationDuration: '2s', animationDelay: '0.5s'}}></div>
+                <div className="absolute bottom-[-5px] right-[30px] w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{animationDuration: '1.7s', animationDelay: '1s'}}></div>
+                <div className="absolute top-[30px] right-[-15px] w-2 h-2 bg-white rounded-full animate-ping" style={{animationDuration: '2.3s'}}></div>
+                
+                {/* Logo with enhanced size and color depth */}
                 <img 
                   src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                   alt="Thrive MT Logo" 
-                  className="relative h-36 w-36 object-contain filter drop-shadow-[0_0_12px_rgba(184,115,51,0.9)] transition-transform duration-500 group-hover:scale-110"
+                  className="relative h-48 w-48 object-contain filter drop-shadow-[0_0_15px_rgba(184,115,51,0.95)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_25px_rgba(184,115,51,1)]"
                 />
+                
+                {/* Rotating halo effect */}
+                <div className="absolute inset-0 border-4 border-[#B87333]/0 rounded-full animate-ping" style={{animationDuration: '4s'}}></div>
               </div>
               <div className="text-center md:text-left">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">

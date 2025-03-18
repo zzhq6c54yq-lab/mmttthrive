@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
-import { Package, Trophy, Gem, Check, Sparkles, Zap, Brain, Heart } from "lucide-react";
+import { Package, Trophy, Gem, Check, Sparkles, Zap, Brain, Heart, StarIcon, Shield, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface SubscriptionPlan {
@@ -118,9 +118,10 @@ const SubscriptionPlansPage: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="text-center mb-10">
             <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-lg rounded-full relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/30 to-[#8B5CF6]/30 rounded-full animate-pulse" style={{animationDuration: '3s'}}></div>
-                <Brain className="h-8 w-8 text-[#E5C5A1]" />
+              <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-lg rounded-full relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/30 via-[#E5C5A1]/50 to-[#B87333]/30 rounded-full opacity-70 group-hover:opacity-100 transition-opacity animate-pulse" style={{animationDuration: '2.5s'}}></div>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#B87333]/20 to-transparent blur-sm"></div>
+                <Brain className="h-8 w-8 text-[#E5C5A1] relative z-10 animate-pulse" style={{animationDuration: '3s'}}/>
               </div>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
