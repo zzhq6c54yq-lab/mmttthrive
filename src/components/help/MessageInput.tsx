@@ -1,28 +1,30 @@
 
-import React, { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Send, Loader2 } from "lucide-react";
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
+  isProcessing?: boolean;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
-  const [input, setInput] = useState("");
+const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, isProcessing = false }) => {
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
-    onSendMessage(input);
-    setInput("");
+    if (message.trim() && !isProcessing) {
+      onSendMessage(message);
+      setMessage("");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mt-2">
+    <form onSubmit={handleSubmit} className="flex gap-2 mt-4">
       <Textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your message..."
         className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-sm"
         onKeyDown={(e) => {
@@ -31,13 +33,19 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
             handleSubmit(e);
           }
         }}
+        disabled={isProcessing}
       />
       <Button 
         type="submit" 
         size="icon"
         className="h-10 w-10 bg-[#B87333] hover:bg-[#B87333]/80"
+        disabled={message.trim() === "" || isProcessing}
       >
-        <Send className="h-4 w-4" />
+        {isProcessing ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Send className="h-4 w-4" />
+        )}
       </Button>
     </form>
   );

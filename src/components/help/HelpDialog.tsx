@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useToast } from "@/hooks/use-toast";
-import { generateResponse } from "./utils/responseGenerator";
+import { useHenryMessageProcessor } from "./HenryMessageProcessor";
 
 interface HelpDialogProps {
   isOpen: boolean;
@@ -16,7 +16,6 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([
     { text: "Hi there! I'm Henry, your digital counselor. How can I assist you today?", isUser: false }
   ]);
-  const { toast } = useToast();
   
   useEffect(() => {
     // Reset messages when dialog opens
@@ -25,26 +24,11 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
     }
   }, [isOpen]);
   
-  const handleSendMessage = (message: string) => {
-    // Add user message to chat
-    setMessages(prev => [...prev, { text: message, isUser: true }]);
-    
-    // Generate response after a slight delay
-    setTimeout(() => {
-      const response = generateResponse(message);
-      
-      setMessages(prev => [...prev, { 
-        text: response, 
-        isUser: false 
-      }]);
-      
-      toast({
-        title: "New message from Henry",
-        description: "Henry has responded to your question.",
-        duration: 3000,
-      });
-    }, 1000);
+  const addNewMessage = (message: { text: string; isUser: boolean }) => {
+    setMessages(prev => [...prev, message]);
   };
+  
+  const { handleSendMessage, processing } = useHenryMessageProcessor(addNewMessage);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -59,7 +43,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
         </DialogHeader>
         
         <MessageList messages={messages} />
-        <MessageInput onSendMessage={handleSendMessage} />
+        <MessageInput onSendMessage={handleSendMessage} isProcessing={processing} />
         
         <div className="mt-4 flex justify-center">
           <Button
