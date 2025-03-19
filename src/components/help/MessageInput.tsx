@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Heart, AlertTriangle } from "lucide-react";
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
@@ -34,7 +34,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
           ? "A human counselor is being connected. Please share how you're feeling..."
           : "Type your message..."
         }
-        className="flex-1 min-h-[40px] bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333] text-white text-sm"
+        className={`flex-1 min-h-[40px] border text-white text-sm transition-colors duration-300 ${
+          isEmergencyMode 
+            ? "bg-red-900/20 border-red-600/40 focus-visible:ring-red-600" 
+            : "bg-white/5 border-[#B87333]/20 focus-visible:ring-[#B87333]"
+        }`}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -46,7 +50,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       <Button 
         type="submit" 
         size="icon"
-        className={`h-10 w-10 ${
+        className={`h-10 w-10 transition-colors duration-300 ${
           isEmergencyMode
             ? "bg-red-600 hover:bg-red-700"
             : "bg-[#B87333] hover:bg-[#B87333]/80"
@@ -55,6 +59,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
       >
         {isProcessing ? (
           <Loader2 className="h-4 w-4 animate-spin" />
+        ) : isEmergencyMode ? (
+          <AlertTriangle className="h-4 w-4" />
         ) : (
           <Send className="h-4 w-4" />
         )}
