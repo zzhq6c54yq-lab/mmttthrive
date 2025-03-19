@@ -14,7 +14,6 @@ export const useButtonVisibility = () => {
       const state = location.state as { screenState?: string } | null;
       const screenState = state?.screenState;
       
-      // Hide button on initial onboarding screens
       // Only show the button on the main dashboard after completing the onboarding
       if (screenState === 'main') {
         console.log("Showing button: On main dashboard");

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -67,8 +66,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         <KeyFeatures />
       </div>
       
-      {/* Henry Button */}
-      <HenryButton userName={userName} />
+      <HenryButton userName={userName} triggerInitialGreeting={showHenry} />
     </div>
   );
 };
