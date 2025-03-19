@@ -37,7 +37,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         className={`flex-1 min-h-[40px] border text-white text-sm transition-colors duration-300 ${
           isEmergencyMode 
             ? "bg-red-900/20 border-red-600/40 focus-visible:ring-red-600" 
-            : "bg-white/5 border-[#8B5CF6]/30 focus-visible:ring-[#8B5CF6]"
+            : "bg-white/5 border-[#B87333]/30 focus-visible:ring-[#B87333]"
         }`}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -53,7 +53,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         className={`h-10 w-10 transition-colors duration-300 ${
           isEmergencyMode
             ? "bg-red-600 hover:bg-red-700"
-            : "bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] hover:from-[#7B4CE6] hover:to-[#C935DF]"
+            : "bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A76323] hover:to-[#D4B491]"
         }`}
         disabled={message.trim() === "" || isProcessing}
       >

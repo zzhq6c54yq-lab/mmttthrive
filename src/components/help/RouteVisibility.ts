@@ -15,15 +15,13 @@ export const useButtonVisibility = () => {
       const screenState = state?.screenState;
       
       // Hide button on initial onboarding screens
-      const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
-      
       // Only show the button on the main dashboard after completing the onboarding
       if (screenState === 'main') {
         console.log("Showing button: On main dashboard");
         return true;
       }
       
-      // Hide on all excluded screens (intro, mood, register, etc.)
+      // Hide on all other screens (intro, mood, register, subscription, visionBoard)
       console.log("Hiding button: Home path with excluded screenState:", screenState);
       return false;
     }
