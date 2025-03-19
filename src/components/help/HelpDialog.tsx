@@ -6,6 +6,7 @@ import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useToast } from "@/hooks/use-toast";
 import { useHenryMessageProcessor } from "./HenryMessageProcessor";
+import { X, Info } from "lucide-react";
 
 interface HelpDialogProps {
   isOpen: boolean;
@@ -35,6 +36,17 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
       <DialogContent 
         className="sm:max-w-md w-[350px] md:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3 max-h-[80vh] overflow-hidden"
       >
+        <div className="absolute right-2 top-2 z-10">
+          <Button 
+            className="p-1 h-6 w-6 rounded-full bg-transparent hover:bg-white/10 text-white/70 hover:text-white"
+            variant="ghost"
+            size="icon"
+            onClick={() => onOpenChange(false)}
+          >
+            <X className="h-3 w-3" />
+          </Button>
+        </div>
+        
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
             <div className="relative h-16 w-16 rounded-full flex items-center justify-center bg-gradient-to-r from-[#B87333] to-[#E5C5A1] shadow-lg">
