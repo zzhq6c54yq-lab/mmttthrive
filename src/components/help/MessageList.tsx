@@ -5,9 +5,11 @@ import Message from "./Message";
 
 interface MessageListProps {
   messages: Array<{ text: string; isUser: boolean }>;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages }) => {
+const MessageList: React.FC<MessageListProps> = ({ messages, className, style }) => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -18,8 +20,12 @@ const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   }, [messages]);
   
   return (
-    <ScrollArea className="h-[250px] overflow-auto pr-4 mb-3" ref={scrollAreaRef}>
-      <div className="space-y-4">
+    <ScrollArea 
+      className={`overflow-auto pr-4 mb-3 ${className || 'h-[250px]'}`} 
+      ref={scrollAreaRef}
+      style={style}
+    >
+      <div className="space-y-4 pt-2">
         {messages.map((message, index) => (
           <Message key={index} text={message.text} isUser={message.isUser} />
         ))}

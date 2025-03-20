@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useToast } from "@/hooks/use-toast";
 import { useHenryMessageProcessor } from "./HenryMessageProcessor";
-import { X, Info } from "lucide-react";
+import { X, Info, MessageCircle } from "lucide-react";
 
 interface HelpDialogProps {
   isOpen: boolean;
@@ -17,6 +17,8 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([
     { text: "Hi there! I'm Henry, your digital mental health companion. How can I support you today?", isUser: false }
   ]);
+  const [messageInputHeight, setMessageInputHeight] = useState(40);
+  const dialogContentRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     // Reset messages when dialog opens
@@ -31,10 +33,23 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   
   const { handleSendMessage, processing, emergencyMode } = useHenryMessageProcessor(addNewMessage);
 
+  // Update the dialog content height when message input height changes
+  useEffect(() => {
+    if (dialogContentRef.current) {
+      dialogContentRef.current.style.setProperty('--message-area-height', `${340 - messageInputHeight}px`);
+    }
+  }, [messageInputHeight]);
+
+  const handleInputResize = (height: number) => {
+    setMessageInputHeight(Math.min(100, height)); // Cap at 100px
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent 
         className="sm:max-w-md w-[350px] md:w-[400px] bg-black/85 backdrop-blur-md border border-[#B87333]/50 p-3 max-h-[80vh] overflow-hidden"
+        ref={dialogContentRef}
+        style={{ '--message-area-height': '300px' } as React.CSSProperties}
       >
         <div className="absolute right-2 top-2 z-10">
           <Button 
@@ -71,12 +86,22 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
           </DialogDescription>
         </DialogHeader>
         
-        <MessageList messages={messages} />
-        <MessageInput 
-          onSendMessage={handleSendMessage} 
-          isProcessing={processing} 
-          isEmergencyMode={emergencyMode}
-        />
+        <div className="flex flex-col h-full overflow-hidden">
+          <MessageList 
+            messages={messages} 
+            className="flex-grow" 
+            style={{ height: 'var(--message-area-height)' }}
+          />
+          
+          <div className="mt-2">
+            <MessageInput 
+              onSendMessage={handleSendMessage} 
+              isProcessing={processing} 
+              isEmergencyMode={emergencyMode}
+              onResize={handleInputResize}
+            />
+          </div>
+        </div>
         
         <div className="mt-4 flex justify-center">
           <Button

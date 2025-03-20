@@ -12,13 +12,13 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
       <div
         className={`max-w-[80%] rounded-lg p-3 ${
           isUser
-            ? "bg-[#B87333] text-white"
-            : "bg-gray-700 text-white"
+            ? "bg-[#B87333] text-white shadow-lg"
+            : "bg-gray-700 text-white shadow-md"
         }`}
       >
         {!isUser && (
           <div className="flex items-center mb-1">
-            <div className="h-6 w-6 rounded-full overflow-hidden flex items-center justify-center mr-2">
+            <div className="h-6 w-6 rounded-full overflow-hidden flex items-center justify-center mr-2 border border-white/20">
               <img 
                 src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" 
                 alt="Henry" 
@@ -28,7 +28,7 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
             <span className="text-xs text-white/70">Henry</span>
           </div>
         )}
-        <p className="text-sm">{text}</p>
+        <p className="text-sm whitespace-pre-wrap">{text}</p>
       </div>
     </div>
   );
