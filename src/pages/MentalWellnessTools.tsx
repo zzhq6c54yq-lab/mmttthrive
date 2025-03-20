@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -115,7 +114,6 @@ const MentalWellnessTools = () => {
   const handleCategorySelect = (categoryId: string) => {
     setActiveCategory(categoryId === activeCategory ? null : categoryId);
     
-    // Filter tools based on the selected category
     if (categoryId !== activeCategory) {
       setCategoryFilter("category");
       setSearchTerm("");
@@ -145,7 +143,6 @@ const MentalWellnessTools = () => {
     
     setIcingPoints(prev => [...prev, {x, y}]);
     
-    // If we have enough icing points, consider the cake decorated
     if (icingPoints.length > 25) {
       setCompletedIcing(true);
       toast({
@@ -163,7 +160,6 @@ const MentalWellnessTools = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Only add a point if it's somewhat distant from the last point to avoid too many points
     const lastPoint = icingPoints[icingPoints.length - 1];
     if (lastPoint) {
       const distance = Math.sqrt(Math.pow(x - lastPoint.x, 2) + Math.pow(y - lastPoint.y, 2));
@@ -179,15 +175,17 @@ const MentalWellnessTools = () => {
     const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          tool.description.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // If a wellness category is selected, filter based on it
-    const matchesCategory = !activeCategory || 
-                           (categoryMapping[activeCategory] && 
-                            categoryMapping[activeCategory].some(keyword => 
-                              tool.keywords.includes(keyword)));
+    if (activeCategory) {
+      const matchesCategory = categoryMapping[activeCategory] && 
+                             categoryMapping[activeCategory].some(keyword => 
+                               tool.keywords.includes(keyword));
+      
+      const matchesRecommended = categoryFilter !== "recommended" || recommendations.includes(tool.title);
+      
+      return matchesSearch && matchesCategory && (categoryFilter !== "recommended" || matchesRecommended);
+    }
     
-    const matchesRecommended = categoryFilter !== "recommended" || recommendations.includes(tool.title);
-    
-    return matchesSearch && matchesCategory && (categoryFilter !== "recommended" || matchesRecommended);
+    return matchesSearch;
   });
 
   const categories = [
@@ -195,7 +193,6 @@ const MentalWellnessTools = () => {
     { id: "recommended", label: "Recommended For You" }
   ];
 
-  // Wellness categories with playful icons
   const wellnessCategories = [
     { id: "mindfulness", name: "Mindfulness & Meditation", icon: Brain },
     { id: "anxiety-relief", name: "Anxiety Relief", icon: Heart },
@@ -205,7 +202,6 @@ const MentalWellnessTools = () => {
     { id: "self-discovery", name: "Self-Discovery", icon: Sparkles }
   ];
 
-  // Mapping wellness categories to relevant keywords for filtering
   const categoryMapping: Record<string, string[]> = {
     "mindfulness": ["peaceful", "mindful", "present", "focused"],
     "anxiety-relief": ["reducing-anxiety", "managing-stress", "emotional-regulation"],
@@ -215,7 +211,6 @@ const MentalWellnessTools = () => {
     "self-discovery": ["finding-purpose", "building-confidence", "creative", "resilient"]
   };
 
-  // Animated container variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -281,7 +276,6 @@ const MentalWellnessTools = () => {
           </div>
         </div>
 
-        {/* Icing Game Container */}
         {showIcingGame && (
           <motion.div 
             className="mb-12 relative overflow-hidden rounded-xl bg-gradient-to-r from-[#F9F5F3] to-[#F5EAE5] p-1"
@@ -328,22 +322,18 @@ const MentalWellnessTools = () => {
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
             >
-              {/* Cake Base */}
               <div className="absolute left-1/2 bottom-20 transform -translate-x-1/2 w-[300px] h-[200px] bg-[#F7D3A5] rounded-xl shadow-md">
                 <div className="absolute top-0 left-0 right-0 h-[15px] bg-[#FFEAD5] rounded-t-xl"></div>
               </div>
               
-              {/* Cake Top Layer */}
               <div className="absolute left-1/2 bottom-[170px] transform -translate-x-1/2 w-[250px] h-[100px] bg-[#F7D3A5] rounded-xl shadow-md">
                 <div className="absolute top-0 left-0 right-0 h-[10px] bg-[#FFEAD5] rounded-t-xl"></div>
               </div>
               
-              {/* Cake Decoration */}
               <div className="absolute left-1/2 bottom-[260px] transform -translate-x-1/2 w-[30px] h-[30px] bg-[#FF9B9B] rounded-full shadow-md flex items-center justify-center">
                 <Cake className="h-5 w-5 text-white" />
               </div>
               
-              {/* Render icing points */}
               {icingPoints.map((point, index) => (
                 <motion.div 
                   key={index}
@@ -362,7 +352,6 @@ const MentalWellnessTools = () => {
                 />
               ))}
               
-              {/* Completion message */}
               {completedIcing && (
                 <motion.div 
                   className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-xl text-center"
@@ -571,9 +560,9 @@ const MentalWellnessTools = () => {
         >
           {filteredTools.map((category, index) => (
             <motion.div
-              key={category.id}
+              key={index}
               variants={itemVariants}
-              onMouseEnter={() => setHoveredCardId(category.id)}
+              onMouseEnter={() => setHoveredCardId(category.title)}
               onMouseLeave={() => setHoveredCardId(null)}
               whileHover={{ y: -5 }}
             >
@@ -583,11 +572,11 @@ const MentalWellnessTools = () => {
                 }`}
               >
                 <CardHeader className={`pb-4 transition-colors duration-500 ${
-                  hoveredCardId === category.id ? 'bg-gradient-to-r from-white to-[#B87333]/5' : ''
+                  hoveredCardId === category.title ? 'bg-gradient-to-r from-white to-[#B87333]/5' : ''
                 }`}>
                   <div className="rounded-full bg-[#B87333]/10 w-12 h-12 flex items-center justify-center mb-4">
                     <category.icon className={`h-6 w-6 text-[#B87333] ${
-                      hoveredCardId === category.id ? 'animate-bounce' : ''
+                      hoveredCardId === category.title ? 'animate-bounce' : ''
                     }`} />
                   </div>
                   <CardTitle className="text-2xl">{category.title}</CardTitle>
@@ -620,7 +609,6 @@ const MentalWellnessTools = () => {
           </div>
         )}
         
-        {/* Personalized content link at bottom */}
         <div className="mt-20 bg-gradient-to-r from-[#1E1E2D]/90 to-[#2D2D3D]/90 backdrop-blur-sm rounded-xl p-6 border border-[#9b87f5]/20 text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-60 h-60 bg-gradient-to-br from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>
           
