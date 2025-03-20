@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import HelpDialog from "../help/HelpDialog";
+import HenryIntroDialog from "./HenryIntroDialog";
 import { useButtonVisibility } from "../help/RouteVisibility";
 
 interface HenryButtonProps {
@@ -10,15 +11,22 @@ interface HenryButtonProps {
 }
 
 const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreeting }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isIntroDialogOpen, setIsIntroDialogOpen] = useState(false);
+  const [isChatDialogOpen, setIsChatDialogOpen] = useState(false);
   const isVisible = useButtonVisibility();
   
   useEffect(() => {
-    // Open the dialog automatically if triggerInitialGreeting is true
+    // Open the intro dialog automatically if triggerInitialGreeting is true
     if (triggerInitialGreeting) {
-      setIsDialogOpen(true);
+      setIsIntroDialogOpen(true);
     }
   }, [triggerInitialGreeting]);
+  
+  const handleIntroContinue = () => {
+    // Close the intro dialog and open the chat dialog
+    setIsIntroDialogOpen(false);
+    setIsChatDialogOpen(true);
+  };
   
   // Don't render the button if it shouldn't be visible
   if (!isVisible) {
@@ -28,7 +36,7 @@ const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreet
   return (
     <>
       <div 
-        onClick={() => setIsDialogOpen(true)}
+        onClick={() => setIsIntroDialogOpen(true)}
         className="cursor-pointer fixed right-6 bottom-6 z-50"
         aria-label="Open Henry support chat"
       >
@@ -47,7 +55,18 @@ const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreet
         </div>
       </div>
       
-      <HelpDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} />
+      {/* Henry Introduction Dialog */}
+      <HenryIntroDialog 
+        open={isIntroDialogOpen} 
+        onOpenChange={setIsIntroDialogOpen}
+        onContinue={handleIntroContinue}
+      />
+      
+      {/* Henry Chat Dialog */}
+      <HelpDialog 
+        isOpen={isChatDialogOpen} 
+        onOpenChange={setIsChatDialogOpen} 
+      />
     </>
   );
 };

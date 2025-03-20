@@ -49,9 +49,12 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
         
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
-            <div className="relative h-16 w-16 rounded-full flex items-center justify-center bg-gradient-to-r from-[#B87333] to-[#E5C5A1] shadow-lg">
-              <div className="absolute inset-[3px] rounded-full bg-white/90"></div>
-              <div className="relative z-10 text-3xl font-bold text-[#B87333]">H</div>
+            <div className="relative h-16 w-16 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-r from-[#B87333] to-[#E5C5A1] shadow-lg">
+              <img 
+                src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" 
+                alt="Henry" 
+                className="h-full w-full object-cover object-center"
+              />
               {emergencyMode && (
                 <div className="absolute inset-0 rounded-full border-2 border-red-600 animate-pulse"></div>
               )}

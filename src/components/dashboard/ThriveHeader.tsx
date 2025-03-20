@@ -1,7 +1,9 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Footprints } from "lucide-react";
+import HenryIntroDialog from "../henry/HenryIntroDialog";
+import HelpDialog from "../help/HelpDialog";
 
 interface ThriveHeaderProps {
   userName: string;
@@ -14,7 +16,26 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   showHenry,
   onHenryToggle
 }) => {
+  const [showIntroDialog, setShowIntroDialog] = useState(false);
+  const [showChatDialog, setShowChatDialog] = useState(false);
   const displayName = userName || "Friend";
+  
+  const handleHenryButtonClick = () => {
+    if (!showHenry) {
+      // If Henry is not shown, show the intro dialog first
+      setShowIntroDialog(true);
+    } else {
+      // If Henry is already shown, just toggle it off
+      onHenryToggle();
+    }
+  };
+
+  const handleIntroContinue = () => {
+    // Close the intro dialog and open the chat dialog
+    setShowIntroDialog(false);
+    setShowChatDialog(true);
+    onHenryToggle(); // Toggle Henry on
+  };
   
   return (
     <div className="w-full relative overflow-hidden py-0 z-10">
@@ -72,7 +93,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
             </div>
             <div>
               <Button 
-                onClick={onHenryToggle}
+                onClick={handleHenryButtonClick}
                 variant="outline"
                 className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden"
               >
@@ -92,6 +113,19 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Henry Introduction Dialog */}
+      <HenryIntroDialog 
+        open={showIntroDialog} 
+        onOpenChange={setShowIntroDialog} 
+        onContinue={handleIntroContinue}
+      />
+      
+      {/* Henry Chat Dialog */}
+      <HelpDialog 
+        isOpen={showChatDialog} 
+        onOpenChange={setShowChatDialog} 
+      />
     </div>
   );
 };

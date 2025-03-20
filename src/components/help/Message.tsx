@@ -8,7 +8,7 @@ interface MessageProps {
 
 const Message: React.FC<MessageProps> = ({ text, isUser }) => {
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       <div
         className={`max-w-[80%] rounded-lg p-3 ${
           isUser
@@ -18,8 +18,12 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
       >
         {!isUser && (
           <div className="flex items-center mb-1">
-            <div className="h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white mr-2">
-              <span className="text-xs font-bold">H</span>
+            <div className="h-6 w-6 rounded-full overflow-hidden flex items-center justify-center mr-2">
+              <img 
+                src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" 
+                alt="Henry" 
+                className="h-full w-full object-cover"
+              />
             </div>
             <span className="text-xs text-white/70">Henry</span>
           </div>
