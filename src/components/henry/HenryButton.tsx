@@ -1,71 +1,82 @@
 
 import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
-import HelpDialog from "../help/HelpDialog";
+import HenryDialog from "./HenryDialog";
 import HenryIntroDialog from "./HenryIntroDialog";
-import { useButtonVisibility } from "../help/RouteVisibility";
 
 interface HenryButtonProps {
   userName?: string;
   triggerInitialGreeting?: boolean;
 }
 
-const HenryButton: React.FC<HenryButtonProps> = ({ userName, triggerInitialGreeting }) => {
-  const [isIntroDialogOpen, setIsIntroDialogOpen] = useState(false);
-  const [isChatDialogOpen, setIsChatDialogOpen] = useState(false);
-  const isVisible = useButtonVisibility();
+const HenryButton: React.FC<HenryButtonProps> = ({ 
+  userName = "",
+  triggerInitialGreeting = false
+}) => {
+  const [showHenryDialog, setShowHenryDialog] = useState(false);
+  const [showIntroDialog, setShowIntroDialog] = useState(false);
+  const [introShown, setIntroShown] = useState(false);
+  const location = useLocation();
+  const isHomePath = location.pathname === '/';
+
+  // Check path and determine if button should be visible
+  // Don't show on home path during initial screens
+  const [isVisible, setIsVisible] = useState(true);
   
   useEffect(() => {
-    // Open the intro dialog automatically if triggerInitialGreeting is true
-    if (triggerInitialGreeting) {
-      setIsIntroDialogOpen(true);
+    // Determine if we should show the button based on path and state
+    const searchParams = new URLSearchParams(location.search);
+    const screenState = searchParams.get('screenState') || (location.state && location.state.screenState);
+    
+    // Hide button on home path with excluded screen states
+    const shouldHide = isHomePath && ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'].includes(String(screenState));
+    
+    console.info("Current path for button visibility check:", location.pathname);
+    console.info("Hiding button:", shouldHide ? `Home path with excluded screenState: ${JSON.stringify(screenState)}` : "No - showing button");
+    
+    setIsVisible(!shouldHide);
+  }, [location, isHomePath]);
+
+  // Show intro dialog when arriving at main for the first time
+  useEffect(() => {
+    if (triggerInitialGreeting && !introShown) {
+      setShowIntroDialog(true);
+      setIntroShown(true);
     }
-  }, [triggerInitialGreeting]);
-  
-  const handleIntroContinue = () => {
-    // Close the intro dialog and open the chat dialog
-    setIsIntroDialogOpen(false);
-    setIsChatDialogOpen(true);
+  }, [triggerInitialGreeting, introShown]);
+
+  const handleOpenHenry = () => {
+    setShowHenryDialog(true);
   };
   
-  // Don't render the button if it shouldn't be visible
-  if (!isVisible) {
-    return null;
-  }
-  
+  const handleIntroDialogContinue = () => {
+    setShowIntroDialog(false);
+  };
+
+  if (!isVisible) return null;
+
   return (
     <>
-      <div 
-        onClick={() => setIsIntroDialogOpen(true)}
-        className="cursor-pointer fixed right-6 bottom-6 z-50"
-        aria-label="Open Henry support chat"
-      >
-        <div className="relative h-12 w-12 flex items-center justify-center transition-transform duration-300 hover:scale-110">
-          {/* Copper/bronze gradient circle background to match app theme */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] shadow-lg"></div>
-          
-          {/* Inner circle for depth */}
-          <div className="absolute inset-[2px] rounded-full bg-white/90"></div>
-          
-          {/* Letter H */}
-          <div className="relative z-10 text-xl font-bold text-[#B87333]">H</div>
-          
-          {/* Pulsing glow effect */}
-          <div className="absolute inset-[-3px] rounded-full bg-gradient-to-r from-[#B87333]/50 to-[#E5C5A1]/50 animate-pulse" style={{ animationDuration: '3s' }}></div>
-        </div>
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button
+          onClick={handleOpenHenry}
+          className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white shadow-lg flex items-center justify-center"
+        >
+          <span className="text-2xl font-bold">H</span>
+        </Button>
       </div>
-      
-      {/* Henry Introduction Dialog */}
-      <HenryIntroDialog 
-        open={isIntroDialogOpen} 
-        onOpenChange={setIsIntroDialogOpen}
-        onContinue={handleIntroContinue}
+
+      <HenryDialog 
+        isOpen={showHenryDialog} 
+        onOpenChange={setShowHenryDialog}
+        userName={userName}
       />
       
-      {/* Henry Chat Dialog */}
-      <HelpDialog 
-        isOpen={isChatDialogOpen} 
-        onOpenChange={setIsChatDialogOpen} 
+      <HenryIntroDialog 
+        open={showIntroDialog} 
+        onOpenChange={setShowIntroDialog}
+        onContinue={handleIntroDialogContinue}
       />
     </>
   );

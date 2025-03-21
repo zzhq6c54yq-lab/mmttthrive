@@ -13,6 +13,11 @@ interface HenryIntroDialogProps {
 }
 
 const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange, onContinue }) => {
+  const handleContinue = () => {
+    onContinue();
+    onOpenChange(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20">
@@ -79,7 +84,7 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange,
         <DialogFooter className="sm:justify-center mt-4">
           <Button 
             className="group hero-button bg-[#B87333] hover:bg-[#B87333]/80"
-            onClick={onContinue}
+            onClick={handleContinue}
           >
             Start Your Journey With Henry
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

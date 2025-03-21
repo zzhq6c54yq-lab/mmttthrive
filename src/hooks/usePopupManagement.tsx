@@ -15,18 +15,23 @@ export const usePopupManagement = (screenState: string) => {
   });
 
   useEffect(() => {
-    // Only show popups during initial flow from vision board to main
-    if (screenState === 'main' && !popupsShown.coPayCredit) {
-      setShowCoPayCredit(true);
-      setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
+    // Show popups during initial flow when transferring to main menu
+    if (screenState === 'main') {
+      // Show co-pay credit popup if not shown yet
+      if (!popupsShown.coPayCredit) {
+        setShowCoPayCredit(true);
+        setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
+      }
       
-      // Set a timer to show Henry after the co-pay credit popup is closed
-      setTimeout(() => {
-        if (!popupsShown.henryIntro) {
-          setShowHenry(true);
+      // Always show Henry when navigating to main from other screens
+      setShowHenry(true);
+      
+      // Set a timer to mark Henry intro as shown if it wasn't shown yet
+      if (!popupsShown.henryIntro) {
+        setTimeout(() => {
           setPopupsShown(prev => ({ ...prev, henryIntro: true }));
-        }
-      }, 1500);
+        }, 500);
+      }
     }
   }, [screenState, popupsShown]);
 

@@ -1,150 +1,112 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { generateResponse } from "@/components/help/utils/responseGenerator";
+import { checkForEmergency } from "@/components/help/utils/messageHelpers";
 
-interface UseHenryChatProps {
+interface HenryChatOptions {
   userName?: string;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export const useHenryChat = ({ userName, onOpenChange }: UseHenryChatProps) => {
-  const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([]);
+interface Message {
+  text: string;
+  isUser: boolean;
+  timestamp: Date;
+}
+
+export const useHenryChat = ({ userName = "", onOpenChange }: HenryChatOptions) => {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [processing, setProcessing] = useState(false);
-  const navigate = useNavigate();
+  const [emergencyMode, setEmergencyMode] = useState(false);
   const { toast } = useToast();
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    let timeGreeting = "";
-    
-    if (hour < 12) timeGreeting = "Good morning";
-    else if (hour < 17) timeGreeting = "Good afternoon";
-    else timeGreeting = "Good evening";
-    
-    return userName 
-      ? `${timeGreeting}, ${userName}! I'm Henry, your digital mental health counselor. I'm here to help you navigate Thrive MT and support your mental wellness journey. How can I assist you today?`
-      : `${timeGreeting}! I'm Henry, your digital mental health counselor. I'm here to help you navigate Thrive MT and support your mental wellness journey. How can I assist you today?`;
-  };
-
+  
+  // Initialize with greeting
   useEffect(() => {
-    // Reset messages for a fresh conversation
-    setMessages([{ text: getGreeting(), isUser: false }]);
+    const greeting = userName 
+      ? `Hi ${userName}! I'm Henry, your mental health companion. How can I assist you today?` 
+      : "Hi there! I'm Henry, your mental health companion. How can I assist you today?";
+    
+    setMessages([{
+      text: greeting,
+      isUser: false,
+      timestamp: new Date()
+    }]);
   }, [userName]);
-
-  const navigateToSection = (message: string) => {
-    const lowerMessage = message.toLowerCase();
+  
+  const handleSendMessage = (text: string) => {
+    if (!text.trim()) return;
     
-    if (lowerMessage.includes("workshop")) {
-      navigate("/workshops");
-      onOpenChange(false);
-      return true;
-    } 
+    // Add user message
+    const userMessage: Message = {
+      text: text.trim(),
+      isUser: true,
+      timestamp: new Date()
+    };
     
-    if (lowerMessage.includes("community") || lowerMessage.includes("forum") || lowerMessage.includes("chat")) {
-      navigate("/community-support");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("tool")) {
-      navigate("/mental-wellness-tools");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("crisis") || lowerMessage.includes("emergency")) {
-      navigate("/crisis-support");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("therapist")) {
-      navigate("/therapist-questionnaire");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("game")) {
-      navigate("/mental-health-games");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("progress")) {
-      navigate("/progress-reports");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("profile")) {
-      navigate("/user-profile");
-      onOpenChange(false);
-      return true;
-    } 
-    
-    if (lowerMessage.includes("setting")) {
-      navigate("/user-settings");
-      onOpenChange(false);
-      return true;
-    }
-    
-    return false;
-  };
-
-  const handleSendMessage = (message: string) => {
-    setMessages(prev => [...prev, { text: message, isUser: true }]);
+    setMessages(prev => [...prev, userMessage]);
     setProcessing(true);
     
-    // Check for direct navigation commands
-    setTimeout(() => {
-      if (message.toLowerCase().includes("take me to") || 
-          message.toLowerCase().includes("go to") || 
-          message.toLowerCase().includes("navigate to")) {
-        
-        if (navigateToSection(message)) {
-          return;
-        }
-      }
+    // Check for emergency
+    const emergency = checkForEmergency(text);
+    if (emergency && !emergencyMode) {
+      setEmergencyMode(true);
       
-      // Generate standard response from the imported utilities
-      import('../utils/responseGenerator').then(({ generateResponse }) => {
-        const response = generateResponse(message, userName);
+      // Emergency response with crisis protocol
+      setTimeout(() => {
+        const emergencyResponse: Message = {
+          text: "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please call the National Suicide Prevention Lifeline at 988 right away. Would you like me to connect you with our Crisis Support resources?",
+          isUser: false,
+          timestamp: new Date()
+        };
         
-        setMessages(prev => [...prev, { 
-          text: response, 
-          isUser: false 
-        }]);
+        setMessages(prev => [...prev, emergencyResponse]);
+        setProcessing(false);
         
         toast({
-          title: "New message from Henry",
-          description: "Henry has responded to your question.",
-          duration: 3000,
+          title: "Crisis Resources Available",
+          description: "Henry has detected concerning content and is ready to provide crisis resources.",
+          variant: "destructive",
+          duration: 10000,
         });
-        
-        setProcessing(false);
-      });
-    }, 1000);
+      }, 1000);
+      
+      return;
+    }
+    
+    // Generate response after a small delay to feel more natural
+    setTimeout(() => {
+      const response = generateResponse(text, userName);
+      
+      const henryMessage: Message = {
+        text: response,
+        isUser: false,
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, henryMessage]);
+      setProcessing(false);
+    }, 1500);
   };
-
+  
   const handleQuickAction = (action: string) => {
-    handleSendMessage(`Tell me about ${action}`);
+    handleSendMessage(action);
   };
-
+  
   const handleGotIt = () => {
-    onOpenChange(false);
-    toast({
-      title: "Henry will be here when you need him",
-      description: "Click the H button anytime for support and guidance",
-      duration: 2000,
-    });
+    if (onOpenChange) {
+      onOpenChange(false);
+    }
   };
-
+  
   return {
     messages,
     processing,
+    emergencyMode,
     handleSendMessage,
     handleQuickAction,
     handleGotIt
   };
 };
+
+export default useHenryChat;

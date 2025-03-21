@@ -1,112 +1,148 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Send, Loader2, AlertTriangle, Smile } from "lucide-react";
+import { Send, Mic } from "lucide-react";
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
-  isProcessing?: boolean;
+  isProcessing: boolean;
   isEmergencyMode?: boolean;
   onResize?: (height: number) => void;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({ 
   onSendMessage, 
-  isProcessing = false,
+  isProcessing, 
   isEmergencyMode = false,
   onResize
 }) => {
   const [message, setMessage] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [isListening, setIsListening] = useState(false);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  
+  // Adjust textarea height based on content
+  useEffect(() => {
+    if (textAreaRef.current) {
+      // Reset height to measure the scrollHeight correctly
+      textAreaRef.current.style.height = "auto";
+      const scrollHeight = textAreaRef.current.scrollHeight;
+      textAreaRef.current.style.height = `${scrollHeight}px`;
+      
+      if (onResize) {
+        onResize(scrollHeight);
+      }
+    }
+  }, [message, onResize]);
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+  
+  const handleSend = () => {
     if (message.trim() && !isProcessing) {
       onSendMessage(message);
       setMessage("");
-      // Reset height after sending
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto';
-        if (onResize) onResize(40);
+      
+      // Reset height after clearing
+      if (textAreaRef.current) {
+        textAreaRef.current.style.height = "auto";
+        if (onResize) {
+          onResize(40); // Default height
+        }
       }
     }
   };
-
-  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
+  
+  const startListening = () => {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Voice recognition not supported in your browser. Try typing instead.");
+      return;
+    }
     
-    // Auto-resize the textarea
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      const newHeight = Math.min(100, textareaRef.current.scrollHeight);
-      textareaRef.current.style.height = `${newHeight}px`;
-      if (onResize) onResize(newHeight);
-    }
+    setIsListening(true);
+    
+    // @ts-ignore - WebkitSpeechRecognition is not in the TypeScript types
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setMessage(transcript);
+      setIsListening(false);
+      
+      // Submit automatically after a short delay
+      setTimeout(() => {
+        onSendMessage(transcript);
+        setMessage("");
+      }, 500);
+    };
+    
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+    
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+    
+    recognition.start();
   };
-
-  useEffect(() => {
-    // Focus the textarea when the component mounts
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  }, []);
-
+  
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
-      <div className="relative flex-1">
-        <Textarea
-          ref={textareaRef}
-          value={message}
-          onChange={handleTextAreaChange}
-          placeholder={isEmergencyMode 
-            ? "A human counselor is being connected. Please share how you're feeling..."
-            : "Type your message to Henry..."
-          }
-          className={`min-h-[40px] max-h-[100px] resize-none border text-white text-sm transition-colors duration-300 pr-9 ${
-            isEmergencyMode 
-              ? "bg-red-900/20 border-red-600/40 focus-visible:ring-red-600" 
-              : "bg-white/5 border-[#B87333]/30 focus-visible:ring-[#B87333]"
+    <div className="flex items-end gap-2 mt-2">
+      <textarea
+        ref={textAreaRef}
+        value={message}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Type a message..."
+        className={`flex-1 bg-[#2A2A2A] text-white border-none rounded-md p-3 focus:ring-2 ${
+          isEmergencyMode 
+            ? 'focus:ring-red-500/50 border border-red-500/50' 
+            : 'focus:ring-[#B87333]/50'
+        } resize-none max-h-20 min-h-[40px]`}
+        rows={1}
+        disabled={isProcessing || isListening}
+      />
+      <div className="flex gap-1">
+        <Button
+          type="button"
+          onClick={startListening}
+          disabled={isProcessing || isListening}
+          className={`rounded-full w-10 h-10 flex items-center justify-center ${
+            isListening 
+              ? 'bg-red-500 animate-pulse' 
+              : isEmergencyMode 
+                ? 'bg-red-600 hover:bg-red-700' 
+                : 'bg-[#B87333] hover:bg-[#A56625]'
           }`}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              handleSubmit(e);
-            }
-          }}
-          disabled={isProcessing}
-        />
-        <div className="absolute right-2 bottom-2">
-          <Button 
-            type="button" 
-            size="icon"
-            variant="ghost"
-            className="h-5 w-5 text-gray-400 hover:text-gray-300 hover:bg-transparent"
-            disabled={isProcessing}
-          >
-            <Smile className="h-4 w-4" />
-          </Button>
-        </div>
+          size="icon"
+        >
+          <Mic className="h-5 w-5" />
+        </Button>
+        <Button
+          type="button"
+          onClick={handleSend}
+          disabled={!message.trim() || isProcessing}
+          className={`rounded-full w-10 h-10 flex items-center justify-center ${
+            isEmergencyMode 
+              ? 'bg-red-600 hover:bg-red-700' 
+              : 'bg-[#B87333] hover:bg-[#A56625]'
+          }`}
+          size="icon"
+        >
+          <Send className="h-5 w-5" />
+        </Button>
       </div>
-      <Button 
-        type="submit" 
-        size="icon"
-        className={`h-10 w-10 transition-colors duration-300 ${
-          isEmergencyMode
-            ? "bg-red-600 hover:bg-red-700"
-            : "bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A76323] hover:to-[#D4B491]"
-        }`}
-        disabled={message.trim() === "" || isProcessing}
-      >
-        {isProcessing ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : isEmergencyMode ? (
-          <AlertTriangle className="h-4 w-4" />
-        ) : (
-          <Send className="h-4 w-4" />
-        )}
-      </Button>
-    </form>
+    </div>
   );
 };
 

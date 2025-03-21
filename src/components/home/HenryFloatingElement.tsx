@@ -1,20 +1,34 @@
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import HenryDialog from "@/components/henry/HenryDialog";
+import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
 
 interface HenryFloatingElementProps {
   showHenry: boolean;
   mousePosition: { x: number; y: number };
   henryPosition: { x: number; y: number };
   setHenryPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  userName?: string;
 }
 
 const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
   showHenry,
   mousePosition,
   henryPosition,
-  setHenryPosition
+  setHenryPosition,
+  userName = ""
 }) => {
   const henryRef = useRef<HTMLDivElement>(null);
+  const [showIntroDialog, setShowIntroDialog] = useState(false);
+  const [showConversationDialog, setShowConversationDialog] = useState(false);
+
+  // Show the intro dialog when Henry first appears
+  useEffect(() => {
+    if (showHenry) {
+      setShowIntroDialog(true);
+    }
+  }, [showHenry]);
 
   useEffect(() => {
     if (showHenry && henryRef.current) {
@@ -36,16 +50,45 @@ const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
 
   if (!showHenry) return null;
 
+  const handleHenryClick = () => {
+    setShowConversationDialog(true);
+  };
+
+  const handleIntroDialogContinue = () => {
+    setShowIntroDialog(false);
+  };
+
   return (
-    <div 
-      ref={henryRef}
-      style={{
-        position: 'fixed',
-        left: `${henryPosition.x}px`,
-        top: `${henryPosition.y}px`,
-        zIndex: 50,
-      }}
-    />
+    <>
+      <div 
+        ref={henryRef}
+        style={{
+          position: 'fixed',
+          left: `${henryPosition.x}px`,
+          top: `${henryPosition.y}px`,
+          zIndex: 50,
+        }}
+      >
+        <Button
+          onClick={handleHenryClick}
+          className="h-12 w-12 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white shadow-lg flex items-center justify-center"
+        >
+          <span className="text-xl font-bold">H</span>
+        </Button>
+      </div>
+
+      <HenryIntroDialog 
+        open={showIntroDialog} 
+        onOpenChange={setShowIntroDialog}
+        onContinue={handleIntroDialogContinue}
+      />
+
+      <HenryDialog 
+        isOpen={showConversationDialog} 
+        onOpenChange={setShowConversationDialog}
+        userName={userName}
+      />
+    </>
   );
 };
 

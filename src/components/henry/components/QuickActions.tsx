@@ -1,47 +1,32 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 
 interface QuickActionsProps {
   onQuickAction: (action: string) => void;
 }
 
 const QuickActions: React.FC<QuickActionsProps> = ({ onQuickAction }) => {
+  const actions = [
+    "How can you help me?",
+    "I'm feeling anxious",
+    "Mental health resources",
+    "Guided breathing exercise"
+  ];
+
   return (
-    <div className="mt-3 flex flex-wrap gap-1 justify-center">
-      <Button 
-        variant="outline" 
-        size="sm"
-        className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
-        onClick={() => onQuickAction("anxiety")}
-      >
-        Anxiety <ArrowRight className="ml-1 h-3 w-3" />
-      </Button>
-      <Button 
-        variant="outline" 
-        size="sm"
-        className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
-        onClick={() => onQuickAction("depression")}
-      >
-        Depression <ArrowRight className="ml-1 h-3 w-3" />
-      </Button>
-      <Button 
-        variant="outline" 
-        size="sm"
-        className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
-        onClick={() => onQuickAction("stress")}
-      >
-        Stress <ArrowRight className="ml-1 h-3 w-3" />
-      </Button>
-      <Button 
-        variant="outline" 
-        size="sm"
-        className="bg-transparent border-white/20 text-white/70 hover:bg-white/10 hover:text-white text-xs py-1 h-7"
-        onClick={() => onQuickAction("workshops")}
-      >
-        Workshops <ArrowRight className="ml-1 h-3 w-3" />
-      </Button>
+    <div className="flex flex-wrap gap-2 mt-3">
+      {actions.map((action, index) => (
+        <Button
+          key={index}
+          variant="outline"
+          size="sm"
+          onClick={() => onQuickAction(action)}
+          className="bg-[#2A2A2A] border-[#B87333]/30 text-white hover:bg-[#3A3A3A] text-xs py-1"
+        >
+          {action}
+        </Button>
+      ))}
     </div>
   );
 };

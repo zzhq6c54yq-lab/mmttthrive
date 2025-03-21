@@ -193,6 +193,7 @@ const Index = () => {
         mousePosition={mousePosition}
         henryPosition={henryPosition}
         setHenryPosition={setHenryPosition}
+        userName={userInfo.name}
       />
     </div>
   );

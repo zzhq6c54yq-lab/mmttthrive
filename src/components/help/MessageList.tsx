@@ -1,41 +1,55 @@
 
 import React, { useRef, useEffect } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Message from "./Message";
+
+interface Message {
+  text: string;
+  isUser: boolean;
+  timestamp?: Date;
+}
 
 interface MessageListProps {
-  messages: Array<{ text: string; isUser: boolean }>;
+  messages: Message[];
   className?: string;
   style?: React.CSSProperties;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, className, style }) => {
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+const MessageList: React.FC<MessageListProps> = ({ messages, className = "", style = {} }) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   
+  // Scroll to bottom when new messages arrive
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      const scrollContainer = scrollAreaRef.current;
-      scrollContainer.scrollTop = scrollContainer.scrollHeight;
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   
   return (
-    <ScrollArea 
-      className={`overflow-auto pr-4 mb-3 ${className || 'h-[250px]'}`} 
-      ref={scrollAreaRef}
+    <div 
+      className={`flex flex-col space-y-4 py-3 overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-thumb-[#B87333]/20 scrollbar-track-transparent pr-2 ${className}`}
       style={style}
     >
-      <div className="space-y-4 pt-2">
-        {messages.map((message, index) => (
-          <Message key={index} text={message.text} isUser={message.isUser} />
-        ))}
-        {messages.length > 0 && !messages[messages.length - 1].isUser && (
-          <div className="h-4 flex items-center ml-12">
-            <div className="w-2 h-4 bg-[#B87333] animate-pulse opacity-70"></div>
+      {messages.map((message, index) => (
+        <div 
+          key={index} 
+          className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+        >
+          <div 
+            className={`max-w-[80%] px-4 py-2 rounded-2xl ${
+              message.isUser 
+                ? 'bg-[#B87333] text-white rounded-tr-none' 
+                : 'bg-[#2A2A2A] text-white rounded-tl-none'
+            }`}
+          >
+            <p className="text-sm">{message.text}</p>
+            {message.timestamp && (
+              <p className="text-xs opacity-70 mt-1 text-right">
+                {message.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+              </p>
+            )}
           </div>
-        )}
-      </div>
-    </ScrollArea>
+        </div>
+      ))}
+      
+      <div ref={messagesEndRef} />
+    </div>
   );
 };
 
