@@ -1,23 +1,16 @@
 
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
-import IntroScreen from "@/components/home/IntroScreen";
-import MoodScreen from "@/components/home/MoodScreen";
-import MoodResponse from "@/components/home/MoodResponse";
-import RegistrationScreen from "@/components/home/RegistrationScreen";
-import SubscriptionScreen from "@/components/home/SubscriptionScreen";
-import MainDashboard from "@/components/home/MainDashboard";
-import VisionBoard from "@/components/home/VisionBoard";
-import HenryButton from "@/components/henry/HenryButton";
+import useMousePosition from "@/hooks/useMousePosition";
+import useScreenHistory from "@/hooks/useScreenHistory";
+import usePopupManagement from "@/hooks/usePopupManagement";
+import IndexScreenManager from "@/components/home/IndexScreenManager";
+import HenryFloatingElement from "@/components/home/HenryFloatingElement";
 
 const Index = () => {
-  const [showCoPayCredit, setShowCoPayCredit] = useState(false);
-  const [showHenry, setShowHenry] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [henryPosition, setHenryPosition] = useState({ x: 0, y: 0 });
-  const henryRef = useRef<HTMLDivElement>(null);
+  // State management
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -28,117 +21,32 @@ const Index = () => {
     email: '',
     password: '',
   });
-  const [popupsShown, setPopupsShown] = useState({
-    coPayCredit: false,
-    henryIntro: false
-  });
+  const [henryPosition, setHenryPosition] = useState({ x: 0, y: 0 });
+  
+  // Custom hooks
+  const mousePosition = useMousePosition();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { 
+    showCoPayCredit, 
+    setShowCoPayCredit, 
+    showHenry, 
+    setShowHenry,
+    popupsShown
+  } = usePopupManagement(screenState);
+  
+  // Handle location/history state
+  useScreenHistory(screenState, setScreenState);
 
-  useEffect(() => {
-    if (location.state && location.state.screenState) {
-      setScreenState(location.state.screenState);
-      
-      if (location.state.returnToMain) {
-        window.history.replaceState(
-          { ...window.history.state, screenState: location.state.screenState, returnToMain: true }, 
-          document.title
-        );
-      } else {
-        window.history.replaceState(
-          { ...window.history.state, screenState: location.state.screenState }, 
-          document.title
-        );
-      }
-    } else if (location.state && location.state.returnToIntro) {
-      setScreenState('intro');
-      
-      window.history.replaceState(
-        { ...window.history.state, screenState: 'intro' }, 
-        document.title
-      );
-    } else {
-      window.history.replaceState(
-        { ...window.history.state, screenState: 'intro' }, 
-        document.title
-      );
-      
-      const timer = setTimeout(() => {
-        if (screenState === 'intro') {
-          setScreenState('mood');
-          window.history.replaceState(
-            { ...window.history.state, screenState: 'mood' }, 
-            document.title
-          );
-        }
-      }, 7000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [location.state, screenState]);
-
-  useEffect(() => {
-    window.history.replaceState(
-      { ...window.history.state, screenState }, 
-      document.title
-    );
-  }, [screenState]);
-
-  useEffect(() => {
-    // Only show popups during initial flow from vision board to main
-    if (screenState === 'main' && !popupsShown.coPayCredit) {
-      setShowCoPayCredit(true);
-      setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
-      
-      // Set a timer to show Henry after the co-pay credit popup is closed
-      setTimeout(() => {
-        if (!popupsShown.henryIntro) {
-          setShowHenry(true);
-          setPopupsShown(prev => ({ ...prev, henryIntro: true }));
-        }
-      }, 1500);
-    }
-  }, [screenState, popupsShown]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (showHenry && henryRef.current) {
-      const henryWidth = henryRef.current.offsetWidth;
-      const henryHeight = henryRef.current.offsetHeight;
-      
-      const targetX = Math.max(20, Math.min(mousePosition.x - henryWidth/2, window.innerWidth - henryWidth - 20));
-      const targetY = Math.max(20, Math.min(mousePosition.y + 100, window.innerHeight - henryHeight - 20));
-      
-      const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
-      
-      setHenryPosition(prev => ({
-        x: lerp(prev.x, targetX, 0.05),
-        y: lerp(prev.y, targetY, 0.05)
-      }));
-    }
-  }, [mousePosition, showHenry]);
-
+  // Check for Henry show directive from location state
   useEffect(() => {
     if (location.state && location.state.showHenry) {
       setShowHenry(true);
     }
   }, [location.state]);
 
+  // User interaction handlers
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo(prev => ({ ...prev, [name]: value }));
@@ -189,30 +97,6 @@ const Index = () => {
         ? prev.filter(g => g !== id) 
         : [...prev, id]
     );
-  };
-
-  const handlePrevious = () => {
-    let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main' = 'intro';
-    
-    if (screenState === 'mood') {
-      newScreenState = 'intro';
-    } else if (screenState === 'moodResponse') {
-      newScreenState = 'mood';
-    } else if (screenState === 'register') {
-      newScreenState = 'moodResponse';
-    } else if (screenState === 'subscription') {
-      newScreenState = 'register';
-    } else if (screenState === 'visionBoard') {
-      newScreenState = 'subscription';
-    } else if (screenState === 'main') {
-      newScreenState = 'visionBoard';
-    }
-    
-    setScreenState(newScreenState);
-  };
-
-  const handleSkip = () => {
-    setScreenState('main');
   };
 
   const handleSubscriptionContinue = () => {
@@ -268,78 +152,9 @@ const Index = () => {
     }
   };
 
-  const shouldShowHenry = () => {
-    return screenState === 'main';
-  };
-
-  const renderCurrentScreen = () => {
-    switch (screenState) {
-      case 'intro':
-        return <IntroScreen onContinue={() => setScreenState('mood')} />;
-      case 'mood':
-        return (
-          <MoodScreen
-            onMoodSelect={(mood) => {
-              setSelectedMood(mood);
-              setScreenState('moodResponse');
-            }}
-            onPrevious={() => setScreenState('intro')}
-          />
-        );
-      case 'moodResponse':
-        return (
-          <MoodResponse
-            selectedMood={selectedMood}
-            onContinue={() => setScreenState('register')}
-            onPrevious={() => setScreenState('mood')}
-          />
-        );
-      case 'register':
-        return (
-          <RegistrationScreen
-            userInfo={userInfo}
-            onUserInfoChange={handleUserInfoChange}
-            onSubmit={handleRegister}
-            onPrevious={() => setScreenState('moodResponse')}
-            onSkip={() => setScreenState('subscription')}
-          />
-        );
-      case 'subscription':
-        return (
-          <SubscriptionScreen
-            selectedPlan={selectedPlan}
-            onPlanSelect={handleSubscriptionSelect}
-            onContinue={handleSubscriptionContinue}
-            onPrevious={() => setScreenState('register')}
-            onSkip={() => setScreenState('main')}
-          />
-        );
-      case 'visionBoard':
-        return (
-          <VisionBoard
-            selectedQualities={selectedQualities}
-            selectedGoals={selectedGoals}
-            onQualityToggle={toggleQuality}
-            onGoalToggle={toggleGoal}
-            onContinue={handleVisionBoardContinue}
-            onPrevious={() => setScreenState('subscription')}
-            onSkip={() => setScreenState('main')}
-          />
-        );
-      case 'main':
-        return (
-          <MainDashboard
-            userName={userInfo.name}
-            showHenry={showHenry}
-            onHenryToggle={toggleHenry}
-            selectedQualities={selectedQualities}
-            selectedGoals={selectedGoals}
-            navigateToFeature={navigateToFeature}
-          />
-        );
-      default:
-        return null;
-    }
+  const handleMoodSelect = (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => {
+    setSelectedMood(mood);
+    setScreenState('moodResponse');
   };
 
   return (
@@ -352,14 +167,33 @@ const Index = () => {
         />
       }
       
-      {renderCurrentScreen()}
+      <IndexScreenManager
+        screenState={screenState}
+        selectedMood={selectedMood}
+        userInfo={userInfo}
+        selectedPlan={selectedPlan}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+        showHenry={showHenry}
+        onMoodSelect={handleMoodSelect}
+        onUserInfoChange={handleUserInfoChange}
+        onQualityToggle={toggleQuality}
+        onGoalToggle={toggleGoal}
+        onPlanSelect={handleSubscriptionSelect}
+        onHenryToggle={toggleHenry}
+        navigateToFeature={navigateToFeature}
+        handleSubscriptionContinue={handleSubscriptionContinue}
+        handleVisionBoardContinue={handleVisionBoardContinue}
+        handleRegister={handleRegister}
+        setScreenState={setScreenState}
+      />
       
-      {screenState === 'main' && (
-        <HenryButton 
-          userName={userInfo.name}
-          triggerInitialGreeting={showHenry && !popupsShown.henryIntro}
-        />
-      )}
+      <HenryFloatingElement
+        showHenry={showHenry}
+        mousePosition={mousePosition}
+        henryPosition={henryPosition}
+        setHenryPosition={setHenryPosition}
+      />
     </div>
   );
 };
