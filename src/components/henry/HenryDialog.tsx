@@ -137,7 +137,8 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
     
     // Generate response after a small delay to feel more natural
     setTimeout(() => {
-      const response = generateResponse(text, userName);
+      // Fix: Pass only one argument to generateResponse
+      const response = generateResponse(text);
       
       const henryMessage: Message = {
         text: response,

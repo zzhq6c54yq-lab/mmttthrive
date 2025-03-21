@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,7 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([
     { text: "Hi there! I'm Henry, your digital counselor. How can I assist you today?", isUser: false }
   ]);
+  const [processing, setProcessing] = useState(false);
   const { toast } = useToast();
   
   // Mental health knowledge base
@@ -159,6 +159,8 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
     // Add user message to chat
     setMessages(prev => [...prev, { text: message, isUser: true }]);
     
+    setProcessing(true);
+    
     // Generate response after a slight delay
     setTimeout(() => {
       const response = generateResponse(message);
@@ -173,6 +175,8 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
         description: "Henry has responded to your question.",
         duration: 3000,
       });
+      
+      setProcessing(false);
     }, 1000);
   };
 
@@ -188,7 +192,10 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
         </DialogHeader>
         
         <MessageList messages={messages} />
-        <MessageInput onSendMessage={handleSendMessage} />
+        <MessageInput 
+          onSendMessage={handleSendMessage} 
+          isProcessing={processing} 
+        />
         
         <div className="mt-4 flex justify-center">
           <Button
@@ -204,3 +211,4 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
 };
 
 export default HelpChatDialog;
+
