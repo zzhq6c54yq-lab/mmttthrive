@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -10,7 +11,7 @@ import NewFeatures from "@/components/dashboard/NewFeatures";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
-import HenryButton from "@/components/henry/HenryButton";
+// Import removed: HenryButton - We don't need it here anymore
 
 interface MainDashboardProps {
   userName: string;
@@ -66,7 +67,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         <KeyFeatures />
       </div>
       
-      <HenryButton userName={userName} triggerInitialGreeting={showHenry} />
+      {/* Removed HenryButton component from here as it's redundant */}
     </div>
   );
 };

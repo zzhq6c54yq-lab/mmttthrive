@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -48,6 +47,7 @@ import CollegeExperience from "@/pages/CollegeExperience";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
+// Keep only one Henry button component
 import HelpNavButton from "@/components/help/HelpNavButton";
 
 function App() {
@@ -112,6 +112,7 @@ function App() {
         
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* Keep only this Henry button instance - it will appear across the app */}
       <HelpNavButton />
       <Toaster />
     </Router>

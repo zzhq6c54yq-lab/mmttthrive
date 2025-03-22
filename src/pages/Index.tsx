@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -7,7 +6,7 @@ import useMousePosition from "@/hooks/useMousePosition";
 import useScreenHistory from "@/hooks/useScreenHistory";
 import usePopupManagement from "@/hooks/usePopupManagement";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-import HenryFloatingElement from "@/components/home/HenryFloatingElement";
+// Removing HenryFloatingElement as we're consolidating to just one Henry button
 
 const Index = () => {
   // State management
@@ -21,7 +20,6 @@ const Index = () => {
     email: '',
     password: '',
   });
-  const [henryPosition, setHenryPosition] = useState({ x: 0, y: 0 });
   
   // Custom hooks
   const mousePosition = useMousePosition();
@@ -188,13 +186,7 @@ const Index = () => {
         setScreenState={setScreenState}
       />
       
-      <HenryFloatingElement
-        showHenry={showHenry}
-        mousePosition={mousePosition}
-        henryPosition={henryPosition}
-        setHenryPosition={setHenryPosition}
-        userName={userInfo.name}
-      />
+      {/* Removed HenryFloatingElement - Using the global HelpNavButton instead */}
     </div>
   );
 };

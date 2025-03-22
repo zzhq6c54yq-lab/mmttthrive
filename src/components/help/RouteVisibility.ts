@@ -27,9 +27,9 @@ export const useButtonVisibility = () => {
         return false;
       }
       
-      // Hide on all other/unknown states of the index page
-      console.log("Hiding button: Unknown index page state:", screenState);
-      return false;
+      // Default - for index page with no state, we'll show the button for better usability
+      console.log("Showing button: Default for index page with no specific state");
+      return true;
     }
     
     // Now we will show buttons on all screens except for these specific ones
@@ -43,7 +43,7 @@ export const useButtonVisibility = () => {
       return false;
     }
     
-    // By default, now show the button on all screens after the main screen is shown
+    // By default, now show the button on all screens
     console.log("Showing button: Default for path:", location.pathname);
     return true;
   };
