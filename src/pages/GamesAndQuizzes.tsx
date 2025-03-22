@@ -15,6 +15,9 @@ import GameWordAssociation from "@/components/games/GameWordAssociation";
 import GameSequenceRecall from "@/components/games/GameSequenceRecall";
 import GameShapeFit from "@/components/games/GameShapeFit";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import HomeButton from "@/components/HomeButton";
 
 // Import refactored components
 import SearchHeader from "@/components/games-and-quizzes/SearchHeader";
@@ -25,6 +28,7 @@ import GamePlayDialog from "@/components/games-and-quizzes/GamePlayDialog";
 
 const GamesAndQuizzes = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("");
@@ -124,6 +128,10 @@ const GamesAndQuizzes = () => {
     setActiveGame(null);
   };
 
+  const handleMainMenu = () => {
+    navigate("/", { state: { screenState: 'main' } });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f0f4f8] via-[#e6eef5] to-[#dde8f3]">
       <Header />
@@ -142,6 +150,16 @@ const GamesAndQuizzes = () => {
               <Sparkles className="h-8 w-8 text-[#9b87f5] mx-auto" />
             </div>
           </div>
+        </div>
+        
+        {/* Add main menu button */}
+        <div className="flex justify-end mb-4">
+          <Button 
+            onClick={handleMainMenu}
+            className="bg-gradient-to-r from-[#9b87f5] to-[#D946EF] text-white"
+          >
+            Main Menu
+          </Button>
         </div>
         
         <SearchHeader 
