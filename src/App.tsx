@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -19,7 +18,6 @@ import CommunitySupport from "@/pages/CommunitySupport";
 import ResourceLibrary from "@/pages/ResourceLibrary";
 import ProgressReports from "@/pages/ProgressReports";
 import HolisticWellness from "@/pages/HolisticWellness";
-import HenryButton from "@/components/henry/HenryButton";
 import BarterSystem from "@/pages/BarterSystem";
 import LifestyleIntegration from "@/pages/LifestyleIntegration";
 import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
@@ -49,6 +47,7 @@ import CollegeExperience from "@/pages/CollegeExperience";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
+import NavigationHelpButton from "@/components/navigation/NavigationHelpButton";
 
 function App() {
   return (
@@ -112,7 +111,7 @@ function App() {
         
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <HenryButton />
+      <NavigationHelpButton />
       <Toaster />
     </Router>
   );

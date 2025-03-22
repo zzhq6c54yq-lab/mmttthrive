@@ -7,7 +7,6 @@ import RegistrationScreen from "@/components/home/RegistrationScreen";
 import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import VisionBoard from "@/components/home/VisionBoard";
 import MainDashboard from "@/components/home/MainDashboard";
-import HenryButton from "@/components/henry/HenryButton";
 
 interface IndexScreenManagerProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
@@ -130,23 +129,14 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
       );
     case 'main':
       return (
-        <>
-          <MainDashboard
-            userName={userInfo.name}
-            showHenry={showHenry}
-            onHenryToggle={onHenryToggle}
-            selectedQualities={selectedQualities}
-            selectedGoals={selectedGoals}
-            navigateToFeature={navigateToFeature}
-          />
-          
-          {screenState === 'main' && (
-            <HenryButton 
-              userName={userInfo.name}
-              triggerInitialGreeting={showHenry}
-            />
-          )}
-        </>
+        <MainDashboard
+          userName={userInfo.name}
+          showHenry={showHenry}
+          onHenryToggle={onHenryToggle}
+          selectedQualities={selectedQualities}
+          selectedGoals={selectedGoals}
+          navigateToFeature={navigateToFeature}
+        />
       );
     default:
       return null;

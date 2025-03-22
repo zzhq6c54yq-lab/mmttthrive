@@ -8,7 +8,7 @@ export const useButtonVisibility = () => {
   const shouldShowButton = () => {
     console.log("Current path for button visibility check:", location.pathname);
     
-    // On the index page, visibility is controlled by the screenState
+    // On the index page, we need to check the screenState
     if (location.pathname === "/" || location.pathname === "/index") {
       // Get state from location if available
       const state = location.state as { screenState?: string } | null;
@@ -20,8 +20,15 @@ export const useButtonVisibility = () => {
         return true;
       }
       
-      // Hide on all other screens (intro, mood, register, subscription, visionBoard)
-      console.log("Hiding button: Home path with excluded screenState:", screenState);
+      // Hide on all onboarding screens
+      const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
+      if (excludedScreenStates.includes(String(screenState))) {
+        console.log("Hiding button: On excluded screen state:", screenState);
+        return false;
+      }
+      
+      // Hide on all other/unknown states of the index page
+      console.log("Hiding button: Unknown index page state:", screenState);
       return false;
     }
     
@@ -36,7 +43,7 @@ export const useButtonVisibility = () => {
       return false;
     }
     
-    // By default, now show the button on all screens
+    // By default, now show the button on all screens after the main screen is shown
     console.log("Showing button: Default for path:", location.pathname);
     return true;
   };

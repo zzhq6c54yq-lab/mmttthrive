@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import HelpChatDialog from "./HelpChatDialog";
@@ -16,11 +16,17 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state as { screenState?: string } | null;
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  
+  // Get the screen state from the location
+  const state = location.state as { screenState?: string } | null;
+  const screenState = state?.screenState;
+  
+  // Only show on main dashboard, not on any initial screens
+  const shouldShow = location.pathname !== "/" || screenState === 'main';
 
   // Don't show the help button on initial screens
-  if (!state?.screenState || state.screenState !== 'main') {
+  if (!shouldShow) {
     return null;
   }
 
