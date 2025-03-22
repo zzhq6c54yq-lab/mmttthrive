@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import MessageList from "./help/MessageList";
-import MessageInput from "./help/MessageInput";
 import { useToast } from "@/hooks/use-toast";
+import MessageList from "@/components/shared/MessageList"; // Update import
+import MessageInput from "./help/MessageInput";
 import { useMessageProcessor, Message } from "@/components/henry/hooks/useMessageProcessor";
 
 interface HelpChatDialogProps {
@@ -57,7 +56,11 @@ const HelpChatDialog: React.FC<HelpChatDialogProps> = ({ isOpen, onOpenChange })
           </DialogTitle>
         </DialogHeader>
         
-        <MessageList messages={messages} />
+        <MessageList 
+          messages={messages} 
+          showTypingIndicator={processing}
+        />
+        
         <MessageInput 
           onSendMessage={handleSendMessage} 
           isProcessing={processing} 

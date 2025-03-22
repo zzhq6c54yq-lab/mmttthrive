@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import MessageList from "./MessageList";
+import MessageList from "@/components/shared/MessageList"; // Update import
 import MessageInput from "./MessageInput";
 import { useToast } from "@/hooks/use-toast";
 import { useHenryMessageProcessor } from "./HenryMessageProcessor";
@@ -14,8 +14,12 @@ interface HelpDialogProps {
 }
 
 const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
-  const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean }>>([
-    { text: "Hi there! I'm Henry, your digital mental health companion. How can I support you today?", isUser: false }
+  const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean; timestamp?: Date }>>([
+    { 
+      text: "Hi there! I'm Henry, your digital mental health companion. How can I support you today?", 
+      isUser: false,
+      timestamp: new Date()
+    }
   ]);
   const [messageInputHeight, setMessageInputHeight] = useState(40);
   const dialogContentRef = useRef<HTMLDivElement>(null);
@@ -23,12 +27,19 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
   useEffect(() => {
     // Reset messages when dialog opens
     if (isOpen) {
-      setMessages([{ text: "Hi there! I'm Henry, your digital mental health companion. How can I support you today?", isUser: false }]);
+      setMessages([{ 
+        text: "Hi there! I'm Henry, your digital mental health companion. How can I support you today?",
+        isUser: false,
+        timestamp: new Date()
+      }]);
     }
   }, [isOpen]);
   
   const addNewMessage = (message: { text: string; isUser: boolean }) => {
-    setMessages(prev => [...prev, message]);
+    setMessages(prev => [...prev, {
+      ...message,
+      timestamp: new Date()
+    }]);
   };
   
   const { handleSendMessage, processing, emergencyMode } = useHenryMessageProcessor(addNewMessage);
@@ -91,6 +102,7 @@ const HelpDialog: React.FC<HelpDialogProps> = ({ isOpen, onOpenChange }) => {
             messages={messages} 
             className="flex-grow" 
             style={{ height: 'var(--message-area-height)' }}
+            showTypingIndicator={processing}
           />
           
           <div className="mt-2">
