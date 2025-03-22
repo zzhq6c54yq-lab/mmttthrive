@@ -66,11 +66,12 @@ const Workshops = () => {
                   return (
                     <div 
                       key={workshop.id}
-                      className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group"
+                      className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group cursor-pointer"
                       style={{
                         background: `linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%)`,
                         borderLeft: `4px solid ${accentColor}`
                       }}
+                      onClick={() => handleJoinWorkshop(workshop.id)}
                     >
                       <div className="p-6">
                         <div className="flex justify-between items-start mb-3">
@@ -100,7 +101,10 @@ const Workshops = () => {
                             backgroundColor: accentColor,
                             color: '#fff'
                           }}
-                          onClick={() => handleJoinWorkshop(workshop.id)}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent triggering the parent onClick
+                            handleJoinWorkshop(workshop.id);
+                          }}
                         >
                           Join Now
                           <Play className="h-4 w-4 ml-1" />

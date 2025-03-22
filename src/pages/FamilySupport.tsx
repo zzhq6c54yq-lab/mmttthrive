@@ -1,6 +1,6 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, Users, BookOpen, MessageCircle, Video, Calendar, Download, Lightbulb, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
@@ -10,12 +10,110 @@ import { useToast } from "@/hooks/use-toast";
 
 const FamilySupport = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("resources");
 
-  const handleResourceAction = (action: string) => {
-    toast({
-      title: action,
-      description: "Resource added to your saved items.",
-    });
+  const handleResourceAction = (action: string, resourceName?: string) => {
+    if (action === "Resource Saved") {
+      toast({
+        title: action,
+        description: resourceName ? `${resourceName} has been saved to your library.` : "Resource added to your saved items.",
+        duration: 2000
+      });
+    } else if (action === "Resource Downloaded") {
+      toast({
+        title: "Downloading Resource",
+        description: resourceName ? `${resourceName} is being downloaded.` : "Your resource is being downloaded.",
+        duration: 2000
+      });
+      
+      // Simulate download completion
+      setTimeout(() => {
+        toast({
+          title: "Download Complete",
+          description: "Your download has completed successfully.",
+          duration: 2000
+        });
+      }, 2000);
+    } else if (action === "Toolkit Downloaded") {
+      toast({
+        title: "Family Mental Health Toolkit",
+        description: "The complete toolkit is being prepared for download.",
+        duration: 2000
+      });
+      
+      // Simulate download completion
+      setTimeout(() => {
+        toast({
+          title: "Toolkit Downloaded",
+          description: "The Family Mental Health Toolkit has been successfully downloaded.",
+          duration: 3000
+        });
+      }, 2500);
+    } else if (action === "More Information") {
+      toast({
+        title: action,
+        description: resourceName ? `Details about ${resourceName} are now available.` : "Additional information is now available.",
+        duration: 2000
+      });
+    } else if (action === "Registration Confirmed") {
+      toast({
+        title: action,
+        description: resourceName ? `You've been registered for ${resourceName}.` : "Your registration has been confirmed.",
+        duration: 2000
+      });
+      
+      // Navigate to workshops or related page
+      if (resourceName?.includes("Workshop")) {
+        navigate("/workshops");
+      }
+    } else if (action === "Request Submitted") {
+      toast({
+        title: action,
+        description: "Thank you for your workshop request. Our team will contact you within 48 hours.",
+        duration: 3000
+      });
+    } else if (action === "Group Joined") {
+      toast({
+        title: action,
+        description: resourceName ? `You've been added to the ${resourceName} group.` : "You've joined the support group successfully.",
+        duration: 2000
+      });
+      
+      // Navigate to virtual meetings or related page
+      navigate("/virtual-meetings");
+    } else if (action === "Consultation Request Sent") {
+      toast({
+        title: action,
+        description: "A family support specialist will contact you within 24 hours to schedule your consultation.",
+        duration: 3000
+      });
+    } else if (action === "Referral Process Started") {
+      toast({
+        title: action,
+        description: "We've initiated your family therapy referral. A specialist will contact you shortly to discuss your needs.",
+        duration: 3000
+      });
+    } else if (action === "Crisis Support") {
+      toast({
+        title: action,
+        description: "Connecting you with our crisis support team immediately.",
+        variant: "destructive",
+        duration: 3000
+      });
+      
+      // Navigate to crisis support page
+      navigate("/crisis-support");
+    } else if (action === "Support Options") {
+      toast({
+        title: action,
+        description: "Our team will contact you to discuss insurance and financial support options.",
+        duration: 3000
+      });
+      
+      // Navigate to financial assistance page
+      navigate("/financial-assistance");
+    }
   };
 
   const resources = [
@@ -69,6 +167,27 @@ const FamilySupport = () => {
     }
   ];
 
+  const supportGroups = [
+    {
+      name: "Parents Supporting Teens",
+      description: "For parents of teenagers with anxiety, depression, or other mental health challenges",
+      schedule: "Tuesdays, 7:00 PM EST",
+      type: "Weekly"
+    },
+    {
+      name: "Partners and Spouses Circle",
+      description: "Support for those whose partners are experiencing mental health challenges",
+      schedule: "Every other Thursday, 8:00 PM EST",
+      type: "Bi-weekly"
+    },
+    {
+      name: "Siblings Support Network",
+      description: "For siblings of individuals with serious mental illness",
+      schedule: "First Saturday of each month, 11:00 AM EST",
+      type: "Monthly"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative overflow-hidden">
@@ -91,7 +210,7 @@ const FamilySupport = () => {
       </div>
 
       <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <Tabs defaultValue="resources" className="w-full">
+        <Tabs defaultValue="resources" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="resources">Resources</TabsTrigger>
             <TabsTrigger value="workshops">Workshops</TabsTrigger>
@@ -120,7 +239,7 @@ const FamilySupport = () => {
                       variant="outline" 
                       size="sm"
                       className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                      onClick={() => handleResourceAction("Resource Saved")}
+                      onClick={() => handleResourceAction("Resource Saved", resource.title)}
                     >
                       <BookOpen className="mr-2 h-4 w-4" />
                       Read Now
@@ -128,7 +247,7 @@ const FamilySupport = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => handleResourceAction("Resource Downloaded")}
+                      onClick={() => handleResourceAction("Resource Downloaded", resource.title)}
                     >
                       <Download className="mr-2 h-4 w-4" />
                       Download
@@ -198,23 +317,13 @@ const FamilySupport = () => {
                     <Button 
                       variant="outline" 
                       className="text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                      onClick={() => {
-                        toast({
-                          title: "More Information",
-                          description: `Details about ${workshop.title} workshop are now available.`,
-                        });
-                      }}
+                      onClick={() => handleResourceAction("More Information", workshop.title)}
                     >
                       More Info
                     </Button>
                     <Button 
                       className="bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => {
-                        toast({
-                          title: "Registration Confirmed",
-                          description: `You've been registered for ${workshop.title}.`,
-                        });
-                      }}
+                      onClick={() => handleResourceAction("Registration Confirmed", workshop.title)}
                     >
                       Register
                     </Button>
@@ -237,12 +346,7 @@ const FamilySupport = () => {
                 </p>
                 <Button 
                   className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                  onClick={() => {
-                    toast({
-                      title: "Request Submitted",
-                      description: "Thank you for your workshop request. Our team will contact you within 48 hours.",
-                    });
-                  }}
+                  onClick={() => handleResourceAction("Request Submitted")}
                 >
                   Request a Workshop
                 </Button>
@@ -263,104 +367,39 @@ const FamilySupport = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-medium">Parents Supporting Teens</h3>
-                        <p className="text-sm text-gray-600">For parents of teenagers with anxiety, depression, or other mental health challenges</p>
+                  {supportGroups.map((group, index) => (
+                    <div key={index} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="font-medium">{group.name}</h3>
+                          <p className="text-sm text-gray-600">{group.description}</p>
+                        </div>
+                        <span className={`px-2 py-1 ${
+                          group.type === 'Weekly' ? 'bg-green-100 text-green-800' : 
+                          group.type === 'Bi-weekly' ? 'bg-blue-100 text-blue-800' :
+                          'bg-purple-100 text-purple-800'
+                        } text-xs rounded-full`}>
+                          {group.type}
+                        </span>
                       </div>
-                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                        Weekly
-                      </span>
+                      <div className="flex items-center gap-4 mt-3 text-sm">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4 text-gray-500" />
+                          <span>{group.schedule}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Video className="h-4 w-4 text-gray-500" />
+                          <span>Virtual Meeting</span>
+                        </div>
+                      </div>
+                      <Button 
+                        className="mt-4 bg-[#B87333] hover:bg-[#A56625]"
+                        onClick={() => handleResourceAction("Group Joined", group.name)}
+                      >
+                        Join Group
+                      </Button>
                     </div>
-                    <div className="flex items-center gap-4 mt-3 text-sm">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span>Tuesdays, 7:00 PM EST</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Video className="h-4 w-4 text-gray-500" />
-                        <span>Virtual Meeting</span>
-                      </div>
-                    </div>
-                    <Button 
-                      className="mt-4 bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => {
-                        toast({
-                          title: "Group Joined",
-                          description: "You've been added to the Parents Supporting Teens group.",
-                        });
-                      }}
-                    >
-                      Join Group
-                    </Button>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-medium">Partners and Spouses Circle</h3>
-                        <p className="text-sm text-gray-600">Support for those whose partners are experiencing mental health challenges</p>
-                      </div>
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                        Bi-weekly
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-4 mt-3 text-sm">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span>Every other Thursday, 8:00 PM EST</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Video className="h-4 w-4 text-gray-500" />
-                        <span>Virtual Meeting</span>
-                      </div>
-                    </div>
-                    <Button 
-                      className="mt-4 bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => {
-                        toast({
-                          title: "Group Joined",
-                          description: "You've been added to the Partners and Spouses Circle.",
-                        });
-                      }}
-                    >
-                      Join Group
-                    </Button>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-medium">Siblings Support Network</h3>
-                        <p className="text-sm text-gray-600">For siblings of individuals with serious mental illness</p>
-                      </div>
-                      <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                        Monthly
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-4 mt-3 text-sm">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span>First Saturday of each month, 11:00 AM EST</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Video className="h-4 w-4 text-gray-500" />
-                        <span>Virtual Meeting</span>
-                      </div>
-                    </div>
-                    <Button 
-                      className="mt-4 bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => {
-                        toast({
-                          title: "Group Joined",
-                          description: "You've been added to the Siblings Support Network.",
-                        });
-                      }}
-                    >
-                      Join Group
-                    </Button>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -428,12 +467,7 @@ const FamilySupport = () => {
                     </div>
                     <Button 
                       className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => {
-                        toast({
-                          title: "Consultation Request Sent",
-                          description: "A family support specialist will contact you within 24 hours to schedule your consultation.",
-                        });
-                      }}
+                      onClick={() => handleResourceAction("Consultation Request Sent")}
                     >
                       Request Consultation
                     </Button>
@@ -448,12 +482,7 @@ const FamilySupport = () => {
                     </p>
                     <Button 
                       className="w-full bg-[#B87333] hover:bg-[#A56625]"
-                      onClick={() => {
-                        toast({
-                          title: "Referral Process Started",
-                          description: "We've initiated your family therapy referral. A specialist will contact you shortly to discuss your needs.",
-                        });
-                      }}
+                      onClick={() => handleResourceAction("Referral Process Started")}
                     >
                       Start Referral Process
                     </Button>
@@ -474,13 +503,7 @@ const FamilySupport = () => {
                   <Button 
                     variant="destructive"
                     className="w-full"
-                    onClick={() => {
-                      toast({
-                        title: "Crisis Support",
-                        description: "Connecting you with our crisis support team immediately.",
-                        variant: "destructive"
-                      });
-                    }}
+                    onClick={() => handleResourceAction("Crisis Support")}
                   >
                     Access Crisis Support
                   </Button>
@@ -498,12 +521,7 @@ const FamilySupport = () => {
                   <Button 
                     variant="outline"
                     className="w-full text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
-                    onClick={() => {
-                      toast({
-                        title: "Support Options",
-                        description: "Our team will contact you to discuss insurance and financial support options.",
-                      });
-                    }}
+                    onClick={() => handleResourceAction("Support Options")}
                   >
                     Explore Options
                   </Button>

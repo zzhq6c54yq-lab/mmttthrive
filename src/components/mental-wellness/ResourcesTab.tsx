@@ -11,6 +11,32 @@ const ResourcesTab: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const handleDownloadResource = (resourceName: string) => {
+    toast({
+      title: "Resource Downloaded",
+      description: `Your ${resourceName} is being prepared for download.`,
+      duration: 2000
+    });
+    
+    // Simulating download completion
+    setTimeout(() => {
+      toast({
+        title: "Download Complete",
+        description: `${resourceName} has been downloaded successfully.`,
+        duration: 3000
+      });
+    }, 2000);
+  };
+
+  const handleSubscriptionView = () => {
+    navigate("/subscription-plans");
+    toast({
+      title: "Subscription Options",
+      description: "Exploring premium resource access options.",
+      duration: 2000
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-[#F8F9FA] rounded-lg p-6 mb-8">
@@ -30,12 +56,7 @@ const ResourcesTab: React.FC = () => {
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">A comprehensive guide to mindfulness practices with exercises.</p>
               <Button 
-                onClick={() => {
-                  toast({
-                    title: "Resource Downloaded",
-                    description: "Your Mindfulness Workbook is being prepared for download."
-                  });
-                }}
+                onClick={() => handleDownloadResource("Mindfulness Workbook")}
                 className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
               >
                 <Download className="h-4 w-4 mr-2" />
@@ -54,12 +75,7 @@ const ResourcesTab: React.FC = () => {
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">Practical strategies and exercises to manage anxiety and stress.</p>
               <Button 
-                onClick={() => {
-                  toast({
-                    title: "Resource Downloaded",
-                    description: "Your Anxiety Toolkit is being prepared for download."
-                  });
-                }}
+                onClick={() => handleDownloadResource("Anxiety Toolkit")}
                 className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
               >
                 <Download className="h-4 w-4 mr-2" />
@@ -78,12 +94,7 @@ const ResourcesTab: React.FC = () => {
             <CardContent>
               <p className="text-sm text-gray-600 mb-4">Better sleep hygiene habits and relaxation techniques for restful nights.</p>
               <Button 
-                onClick={() => {
-                  toast({
-                    title: "Resource Downloaded",
-                    description: "Your Sleep Improvement Guide is being prepared for download."
-                  });
-                }}
+                onClick={() => handleDownloadResource("Sleep Improvement Guide")}
                 className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
               >
                 <Download className="h-4 w-4 mr-2" />
@@ -107,13 +118,7 @@ const ResourcesTab: React.FC = () => {
             Get access to our complete library of premium resources, including extended worksheets, guided audio sessions, and expert-led videos.
           </p>
           <Button 
-            onClick={() => {
-              navigate("/subscription-plans");
-              toast({
-                title: "Subscription Options",
-                description: "Exploring premium resource access options."
-              });
-            }}
+            onClick={handleSubscriptionView}
             className="bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8b77e5] hover:to-[#6E59A5] text-white px-8"
           >
             View Subscription Options

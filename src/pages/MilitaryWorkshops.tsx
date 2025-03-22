@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Calendar, Clock, Filter, Search, User, ArrowLeft, 
   ChevronDown, Check, Star
@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import HomeButton from "@/components/HomeButton";
+import { useToast } from "@/hooks/use-toast";
 
 const workshopCategories = [
   "PTSD & Trauma",
@@ -121,6 +122,8 @@ const workshops = [
 const MilitaryWorkshops = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const filteredWorkshops = workshops.filter(workshop => {
     // Filter by search term
@@ -141,6 +144,22 @@ const MilitaryWorkshops = () => {
         ? prev.filter(c => c !== category) 
         : [...prev, category]
     );
+  };
+
+  const handleRegisterWorkshop = (workshopId: number, workshopTitle: string) => {
+    toast({
+      title: "Registration Successful",
+      description: `You've been registered for ${workshopTitle}. Check your email for details.`,
+      duration: 3000
+    });
+  };
+
+  const handleRequestWorkshop = () => {
+    toast({
+      title: "Workshop Request Submitted",
+      description: "Thank you for your request. Our team will contact you within 48 hours.",
+      duration: 3000
+    });
   };
 
   return (
@@ -235,6 +254,7 @@ const MilitaryWorkshops = () => {
               instructor={workshop.instructor}
               category={workshop.category}
               featured={workshop.featured}
+              onRegister={() => handleRegisterWorkshop(workshop.id, workshop.title)}
             />
           ))}
         </div>
@@ -255,6 +275,7 @@ const MilitaryWorkshops = () => {
                 instructor={workshop.instructor}
                 category={workshop.category}
                 featured={workshop.featured}
+                onRegister={() => handleRegisterWorkshop(workshop.id, workshop.title)}
               />
             ))
           ) : (
@@ -288,7 +309,11 @@ const MilitaryWorkshops = () => {
               </p>
             </div>
             
-            <Button variant="gold" size="lg">
+            <Button 
+              variant="gold" 
+              size="lg"
+              onClick={handleRequestWorkshop}
+            >
               Request a Workshop
             </Button>
           </div>
@@ -332,6 +357,7 @@ interface WorkshopCardProps {
   instructor: string;
   category: string;
   featured: boolean;
+  onRegister: () => void;
 }
 
 const WorkshopCard: React.FC<WorkshopCardProps> = ({ 
@@ -342,7 +368,8 @@ const WorkshopCard: React.FC<WorkshopCardProps> = ({
   time, 
   instructor, 
   category,
-  featured
+  featured,
+  onRegister
 }) => {
   return (
     <Card className={`
@@ -381,6 +408,7 @@ const WorkshopCard: React.FC<WorkshopCardProps> = ({
         <Button 
           variant={featured ? "gold" : "bronze"} 
           className="w-full"
+          onClick={onRegister}
         >
           Register Now
         </Button>

@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import QuizCard from "./QuizCard";
 import { Quiz } from "@/data/gamesData";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuizzesSectionProps {
   filteredQuizzes: Quiz[];
@@ -20,6 +22,9 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
   setCategoryFilter,
   onStartQuiz
 }) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -28,6 +33,21 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
         staggerChildren: 0.1
       }
     }
+  };
+
+  const handleExploreAllQuizzes = () => {
+    toast({
+      title: "Exploring All Quizzes",
+      description: "Showing you all available quizzes",
+      duration: 1500,
+    });
+    
+    setCategoryFilter("all");
+    // Scroll to the top of the quizzes section
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   };
 
   return (
@@ -96,6 +116,7 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[#8B5CF6] to-[#0EA5E9] rounded-full blur"></div>
           <Button 
             className="relative bg-white text-[#8B5CF6] hover:bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 shadow-sm px-6"
+            onClick={handleExploreAllQuizzes}
           >
             <Sparkles className="h-4 w-4 mr-2" />
             Explore all quizzes

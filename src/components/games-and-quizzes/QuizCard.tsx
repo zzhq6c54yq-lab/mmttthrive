@@ -49,9 +49,16 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz, onStartQuiz }) => {
 
   const gradientClass = getGradient(quiz.category);
 
+  const handleCardClick = () => {
+    onStartQuiz(quiz);
+  };
+
   return (
     <motion.div variants={item}>
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group bg-white/90 backdrop-blur border-white">
+      <Card 
+        className="overflow-hidden hover:shadow-lg transition-all duration-300 group bg-white/90 backdrop-blur border-white cursor-pointer"
+        onClick={handleCardClick}
+      >
         <div className={`h-2 bg-gradient-to-r ${gradientClass}`}></div>
         <CardHeader className="pt-5 pb-2">
           <div className="flex justify-between">
@@ -98,7 +105,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz, onStartQuiz }) => {
         </CardContent>
         <CardFooter className="pb-4">
           <Button 
-            onClick={() => onStartQuiz(quiz)} 
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent double triggering
+              onStartQuiz(quiz);
+            }} 
             className={`w-full group-hover:shadow-md bg-gradient-to-r ${gradientClass} hover:opacity-90 transition-all`}
           >
             <span className="mr-2">
