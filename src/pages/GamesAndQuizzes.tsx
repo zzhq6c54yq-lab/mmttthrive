@@ -34,6 +34,10 @@ const GamesAndQuizzes = () => {
   const [showGameInstructions, setShowGameInstructions] = useState(false);
   const [selectedGameComponent, setSelectedGameComponent] = useState<React.ReactNode | null>(null);
 
+  // Show the first 5 games and quizzes
+  const featuredGames = gamesData.slice(0, 5);
+  const featuredQuizzes = quizzesData.slice(0, 5);
+
   const filteredGames = gamesData.filter(game => {
     const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          game.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -144,7 +148,7 @@ const GamesAndQuizzes = () => {
           
           <TabsContent value="games">
             <GamesSection 
-              filteredGames={filteredGames}
+              filteredGames={searchTerm || difficultyFilter || typeFilter ? filteredGames : featuredGames}
               difficultyFilter={difficultyFilter}
               typeFilter={typeFilter}
               setDifficultyFilter={setDifficultyFilter}
@@ -155,7 +159,7 @@ const GamesAndQuizzes = () => {
           
           <TabsContent value="quizzes">
             <QuizzesSection 
-              filteredQuizzes={filteredQuizzes}
+              filteredQuizzes={searchTerm || categoryFilter ? filteredQuizzes : featuredQuizzes}
               categoryFilter={categoryFilter}
               setCategoryFilter={setCategoryFilter}
               onStartQuiz={handleStartQuiz}

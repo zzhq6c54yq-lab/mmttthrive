@@ -39,7 +39,8 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate }) => {
         showExercises: true,
         showVideos: true,
         showResources: true,
-        duration: 45 // 45 minute workshop
+        duration: 45, // 45 minute workshop
+        fromDashboard: true // Flag indicating this navigation came from dashboard
       } 
     });
   };

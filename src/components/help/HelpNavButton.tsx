@@ -2,7 +2,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import HenryButton from "../henry/HenryButton";
-import HelpDialog from "./HelpDialog";
 import { useButtonVisibility } from "./RouteVisibility";
 
 const HelpNavButton: React.FC = () => {
