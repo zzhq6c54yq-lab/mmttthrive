@@ -58,7 +58,7 @@ import { toolCategories } from "@/data/toolCategories";
 import Header from "@/components/layout/Header";
 import HomeButton from "@/components/HomeButton";
 import { useToast } from "@/hooks/use-toast";
-import MessageList from "@/components/help/MessageList";
+import MessageList from "@/components/shared/MessageList";
 import MessageInput from "@/components/help/MessageInput";
 
 const MentalWellnessTools = () => {
