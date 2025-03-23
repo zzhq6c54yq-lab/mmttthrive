@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -6,7 +7,7 @@ import useMousePosition from "@/hooks/useMousePosition";
 import useScreenHistory from "@/hooks/useScreenHistory";
 import usePopupManagement from "@/hooks/usePopupManagement";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-// Removing HenryFloatingElement as we're consolidating to just one Henry button
+// Removed HenryFloatingElement as we're consolidating to just one Henry button
 
 const Index = () => {
   // State management

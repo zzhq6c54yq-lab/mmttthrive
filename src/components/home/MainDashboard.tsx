@@ -11,7 +11,7 @@ import NewFeatures from "@/components/dashboard/NewFeatures";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
-// Import removed: HenryButton - We don't need it here anymore
+// Removed HenryButton import - We're handling this via the global HelpNavButton component
 
 interface MainDashboardProps {
   userName: string;
