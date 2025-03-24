@@ -116,7 +116,7 @@ const WorkshopDetail = () => {
             id: "mc-3",
             title: "Mindful Speaking",
             description: "Communicating with clarity, intention, and compassion.",
-            content: "Our words have tremendous power to connect or divide, heal or harm. This section addresses mindful speaking—choosing words intentionally, speaking from authenticity rather than reactivity, and considering the impact of our communication. We'll explore techniques for pausing before speaking, considering our intentions, using "I" statements, and expressing difficult truths with both honesty and compassion.",
+            content: "Our words have tremendous power to connect or divide, heal or harm. This section addresses mindful speaking—choosing words intentionally, speaking from authenticity rather than reactivity, and considering the impact of our communication. We'll explore techniques for pausing before speaking, considering our intentions, using \"I\" statements, and expressing difficult truths with both honesty and compassion.",
             videoUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
             exercise: "Intentional Communication Practice",
             exerciseDescription: "Apply mindful speaking principles to expressing a challenging message."
