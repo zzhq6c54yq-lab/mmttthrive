@@ -4,16 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Gamepad, HelpCircle, Sparkles, Home } from "lucide-react";
 import { gamesData, quizzesData, Game, Quiz } from "@/data/gamesData";
 import Header from "@/components/layout/Header";
-import GameMemoryMatch from "@/components/games/GameMemoryMatch";
-import GameWordUnscramble from "@/components/games/GameWordUnscramble";
-import GameReactionTime from "@/components/games/GameReactionTime";
-import GamePatternFinder from "@/components/games/GamePatternFinder";
-import GameMentalMath from "@/components/games/GameMentalMath";
-import GameColorMatch from "@/components/games/GameColorMatch";
-import GameMiniSudoku from "@/components/games/GameMiniSudoku";
-import GameWordAssociation from "@/components/games/GameWordAssociation";
-import GameSequenceRecall from "@/components/games/GameSequenceRecall";
-import GameShapeFit from "@/components/games/GameShapeFit";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -25,6 +15,8 @@ import GamesSection from "@/components/games-and-quizzes/GamesSection";
 import QuizzesSection from "@/components/games-and-quizzes/QuizzesSection";
 import GameInstructionsDialog from "@/components/games-and-quizzes/GameInstructionsDialog";
 import GamePlayDialog from "@/components/games-and-quizzes/GamePlayDialog";
+import WelcomeHeader from "@/components/games-and-quizzes/WelcomeHeader";
+import GameComponentSelector from "@/components/games-and-quizzes/GameComponentSelector";
 
 const GamesAndQuizzes = () => {
   const { toast } = useToast();
@@ -76,42 +68,12 @@ const GamesAndQuizzes = () => {
     if (!activeGame) return;
     
     setShowGameInstructions(false);
-    
-    // Choose the correct game component based on the game ID
-    switch (activeGame.id) {
-      case "memory-match":
-        setSelectedGameComponent(<GameMemoryMatch game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "word-scramble":
-        setSelectedGameComponent(<GameWordUnscramble game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "reaction-time":
-        setSelectedGameComponent(<GameReactionTime game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "pattern-recognition":
-        setSelectedGameComponent(<GamePatternFinder game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "math-challenge":
-        setSelectedGameComponent(<GameMentalMath game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "color-match":
-        setSelectedGameComponent(<GameColorMatch game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "sudoku-mini":
-        setSelectedGameComponent(<GameMiniSudoku game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "word-association":
-        setSelectedGameComponent(<GameWordAssociation game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "memory-sequence":
-        setSelectedGameComponent(<GameSequenceRecall game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      case "shape-fit":
-        setSelectedGameComponent(<GameShapeFit game={activeGame} onComplete={handleGameComplete} />);
-        break;
-      default:
-        setSelectedGameComponent(null);
-    }
+    setSelectedGameComponent(
+      <GameComponentSelector 
+        activeGame={activeGame} 
+        onComplete={handleGameComplete} 
+      />
+    );
   };
 
   const handleGameComplete = (score: number) => {
@@ -137,20 +99,7 @@ const GamesAndQuizzes = () => {
       <Header />
       
       <div className="container mx-auto max-w-6xl px-4 py-8">
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#D946EF] to-[#8B5CF6]">
-            Games & Quizzes for Mental Wellness
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have fun while improving your mental wellbeing with our engaging games and insightful quizzes
-          </p>
-          <div className="mt-4">
-            <div className="inline-block relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#9b87f5] to-[#D946EF] rounded-lg blur opacity-30"></div>
-              <Sparkles className="h-8 w-8 text-[#9b87f5] mx-auto" />
-            </div>
-          </div>
-        </div>
+        <WelcomeHeader />
         
         {/* Main Menu button */}
         <div className="flex justify-end mb-4">
