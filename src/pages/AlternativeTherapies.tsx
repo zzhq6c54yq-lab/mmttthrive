@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, Heart, BookOpen, Compass, Film, Dumbbell, PenTool, Music, 
-  CloudRain, Moon, Coffee, Brain, Gem, Fruit, Award, UserPlus, Snowflake 
+  CloudRain, Moon, Coffee, Brain, Gem, Apple, Award, UserPlus, Snowflake 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +16,6 @@ const AlternativeTherapies = () => {
   const { toast } = useToast();
   const [selectedTherapy, setSelectedTherapy] = useState<Therapy | null>(null);
 
-  // Therapy data structure
   type Therapy = {
     id: string;
     name: string;
@@ -35,7 +33,6 @@ const AlternativeTherapies = () => {
     practitioners?: string[];
   };
 
-  // Define therapy data
   const therapies: Record<string, Therapy[]> = {
     "creative": [
       {
@@ -375,7 +372,7 @@ const AlternativeTherapies = () => {
       {
         id: "nutrition-therapy",
         name: "Nutritional Psychiatry",
-        icon: <Fruit className="h-5 w-5 text-blue-500" />,
+        icon: <Apple className="h-5 w-5 text-blue-500" />,
         shortDescription: "Mental health support through diet",
         description: "Nutritional psychiatry explores the connection between diet and mental health. Research shows strong links between gut health, inflammation, and mental wellbeing, with certain dietary patterns showing benefits for mood disorders.",
         benefits: ["Supporting brain function", "Reducing inflammation", "Improving gut health", "Stabilizing mood", "Enhancing energy levels"],
@@ -530,7 +527,6 @@ const AlternativeTherapies = () => {
   const handleTherapyClick = (therapy: Therapy) => {
     setSelectedTherapy(therapy);
     
-    // Also show toast notification
     toast({
       title: `${therapy.name} Resources`,
       description: "Loading detailed information and resources...",
@@ -539,7 +535,6 @@ const AlternativeTherapies = () => {
   };
 
   const handleResourceClick = (resource: any) => {
-    // In a real app, this would navigate to the resource or open in a new tab
     toast({
       title: `Accessing: ${resource.title}`,
       description: "This would open the resource in a full implementation",
@@ -666,7 +661,6 @@ const AlternativeTherapies = () => {
         </div>
       </div>
 
-      {/* Therapy Detail Sheet */}
       <Sheet open={!!selectedTherapy} onOpenChange={(open) => !open && setSelectedTherapy(null)}>
         <SheetContent className="w-full md:max-w-md overflow-y-auto">
           {selectedTherapy && (
