@@ -103,15 +103,6 @@ const TeaserScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
         Small Business Mental Health
       </h1>
       <div className="max-w-2xl mb-8">
-        <div className="relative rounded-xl overflow-hidden mb-6" style={{ maxWidth: '400px', margin: '0 auto' }}>
-          <img 
-            src="/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png" 
-            alt="Small Business Owner"
-            className="w-full rounded-xl shadow-xl"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        </div>
-        
         <p className="text-xl mb-6 text-white/90 font-medium">
           Our specialized program for small business owners and employees
           focuses on the unique mental health challenges of entrepreneurship.

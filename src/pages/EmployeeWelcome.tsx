@@ -44,15 +44,6 @@ const EmployeeWelcome: React.FC = () => {
             Employee Mental Wellness Portal
           </h1>
           
-          <div className="relative rounded-xl overflow-hidden mb-8" style={{ maxWidth: '400px', margin: '0 auto' }}>
-            <img 
-              src="/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png" 
-              alt="Employee Wellness"
-              className="w-full rounded-xl shadow-xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-          </div>
-          
           <div className="max-w-2xl">
             <p className="text-xl mb-6 text-white/90 font-medium">
               Welcome to your personal mental wellness space designed specifically for employees like you.
