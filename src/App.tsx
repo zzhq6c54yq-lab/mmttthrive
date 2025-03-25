@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -50,7 +49,6 @@ import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
 import EmployeeReadiness from "@/pages/EmployeeReadiness";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
-// Keep only one Henry button component
 import HelpNavButton from "@/components/help/HelpNavButton";
 
 function App() {
