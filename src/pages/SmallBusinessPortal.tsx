@@ -158,6 +158,7 @@ const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => 
 
 const SmallBusinessPortal: React.FC = () => {
   const [screenState, setScreenState] = useState<'options' | 'teaser' | 'welcome'>('options');
+  const [isNavigating, setIsNavigating] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -172,9 +173,14 @@ const SmallBusinessPortal: React.FC = () => {
 
   const handleContinueFromTeaser = () => {
     setScreenState('welcome');
+    window.scrollTo(0, 0);
   };
 
   const handleSelectOption = (option: 'business' | 'employee') => {
+    if (isNavigating) return;
+    
+    setIsNavigating(true);
+    
     toast({
       title: option === 'business' ? "Business Hub Selected" : "Employee Readiness Selected",
       description: "Accessing your specialized resources...",
@@ -183,22 +189,24 @@ const SmallBusinessPortal: React.FC = () => {
     
     if (option === 'business') {
       setScreenState('teaser');
+      window.scrollTo(0, 0);
+      setIsNavigating(false);
     } else {
-      navigate("/employee-welcome");
+      setTimeout(() => {
+        navigate("/employee-welcome");
+        setIsNavigating(false);
+      }, 500);
     }
   };
 
-  const renderCurrentScreen = () => {
-    switch (screenState) {
-      case 'options':
-        return <PortalOptionsScreen onSelectOption={handleSelectOption} />;
-      case 'teaser':
-        return <TeaserScreen onContinue={handleContinueFromTeaser} />;
-      case 'welcome':
-        return <WelcomeScreen onContinue={() => navigate("/small-business-experience")} />;
-      default:
-        return null;
-    }
+  const navigateToBusinessExperience = () => {
+    if (isNavigating) return;
+    
+    setIsNavigating(true);
+    setTimeout(() => {
+      navigate("/small-business-experience");
+      setIsNavigating(false);
+    }, 500);
   };
 
   return (
@@ -209,7 +217,9 @@ const SmallBusinessPortal: React.FC = () => {
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#F97316]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#FB923C]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         
-        {renderCurrentScreen()}
+        {screenState === 'options' && <PortalOptionsScreen onSelectOption={handleSelectOption} />}
+        {screenState === 'teaser' && <TeaserScreen onContinue={handleContinueFromTeaser} />}
+        {screenState === 'welcome' && <WelcomeScreen onContinue={navigateToBusinessExperience} />}
       </div>
     </div>
   );

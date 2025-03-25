@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -9,14 +9,22 @@ import HomeButton from "@/components/HomeButton";
 const EmployeeWelcome: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleContinue = () => {
+    if (isNavigating) return;
+    
+    setIsNavigating(true);
     toast({
       title: "Employee Portal Access",
       description: "Opening your personalized mental health resources",
       duration: 2000
     });
-    navigate("/employee-readiness");
+    
+    setTimeout(() => {
+      navigate("/employee-readiness");
+      setIsNavigating(false);
+    }, 500);
   };
 
   return (
@@ -81,6 +89,7 @@ const EmployeeWelcome: React.FC = () => {
           <Button 
             onClick={handleContinue}
             className="bg-[#22C55E] hover:bg-[#4ADE80] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+            disabled={isNavigating}
           >
             Enter My Wellness Portal <ArrowRight className="ml-1 h-5 w-5" />
           </Button>

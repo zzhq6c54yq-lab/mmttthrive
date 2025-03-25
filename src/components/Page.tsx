@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "./HomeButton";
@@ -20,6 +20,11 @@ const Page: React.FC<PageProps> = ({
   fullWidth = false
 }) => {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Scroll to top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
   
   const handleMainMenu = () => {
     navigate("/", { state: { screenState: 'main' } });

@@ -52,10 +52,12 @@ import EmployeeWelcome from "@/pages/EmployeeWelcome";
 import EmployeeReadiness from "@/pages/EmployeeReadiness";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 import HelpNavButton from "@/components/help/HelpNavButton";
+import ScrollToTop from "@/components/ScrollToTop";
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />

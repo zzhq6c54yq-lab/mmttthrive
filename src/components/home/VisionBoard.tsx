@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,6 +28,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
   const [animatingCard, setAnimatingCard] = useState<string | null>(null);
   const [showInspirationMsg, setShowInspirationMsg] = useState(false);
   const [inspirationMessages, setInspirationMessages] = useState<string[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -74,7 +74,6 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     "Your journey is yours alone - make it magnificent!"
   ];
 
-  // Show a random inspiration message occasionally
   useEffect(() => {
     const timer = setInterval(() => {
       if (Math.random() > 0.7) {
@@ -91,36 +90,80 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
   }, [inspirationMessages]);
 
   const handleToggle = (id: string, type: 'quality' | 'goal') => {
-    setAnimatingCard(id);
-    setTimeout(() => setAnimatingCard(null), 600);
+    if (isProcessing) return;
     
-    if (type === 'quality') {
-      onQualityToggle(id);
-    } else {
-      onGoalToggle(id);
-    }
-
-    // Show toast for added items
-    if ((type === 'quality' && !selectedQualities.includes(id)) || 
-        (type === 'goal' && !selectedGoals.includes(id))) {
-      toast({
-        title: "Added to your vision board!",
-        description: `This ${type} will help personalize your experience.`,
-        duration: 2000,
-      });
-    }
+    setIsProcessing(true);
+    setAnimatingCard(id);
+    
+    setTimeout(() => {
+      if (type === 'quality') {
+        onQualityToggle(id);
+      } else {
+        onGoalToggle(id);
+      }
+      
+      if ((type === 'quality' && !selectedQualities.includes(id)) || 
+          (type === 'goal' && !selectedGoals.includes(id))) {
+        toast({
+          title: "Added to your vision board!",
+          description: `This ${type} will help personalize your experience.`,
+          duration: 2000,
+        });
+      }
+      
+      setTimeout(() => {
+        setAnimatingCard(null);
+        setIsProcessing(false);
+      }, 300);
+    }, 100);
   };
 
   const navToPersonalized = () => {
+    if (isProcessing) return;
+    
+    setIsProcessing(true);
     toast({
       title: "Heading to your personalized content",
       description: "Taking you to content tailored just for you",
       duration: 2000,
     });
-    navigate("/personalized-content", { state: { qualities: selectedQualities, goals: selectedGoals } });
+    
+    setTimeout(() => {
+      navigate("/personalized-content", { state: { qualities: selectedQualities, goals: selectedGoals } });
+      setIsProcessing(false);
+    }, 500);
   };
 
-  // Get color classes based on selection
+  const handleContinue = () => {
+    if (isProcessing) return;
+    
+    setIsProcessing(true);
+    setTimeout(() => {
+      onContinue();
+      setIsProcessing(false);
+    }, 300);
+  };
+
+  const handlePrevious = () => {
+    if (isProcessing) return;
+    
+    setIsProcessing(true);
+    setTimeout(() => {
+      onPrevious();
+      setIsProcessing(false);
+    }, 300);
+  };
+
+  const handleSkip = () => {
+    if (isProcessing) return;
+    
+    setIsProcessing(true);
+    setTimeout(() => {
+      onSkip();
+      setIsProcessing(false);
+    }, 300);
+  };
+
   const getCardClasses = (id: string, selectedItems: string[]) => {
     const isSelected = selectedItems.includes(id);
     const isAnimating = animatingCard === id;
@@ -140,7 +183,6 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a2e] via-[#32325e] to-[#16213e] py-10 px-4 relative overflow-hidden">
-      {/* Background decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-50">
         <div className="absolute top-[10%] left-[5%] w-32 h-32 bg-[#B87333]/20 rounded-full blur-3xl"></div>
         <div className="absolute top-[40%] right-[10%] w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
@@ -158,7 +200,6 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             Make this vision board your own personal roadmap to transformation!
           </p>
           
-          {/* Inspiration message toast */}
           <div className={`fixed top-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#B87333]/90 to-[#E5C5A1]/90 text-white px-6 py-3 rounded-lg shadow-lg backdrop-blur-md transition-all duration-500 z-50 max-w-md ${showInspirationMsg ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
             <div className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-yellow-300" />
@@ -167,33 +208,33 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
           </div>
         </div>
 
-        {/* Tab navigation */}
         <div className="bg-white/5 backdrop-blur-sm rounded-xl mb-8 p-1 flex gap-1 max-w-xs mx-auto">
           <button
-            onClick={() => setActiveTab('qualities')}
+            onClick={() => !isProcessing && setActiveTab('qualities')}
             className={`flex-1 py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all ${
               activeTab === 'qualities' 
                 ? 'bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white shadow-md' 
                 : 'text-white/70 hover:bg-white/10'
             }`}
+            disabled={isProcessing}
           >
             <Star className={`h-4 w-4 ${activeTab === 'qualities' ? 'text-white' : 'text-[#B87333]'}`} />
             <span className="font-medium">Qualities</span>
           </button>
           <button
-            onClick={() => setActiveTab('goals')}
+            onClick={() => !isProcessing && setActiveTab('goals')}
             className={`flex-1 py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all ${
               activeTab === 'goals' 
                 ? 'bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white shadow-md' 
                 : 'text-white/70 hover:bg-white/10'
             }`}
+            disabled={isProcessing}
           >
             <Target className={`h-4 w-4 ${activeTab === 'goals' ? 'text-white' : 'text-[#B87333]'}`} />
             <span className="font-medium">Goals</span>
           </button>
         </div>
 
-        {/* Selection counter */}
         <div className="mb-6 text-center">
           <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-white/80">
             <span className="font-medium">
@@ -204,7 +245,6 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
           </div>
         </div>
 
-        {/* Qualities Tab Content */}
         {activeTab === 'qualities' && (
           <div className="animate-fade-in">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
@@ -235,7 +275,6 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
           </div>
         )}
 
-        {/* Goals Tab Content */}
         {activeTab === 'goals' && (
           <div className="animate-fade-in">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
@@ -266,33 +305,34 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
           </div>
         )}
 
-        {/* Button navigation */}
         <div className="flex flex-wrap justify-between mt-12 gap-4">
           <Button 
-            onClick={onPrevious} 
+            onClick={handlePrevious} 
             variant="outline" 
             className="bg-white/5 border-white/20 text-white/70 hover:bg-white/10 hover:text-white"
+            disabled={isProcessing}
           >
             Previous
           </Button>
           
           <Button 
-            onClick={onSkip} 
+            onClick={handleSkip} 
             variant="ghost" 
             className="text-white/60 hover:text-white hover:bg-white/5"
+            disabled={isProcessing}
           >
             Skip
           </Button>
           
           <Button 
-            onClick={onContinue}
+            onClick={handleContinue}
             className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] shadow-lg hover:shadow-xl transition-all duration-300"
+            disabled={isProcessing}
           >
             Continue
           </Button>
         </div>
 
-        {/* Personalized recommendations footer */}
         <div className="mt-16 bg-gradient-to-r from-[#1a1a2e]/60 to-[#32325e]/60 backdrop-blur-sm rounded-xl p-6 border border-white/10 shadow-xl animate-pulse">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -307,6 +347,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             <Button 
               onClick={navToPersonalized}
               className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] shadow-lg group transition-all duration-300"
+              disabled={isProcessing}
             >
               Visit Personalized Content
               <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
