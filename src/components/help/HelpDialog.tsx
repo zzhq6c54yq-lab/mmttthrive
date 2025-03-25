@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import MessageList from "@/components/shared/MessageList"; // Update import
+import MessageList from "@/components/shared/MessageList"; 
 import MessageInput from "./MessageInput";
-import { useToast } from "@/hooks/use-toast";
+// Remove useToast import
 import { useHenryMessageProcessor } from "./HenryMessageProcessor";
 import { X, Info, MessageCircle } from "lucide-react";
 

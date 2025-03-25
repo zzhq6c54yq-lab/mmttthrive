@@ -1,10 +1,8 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, MessageCircle, CheckCircle, Info } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
-import { useToast } from "@/hooks/use-toast";
 
 const insuranceProviders = [
   "Blue Cross Blue Shield",
@@ -45,23 +43,12 @@ const importantFacts = [
 
 const RealTimeTherapy = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const handleFindTherapist = () => {
-    toast({
-      title: "Finding a Therapist",
-      description: "Taking you to the therapist questionnaire",
-      duration: 1500,
-    });
     navigate('/therapist-questionnaire');
   };
 
   const handleKeywordSelect = (keyword: string) => {
-    toast({
-      title: `Selected Issue: ${keyword}`,
-      description: "Taking you to find therapists who specialize in this area",
-      duration: 1500,
-    });
     navigate('/therapist-questionnaire', { state: { selectedIssue: keyword } });
   };
 

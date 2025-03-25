@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+// Remove useToast import
 import HelpDialog from "@/components/help/HelpDialog";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useButtonVisibility } from "../help/RouteVisibility";
@@ -9,7 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const HelpNavButton: React.FC = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const { toast } = useToast();
+  // Remove toast declaration
   const navigate = useNavigate();
   const location = useLocation();
   const isButtonVisible = useButtonVisibility();
