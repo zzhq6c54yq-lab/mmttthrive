@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import MessageList from "@/components/shared/MessageList"; 
 import MessageInput from "./MessageInput";
-// Remove useToast import
 import { useHenryMessageProcessor } from "./HenryMessageProcessor";
 import { X, Info, MessageCircle } from "lucide-react";
 

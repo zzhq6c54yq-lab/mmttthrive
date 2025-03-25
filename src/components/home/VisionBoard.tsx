@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -89,12 +90,14 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     return () => clearInterval(timer);
   }, [inspirationMessages]);
 
+  // Use a debounced toggle function to prevent rapid firing of state changes
   const handleToggle = (id: string, type: 'quality' | 'goal') => {
     if (isProcessing) return;
     
     setIsProcessing(true);
     setAnimatingCard(id);
     
+    // Implement a slight delay to avoid rapid state changes
     setTimeout(() => {
       if (type === 'quality') {
         onQualityToggle(id);
@@ -102,15 +105,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
         onGoalToggle(id);
       }
       
-      if ((type === 'quality' && !selectedQualities.includes(id)) || 
-          (type === 'goal' && !selectedGoals.includes(id))) {
-        toast({
-          title: "Added to your vision board!",
-          description: `This ${type} will help personalize your experience.`,
-          duration: 2000,
-        });
-      }
-      
+      // Clear animation state after a delay
       setTimeout(() => {
         setAnimatingCard(null);
         setIsProcessing(false);
@@ -122,11 +117,6 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     if (isProcessing) return;
     
     setIsProcessing(true);
-    toast({
-      title: "Heading to your personalized content",
-      description: "Taking you to content tailored just for you",
-      duration: 2000,
-    });
     
     setTimeout(() => {
       navigate("/personalized-content", { state: { qualities: selectedQualities, goals: selectedGoals } });
@@ -183,7 +173,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a2e] via-[#32325e] to-[#16213e] py-10 px-4 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-50">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-50 pointer-events-none">
         <div className="absolute top-[10%] left-[5%] w-32 h-32 bg-[#B87333]/20 rounded-full blur-3xl"></div>
         <div className="absolute top-[40%] right-[10%] w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-[20%] left-[30%] w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -247,7 +237,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
 
         {activeTab === 'qualities' && (
           <div className="animate-fade-in">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 overflow-visible">
               {qualities.map((quality) => (
                 <div 
                   key={quality.id}
@@ -265,7 +255,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
                   </div>
                   
                   {selectedQualities.includes(quality.id) && (
-                    <div className="absolute -top-2 -right-2 bg-[#B87333] rounded-full p-1 shadow-lg animate-pulse">
+                    <div className="absolute -top-2 -right-2 bg-[#B87333] rounded-full p-1 shadow-lg">
                       <Check className="h-3 w-3 text-white" />
                     </div>
                   )}
@@ -277,7 +267,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
 
         {activeTab === 'goals' && (
           <div className="animate-fade-in">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 overflow-visible">
               {goals.map((goal) => (
                 <div 
                   key={goal.id}
@@ -295,7 +285,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
                   </div>
                   
                   {selectedGoals.includes(goal.id) && (
-                    <div className="absolute -top-2 -right-2 bg-[#B87333] rounded-full p-1 shadow-lg animate-pulse">
+                    <div className="absolute -top-2 -right-2 bg-[#B87333] rounded-full p-1 shadow-lg">
                       <Check className="h-3 w-3 text-white" />
                     </div>
                   )}

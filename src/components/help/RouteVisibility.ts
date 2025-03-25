@@ -14,22 +14,24 @@ export const useButtonVisibility = () => {
       const state = location.state as { screenState?: string } | null;
       const screenState = state?.screenState;
       
+      // Hide the button on all initial onboarding screens
+      const initialScreens = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
+      
       // Only show the button on the main dashboard after completing the onboarding
       if (screenState === 'main') {
         console.log("Showing button: On main dashboard");
         return true;
       }
       
-      // Hide on all onboarding screens
-      const excludedScreenStates = ['intro', 'mood', 'moodResponse', 'register', 'subscription', 'visionBoard'];
-      if (excludedScreenStates.includes(String(screenState))) {
-        console.log("Hiding button: On excluded screen state:", screenState);
+      // Hide on all initial screens
+      if (initialScreens.includes(String(screenState))) {
+        console.log("Hiding button: On initial screen state:", screenState);
         return false;
       }
       
-      // Default - for index page with no state, we'll show the button for better usability
-      console.log("Showing button: Default for index page with no specific state");
-      return true;
+      // Default for index page - hide button unless explicitly on main
+      console.log("Hiding button: Default for index page with no specific state");
+      return false;
     }
     
     // Now we will show buttons on all screens except for these specific ones
@@ -43,7 +45,7 @@ export const useButtonVisibility = () => {
       return false;
     }
     
-    // By default, now show the button on all screens
+    // By default, now show the button on all other screens
     console.log("Showing button: Default for path:", location.pathname);
     return true;
   };
