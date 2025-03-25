@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles, BookOpen, Shield } from "lucide-react";
 import HomeButton from "@/components/HomeButton";
 
 const EmployeeWelcome: React.FC = () => {
@@ -61,16 +61,25 @@ const EmployeeWelcome: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+                <div className="flex justify-center mb-2">
+                  <Sparkles className="h-6 w-6 text-green-400" />
+                </div>
                 <h3 className="text-green-400 font-semibold mb-2">Resources</h3>
                 <p className="text-white/80">Expert-curated content for workplace wellness</p>
               </div>
               
               <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+                <div className="flex justify-center mb-2">
+                  <BookOpen className="h-6 w-6 text-green-400" />
+                </div>
                 <h3 className="text-green-400 font-semibold mb-2">Workshops</h3>
                 <p className="text-white/80">Interactive sessions to boost your wellbeing</p>
               </div>
               
               <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+                <div className="flex justify-center mb-2">
+                  <Shield className="h-6 w-6 text-green-400" />
+                </div>
                 <h3 className="text-green-400 font-semibold mb-2">Assessments</h3>
                 <p className="text-white/80">Personalized insights for your mental health</p>
               </div>
