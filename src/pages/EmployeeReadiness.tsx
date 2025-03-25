@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -704,3 +705,21 @@ const EmployeeReadiness: React.FC = () => {
                 <li>Recommended resources based on your results</li>
               </ul>
             </div>
+            
+            <div className="flex justify-between mt-6">
+              <Button variant="outline" className="border-white/20" onClick={() => setIsAssessmentDialogOpen(false)}>
+                Maybe Later
+              </Button>
+              <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleStartAssessment}>
+                <Download className="mr-2 h-4 w-4" />
+                Start Assessment
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default EmployeeReadiness;

@@ -80,7 +80,6 @@ export const analyzeSentiment = (message: string): 'positive' | 'negative' | 'ne
   }
 };
 
-// Add the missing exported functions
 export const checkEmotionalState = (message: string): string | null => {
   const lowerMessage = message.toLowerCase();
   
