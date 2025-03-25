@@ -184,7 +184,7 @@ const SmallBusinessPortal: React.FC = () => {
     if (option === 'business') {
       setScreenState('teaser');
     } else {
-      navigate("/employee-readiness");
+      navigate("/employee-welcome");
     }
   };
 
