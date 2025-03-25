@@ -3,26 +3,39 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Sparkles, BookOpen, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, BookOpen, Shield, Rocket, Dumbbell, Brain, Target } from "lucide-react";
 import HomeButton from "@/components/HomeButton";
+
+const FeatureCard = ({ title, description, icon, onClick, color }) => (
+  <div 
+    onClick={onClick}
+    className={`bg-gradient-to-br ${color} p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col items-center text-center h-full`}
+  >
+    <div className="p-4 bg-white/20 backdrop-blur-sm rounded-full mb-4 inline-flex">
+      {icon}
+    </div>
+    <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+    <p className="text-white/90">{description}</p>
+  </div>
+);
 
 const EmployeeWelcome: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isNavigating, setIsNavigating] = useState(false);
 
-  const handleContinue = () => {
+  const handleNavigate = (path) => {
     if (isNavigating) return;
     
     setIsNavigating(true);
     toast({
-      title: "Employee Portal Access",
-      description: "Opening your personalized mental health resources",
+      title: "Navigating",
+      description: "Opening your personalized wellness resources",
       duration: 2000
     });
     
     setTimeout(() => {
-      navigate("/employee-readiness");
+      navigate(path);
       setIsNavigating(false);
     }, 500);
   };
@@ -39,59 +52,53 @@ const EmployeeWelcome: React.FC = () => {
           <HomeButton />
         </div>
         
-        <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] to-[#4ADE80]">
+        <div className="flex flex-col items-center justify-center text-center px-4 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] to-[#4ADE80]">
             Employee Mental Wellness Portal
           </h1>
           
-          <div className="max-w-2xl">
-            <p className="text-xl mb-6 text-white/90 font-medium">
+          <div className="max-w-2xl mb-8">
+            <p className="text-xl text-white/90 font-medium">
               Welcome to your personal mental wellness space designed specifically for employees like you.
             </p>
             
-            <p className="text-lg mb-6 text-white/90">
-              Taking care of your mental health is just as important as your physical health. 
-              Our portal provides tools, resources, and support to help you thrive both at work and in your personal life.
-            </p>
-            
             <p className="text-lg mb-8 text-white/90">
-              From stress management techniques to work-life balance strategies, 
-              we're here to support your journey to better mental wellbeing.
+              Taking care of your mental health is just as important as your physical health. 
+              Choose from our variety of wellness resources to support your journey.
             </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-10">
+            <FeatureCard 
+              title="Wellness Resources" 
+              description="Expert-curated content to help you thrive at work and home"
+              icon={<BookOpen className="h-8 w-8 text-white" />}
+              onClick={() => handleNavigate("/employee-readiness?tab=resources")}
+              color="from-[#22C55E] to-[#4ADE80]"
+            />
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <div className="flex justify-center mb-2">
-                  <Sparkles className="h-6 w-6 text-green-400" />
-                </div>
-                <h3 className="text-green-400 font-semibold mb-2">Resources</h3>
-                <p className="text-white/80">Expert-curated content for workplace wellness</p>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <div className="flex justify-center mb-2">
-                  <BookOpen className="h-6 w-6 text-green-400" />
-                </div>
-                <h3 className="text-green-400 font-semibold mb-2">Workshops</h3>
-                <p className="text-white/80">Interactive sessions to boost your wellbeing</p>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <div className="flex justify-center mb-2">
-                  <Shield className="h-6 w-6 text-green-400" />
-                </div>
-                <h3 className="text-green-400 font-semibold mb-2">Assessments</h3>
-                <p className="text-white/80">Personalized insights for your mental health</p>
-              </div>
-            </div>
+            <FeatureCard 
+              title="Interactive Workshops" 
+              description="Join live sessions to build skills and boost wellbeing"
+              icon={<Brain className="h-8 w-8 text-white" />}
+              onClick={() => handleNavigate("/employee-readiness?tab=workshops")}
+              color="from-[#8B5CF6] to-[#A78BFA]"
+            />
+            
+            <FeatureCard 
+              title="Wellbeing Assessments" 
+              description="Get personalized insights to understand your mental health"
+              icon={<Target className="h-8 w-8 text-white" />}
+              onClick={() => handleNavigate("/employee-readiness?tab=assessments")}
+              color="from-[#EC4899] to-[#F472B6]"
+            />
           </div>
           
           <Button 
-            onClick={handleContinue}
-            className="bg-[#22C55E] hover:bg-[#4ADE80] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(34,197,94,0.3)]"
-            disabled={isNavigating}
+            onClick={() => handleNavigate("/employee-readiness")}
+            className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-full"
           >
-            Enter My Wellness Portal <ArrowRight className="ml-1 h-5 w-5" />
+            Explore Full Wellness Portal <Rocket className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>

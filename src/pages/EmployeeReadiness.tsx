@@ -1,18 +1,20 @@
 
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { 
   ArrowLeft, Brain, Bookmark, Calendar, Clock, Coffee, 
   Heart, Users, Briefcase, Compass, Shield, CheckCircle,
-  ExternalLink, Download, PlayCircle, FileText, Star, Info, X
+  ExternalLink, Download, PlayCircle, FileText, Star, Info, X,
+  Sparkles, Target, BookOpen, Award, Zap, UserCircle
 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HomeButton from "@/components/HomeButton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
 
 // Define types for resources
 interface Resource {
@@ -47,6 +49,76 @@ interface Assessment {
   format: string;
   outcomes: string;
 }
+
+const WellnessProgress = () => {
+  const [progress, setProgress] = useState(42);
+  
+  return (
+    <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl mb-8 animate-fade-in">
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+          <Award className="h-5 w-5 text-yellow-400" />
+          Your Wellness Journey
+        </h3>
+        <span className="text-sm bg-white/20 px-3 py-1 rounded-full text-white">Level 3</span>
+      </div>
+      
+      <div className="mb-4">
+        <div className="flex justify-between text-sm text-white/70 mb-2">
+          <span>Progress: {progress}%</span>
+          <span>Next milestone: 60%</span>
+        </div>
+        <Progress value={progress} className="h-2" />
+      </div>
+      
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+        <div className="bg-white/10 p-3 rounded-lg text-center">
+          <p className="text-2xl font-bold text-white">3</p>
+          <p className="text-xs text-white/70">Resources Read</p>
+        </div>
+        <div className="bg-white/10 p-3 rounded-lg text-center">
+          <p className="text-2xl font-bold text-white">1</p>
+          <p className="text-xs text-white/70">Workshops Attended</p>
+        </div>
+        <div className="bg-white/10 p-3 rounded-lg text-center">
+          <p className="text-2xl font-bold text-white">2</p>
+          <p className="text-xs text-white/70">Assessments Taken</p>
+        </div>
+        <div className="bg-white/10 p-3 rounded-lg text-center">
+          <p className="text-2xl font-bold text-white">120</p>
+          <p className="text-xs text-white/70">Wellness Points</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FeaturedCard = ({ title, description, icon, color, onClick }) => (
+  <div 
+    className={`relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 ${color} p-6 h-full`}
+    onClick={onClick}
+  >
+    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full transform translate-x-10 -translate-y-10"></div>
+    
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="p-2 rounded-full bg-white/20">
+          {icon}
+        </div>
+        <h3 className="text-xl font-bold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-white/90 mb-4">{description}</p>
+      
+      <div className="mt-auto">
+        <span className="text-white text-sm flex items-center gap-1 bg-white/20 px-3 py-1.5 rounded-full w-fit">
+          <Sparkles className="h-3 w-3" />
+          Featured
+        </span>
+      </div>
+    </div>
+  </div>
+);
 
 const ResourceCard: React.FC<{ resource: Resource; onClick: () => void }> = ({ resource, onClick }) => (
   <Card 
@@ -195,8 +267,9 @@ const AssessmentCard: React.FC<{ assessment: Assessment; onClick: () => void }> 
 
 const EmployeeReadiness: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("resources");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
   const [selectedWorkshop, setSelectedWorkshop] = useState<Workshop | null>(null);
   const [selectedAssessment, setSelectedAssessment] = useState<Assessment | null>(null);
@@ -204,6 +277,16 @@ const EmployeeReadiness: React.FC = () => {
   const [isWorkshopDialogOpen, setIsWorkshopDialogOpen] = useState(false);
   const [isAssessmentDialogOpen, setIsAssessmentDialogOpen] = useState(false);
   const [showHenryTip, setShowHenryTip] = useState(true);
+  const [wellnessQuote, setWellnessQuote] = useState("Mental strength is built through small, daily acts of self-care.");
+
+  // Set active tab based on URL query param
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    if (tab && ['resources', 'workshops', 'assessments', 'dashboard'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [location]);
 
   // Resources data
   const resources: Resource[] = [
@@ -416,7 +499,12 @@ const EmployeeReadiness: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#334155] text-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#22c55e] to-[#4ade80] text-white py-12 px-4">
+      <div className="bg-gradient-to-r from-[#22c55e] to-[#4ade80] text-white py-10 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.1%22/></svg>')] opacity-20"></div>
+        
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full transform translate-x-32 -translate-y-32"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full transform -translate-x-32 translate-y-32"></div>
+        
         <div className="container max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <Link to="/small-business-portal" className="inline-flex items-center text-white hover:text-white/80 transition-colors">
@@ -426,11 +514,32 @@ const EmployeeReadiness: React.FC = () => {
             <HomeButton />
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Employee Readiness</h1>
-          <p className="text-xl text-white/90 max-w-3xl">
-            Tools, resources, and support to help you maintain mental wellbeing 
-            in the workplace and achieve a healthy work-life balance.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-light mb-2">Employee Readiness</h1>
+              <p className="text-xl text-white/90 max-w-3xl">
+                Your personal toolkit for workplace wellbeing and balance
+              </p>
+            </div>
+            
+            <div className="mt-4 md:mt-0 flex items-center gap-4">
+              <div className="flex -space-x-2">
+                <Avatar className="border-2 border-white">
+                  <AvatarImage src="https://i.pravatar.cc/150?img=32" />
+                  <AvatarFallback>JD</AvatarFallback>
+                </Avatar>
+                <Avatar className="border-2 border-white">
+                  <AvatarImage src="https://i.pravatar.cc/150?img=44" />
+                  <AvatarFallback>SL</AvatarFallback>
+                </Avatar>
+                <Avatar className="border-2 border-white">
+                  <AvatarImage src="https://i.pravatar.cc/150?img=67" />
+                  <AvatarFallback>TK</AvatarFallback>
+                </Avatar>
+              </div>
+              <span className="text-sm text-white/80">32 colleagues online</span>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -443,8 +552,8 @@ const EmployeeReadiness: React.FC = () => {
               <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">H</AvatarFallback>
             </Avatar>
             <div className="flex-grow">
-              <h3 className="text-white font-medium mb-1">Henry's Tip</h3>
-              <p className="text-white/80 text-sm">Remember to check in with yourself regularly about your workplace wellbeing. The resources here are designed to help you thrive, not just survive, at work.</p>
+              <h3 className="text-white font-medium mb-1">Today's Wellness Tip</h3>
+              <p className="text-white/80 text-sm">{wellnessQuote}</p>
             </div>
             <Button 
               variant="ghost" 
@@ -459,13 +568,139 @@ const EmployeeReadiness: React.FC = () => {
       )}
       
       {/* Main Content */}
-      <div className="container mx-auto max-w-6xl px-4 py-12">
-        <Tabs defaultValue="resources" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 mb-8">
-            <TabsTrigger value="resources" className="text-lg py-3">Resources</TabsTrigger>
-            <TabsTrigger value="workshops" className="text-lg py-3">Workshops</TabsTrigger>
-            <TabsTrigger value="assessments" className="text-lg py-3">Assessments</TabsTrigger>
+      <div className="container mx-auto max-w-6xl px-4 py-8">
+        <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-4 w-full max-w-3xl mx-auto mb-8 bg-black/30">
+            <TabsTrigger value="dashboard" className="text-base md:text-lg py-3 data-[state=active]:bg-green-600 data-[state=active]:text-white">
+              <Zap className="h-4 w-4 mr-2 md:inline hidden" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="text-base md:text-lg py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+              <BookOpen className="h-4 w-4 mr-2 md:inline hidden" />
+              Resources
+            </TabsTrigger>
+            <TabsTrigger value="workshops" className="text-base md:text-lg py-3 data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              <Brain className="h-4 w-4 mr-2 md:inline hidden" />
+              Workshops
+            </TabsTrigger>
+            <TabsTrigger value="assessments" className="text-base md:text-lg py-3 data-[state=active]:bg-pink-600 data-[state=active]:text-white">
+              <Target className="h-4 w-4 mr-2 md:inline hidden" />
+              Assessments
+            </TabsTrigger>
           </TabsList>
+          
+          {/* Dashboard Tab */}
+          <TabsContent value="dashboard" className="space-y-6 animate-fade-in">
+            <WellnessProgress />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <FeaturedCard
+                title="Today's Focus"
+                description="Setting healthy boundaries at work can improve your productivity and mental health"
+                icon={<Shield className="h-5 w-5 text-white" />}
+                color="bg-gradient-to-br from-blue-600 to-blue-400"
+                onClick={() => handleResourceClick("boundaries")}
+              />
+              
+              <FeaturedCard
+                title="Upcoming Workshop"
+                description="Workplace Resilience Training with Dr. Maya Johnson, starting in 2 days"
+                icon={<Calendar className="h-5 w-5 text-white" />}
+                color="bg-gradient-to-br from-purple-600 to-purple-400"
+                onClick={() => handleWorkshopClick("resilience-training")}
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <Card className="bg-white/10 backdrop-blur-sm border-none hover:bg-white/15 transition-all cursor-pointer">
+                <CardHeader className="pb-2">
+                  <div className="p-2 rounded-full bg-black/30 w-fit">
+                    <UserCircle className="h-5 w-5 text-green-400" />
+                  </div>
+                  <CardTitle className="text-lg mt-3">Your Progress</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80">Your workplace stress assessment shows improvement. Keep going!</p>
+                </CardContent>
+                <CardFooter>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full border border-white/20 hover:bg-white/20 text-white"
+                    onClick={() => setActiveTab("assessments")}
+                  >
+                    View Progress
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-sm border-none hover:bg-white/15 transition-all cursor-pointer">
+                <CardHeader className="pb-2">
+                  <div className="p-2 rounded-full bg-black/30 w-fit">
+                    <Bookmark className="h-5 w-5 text-blue-400" />
+                  </div>
+                  <CardTitle className="text-lg mt-3">Saved Resources</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80">You have 3 saved resources to review when you're ready.</p>
+                </CardContent>
+                <CardFooter>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full border border-white/20 hover:bg-white/20 text-white"
+                    onClick={() => setActiveTab("resources")}
+                  >
+                    View Resources
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-sm border-none hover:bg-white/15 transition-all cursor-pointer">
+                <CardHeader className="pb-2">
+                  <div className="p-2 rounded-full bg-black/30 w-fit">
+                    <Users className="h-5 w-5 text-purple-400" />
+                  </div>
+                  <CardTitle className="text-lg mt-3">Community</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80">Connect with others on similar wellness journeys.</p>
+                </CardContent>
+                <CardFooter>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full border border-white/20 hover:bg-white/20 text-white"
+                  >
+                    Join Discussions
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl mb-4">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <Zap className="h-5 w-5 text-yellow-400" />
+                Quick Actions
+              </h3>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 h-auto py-6 flex flex-col items-center gap-2">
+                  <Target className="h-8 w-8" />
+                  <span>Take Assessment</span>
+                </Button>
+                <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 h-auto py-6 flex flex-col items-center gap-2">
+                  <Calendar className="h-8 w-8" />
+                  <span>Book Coaching</span>
+                </Button>
+                <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 h-auto py-6 flex flex-col items-center gap-2">
+                  <BookOpen className="h-8 w-8" />
+                  <span>Daily Reading</span>
+                </Button>
+                <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 h-auto py-6 flex flex-col items-center gap-2">
+                  <Heart className="h-8 w-8" />
+                  <span>Wellness Check</span>
+                </Button>
+              </div>
+            </div>
+          </TabsContent>
           
           {/* Resources Tab */}
           <TabsContent value="resources" className="space-y-6 animate-fade-in">

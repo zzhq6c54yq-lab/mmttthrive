@@ -36,7 +36,8 @@ export const useButtonVisibility = () => {
     
     // Now we will show buttons on all screens except for these specific ones
     const excludedScreens = [
-      '/creator' // Only exclude the creator screen
+      '/creator', // Only exclude the creator screen
+      '/small-business-portal/options' // Exclude options screen
     ];
     
     // Check if the current path is in the excluded screens list
