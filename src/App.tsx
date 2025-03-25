@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -47,6 +48,7 @@ import CollegePortal from "@/pages/CollegePortal";
 import CollegeExperience from "@/pages/CollegeExperience";
 import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
+import EmployeeWelcome from "@/pages/EmployeeWelcome";
 import EmployeeReadiness from "@/pages/EmployeeReadiness";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 import HelpNavButton from "@/components/help/HelpNavButton";
@@ -109,6 +111,7 @@ function App() {
         
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-experience" element={<SmallBusinessExperience />} />
+        <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
         
         <Route path="/small-business" element={<Navigate to="/small-business-portal" replace />} />

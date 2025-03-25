@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -57,7 +56,46 @@ const PortalOption: React.FC<OptionProps> = ({ title, description, icon, onClick
   </Card>
 );
 
-// Teaser screen shown after main app selection
+const PortalOptionsScreen: React.FC<{ onSelectOption: (option: 'business' | 'employee') => void }> = ({ onSelectOption }) => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
+      <div className="absolute top-4 right-4 z-20">
+        <HomeButton />
+      </div>
+      
+      <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#FB923C]">
+        Choose Your Path
+      </h1>
+      
+      <div className="max-w-5xl w-full mx-auto mb-10">
+        <p className="text-xl mb-8 text-white/90 font-medium">
+          Select the program that best matches your needs:
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <PortalOption 
+            title="Business Hub"
+            description="Resources designed for entrepreneurs and business owners managing the stress of running a business."
+            icon={<Briefcase className="h-6 w-6 text-white" />}
+            onClick={() => onSelectOption('business')}
+            gradient="from-[#F97316]/80 to-[#FB923C]/80"
+            borderColor="#F97316"
+          />
+          
+          <PortalOption 
+            title="Employee Readiness"
+            description="Support and tools for employees in the workforce to maintain mental health and achieve work-life balance."
+            icon={<Users className="h-6 w-6 text-white" />}
+            onClick={() => onSelectOption('employee')}
+            gradient="from-[#22C55E]/80 to-[#4ADE80]/80"
+            borderColor="#22C55E"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TeaserScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
@@ -118,56 +156,15 @@ const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => 
   );
 };
 
-const PortalOptionsScreen: React.FC<{ onSelectOption: (option: 'business' | 'employee') => void }> = ({ onSelectOption }) => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
-      <div className="absolute top-4 right-4 z-20">
-        <HomeButton />
-      </div>
-      
-      <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#FB923C]">
-        Choose Your Path
-      </h1>
-      
-      <div className="max-w-5xl w-full mx-auto mb-10">
-        <p className="text-xl mb-8 text-white/90 font-medium">
-          Select the program that best matches your needs:
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-          <PortalOption 
-            title="Business Hub"
-            description="Resources designed for entrepreneurs and business owners managing the stress of running a business."
-            icon={<Briefcase className="h-6 w-6 text-white" />}
-            onClick={() => onSelectOption('business')}
-            gradient="from-[#F97316]/80 to-[#FB923C]/80"
-            borderColor="#F97316"
-          />
-          
-          <PortalOption 
-            title="Employee Readiness"
-            description="Support and tools for employees in the workforce to maintain mental health and achieve work-life balance."
-            icon={<Users className="h-6 w-6 text-white" />}
-            onClick={() => onSelectOption('employee')}
-            gradient="from-[#22C55E]/80 to-[#4ADE80]/80"
-            borderColor="#22C55E"
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const SmallBusinessPortal: React.FC = () => {
-  const [screenState, setScreenState] = useState<'teaser' | 'welcome' | 'options'>('teaser');
+  const [screenState, setScreenState] = useState<'options' | 'teaser' | 'welcome'>('options');
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if we're coming directly from the main index page
     if (location.state && location.state.fromMainMenu) {
-      setScreenState('teaser');
+      setScreenState('options');
     } else if (location.state && location.state.screenState) {
       setScreenState(location.state.screenState);
     }
@@ -175,10 +172,6 @@ const SmallBusinessPortal: React.FC = () => {
 
   const handleContinueFromTeaser = () => {
     setScreenState('welcome');
-  };
-
-  const handleContinueToOptions = () => {
-    setScreenState('options');
   };
 
   const handleSelectOption = (option: 'business' | 'employee') => {
@@ -189,7 +182,7 @@ const SmallBusinessPortal: React.FC = () => {
     });
     
     if (option === 'business') {
-      navigate("/small-business-experience");
+      setScreenState('teaser');
     } else {
       navigate("/employee-readiness");
     }
@@ -197,12 +190,12 @@ const SmallBusinessPortal: React.FC = () => {
 
   const renderCurrentScreen = () => {
     switch (screenState) {
+      case 'options':
+        return <PortalOptionsScreen onSelectOption={handleSelectOption} />;
       case 'teaser':
         return <TeaserScreen onContinue={handleContinueFromTeaser} />;
       case 'welcome':
-        return <WelcomeScreen onContinue={handleContinueToOptions} />;
-      case 'options':
-        return <PortalOptionsScreen onSelectOption={handleSelectOption} />;
+        return <WelcomeScreen onContinue={() => navigate("/small-business-experience")} />;
       default:
         return null;
     }
