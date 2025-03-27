@@ -12,6 +12,7 @@ import Workshops from "./pages/Workshops";
 import MindfulnessSleep from "./pages/MindfulnessSleep";
 import MySponsor from "./pages/MySponsor";
 import BinauralBeats from "./pages/BinauralBeats";
+import CrisisSupport from "./pages/CrisisSupport";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/mindfulness" element={<MindfulnessSleep />} />
           <Route path="/my-sponsor" element={<MySponsor />} />
           <Route path="/binaural-beats" element={<BinauralBeats />} />
+          <Route path="/crisis-support" element={<CrisisSupport />} />
         </Routes>
       </Router>
     </div>
