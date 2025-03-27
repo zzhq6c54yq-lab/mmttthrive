@@ -14,10 +14,7 @@ import KeyFeatures from "@/components/dashboard/KeyFeatures";
 import GratitudeVisualizer from "@/components/mental-wellness/GratitudeVisualizer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Radio, RadioGroup } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Heart, Music, Radio as RadioIcon } from "lucide-react";
-import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
+import { Heart } from "lucide-react";
 
 interface MainDashboardProps {
   userName: string;
@@ -39,7 +36,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showGratitudeVisualizer, setShowGratitudeVisualizer] = useState(false);
-  const [radioStation, setRadioStation] = useState("relaxation");
   
   // Function to handle featured workshop clicks
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
@@ -158,50 +154,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         />
 
         <KeyFeatures />
-        
-        {/* Radio Controller Section at the bottom */}
-        <div className="mt-12 mb-4">
-          <Card className="bg-gradient-to-br from-blue-900/40 to-indigo-900/40 border-blue-500/20 shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xl font-medium flex items-center gap-2">
-                <RadioIcon className="h-5 w-5 text-blue-400" />
-                Mood Radio
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <RadioGroup 
-                  defaultValue="relaxation" 
-                  value={radioStation} 
-                  onValueChange={setRadioStation}
-                  className="flex flex-wrap gap-4"
-                >
-                  <div className="flex items-center space-x-2">
-                    <Radio id="relaxation" value="relaxation" />
-                    <Label htmlFor="relaxation">Relaxation</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio id="focus" value="focus" />
-                    <Label htmlFor="focus">Focus & Productivity</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio id="uplift" value="uplift" />
-                    <Label htmlFor="uplift">Uplifting</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio id="sleep" value="sleep" />
-                    <Label htmlFor="sleep">Sleep & Calm</Label>
-                  </div>
-                </RadioGroup>
-                
-                <MoodPlaylistGenerator 
-                  currentMood={radioStation} 
-                  className="bg-white/5 border-none"
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
