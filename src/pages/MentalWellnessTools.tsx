@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, MessageCircle, IceCream } from "lucide-react";
@@ -10,7 +9,6 @@ import Header from "@/components/layout/Header";
 import { useToast } from "@/hooks/use-toast";
 import { toolCategories } from "@/data/toolCategories";
 
-// Import our new components
 import CakeDecorationGame from "@/components/mental-wellness/CakeDecorationGame";
 import CategorySelector from "@/components/mental-wellness/CategorySelector";
 import PersonalizedSection from "@/components/mental-wellness/PersonalizedSection";
@@ -25,7 +23,6 @@ const MentalWellnessTools: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // State management
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<string[]>([]);
@@ -45,7 +42,6 @@ const MentalWellnessTools: React.FC = () => {
     }
   }, [location]);
 
-  // Category keyword mapping for filtering
   const categoryMapping: Record<string, string[]> = {
     "Mindfulness & Meditation": ["peaceful", "mindful", "present", "focused"],
     "Anxiety Relief": ["reducing-anxiety", "managing-stress", "emotional-regulation"],
@@ -55,7 +51,6 @@ const MentalWellnessTools: React.FC = () => {
     "Self-Discovery": ["finding-purpose", "building-confidence", "creative", "resilient"]
   };
 
-  // Generate personalized recommendations based on user qualities and goals
   const generateRecommendations = () => {
     const allSelections = [...selectedQualities, ...selectedGoals];
     if (allSelections.length === 0) {
@@ -118,7 +113,6 @@ const MentalWellnessTools: React.FC = () => {
     });
   };
 
-  // Filter tools based on current selections
   const filteredTools = toolCategories.filter(tool => {
     const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                        tool.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -237,7 +231,7 @@ const MentalWellnessTools: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="activities" className="space-y-6">
-            <ActivitiesTab
+            <ActivitiesTab 
               onStartIcingGame={handleStartIcingGame}
               onToolSelect={handleToolSelect}
             />
@@ -275,13 +269,11 @@ const MentalWellnessTools: React.FC = () => {
         </div>
       </div>
 
-      {/* Help Dialog */}
       <HelpDialog isOpen={isHelpDialogOpen} onClose={() => setIsHelpDialogOpen(false)} />
     </div>
   );
 };
 
-// Define missing icon components
 const Sparkles = ({ className }: { className?: string }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 

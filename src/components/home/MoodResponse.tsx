@@ -1,15 +1,16 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
   onContinue: () => void;
+  onPrevious?: () => void; // Make this optional so it works with both cases
 }
 
-const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue }) => {
+const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, onPrevious }) => {
   // Map the mood to a response message
   const getMoodResponse = (): { title: string; message: string } => {
     switch (selectedMood) {
@@ -71,13 +72,23 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue })
           />
         </div>
         
-        <div className="flex justify-center mt-6">
-          <Button 
-            onClick={onContinue}
-            className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-full"
-          >
-            Continue <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+        <div className="flex justify-between mt-6">
+          {onPrevious && (
+            <Button 
+              onClick={onPrevious}
+              className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-full"
+            >
+              <ArrowLeft className="mr-2 h-5 w-5" /> Previous
+            </Button>
+          )}
+          <div className={onPrevious ? "" : "mx-auto"}>
+            <Button 
+              onClick={onContinue}
+              className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-full"
+            >
+              Continue <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

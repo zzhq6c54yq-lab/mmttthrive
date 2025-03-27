@@ -1,15 +1,26 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, Music, HeartHandshake, Flower, Wind, Meditation, PenTool } from "lucide-react";
+import { Brain, Music, HeartHandshake, Flower, Wind, PenTool } from "lucide-react";
 import CakeDecorationGame from "./CakeDecorationGame";
 import HelpDialog from "./HelpDialog";
 import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 
-const ActivitiesTab: React.FC = () => {
+interface ActivitiesTabProps {
+  onStartIcingGame?: () => void;
+  onToolSelect?: (toolTitle: string) => void;
+}
+
+const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolSelect }) => {
   const [showHelp, setShowHelp] = useState(false);
+  const [showIcingGame, setShowIcingGame] = useState(false);
   const defaultMood = 'neutral';
+
+  const handleCloseIcingGame = () => {
+    setShowIcingGame(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -28,7 +39,15 @@ const ActivitiesTab: React.FC = () => {
             <CardDescription>Unleash your creativity and decorate a cake!</CardDescription>
           </CardHeader>
           <CardContent>
-            <CakeDecorationGame />
+            {showIcingGame ? (
+              <CakeDecorationGame onClose={handleCloseIcingGame} />
+            ) : (
+              <div className="flex justify-center">
+                <Button onClick={() => setShowIcingGame(true)}>
+                  Start Decorating
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
         
@@ -95,7 +114,7 @@ const ActivitiesTab: React.FC = () => {
 
         <Card className="col-span-1 md:col-span-1">
           <CardHeader>
-            <CardTitle className="flex items-center"><Meditation className="mr-2 h-4 w-4" /> Guided Meditation</CardTitle>
+            <CardTitle className="flex items-center"><Music className="mr-2 h-4 w-4" /> Guided Meditation</CardTitle>
             <CardDescription>Relax and focus with a guided meditation session.</CardDescription>
           </CardHeader>
           <CardContent>
