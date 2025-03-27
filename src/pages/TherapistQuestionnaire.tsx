@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
-import { ArrowLeft, Brain, Check, ListChecks } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Brain, Check, ListChecks, User, Clock, HeartHandshake, Globe, FileText } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +9,9 @@ import HomeButton from "@/components/HomeButton";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "@/components/ui/use-toast";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 const questions = [
   {
@@ -79,14 +81,49 @@ const questions = [
   }
 ];
 
+// New personal questions
+const personalQuestions = [
+  {
+    id: "therapist-qualities",
+    question: "What additional qualities would you like in your therapist?",
+    description: "Tell us what would make you feel most comfortable with your therapist",
+    type: "text-area"
+  },
+  {
+    id: "conversation-style",
+    question: "What conversation style do you prefer?",
+    options: [
+      { value: "listener", label: "Someone who mostly listens to me" },
+      { value: "interactive", label: "Someone who engages in back-and-forth dialogue" },
+      { value: "directive", label: "Someone who gives clear guidance and advice" },
+      { value: "challenging", label: "Someone who challenges my thinking" }
+    ],
+    type: "radio"
+  },
+  {
+    id: "comfort-topics",
+    question: "What topics do you feel most comfortable discussing?",
+    type: "text-area"
+  },
+  {
+    id: "difficult-topics",
+    question: "What topics do you find difficult to discuss?",
+    type: "text-area"
+  }
+];
+
 interface AnswerState {
   [key: string]: string | string[];
 }
 
 const TherapistQuestionnaire = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<AnswerState>({});
+  const [currentQuestionSet, setCurrentQuestionSet] = useState<'general' | 'personal'>('general');
+  const [personalAnswers, setPersonalAnswers] = useState<AnswerState>({});
   
   const handleCheckboxChange = (questionId: string, value: string) => {
     const currentAnswers = answers[questionId] as string[] || [];
@@ -105,18 +142,37 @@ const TherapistQuestionnaire = () => {
   };
   
   const handleRadioChange = (questionId: string, value: string) => {
-    setAnswers({
-      ...answers,
+    if (currentQuestionSet === 'general') {
+      setAnswers({
+        ...answers,
+        [questionId]: value
+      });
+    } else {
+      setPersonalAnswers({
+        ...personalAnswers,
+        [questionId]: value
+      });
+    }
+  };
+  
+  const handleTextChange = (questionId: string, value: string) => {
+    setPersonalAnswers({
+      ...personalAnswers,
       [questionId]: value
     });
   };
   
-  const currentQuestion = questions[currentStep];
+  const currentQuestion = currentQuestionSet === 'general' 
+    ? questions[currentStep]
+    : personalQuestions[currentStep];
   
   const nextQuestion = () => {
-    // Validate that at least one option is selected
-    const currentResponse = answers[currentQuestion.id];
-    if (!currentResponse || (Array.isArray(currentResponse) && currentResponse.length === 0)) {
+    // Validate that at least one option is selected for non-text questions
+    const currentResponse = currentQuestionSet === 'general' 
+      ? answers[currentQuestion.id]
+      : personalAnswers[currentQuestion.id];
+      
+    if (currentQuestion.type !== 'text-area' && (!currentResponse || (Array.isArray(currentResponse) && currentResponse.length === 0))) {
       toast({
         title: "Please select at least one option",
         description: "We need this information to find the right match for you.",
@@ -125,17 +181,36 @@ const TherapistQuestionnaire = () => {
       return;
     }
     
-    if (currentStep < questions.length - 1) {
-      setCurrentStep(currentStep + 1);
+    if (currentQuestionSet === 'general') {
+      if (currentStep < questions.length - 1) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        // Show "What I Want in a Therapist" screen
+        toast({
+          title: "Great progress!",
+          description: "Now let's get a bit more personal to find your perfect match."
+        });
+        setCurrentQuestionSet('personal');
+        setCurrentStep(0);
+      }
     } else {
-      // All questions answered, simulate matching process
-      findMatch();
+      // Personal questions
+      if (currentStep < personalQuestions.length - 1) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        // All questions answered, simulate matching process
+        findMatch();
+      }
     }
   };
   
   const prevQuestion = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+    } else if (currentQuestionSet === 'personal') {
+      // Go back to general questions if at first personal question
+      setCurrentQuestionSet('general');
+      setCurrentStep(questions.length - 1);
     }
   };
   
@@ -151,6 +226,8 @@ const TherapistQuestionnaire = () => {
       navigate("/therapist-matches", { 
         state: { 
           answers,
+          personalAnswers,
+          fromMilitary: location.state?.fromMilitary,
           // In a real app, the matches would come from an API
           matches: [
             {
@@ -176,6 +253,22 @@ const TherapistQuestionnaire = () => {
               approach: "Integrative, Psychodynamic, CBT",
               bio: "Dr. Patel specializes in culturally-sensitive therapy approaches. She helps clients navigate identity, trauma, and life stressors with an integrative approach tailored to individual needs.",
               image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            },
+            {
+              id: 4,
+              name: "Dr. James Wilson",
+              specialty: "Military Trauma, PTSD, Readjustment",
+              approach: "Trauma-informed, EMDR, CBT",
+              bio: "As a veteran himself, Dr. Wilson understands the unique challenges of military service. He specializes in treating combat-related PTSD and helping veterans transition to civilian life.",
+              image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            },
+            {
+              id: 5,
+              name: "Dr. Lisa Chen",
+              specialty: "Anxiety, Depression, Cultural Identity",
+              approach: "Culturally-responsive, Mindfulness, CBT",
+              bio: "Dr. Chen integrates Eastern and Western approaches to mental health. Her practice focuses on cultural identity, intergenerational trauma, and anxiety management through mindfulness.",
+              image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
             }
           ]
         }
@@ -183,7 +276,71 @@ const TherapistQuestionnaire = () => {
     }, 2000);
   };
   
-  const progress = ((currentStep + 1) / questions.length) * 100;
+  const progress = currentQuestionSet === 'general'
+    ? ((currentStep + 1) / questions.length) * 50 // First half progress
+    : 50 + ((currentStep + 1) / personalQuestions.length) * 50; // Second half progress
+  
+  const renderQuestionContent = () => {
+    if (currentQuestionSet === 'personal' && currentQuestion.type === 'text-area') {
+      return (
+        <div className="space-y-4 mb-8">
+          <Textarea
+            id={currentQuestion.id}
+            value={personalAnswers[currentQuestion.id] as string || ''}
+            onChange={(e) => handleTextChange(currentQuestion.id, e.target.value)}
+            placeholder="Share your thoughts here..."
+            className="min-h-[120px]"
+          />
+        </div>
+      );
+    } else if (currentQuestion.type === 'radio') {
+      return (
+        <RadioGroup 
+          value={currentQuestionSet === 'general' 
+            ? (answers[currentQuestion.id] as string || "")
+            : (personalAnswers[currentQuestion.id] as string || "")
+          }
+          onValueChange={(value) => handleRadioChange(currentQuestion.id, value)}
+          className="space-y-3"
+        >
+          {currentQuestion.options?.map((option) => (
+            <div key={option.value} className="flex items-start space-x-3 p-3 rounded-md hover:bg-slate-50">
+              <RadioGroupItem id={option.value} value={option.value} />
+              <Label htmlFor={option.value} className="font-normal cursor-pointer">{option.label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      );
+    } else {
+      return (
+        <div className="space-y-3">
+          {currentQuestion.options?.map((option) => {
+            const isChecked = ((answers[currentQuestion.id] || []) as string[]).includes(option.value);
+            return (
+              <div key={option.value} className="flex items-start space-x-3 p-3 rounded-md hover:bg-slate-50">
+                <Checkbox 
+                  id={option.value} 
+                  checked={isChecked}
+                  onCheckedChange={() => handleCheckboxChange(currentQuestion.id, option.value)}
+                />
+                <Label htmlFor={option.value} className="font-normal cursor-pointer">{option.label}</Label>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+  };
+
+  const getQuestionIcon = () => {
+    if (currentQuestionSet === 'personal') {
+      const icons = [HeartHandshake, User, Globe, FileText];
+      return icons[currentStep] || ListChecks;
+    }
+    return ListChecks;
+  };
+  
+  const QuestionIcon = getQuestionIcon();
   
   return (
     <div className="min-h-screen bg-white">
@@ -197,9 +354,17 @@ const TherapistQuestionnaire = () => {
             </Link>
             <HomeButton />
           </div>
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Find Your Perfect Therapist Match</h1>
+          <h1 className="text-4xl md:text-5xl font-light mb-4">
+            {currentQuestionSet === 'general' 
+              ? "Find Your Perfect Therapist Match" 
+              : "What I Want in a Therapist"
+            }
+          </h1>
           <p className="text-xl text-gray-300 max-w-3xl">
-            Answer a few questions to help us connect you with therapists who match your needs and preferences.
+            {currentQuestionSet === 'general'
+              ? "Answer a few questions to help us connect you with therapists who match your needs and preferences."
+              : "Tell us more about your personal preferences to find a therapist you'll connect with."
+            }
           </p>
         </div>
       </div>
@@ -217,56 +382,40 @@ const TherapistQuestionnaire = () => {
         <Card className="p-8 shadow-md">
           <div className="flex items-center gap-4 mb-6">
             <div className="bg-[#B87333]/10 p-3 rounded-full">
-              <ListChecks className="h-6 w-6 text-[#B87333]" />
+              <QuestionIcon className="h-6 w-6 text-[#B87333]" />
             </div>
             <div>
-              <h2 className="text-2xl font-medium">Question {currentStep + 1} of {questions.length}</h2>
-              <p className="text-muted-foreground">Help us understand your therapy preferences</p>
+              <h2 className="text-2xl font-medium">
+                {currentQuestionSet === 'general'
+                  ? `Question ${currentStep + 1} of ${questions.length}`
+                  : `Personal Preference ${currentStep + 1} of ${personalQuestions.length}`
+                }
+              </h2>
+              <p className="text-muted-foreground">
+                {currentQuestionSet === 'general'
+                  ? "Help us understand your therapy preferences"
+                  : "Help us find someone you'll feel comfortable with"
+                }
+              </p>
             </div>
           </div>
 
           <Separator className="mb-6" />
 
           <h3 className="text-xl font-medium mb-4">{currentQuestion.question}</h3>
+          {currentQuestion.description && (
+            <p className="text-muted-foreground mb-4">{currentQuestion.description}</p>
+          )}
 
           <div className="space-y-4 mb-8">
-            {currentQuestion.type === "radio" ? (
-              <RadioGroup 
-                value={answers[currentQuestion.id] as string || ""}
-                onValueChange={(value) => handleRadioChange(currentQuestion.id, value)}
-                className="space-y-3"
-              >
-                {currentQuestion.options.map((option) => (
-                  <div key={option.value} className="flex items-start space-x-3 p-3 rounded-md hover:bg-slate-50">
-                    <RadioGroupItem id={option.value} value={option.value} />
-                    <Label htmlFor={option.value} className="font-normal cursor-pointer">{option.label}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            ) : (
-              <div className="space-y-3">
-                {currentQuestion.options.map((option) => {
-                  const isChecked = (answers[currentQuestion.id] as string[] || []).includes(option.value);
-                  return (
-                    <div key={option.value} className="flex items-start space-x-3 p-3 rounded-md hover:bg-slate-50">
-                      <Checkbox 
-                        id={option.value} 
-                        checked={isChecked}
-                        onCheckedChange={() => handleCheckboxChange(currentQuestion.id, option.value)}
-                      />
-                      <Label htmlFor={option.value} className="font-normal cursor-pointer">{option.label}</Label>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            {renderQuestionContent()}
           </div>
 
           <div className="flex justify-between">
             <Button 
               variant="outline" 
               onClick={prevQuestion}
-              disabled={currentStep === 0}
+              disabled={currentStep === 0 && currentQuestionSet === 'general'}
             >
               Previous
             </Button>
@@ -274,14 +423,22 @@ const TherapistQuestionnaire = () => {
               onClick={nextQuestion}
               className="bg-[#B87333] hover:bg-[#B87333]/90"
             >
-              {currentStep < questions.length - 1 ? "Next Question" : "Find My Matches"}
+              {(currentQuestionSet === 'general' && currentStep < questions.length - 1) || 
+               (currentQuestionSet === 'personal' && currentStep < personalQuestions.length - 1) 
+                ? "Next Question" 
+                : currentQuestionSet === 'general' 
+                  ? "Continue to Personal Preferences"
+                  : "Find My Matches"
+              }
             </Button>
           </div>
         </Card>
 
         <p className="text-center text-muted-foreground mt-8">
-          Your answers help us recommend therapists who are best suited to your unique needs.
-          All information provided is confidential and used only for matching purposes.
+          {currentQuestionSet === 'general' 
+            ? "Your answers help us recommend therapists who are best suited to your unique needs."
+            : "These additional details help us ensure you're matched with someone you'll feel comfortable with."
+          }
         </p>
       </div>
     </div>

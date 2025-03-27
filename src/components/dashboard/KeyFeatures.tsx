@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
@@ -70,7 +71,7 @@ const KeyFeatures: React.FC = () => {
       title: "Alternative Therapies",
       description: "Explore art, music, and nature-based healing approaches",
       icon: FlameKindling,
-      path: "/alternative-therapies"
+      path: "/therapist-questionnaire"  // Changed from "/alternative-therapies"
     },
     {
       title: "Mindfulness & Sleep",
@@ -82,7 +83,7 @@ const KeyFeatures: React.FC = () => {
       title: "Therapy Options",
       description: "Connect with licensed therapists",
       icon: GraduationCap,
-      path: "/therapist-matches"
+      path: "/therapist-questionnaire"  // Changed from "/therapist-matches"
     },
     {
       title: "Workshops",
@@ -118,7 +119,7 @@ const KeyFeatures: React.FC = () => {
       title: "Holistic Wellness",
       description: "Comprehensive approach to physical, mental, and spiritual wellbeing",
       icon: LeafyGreen,
-      path: "/holistic-wellness"
+      path: "/therapist-questionnaire"  // Changed from "/holistic-wellness"
     }
   ];
 

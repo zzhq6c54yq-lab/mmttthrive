@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -47,15 +46,15 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
           and their families to access mental health resources.
         </p>
         <p className="text-lg mb-8 text-white/90 font-medium">
-          Click below to access specialized resources, connect with peers, 
-          and discover tools to support your mental health journey.
+          Before we start, we want to connect you with mental health professionals 
+          who understand the unique challenges of military life.
         </p>
       </div>
       <Button 
         onClick={onEnterPortal}
         className="bg-[#B87333] hover:bg-[#9a6429] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(184,115,51,0.3)]"
       >
-        Enter Portal
+        Find a Military-Experienced Therapist
       </Button>
     </div>
   );
@@ -67,21 +66,18 @@ const DoDPortal: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
 
-  // Removed auto-transition effect since we're now using a Next button
-
   const handleContinueToIntro = () => {
     setScreenState('intro');
   };
 
   const handleEnterPortal = () => {
     toast({
-      title: "Welcome to the Military Support Portal",
-      description: "Accessing your personalized dashboard...",
+      title: "Finding the right therapist for you",
+      description: "We'll help you connect with mental health professionals experienced with military concerns",
       duration: 3000
     });
     
-    // Navigate to the correct path that exists in our routes
-    navigate("/military-support");
+    navigate("/therapist-questionnaire", { state: { fromMilitary: true } });
   };
 
   const renderCurrentScreen = () => {
@@ -100,7 +96,6 @@ const DoDPortal: React.FC = () => {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
       <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         
