@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, HeartHandshake, Flower, Wind, PenTool, Camera } from "lucide-react";
+import { Brain, HeartHandshake, Flower, Wind, PenTool, Camera, Music } from "lucide-react";
 import CakeDecorationGame from "./CakeDecorationGame";
 import HelpDialog from "./HelpDialog";
 import GratitudeVisualizer from "./GratitudeVisualizer";
+import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 
 interface ActivitiesTabProps {
   onStartIcingGame?: () => void;
@@ -17,6 +18,7 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
   const [showHelp, setShowHelp] = useState(false);
   const [showIcingGame, setShowIcingGame] = useState(false);
   const [showGratitudeVisualizer, setShowGratitudeVisualizer] = useState(false);
+  const [showMoodPlaylist, setShowMoodPlaylist] = useState(false);
 
   const handleCloseIcingGame = () => {
     setShowIcingGame(false);
@@ -24,6 +26,10 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
 
   const handleCloseGratitudeVisualizer = () => {
     setShowGratitudeVisualizer(false);
+  };
+
+  const handleCloseMoodPlaylist = () => {
+    setShowMoodPlaylist(false);
   };
 
   return (
@@ -74,6 +80,24 @@ const ActivitiesTab: React.FC<ActivitiesTabProps> = ({ onStartIcingGame, onToolS
                   <div className="flex justify-center">
                     <Button onClick={() => setShowGratitudeVisualizer(true)}>
                       Create Visualization
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="col-span-1">
+              <CardHeader>
+                <CardTitle className="flex items-center"><Music className="mr-2 h-4 w-4" /> Mood Playlist</CardTitle>
+                <CardDescription>Generate music that matches your current mood</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {showMoodPlaylist ? (
+                  <MoodPlaylistGenerator onClose={handleCloseMoodPlaylist} />
+                ) : (
+                  <div className="flex justify-center">
+                    <Button onClick={() => setShowMoodPlaylist(true)}>
+                      Create Playlist
                     </Button>
                   </div>
                 )}
