@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
+import MoodPlaylistGenerator from "@/components/playlists/MoodPlaylistGenerator";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -19,7 +20,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   const [sliderValue, setSliderValue] = useState([0]);
   const dialogContentRef = useRef<HTMLDivElement>(null);
   
-  // Multiple response messages for each mood with enhanced, more in-depth content
   const moodResponses = {
     happy: [
       {
@@ -162,13 +162,10 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     ]
   };
 
-  // State to store the selected response
   const [selectedResponse, setSelectedResponse] = useState<{title: string; message: string; affirmation?: string} | null>(null);
 
-  // Open crisis dialog automatically if mood is overwhelmed
   useEffect(() => {
     if (selectedMood === 'overwhelmed' || selectedMood === 'sad') {
-      // Don't open immediately, wait a moment after they see the response first
       const timer = setTimeout(() => {
         setShowCrisisDialog(true);
       }, 3000);
@@ -177,7 +174,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     }
   }, [selectedMood]);
 
-  // Select a random response when the component mounts or mood changes
   useEffect(() => {
     if (selectedMood) {
       const responses = moodResponses[selectedMood];
@@ -188,7 +184,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     }
   }, [selectedMood]);
 
-  // Handle navigation to the crisis support page
   const handleCrisisSupport = () => {
     setShowCrisisDialog(false);
     navigate('/crisis-support');
@@ -198,7 +193,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     });
   };
 
-  // Handle slider change for dialog content scrolling
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
     if (dialogContentRef.current) {
@@ -209,7 +203,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   };
 
   useEffect(() => {
-    // Reset slider when dialog opens
     if (showCrisisDialog) {
       setSliderValue([0]);
     }
@@ -240,6 +233,13 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
           <p className="text-white/80">
             Based on your mood, we've prepared personalized resources and activities to support your mental wellbeing today.
           </p>
+        </div>
+        
+        <div className="mb-10">
+          <MoodPlaylistGenerator 
+            mood={selectedMood || "neutral"} 
+            className="bg-white/5 border border-white/10 backdrop-blur-md"
+          />
         </div>
         
         <div className="flex justify-between mt-6">
@@ -283,7 +283,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         )}
       </div>
 
-      {/* Crisis Support Dialog with Slider Navigation */}
       <Dialog open={showCrisisDialog} onOpenChange={setShowCrisisDialog}>
         <DialogContent className="bg-slate-900 border border-red-500/30 text-white max-h-[90vh] overflow-hidden flex flex-col">
           <div className="sticky top-0 z-10 bg-slate-900 pb-2 border-b border-red-500/20">

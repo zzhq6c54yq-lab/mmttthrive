@@ -7,11 +7,16 @@ import { Music } from "lucide-react";
 interface MoodPlaylistGeneratorProps {
   mood?: string;
   onClose?: () => void;
+  className?: string;
 }
 
-const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ mood = "calm", onClose }) => {
+const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ 
+  mood = "calm", 
+  onClose,
+  className = "" 
+}) => {
   return (
-    <Card className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border-purple-500/20">
+    <Card className={`bg-gradient-to-br from-purple-900/30 to-blue-900/30 border-purple-500/20 ${className}`}>
       <CardHeader>
         <CardTitle className="flex items-center">
           <Music className="mr-2 h-5 w-5 text-purple-400" />
