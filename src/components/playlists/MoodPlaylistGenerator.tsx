@@ -82,27 +82,40 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
   const [volume, setVolume] = useState<number>(80);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
+  const [audioError, setAudioError] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   
+  // Initialize audio element
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
+      audioRef.current.crossOrigin = "anonymous"; // Help with CORS issues
     }
     
-    // Set up audio event listeners
+    return () => {
+      // Clean up audio on unmount
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current = null;
+      }
+    };
+  }, []);
+  
+  // Set up audio event listeners
+  useEffect(() => {
+    if (!audioRef.current) return;
+    
     const audio = audioRef.current;
     
     const handleTimeUpdate = () => {
-      if (audio) {
-        setCurrentTime(audio.currentTime);
-      }
+      setCurrentTime(audio.currentTime);
     };
     
     const handleLoadedMetadata = () => {
-      if (audio) {
-        setDuration(audio.duration);
-      }
+      setDuration(audio.duration);
+      setAudioError(false);
     };
     
     const handleEnded = () => {
@@ -112,12 +125,23 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
     
     const handleError = (e: Event) => {
       console.error("Error playing audio:", e);
-      toast({
-        title: "Playback Error",
-        description: "There was an error playing this track. Please try another.",
-        variant: "destructive",
-      });
       setIsPlaying(false);
+      setAudioError(true);
+      
+      // Only show toast once per error to avoid repetitive notifications
+      if (!audioError) {
+        toast({
+          title: "Playback Error",
+          description: "Unable to play this track. Using fallback audio.",
+          variant: "destructive",
+        });
+      }
+      
+      // Try using a fallback audio source
+      if (audio.src !== "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3") {
+        audio.src = "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3";
+        audio.load();
+      }
     };
     
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -125,50 +149,48 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
     audio.addEventListener("ended", handleEnded);
     audio.addEventListener("error", handleError);
     
-    // Clean up event listeners on unmount
+    // Clean up event listeners
     return () => {
       audio.removeEventListener("timeupdate", handleTimeUpdate);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
       audio.removeEventListener("ended", handleEnded);
       audio.removeEventListener("error", handleError);
-      
-      // Stop audio on unmount
-      audio.pause();
     };
-  }, [toast]);
+  }, [toast, audioError]);
   
   // When currentMood changes, reset the player
   useEffect(() => {
-    if (isPlaying) {
-      handlePlayPause(); // Stop playing current track
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
     }
     setCurrentTrack(0);
-  }, [currentMood]);
+    setAudioError(false);
+  }, [currentMood, isPlaying]);
   
   // Update audio source when currentTrack changes
   useEffect(() => {
-    if (audioRef.current) {
-      const audio = audioRef.current;
-      audio.src = getMockAudioUrl(currentMood);
+    if (!audioRef.current) return;
+    
+    setAudioError(false);
+    const audio = audioRef.current;
+    
+    // Try to use the actual mood-based audio or fallback to the reliable source
+    try {
+      const moodAudio = getMockAudioUrl(currentMood);
+      audio.src = moodAudio || "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3";
+      audio.load();
       audio.volume = volume / 100;
       
       if (isPlaying) {
-        const playPromise = audio.play();
-        
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.error("Playback error:", error);
-            setIsPlaying(false);
-            toast({
-              title: "Playback Error",
-              description: "Unable to play audio automatically. Please try clicking play.",
-              variant: "destructive",
-            });
-          });
-        }
+        playAudio();
       }
+    } catch (error) {
+      console.error("Failed to set audio source:", error);
+      audio.src = "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3";
+      audio.load();
     }
-  }, [currentTrack, currentMood, isPlaying, volume, toast]);
+  }, [currentTrack, currentMood, isPlaying, volume]);
   
   // Handle volume change
   useEffect(() => {
@@ -177,6 +199,52 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
     }
   }, [volume]);
   
+  const playAudio = () => {
+    if (!audioRef.current) return;
+    
+    const playPromise = audioRef.current.play();
+    
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setIsPlaying(true);
+          setAudioError(false);
+        })
+        .catch(error => {
+          console.error("Playback error:", error);
+          setIsPlaying(false);
+          setAudioError(true);
+          
+          // Try fallback audio source
+          if (audioRef.current) {
+            audioRef.current.src = "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3";
+            audioRef.current.load();
+            
+            // Try to play fallback audio
+            const fallbackPlayPromise = audioRef.current.play();
+            if (fallbackPlayPromise !== undefined) {
+              fallbackPlayPromise
+                .then(() => {
+                  setIsPlaying(true);
+                  setAudioError(false);
+                })
+                .catch(fallbackError => {
+                  console.error("Fallback playback error:", fallbackError);
+                  // Don't show repeated errors
+                  if (!audioError) {
+                    toast({
+                      title: "Audio Playback Issue",
+                      description: "Please click the play button again or try another station.",
+                      variant: "destructive",
+                    });
+                  }
+                });
+            }
+          }
+        });
+    }
+  };
+  
   const handlePlayPause = () => {
     if (!audioRef.current) return;
     
@@ -184,22 +252,7 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      const playPromise = audioRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(error => {
-            console.error("Playback error:", error);
-            toast({
-              title: "Playback Error",
-              description: "Unable to play this track. Please try another.",
-              variant: "destructive",
-            });
-          });
-      }
+      playAudio();
     }
   };
   
@@ -207,11 +260,7 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
     const playlist = getMoodPlaylists(currentMood);
     const nextTrack = (currentTrack + 1) % playlist.length;
     setCurrentTrack(nextTrack);
-    
-    // If was playing, continue playing next track
-    if (isPlaying) {
-      setIsPlaying(true);
-    }
+    setAudioError(false);
   };
   
   const formatTime = (seconds: number) => {
@@ -238,8 +287,9 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
             <Button 
               variant="ghost" 
               size="icon" 
-              className="h-8 w-8 rounded-full bg-primary/20 text-primary hover:bg-primary/30"
+              className={`h-8 w-8 rounded-full ${audioError ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-primary/20 text-primary hover:bg-primary/30'}`}
               onClick={handlePlayPause}
+              title={audioError ? "Error - try again" : isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
             </Button>
@@ -258,7 +308,7 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
         <div className="space-y-1">
           <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-primary transition-all duration-100" 
+              className={`h-full ${audioError ? 'bg-red-500' : 'bg-primary'} transition-all duration-100`}
               style={{ width: `${(currentTime / (duration || 1)) * 100}%` }}
             />
           </div>
@@ -288,10 +338,11 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
               <div 
                 key={index} 
                 className={`text-xs p-2 rounded cursor-pointer flex justify-between items-center ${
-                  index === currentTrack ? 'bg-primary/20 text-primary' : 'hover:bg-white/10'
+                  index === currentTrack ? (audioError ? 'bg-red-500/20 text-red-500' : 'bg-primary/20 text-primary') : 'hover:bg-white/10'
                 }`}
                 onClick={() => {
                   setCurrentTrack(index);
+                  setAudioError(false);
                   setIsPlaying(true);
                 }}
               >
@@ -304,6 +355,12 @@ const MoodPlaylistGenerator: React.FC<MoodPlaylistGeneratorProps> = ({ currentMo
             ))}
           </div>
         </div>
+        
+        {audioError && (
+          <div className="text-xs text-red-400 mt-1 px-2 py-1 bg-red-500/10 rounded">
+            There was an issue playing this track. Try another track or station.
+          </div>
+        )}
       </div>
     </Card>
   );
