@@ -331,7 +331,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
         </>
       )}
 
-      {((!saved && step === 3) || saved) ? (
+      {(!saved && step === 3) || saved ? (
         <>
           <div 
             className={`relative rounded-lg overflow-hidden shadow-lg transition-all duration-500 ${getOpacityClass()}`}
@@ -383,7 +383,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
                   <ArrowLeft className="mr-2 h-4 w-4" /> Edit
                 </Button>
                 <Button onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">
-                  <Heart className="mr-2 h-4 w-4" /> Save to Journal
+                  <Heart className="h-4 w-4 mr-2" /> Save to Journal
                 </Button>
               </div>
             </>
@@ -395,12 +395,12 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
                 Close
               </Button>
               <Button onClick={handleReset} variant="outline">
-                <RefreshCw className="mr-2 h-4 w-4" /> Create New
+                <RefreshCw className="h-4 w-4 mr-2" /> Create New
               </Button>
             </div>
           )}
         </>
-      ) : null}
+      )}
     </div>
   );
 };
