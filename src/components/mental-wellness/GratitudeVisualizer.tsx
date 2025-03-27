@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,22 +8,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useToast } from "@/hooks/use-toast";
 import { Camera, X, Download, Share2, Heart, RefreshCw, Palette, Type, ArrowLeft, ArrowRight, ImagePlus } from "lucide-react";
 
-// Available background images
-const backgroundOptions = [
-  "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png",
-  "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png",
-  "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png",
-  "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png",
-];
-
-// Warm color background gradients
+// Mental health themed gradient backgrounds
 const gradientBackgrounds = [
-  "bg-gradient-to-br from-amber-200 to-yellow-400",
-  "bg-gradient-to-br from-orange-200 to-rose-300",
-  "bg-gradient-to-br from-pink-300 to-red-400",
-  "bg-gradient-to-br from-amber-300 to-orange-500",
-  "bg-gradient-to-br from-yellow-200 to-orange-300",
-  "bg-gradient-to-br from-rose-200 to-pink-400",
+  "bg-gradient-to-br from-blue-200 to-indigo-400", // Calming blue
+  "bg-gradient-to-br from-green-200 to-emerald-400", // Soothing green
+  "bg-gradient-to-br from-amber-100 to-yellow-300", // Positive energy yellow
+  "bg-gradient-to-br from-rose-200 to-pink-300", // Compassion pink
 ];
 
 const fontOptions = [
@@ -59,17 +49,16 @@ interface GratitudeVisualizerProps {
 
 const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) => {
   const [gratitudeText, setGratitudeText] = useState<string>("");
-  const [selectedBackground, setSelectedBackground] = useState<string>(backgroundOptions[0]);
+  const [customBackground, setCustomBackground] = useState<string | null>(null);
   const [selectedGradient, setSelectedGradient] = useState<string>(gradientBackgrounds[0]);
-  const [useGradient, setUseGradient] = useState<boolean>(false);
   const [selectedFont, setSelectedFont] = useState<string>(fontOptions[0].class);
   const [selectedFontSize, setSelectedFontSize] = useState<string>(fontSizeOptions[2].class);
   const [selectedColor, setSelectedColor] = useState<string>(colorOptions[0].class);
   const [step, setStep] = useState<number>(1);
   const [title, setTitle] = useState<string>("I'm grateful for...");
   const [saved, setSaved] = useState<boolean>(false);
-  const [customGradient, setCustomGradient] = useState<string>("");
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Pulse effect for the border
   const [pulseOpacity, setPulseOpacity] = useState(0.2);
@@ -111,20 +100,13 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
   };
 
   const handleRandomize = () => {
-    const randomBackground = useGradient 
-      ? gradientBackgrounds[Math.floor(Math.random() * gradientBackgrounds.length)]
-      : backgroundOptions[Math.floor(Math.random() * backgroundOptions.length)];
-      
+    const randomGradient = gradientBackgrounds[Math.floor(Math.random() * gradientBackgrounds.length)];
     const randomFont = fontOptions[Math.floor(Math.random() * fontOptions.length)].class;
     const randomFontSize = fontSizeOptions[Math.floor(Math.random() * fontSizeOptions.length)].class;
     const randomColor = colorOptions[Math.floor(Math.random() * colorOptions.length)].class;
     
-    if (useGradient) {
-      setSelectedGradient(randomBackground as string);
-    } else {
-      setSelectedBackground(randomBackground as string);
-    }
-    
+    setSelectedGradient(randomGradient);
+    setCustomBackground(null);
     setSelectedFont(randomFont);
     setSelectedFontSize(randomFontSize);
     setSelectedColor(randomColor);
@@ -140,6 +122,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
     setStep(1);
     setGratitudeText("");
     setTitle("I'm grateful for...");
+    setCustomBackground(null);
   };
 
   const handleDownload = () => {
@@ -148,6 +131,27 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
       description: "Your visualization is being downloaded.",
     });
     // In a real app, this would trigger a download of the visualization
+  };
+
+  const handleImageUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const processUploadedImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setCustomBackground(e.target?.result as string);
+        toast({
+          title: "Image Uploaded",
+          description: "Your custom background has been applied.",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Create a fixed string for the ring opacity class to avoid template literals with variables in JSX
@@ -188,76 +192,53 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
       {!saved && step === 2 && (
         <>
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">Background Type:</h3>
-              <div className="flex space-x-2">
-                <Button 
-                  variant={useGradient ? "outline" : "default"}
-                  size="sm"
-                  onClick={() => setUseGradient(false)}
-                >
-                  <Camera className="h-4 w-4 mr-2" /> Image
-                </Button>
-                <Button 
-                  variant={useGradient ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setUseGradient(true)}
-                >
-                  <Palette className="h-4 w-4 mr-2" /> Gradient
-                </Button>
-              </div>
+            <h3 className="text-sm font-medium">Choose a background:</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {gradientBackgrounds.map((bg, index) => (
+                <div
+                  key={index}
+                  className={`relative h-20 rounded-md overflow-hidden cursor-pointer transition-all ${
+                    selectedGradient === bg && !customBackground ? "ring-2 ring-primary" : ""
+                  } ${bg}`}
+                  onClick={() => {
+                    setSelectedGradient(bg);
+                    setCustomBackground(null);
+                  }}
+                />
+              ))}
             </div>
             
-            {!useGradient && (
-              <>
-                <h3 className="text-sm font-medium">Choose a background image:</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {backgroundOptions.map((bg, index) => (
-                    <div
-                      key={index}
-                      className={`relative rounded-md overflow-hidden border-2 cursor-pointer transition-all ${
-                        selectedBackground === bg ? "border-primary" : "border-transparent hover:border-gray-300"
-                      }`}
-                      onClick={() => setSelectedBackground(bg)}
-                    >
-                      <img src={bg} alt={`Background ${index + 1}`} className="w-full h-20 object-cover" />
-                    </div>
-                  ))}
-                </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ImagePlus className="h-4 w-4 mr-2" /> Upload Custom Image
-                </Button>
-              </>
-            )}
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={processUploadedImage}
+            />
             
-            {useGradient && (
-              <>
-                <h3 className="text-sm font-medium">Choose a gradient background:</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  {gradientBackgrounds.map((bg, index) => (
-                    <div
-                      key={index}
-                      className={`relative h-20 rounded-md overflow-hidden border-2 cursor-pointer transition-all ${
-                        selectedGradient === bg ? "border-primary" : "border-transparent hover:border-gray-300"
-                      } ${bg}`}
-                      onClick={() => setSelectedGradient(bg)}
-                    />
-                  ))}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full mt-2"
+              onClick={handleImageUpload}
+            >
+              <ImagePlus className="h-4 w-4 mr-2" /> Upload Custom Image
+            </Button>
+            
+            {customBackground && (
+              <div className="mt-2 relative">
+                <div className="relative h-20 rounded-md overflow-hidden ring-2 ring-primary">
+                  <img src={customBackground} alt="Custom background" className="w-full h-full object-cover" />
                 </div>
-                <div className="mt-2">
-                  <Input
-                    placeholder="Custom gradient (e.g., from-pink-300 to-purple-500)"
-                    value={customGradient}
-                    onChange={(e) => {
-                      setCustomGradient(e.target.value);
-                      if (e.target.value) {
-                        setSelectedGradient(`bg-gradient-to-br ${e.target.value}`);
-                      }
-                    }}
-                    className="text-xs"
-                  />
-                </div>
-              </>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="absolute top-1 right-1 h-6 w-6 bg-black/50 hover:bg-black/70"
+                  onClick={() => setCustomBackground(null)}
+                >
+                  <X className="h-3 w-3 text-white" />
+                </Button>
+              </div>
             )}
             
             <Popover>
@@ -337,10 +318,10 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onClose }) =>
             className={`relative rounded-lg overflow-hidden shadow-lg transition-all duration-500 ${getOpacityClass()}`}
             style={{ minHeight: "350px" }}
           >
-            {!useGradient ? (
+            {customBackground ? (
               <>
                 <img 
-                  src={selectedBackground} 
+                  src={customBackground} 
                   alt="Gratitude Background" 
                   className="w-full h-full object-cover absolute inset-0"
                 />
