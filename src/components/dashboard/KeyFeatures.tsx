@@ -1,8 +1,10 @@
+
 import React from "react";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
-  Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake
+  Sparkles, Star, Lightbulb, Target, Zap, Bird, Leaf, Smile, Coffee, Puzzle, HeartHandshake,
+  Headphones, Music
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -41,6 +43,12 @@ const KeyFeatures: React.FC = () => {
       description: "Access your digital sponsor and recovery support resources",
       icon: HeartHandshake,
       path: "/my-sponsor"
+    },
+    {
+      title: "Binaural Beats",
+      description: "Audio therapy for stress, anxiety, sleep, meditation and chakra balancing",
+      icon: Headphones,
+      path: "/binaural-beats"
     },
     {
       title: "Lifestyle Integration",

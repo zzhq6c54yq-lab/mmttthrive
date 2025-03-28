@@ -51,6 +51,7 @@ import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
 import EmployeeWelcome from "@/pages/EmployeeWelcome";
 import EmployeeReadiness from "@/pages/EmployeeReadiness";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
+import BinauralBeats from "@/pages/BinauralBeats";
 import HelpNavButton from "@/components/help/HelpNavButton";
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -97,6 +98,7 @@ function App() {
         <Route path="/settings" element={<UserSettings />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/subscription-plans" element={<SubscriptionPlansPage />} />
+        <Route path="/binaural-beats" element={<BinauralBeats />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-workshops" element={<MilitaryWorkshops />} />
