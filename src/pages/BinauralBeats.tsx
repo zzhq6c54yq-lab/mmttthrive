@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { 
@@ -12,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 
-// Define the beats categories and their tracks
 const beatCategories = [
   {
     id: "chakra",
@@ -100,34 +98,27 @@ const BinauralBeats: React.FC = () => {
   const startTimeRef = useRef<number>(0);
   const { toast } = useToast();
 
-  // Update search params when category or track changes
   useEffect(() => {
     setSearchParams({ category: activeCategory, track: activeTrack });
   }, [activeCategory, activeTrack, setSearchParams]);
 
-  // Get current track data
   const getCurrentCategory = () => beatCategories.find(cat => cat.id === activeCategory) || beatCategories[0];
   const getCurrentTrack = () => {
     const category = getCurrentCategory();
     return category.tracks.find(track => track.id === activeTrack) || category.tracks[0];
   };
 
-  // Create binaural beat
   const setupAudio = () => {
-    // Clean up existing audio
     cleanup();
 
-    // Create new audio context
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     const audioContext = new AudioContext();
     audioContextRef.current = audioContext;
 
-    // Get current track frequencies
     const track = getCurrentTrack();
     const baseFrequency = track.frequency;
-    const beatFrequency = 5; // 5 Hz binaural beat
-    
-    // Create oscillators
+    const beatFrequency = 5;
+
     const leftOscillator = audioContext.createOscillator();
     const rightOscillator = audioContext.createOscillator();
     
@@ -140,19 +131,16 @@ const BinauralBeats: React.FC = () => {
     leftOscillatorRef.current = leftOscillator;
     rightOscillatorRef.current = rightOscillator;
     
-    // Create gain node for volume control
     const gainNode = audioContext.createGain();
     gainNode.gain.value = volume / 100;
     gainNodeRef.current = gainNode;
     
-    // Create stereo panner for left and right channels
     const leftPanner = audioContext.createStereoPanner();
-    leftPanner.pan.value = -1; // Far left
+    leftPanner.pan.value = -1;
     
     const rightPanner = audioContext.createStereoPanner();
-    rightPanner.pan.value = 1; // Far right
+    rightPanner.pan.value = 1;
     
-    // Connect nodes
     leftOscillator.connect(leftPanner);
     rightOscillator.connect(rightPanner);
     
@@ -161,18 +149,15 @@ const BinauralBeats: React.FC = () => {
     
     gainNode.connect(audioContext.destination);
     
-    // Start oscillators
     leftOscillator.start();
     rightOscillator.start();
     
     startTimeRef.current = audioContext.currentTime;
-    setDuration(track.duration * 60); // Convert minutes to seconds
+    setDuration(track.duration * 60);
     
-    // Start time tracking
     updateTime();
   };
 
-  // Clean up audio resources
   const cleanup = () => {
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
@@ -211,14 +196,12 @@ const BinauralBeats: React.FC = () => {
     audioContextRef.current = null;
   };
 
-  // Update time display
   const updateTime = () => {
     if (!audioContextRef.current || !isPlaying) return;
     
     const currentTime = audioContextRef.current.currentTime - startTimeRef.current;
     setCurrentTime(currentTime);
     
-    // Stop at end of duration
     if (currentTime >= duration) {
       handleStop();
       return;
@@ -227,14 +210,12 @@ const BinauralBeats: React.FC = () => {
     animationFrameRef.current = requestAnimationFrame(updateTime);
   };
 
-  // Format time for display (MM:SS)
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Handle play/pause
   const handlePlayPause = () => {
     if (isPlaying) {
       if (audioContextRef.current) {
@@ -263,14 +244,12 @@ const BinauralBeats: React.FC = () => {
     setIsPlaying(!isPlaying);
   };
 
-  // Handle stop
   const handleStop = () => {
     setIsPlaying(false);
     setCurrentTime(0);
     cleanup();
   };
 
-  // Handle category change
   const handleCategoryChange = (categoryId: string) => {
     if (categoryId === activeCategory) return;
     
@@ -282,7 +261,6 @@ const BinauralBeats: React.FC = () => {
     
     if (isPlaying) {
       handleStop();
-      // Small timeout to allow audio to stop before starting new track
       setTimeout(() => {
         setIsPlaying(true);
         setupAudio();
@@ -290,7 +268,6 @@ const BinauralBeats: React.FC = () => {
     }
   };
 
-  // Handle track change
   const handleTrackChange = (trackId: string) => {
     if (trackId === activeTrack) return;
     
@@ -298,7 +275,6 @@ const BinauralBeats: React.FC = () => {
     
     if (isPlaying) {
       handleStop();
-      // Small timeout to allow audio to stop before starting new track
       setTimeout(() => {
         setIsPlaying(true);
         setupAudio();
@@ -306,7 +282,6 @@ const BinauralBeats: React.FC = () => {
     }
   };
 
-  // Handle volume change
   const handleVolumeChange = (value: number[]) => {
     const newVolume = value[0];
     setVolume(newVolume);
@@ -322,7 +297,6 @@ const BinauralBeats: React.FC = () => {
     }
   };
 
-  // Handle mute toggle
   const handleMuteToggle = () => {
     if (gainNodeRef.current) {
       if (isMuted) {
@@ -335,7 +309,6 @@ const BinauralBeats: React.FC = () => {
     setIsMuted(!isMuted);
   };
 
-  // Handle previous track
   const handlePreviousTrack = () => {
     const category = getCurrentCategory();
     const currentIndex = category.tracks.findIndex(track => track.id === activeTrack);
@@ -343,7 +316,6 @@ const BinauralBeats: React.FC = () => {
     handleTrackChange(category.tracks[newIndex].id);
   };
 
-  // Handle next track
   const handleNextTrack = () => {
     const category = getCurrentCategory();
     const currentIndex = category.tracks.findIndex(track => track.id === activeTrack);
@@ -351,7 +323,6 @@ const BinauralBeats: React.FC = () => {
     handleTrackChange(category.tracks[newIndex].id);
   };
 
-  // Clean up on unmount
   useEffect(() => {
     return () => {
       cleanup();
@@ -362,7 +333,7 @@ const BinauralBeats: React.FC = () => {
   const currentTrack = getCurrentTrack();
 
   return (
-    <Page>
+    <Page title="Binaural Beats Therapy">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Binaural Beats Therapy</h1>
@@ -370,7 +341,6 @@ const BinauralBeats: React.FC = () => {
             Experience the healing power of binaural beats to reduce stress, improve focus, enhance meditation, and promote better sleep.
           </p>
           
-          {/* Categories */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
             {beatCategories.map((category) => {
               const Icon = category.icon;
@@ -394,7 +364,6 @@ const BinauralBeats: React.FC = () => {
             })}
           </div>
           
-          {/* Tracks */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 shadow-md mb-8">
             <h2 className="text-xl font-semibold mb-4">{currentCategory.name} Tracks</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -421,7 +390,6 @@ const BinauralBeats: React.FC = () => {
             </div>
           </div>
           
-          {/* Player */}
           <div className={`bg-gradient-to-r ${currentCategory.color} text-white rounded-xl p-6 shadow-md`}>
             <div className="flex flex-col items-center">
               <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center mb-4">
@@ -431,7 +399,6 @@ const BinauralBeats: React.FC = () => {
               <h3 className="text-xl font-bold mb-1">{currentTrack.name}</h3>
               <p className="text-sm opacity-80 mb-6">{currentCategory.name}</p>
               
-              {/* Progress bar */}
               <div className="w-full max-w-md mb-4">
                 <div className="flex justify-between mb-1 text-sm">
                   <span>{formatTime(currentTime)}</span>
@@ -445,7 +412,6 @@ const BinauralBeats: React.FC = () => {
                 </div>
               </div>
               
-              {/* Controls */}
               <div className="flex items-center space-x-4 mb-8">
                 <Button 
                   size="icon"
@@ -475,7 +441,6 @@ const BinauralBeats: React.FC = () => {
                 </Button>
               </div>
               
-              {/* Volume control */}
               <div className="flex items-center space-x-2 w-full max-w-xs">
                 <Button
                   size="icon"
@@ -505,7 +470,6 @@ const BinauralBeats: React.FC = () => {
           </div>
         </div>
 
-        {/* Information section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
             <h2 className="text-xl font-bold mb-4">What are Binaural Beats?</h2>
