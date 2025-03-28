@@ -31,22 +31,28 @@ export const useScreenHistory = (
         document.title
       );
     } else {
+      // When returning from other pages (like workshops) without state, 
+      // go directly to 'main' instead of 'intro' screen
       window.history.replaceState(
-        { ...window.history.state, screenState: 'intro' }, 
+        { ...window.history.state, screenState: 'main' }, 
         document.title
       );
       
-      const timer = setTimeout(() => {
-        if (screenState === 'intro') {
-          setScreenState('mood');
-          window.history.replaceState(
-            { ...window.history.state, screenState: 'mood' }, 
-            document.title
-          );
-        }
-      }, 7000);
+      // Only start the intro timer if we're explicitly on the intro screen
+      // This prevents the auto-transition when coming back from other pages
+      if (screenState === 'intro') {
+        const timer = setTimeout(() => {
+          if (screenState === 'intro') {
+            setScreenState('mood');
+            window.history.replaceState(
+              { ...window.history.state, screenState: 'mood' }, 
+              document.title
+            );
+          }
+        }, 7000);
 
-      return () => clearTimeout(timer);
+        return () => clearTimeout(timer);
+      }
     }
   }, [location.state, screenState, setScreenState]);
 

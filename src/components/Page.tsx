@@ -30,6 +30,15 @@ const Page: React.FC<PageProps> = ({
     navigate("/", { state: { screenState: 'main' } });
   };
   
+  const handleBackClick = () => {
+    if (onBackClick) {
+      onBackClick();
+    } else {
+      // Default behavior: always go back to main menu with main screenState
+      navigate("/", { state: { screenState: 'main' } });
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
@@ -42,6 +51,16 @@ const Page: React.FC<PageProps> = ({
         {/* Title in Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
           <div className="flex items-center gap-1">
+            {showBackButton && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
+                onClick={handleBackClick}
+              >
+                Back
+              </Button>
+            )}
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>
