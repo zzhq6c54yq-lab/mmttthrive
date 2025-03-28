@@ -13,7 +13,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
-const questions = [
+// Define question interfaces for better type safety
+interface BaseQuestion {
+  id: string;
+  question: string;
+  type: string;
+}
+
+interface OptionsQuestion extends BaseQuestion {
+  type: 'radio' | 'checkbox';
+  options: Array<{ value: string; label: string }>;
+  description?: string;
+}
+
+interface TextQuestion extends BaseQuestion {
+  type: 'text-area';
+  description: string;
+  options?: undefined;
+}
+
+type Question = OptionsQuestion | TextQuestion;
+
+const questions: Question[] = [
   {
     id: "therapy-goals",
     question: "What are your primary goals for therapy?",
@@ -82,7 +103,7 @@ const questions = [
 ];
 
 // New personal questions
-const personalQuestions = [
+const personalQuestions: Question[] = [
   {
     id: "therapist-qualities",
     question: "What additional qualities would you like in your therapist?",

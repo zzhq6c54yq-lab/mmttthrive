@@ -82,7 +82,7 @@ const KeyFeatures: React.FC = () => {
       title: "Therapy Options",
       description: "Connect with licensed therapists",
       icon: GraduationCap,
-      path: "/therapist-questionnaire"  // Points to therapist questionnaire
+      path: "/real-time-therapy"  // Changed to direct to real-time therapy page
     },
     {
       title: "Workshops",
