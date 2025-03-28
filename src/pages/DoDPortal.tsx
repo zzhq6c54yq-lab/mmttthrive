@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -46,15 +47,15 @@ const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPor
           and their families to access mental health resources.
         </p>
         <p className="text-lg mb-8 text-white/90 font-medium">
-          Before we start, we want to connect you with mental health professionals 
-          who understand the unique challenges of military life.
+          Browse our comprehensive collection of resources, connect with 
+          specialized support, and access tools designed for military life.
         </p>
       </div>
       <Button 
         onClick={onEnterPortal}
         className="bg-[#B87333] hover:bg-[#9a6429] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(184,115,51,0.3)]"
       >
-        Find a Military-Experienced Therapist
+        Enter Military Support Portal
       </Button>
     </div>
   );
@@ -72,12 +73,13 @@ const DoDPortal: React.FC = () => {
 
   const handleEnterPortal = () => {
     toast({
-      title: "Finding the right therapist for you",
-      description: "We'll help you connect with mental health professionals experienced with military concerns",
+      title: "Welcome to the Military Support Portal",
+      description: "Accessing resources and support services for military personnel and families",
       duration: 3000
     });
     
-    navigate("/therapist-questionnaire", { state: { fromMilitary: true } });
+    // Navigate to the military support page instead of the questionnaire
+    navigate("/military-support");
   };
 
   const renderCurrentScreen = () => {

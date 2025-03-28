@@ -103,11 +103,13 @@ const personalQuestions = [
   {
     id: "comfort-topics",
     question: "What topics do you feel most comfortable discussing?",
+    description: "This helps us understand your communication preferences",
     type: "text-area"
   },
   {
     id: "difficult-topics",
     question: "What topics do you find difficult to discuss?",
+    description: "This helps your therapist approach sensitive topics appropriately",
     type: "text-area"
   }
 ];
