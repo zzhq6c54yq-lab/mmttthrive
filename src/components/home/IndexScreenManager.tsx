@@ -130,12 +130,13 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
     case 'main':
       return (
         <MainDashboard
-          userName={userInfo.name}
-          showHenry={showHenry}
-          onHenryToggle={onHenryToggle}
+          selectedMood={selectedMood}
           selectedQualities={selectedQualities}
           selectedGoals={selectedGoals}
           navigateToFeature={navigateToFeature}
+          userName={userInfo.name}
+          showHenry={showHenry}
+          onHenryToggle={onHenryToggle}
         />
       );
     default:
