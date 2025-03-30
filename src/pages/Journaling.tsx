@@ -215,6 +215,43 @@ const Journaling = () => {
   ];
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
+  // Function to get most common mood
+  const getMostCommonMood = () => {
+    const moodCount: Record<string, number> = {};
+    
+    journalHistory
+      .filter(entry => entry.mood)
+      .forEach(entry => {
+        if (entry.mood) {
+          moodCount[entry.mood] = (moodCount[entry.mood] || 0) + 1;
+        }
+      });
+    
+    const entries = Object.entries(moodCount);
+    if (entries.length === 0) return "N/A";
+    
+    return entries.sort((a, b) => b[1] - a[1])[0][0];
+  };
+
+  // Function to get most frequent tags
+  const getFrequentTags = () => {
+    const tagCount: Record<string, number> = {};
+    
+    journalHistory
+      .flatMap(entry => entry.tags || [])
+      .forEach(tag => {
+        tagCount[tag] = (tagCount[tag] || 0) + 1;
+      });
+    
+    const entries = Object.entries(tagCount);
+    if (entries.length === 0) return [];
+    
+    return entries
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([tag]) => tag);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative overflow-hidden">
@@ -616,40 +653,17 @@ const Journaling = () => {
                       <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
                         <h3 className="text-sm font-medium text-gray-700 mb-1">Most Common Mood</h3>
                         <p className="text-2xl font-bold text-amber-600">
-                          {journalHistory
-                            .filter(entry => entry.mood)
-                            .reduce((acc, entry) => {
-                              const mood = entry.mood as string;
-                              acc[mood] = (acc[mood] || 0) + 1;
-                              return acc;
-                            }, {} as Record<string, number>)
-                            |> Object.entries
-                            |> (entries => entries.length 
-                              ? entries.sort((a, b) => b[1] - a[1])[0][0] 
-                              : "N/A")
-                          }
+                          {getMostCommonMood()}
                         </p>
                       </div>
                       <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
                         <h3 className="text-sm font-medium text-gray-700 mb-1">Frequent Tags</h3>
                         <div className="flex flex-wrap gap-1">
-                          {journalHistory
-                            .flatMap(entry => entry.tags || [])
-                            .reduce((acc, tag) => {
-                              acc[tag] = (acc[tag] || 0) + 1;
-                              return acc;
-                            }, {} as Record<string, number>)
-                            |> Object.entries
-                            |> (entries => entries
-                              .sort((a, b) => b[1] - a[1])
-                              .slice(0, 3)
-                              .map(([tag]) => (
-                                <Badge key={tag} variant="outline" className="text-xs">
-                                  {tag}
-                                </Badge>
-                              ))
-                            )
-                          }
+                          {getFrequentTags().map(tag => (
+                            <Badge key={tag} variant="outline" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
                     </div>
