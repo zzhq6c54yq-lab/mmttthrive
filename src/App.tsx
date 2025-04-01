@@ -1,59 +1,63 @@
-
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
-import Index from "@/pages/Index";
-import MentalWellnessTools from "@/pages/MentalWellnessTools";
-import RealTimeTherapy from "@/pages/RealTimeTherapy";
-import MySponsor from "@/pages/MySponsor";
-import NotFound from "@/pages/NotFound";
-import Page from "@/components/Page";
-import TherapistQuestionnaire from "@/pages/TherapistQuestionnaire";
-import TherapistMatches from "@/pages/TherapistMatches";
-import WorkshopDetail from "@/pages/WorkshopDetail";
-import Workshops from "@/pages/Workshops";
-import VirtualMeetings from "@/pages/VirtualMeetings";
-import ToolDetail from "@/pages/ToolDetail";
-import MentalHealthGames from "@/pages/MentalHealthGames";
-import PersonalizedContent from "@/pages/PersonalizedContent";
-import CommunitySupport from "@/pages/CommunitySupport";
-import ResourceLibrary from "@/pages/ResourceLibrary";
-import ProgressReports from "@/pages/ProgressReports";
-import HolisticWellness from "@/pages/HolisticWellness";
-import BarterSystem from "@/pages/BarterSystem";
-import LifestyleIntegration from "@/pages/LifestyleIntegration";
-import GamesAndQuizzes from "@/pages/GamesAndQuizzes";
-import Scheduling from "@/pages/Scheduling";
-import PrivacySecurity from "@/pages/PrivacySecurity";
-import FamilySupport from "@/pages/FamilySupport";
-import AlternativeTherapies from "@/pages/AlternativeTherapies";
-import AlternativeTherapyDetail from "@/pages/AlternativeTherapyDetail";
-import MindfulnessSleep from "@/pages/MindfulnessSleep";
-import SelfHelpResources from "@/pages/SelfHelpResources";
-import Journaling from "@/pages/Journaling";
-import CrisisSupport from "@/pages/CrisisSupport";
-import ProgressAnalytics from "@/pages/ProgressAnalytics";
-import LeadBank from "@/pages/LeadBank";
-import CoPayCredits from "@/pages/CoPayCredits";
-import FinancialAssistance from "@/pages/FinancialAssistance";
-import ContactSupport from "@/pages/ContactSupport";
-import UserSettings from "@/pages/UserSettings";
-import UserProfile from "@/pages/UserProfile";
-import MilitarySupport from "@/pages/MilitarySupport";
-import MilitaryWorkshops from "@/pages/MilitaryWorkshops";
-import MilitaryResources from "@/pages/MilitaryResources";
-import MilitaryAffirmations from "@/pages/MilitaryAffirmations";
-import MilitaryBlog from "@/pages/MilitaryBlog";
-import DoDPortal from "@/pages/DoDPortal";
-import CollegePortal from "@/pages/CollegePortal";
-import CollegeExperience from "@/pages/CollegeExperience";
-import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
-import SmallBusinessExperience from "@/pages/SmallBusinessExperience";
-import EmployeeWelcome from "@/pages/EmployeeWelcome";
-import EmployeeReadiness from "@/pages/EmployeeReadiness";
-import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
-import BinauralBeats from "@/pages/BinauralBeats";
-import HelpNavButton from "@/components/help/HelpNavButton";
-import ScrollToTop from "@/components/ScrollToTop";
+import './App.css';
+import { Toaster as SonnerToaster } from "sonner";
+import Index from './pages/Index';
+import MentalWellnessTools from './pages/MentalWellnessTools';
+import RealTimeTherapy from './pages/RealTimeTherapy';
+import MySponsor from './pages/MySponsor';
+import NotFound from './pages/NotFound';
+import Page from './components/Page';
+import TherapistQuestionnaire from './pages/TherapistQuestionnaire';
+import TherapistMatches from './pages/TherapistMatches';
+import WorkshopDetail from './pages/WorkshopDetail';
+import Workshops from './pages/Workshops';
+import VirtualMeetings from './pages/VirtualMeetings';
+import ToolDetail from './pages/ToolDetail';
+import MentalHealthGames from './pages/MentalHealthGames';
+import PersonalizedContent from './pages/PersonalizedContent';
+import CommunitySupport from './pages/CommunitySupport';
+import ResourceLibrary from './pages/ResourceLibrary';
+import ProgressReports from './pages/ProgressReports';
+import HolisticWellness from './pages/HolisticWellness';
+import BarterSystem from './pages/BarterSystem';
+import LifestyleIntegration from './pages/LifestyleIntegration';
+import GamesAndQuizzes from './pages/GamesAndQuizzes';
+import Scheduling from './pages/Scheduling';
+import PrivacySecurity from './pages/PrivacySecurity';
+import FamilySupport from './pages/FamilySupport';
+import AlternativeTherapies from './pages/AlternativeTherapies';
+import AlternativeTherapyDetail from './pages/AlternativeTherapyDetail';
+import MindfulnessSleep from './pages/MindfulnessSleep';
+import SelfHelpResources from './pages/SelfHelpResources';
+import Journaling from './pages/Journaling';
+import CrisisSupport from './pages/CrisisSupport';
+import ProgressAnalytics from './pages/ProgressAnalytics';
+import LeadBank from './pages/LeadBank';
+import CoPayCredits from './pages/CoPayCredits';
+import FinancialAssistance from './pages/FinancialAssistance';
+import ContactSupport from './pages/ContactSupport';
+import UserSettings from './pages/UserSettings';
+import UserProfile from './pages/UserProfile';
+import MilitarySupport from './pages/MilitarySupport';
+import MilitaryWorkshops from './pages/MilitaryWorkshops';
+import MilitaryResources from './pages/MilitaryResources';
+import MilitaryAffirmations from './pages/MilitaryAffirmations';
+import MilitaryBlog from './pages/MilitaryBlog';
+import DoDPortal from './pages/DoDPortal';
+import CollegePortal from './pages/CollegePortal';
+import CollegeExperience from './pages/CollegeExperience';
+import SmallBusinessPortal from './pages/SmallBusinessPortal';
+import SmallBusinessExperience from './pages/SmallBusinessExperience';
+import EmployeeWelcome from './pages/EmployeeWelcome';
+import EmployeeReadiness from './pages/EmployeeReadiness';
+import SubscriptionPlansPage from './pages/SubscriptionPlansPage';
+import BinauralBeats from './pages/BinauralBeats';
+import VideoDiary from './pages/VideoDiary';
+import WellnessChallenges from './pages/WellnessChallenges';
+import HelpNavButton from './components/help/HelpNavButton';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
@@ -120,11 +124,16 @@ function App() {
         
         <Route path="/small-business" element={<Navigate to="/small-business-portal" replace />} />
         
-        <Route path="*" element={<NotFound />} />
+        <Route path="/video-diary" element={<VideoDiary />} />
+        <Route path="/video-diary/:id" element={<VideoDiary />} />
+        <Route path="/wellness-challenges" element={<WellnessChallenges />} />
+        
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
-      {/* Keep only this Henry button instance - it will appear across the app */}
+      
       <HelpNavButton />
       <Toaster />
+      <SonnerToaster position="top-right" expand={false} richColors />
     </Router>
   );
 }

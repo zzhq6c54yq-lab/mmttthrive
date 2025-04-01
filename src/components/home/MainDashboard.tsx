@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -8,11 +7,12 @@ import InsightsSection from "@/components/dashboard/InsightsSection";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
 import NewFeatures from "@/components/dashboard/NewFeatures";
+import DailyWellnessChallenges from "@/components/dashboard/DailyWellnessChallenges";
+import VideoDiary from "@/components/dashboard/VideoDiary";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
-// Removed HenryButton import - We're handling this via the global HelpNavButton component
 
 interface MainDashboardProps {
   userName: string;
@@ -34,7 +34,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Function to handle featured workshop clicks
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     toast({
       title: "Opening Workshop",
@@ -42,7 +41,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       duration: 1500
     });
     
-    // Based on the workshop ID, navigate to the appropriate content
     switch(workshopId) {
       case "mindful-communication":
         navigate("/workshop/mindful-communication", { 
@@ -60,12 +58,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         });
         break;
       default:
-        // If it's a military workshop
         if (workshopId.startsWith("military-")) {
           const militaryWorkshopId = workshopId.replace("military-", "");
           navigate(`/military-workshop/${militaryWorkshopId}`);
         } 
-        // If it's a corporate workshop
         else if (workshopId.startsWith("corporate-")) {
           const corporateWorkshopId = workshopId.replace("corporate-", "");
           navigate("/corporate-wellness", { 
@@ -75,7 +71,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
             } 
           });
         }
-        // For any other workshop type
         else {
           navigate(`/workshop/${workshopId}`);
         }
@@ -104,6 +99,11 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       <NewFeatures />
 
       <div className="container mx-auto max-w-6xl px-4 py-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <DailyWellnessChallenges />
+          <VideoDiary />
+        </div>
+        
         <SpecializedPrograms />
         
         <GratitudeVisualizer />
