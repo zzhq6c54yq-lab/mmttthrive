@@ -3,8 +3,13 @@ import React from "react";
 import { Calendar, Clock, Video } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const UpcomingAppointments = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   // Mock data for appointments
   const appointments = [
     {
@@ -22,6 +27,34 @@ const UpcomingAppointments = () => {
       type: "group",
     },
   ];
+
+  const handleJoinAppointment = (appointmentId: number) => {
+    toast({
+      title: "Joining Session",
+      description: "Connecting to your appointment...",
+      duration: 1500,
+    });
+    // In a real app, this would navigate to the meeting room
+    console.log(`Joining appointment: ${appointmentId}`);
+  };
+
+  const handleViewAllAppointments = () => {
+    toast({
+      title: "Opening Schedule",
+      description: "Taking you to your full appointment schedule",
+      duration: 1500,
+    });
+    navigate("/scheduling");
+  };
+
+  const handleScheduleNow = () => {
+    toast({
+      title: "Schedule Appointment",
+      description: "Opening appointment scheduling",
+      duration: 1500,
+    });
+    navigate("/scheduling");
+  };
 
   return (
     <Card className="border-[#B87333]/20 hover:border-[#B87333]/40 transition-all duration-300 shadow-sm hover:shadow-md">
@@ -62,6 +95,7 @@ const UpcomingAppointments = () => {
                   variant="outline"
                   size="sm"
                   className="text-xs border-[#B87333]/20 hover:border-[#B87333]/60 hover:bg-[#B87333]/5"
+                  onClick={() => handleJoinAppointment(appointment.id)}
                 >
                   Join
                 </Button>
@@ -75,6 +109,7 @@ const UpcomingAppointments = () => {
               variant="outline"
               size="sm"
               className="mt-2 border-[#B87333]/20 hover:border-[#B87333]/60 hover:bg-[#B87333]/5"
+              onClick={handleScheduleNow}
             >
               Schedule Now
             </Button>
@@ -84,6 +119,7 @@ const UpcomingAppointments = () => {
           <Button
             variant="link"
             className="text-sm text-[#B87333] hover:text-[#A56625]"
+            onClick={handleViewAllAppointments}
           >
             View All Appointments
           </Button>

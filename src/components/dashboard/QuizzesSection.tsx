@@ -4,9 +4,11 @@ import { HelpCircle, Lightbulb, CheckCircle, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const QuizzesSection = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   
   // Mock data for quizzes
@@ -32,7 +34,28 @@ const QuizzesSection = () => {
   const handleStartQuiz = (quizId: number) => {
     toast({
       title: "Quiz Starting",
-      description: "This functionality is coming soon!",
+      description: "Taking you to the selected quiz...",
+      duration: 1500,
+    });
+    
+    // Navigate to games-and-quizzes with optional quiz ID
+    navigate("/games-and-quizzes", {
+      state: { 
+        activeTab: "quizzes",
+        selectedQuizId: quizId
+      }
+    });
+  };
+  
+  const handleExploreQuizzes = () => {
+    toast({
+      title: "Exploring Quizzes",
+      description: "Taking you to all available quizzes",
+      duration: 1500,
+    });
+    
+    navigate("/games-and-quizzes", {
+      state: { activeTab: "quizzes" }
     });
   };
 
@@ -99,6 +122,7 @@ const QuizzesSection = () => {
             variant="outline" 
             size="sm"
             className="text-[#B87333] border-[#B87333]/30 hover:bg-[#B87333]/5 hover:border-[#B87333]"
+            onClick={handleExploreQuizzes}
           >
             Explore More Quizzes
             <ArrowRight className="ml-2 h-3 w-3" />
