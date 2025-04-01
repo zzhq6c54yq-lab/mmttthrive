@@ -1,8 +1,9 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Shield } from "lucide-react";
+import { ArrowRight, Shield, Users, BrainCircuit } from "lucide-react";
 import HomeButton from "@/components/HomeButton";
 import DoDMainMenu from "@/components/dod/DoDMainMenu";
 
