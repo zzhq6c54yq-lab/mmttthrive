@@ -132,7 +132,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
         <MainDashboard
           userName={userInfo.name}
           showHenry={showHenry}
-          toggleHenry={onHenryToggle}
+          onHenryToggle={onHenryToggle}
           selectedQualities={selectedQualities}
           selectedGoals={selectedGoals}
           navigateToFeature={navigateToFeature}
