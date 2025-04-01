@@ -3,7 +3,7 @@ import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Heart, Brain, Smile, Sparkles, ArrowRight } from "lucide-react";
+import { Heart, Brain, Smile, Sparkles, ArrowRight, MessageCircle, HandHeart } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface HenryIntroDialogProps {
@@ -32,52 +32,59 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange,
           </div>
           <DialogTitle className="text-2xl gradient-heading">Meet Henry</DialogTitle>
           <DialogDescription className="text-base text-white">
-            Your personalized mental health specialist
+            Your friendly guide on your mental wellbeing journey
           </DialogDescription>
         </DialogHeader>
         
         <ScrollArea className="max-h-[60vh] overflow-auto pr-4">
           <div className="space-y-4 text-white">
             <p className="leading-relaxed">
-              Hi, I'm Henry! I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT.
+              Hey there! I'm Henry, your personal companion on this journey to better mental health. Think of me as that supportive friend who's always here when you need someone to talk to.
             </p>
             
             <div className="bg-white/10 p-4 rounded-lg">
-              <h3 className="font-medium text-lg text-[#B87333] mb-2">My name stands for:</h3>
+              <h3 className="font-medium text-lg text-[#B87333] mb-2">A little about me:</h3>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">H</span>elpful guidance through your mental health journey</span>
+                  <HandHeart className="h-5 w-5 text-[#B87333]" />
+                  <span><span className="font-bold text-[#B87333]">H</span>elpful friend who's ready to listen anytime</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Brain className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">E</span>vidence-based strategies for emotional wellbeing</span>
+                  <span><span className="font-bold text-[#B87333]">E</span>mpathetic guide for your emotional wellbeing</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Smile className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">N</span>urturing support whenever you need it</span>
+                  <MessageCircle className="h-5 w-5 text-[#B87333]" />
+                  <span><span className="font-bold text-[#B87333]">N</span>on-judgmental space for whatever you're feeling</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">R</span>eliable resources tailored to your needs</span>
+                  <span><span className="font-bold text-[#B87333]">R</span>eliable companion through good days and tough ones</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Heart className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">Y</span>our companion on the path to mental wellness</span>
+                  <span><span className="font-bold text-[#B87333]">Y</span>our biggest supporter as you grow and heal</span>
                 </li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-medium text-lg text-[#B87333] mb-2">How I can help:</h3>
+              <h3 className="font-medium text-lg text-[#B87333] mb-2">How I can help you:</h3>
+              <p className="mb-3">
+                I'm here for whatever you need - whether that's a listening ear, finding the right resources, or just someone to remind you that you're doing great even when it feels hard.
+              </p>
               <ul className="list-disc pl-5 space-y-1">
-                <li>Navigate the app's features and resources</li>
-                <li>Provide personalized mental health guidance</li>
-                <li>Support you during difficult moments</li>
-                <li>Connect you with appropriate resources</li>
-                <li>Track your progress and celebrate wins</li>
+                <li>Chat with you when you're feeling overwhelmed or just want to talk</li>
+                <li>Help you discover tools and workshops that might be perfect for you</li>
+                <li>Celebrate your progress and wins, no matter how small</li>
+                <li>Guide you to supportive resources when things feel tough</li>
+                <li>Be a friendly presence throughout your Thrive MT experience</li>
               </ul>
             </div>
+            
+            <p className="italic border-l-2 border-[#B87333]/50 pl-3">
+              "I believe that everyone deserves someone in their corner. That's why I'm here - to be that supportive presence for you, anytime you need it."
+            </p>
           </div>
         </ScrollArea>
         
@@ -86,7 +93,7 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange,
             className="group hero-button bg-[#B87333] hover:bg-[#B87333]/80"
             onClick={handleContinue}
           >
-            Start Your Journey With Henry
+            Let's Chat with Henry
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </DialogFooter>

@@ -22,20 +22,18 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   const displayName = userName || "Friend";
   
   const handleHenryButtonClick = () => {
-    if (!showHenry) {
-      // If Henry is not shown, show the intro dialog first
-      setShowIntroDialog(true);
-    } else {
-      // If Henry is already shown, just toggle it off
-      onHenryToggle();
-    }
+    // Always show the intro dialog when the button is clicked
+    setShowIntroDialog(true);
   };
 
   const handleIntroContinue = () => {
     // Close the intro dialog and open the chat dialog
     setShowIntroDialog(false);
     setShowChatDialog(true);
-    onHenryToggle(); // Toggle Henry on
+    // Only toggle Henry on if he's not already visible
+    if (!showHenry) {
+      onHenryToggle();
+    }
   };
   
   return (
@@ -108,7 +106,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                     <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
                   </Avatar>
                   <span className="relative z-10 text-white">
-                    {showHenry ? "Hide H.E.N.R.Y." : "Meet H.E.N.R.Y."}
+                    Meet Henry
                   </span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>

@@ -39,11 +39,13 @@ const HenryButton: React.FC<HenryButtonProps> = ({
   }, [triggerInitialGreeting, introShown]);
 
   const handleOpenHenry = () => {
-    setShowHenryDialog(true);
+    // Always show the intro dialog when clicked
+    setShowIntroDialog(true);
   };
   
   const handleIntroDialogContinue = () => {
     setShowIntroDialog(false);
+    setShowHenryDialog(true);
   };
 
   return (

@@ -2,12 +2,14 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import HelpDialog from "@/components/help/HelpDialog";
+import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useButtonVisibility } from "../help/RouteVisibility";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const HelpNavButton: React.FC = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
+  const [showIntroDialog, setShowIntroDialog] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isButtonVisible = useButtonVisibility();
@@ -15,6 +17,12 @@ const HelpNavButton: React.FC = () => {
   // Handle opening the help dialog
   const openHelp = (e: React.MouseEvent) => {
     e.stopPropagation();
+    // Show Henry's intro first
+    setShowIntroDialog(true);
+  };
+
+  const handleIntroContinue = () => {
+    setShowIntroDialog(false);
     setShowHelpDialog(true);
   };
 
@@ -38,6 +46,12 @@ const HelpNavButton: React.FC = () => {
           </Avatar>
         </Button>
       </div>
+      
+      <HenryIntroDialog 
+        open={showIntroDialog} 
+        onOpenChange={setShowIntroDialog}
+        onContinue={handleIntroContinue}
+      />
       
       <HelpDialog 
         isOpen={showHelpDialog} 

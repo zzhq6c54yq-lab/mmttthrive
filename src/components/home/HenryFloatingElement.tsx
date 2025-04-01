@@ -56,11 +56,13 @@ const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
   if (!showHenry) return null;
 
   const handleHenryClick = () => {
-    setShowConversationDialog(true);
+    // Show intro dialog first
+    setShowIntroDialog(true);
   };
 
   const handleIntroDialogContinue = () => {
     setShowIntroDialog(false);
+    setShowConversationDialog(true);
   };
 
   return (
