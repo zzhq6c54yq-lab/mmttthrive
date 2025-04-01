@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { Calendar, CheckCircle, ArrowRight, Brain, Heart, Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const DailyWellnessChallenges: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'wellness' | 'mental'>('wellness');
   
   const wellnessChallenges = [
@@ -58,7 +60,17 @@ const DailyWellnessChallenges: React.FC = () => {
   const activeChallenges = activeTab === 'wellness' ? wellnessChallenges : mentalHealthChallenges;
   
   const handleViewAll = () => {
-    navigate("/wellness-challenges");
+    // Pass the active tab to the WellnessChallenges page
+    navigate("/wellness-challenges", { state: { initialTab: activeTab } });
+  };
+  
+  const handleChallengeClick = (id: string) => {
+    toast({
+      title: "Challenge Selected",
+      description: "Opening challenge details...",
+      duration: 1500
+    });
+    navigate(`/wellness-challenges/${id}`);
   };
   
   return (
@@ -100,6 +112,7 @@ const DailyWellnessChallenges: React.FC = () => {
               <div 
                 key={challenge.id}
                 className="bg-[#2a2a3c]/80 backdrop-blur-sm rounded-xl p-4 flex items-start hover:bg-[#2a2a3c] transition-all cursor-pointer"
+                onClick={() => handleChallengeClick(challenge.id)}
               >
                 <div className={`p-2 rounded-lg mr-3 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
                   <challenge.icon className={`h-5 w-5 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
