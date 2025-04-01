@@ -16,7 +16,7 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({ 
   title, 
   children, 
-  showBackButton = false,
+  showBackButton = true,
   onBackClick,
   fullWidth = false
 }) => {
@@ -48,15 +48,17 @@ const Page: React.FC<PageProps> = ({
         {/* Title in Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
           <div className="flex items-center gap-1">
-            <Button
-              variant="outline"
-              size="sm"
-              className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
-              onClick={handleBackClick}
-            >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back
-            </Button>
+            {showBackButton && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
+                onClick={handleBackClick}
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Back
+              </Button>
+            )}
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>

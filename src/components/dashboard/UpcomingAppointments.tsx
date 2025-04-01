@@ -36,6 +36,7 @@ const UpcomingAppointments = () => {
     });
     // In a real app, this would navigate to the meeting room
     console.log(`Joining appointment: ${appointmentId}`);
+    navigate("/virtual-meetings");
   };
 
   const handleViewAllAppointments = () => {

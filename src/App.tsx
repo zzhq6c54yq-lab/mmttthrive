@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
@@ -127,7 +128,9 @@ function App() {
         <Route path="/video-diary" element={<VideoDiary />} />
         <Route path="/video-diary/:id" element={<VideoDiary />} />
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
+        <Route path="/wellness-challenges/:id" element={<WellnessChallenges />} />
         
+        <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
       
