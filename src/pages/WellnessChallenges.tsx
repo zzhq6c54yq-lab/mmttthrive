@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Calendar, ArrowLeft, Brain, Heart, Activity, CheckCircle } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Page from "@/components/Page";
+import { useToast } from "@/hooks/use-toast";
 
 const WellnessChallenges: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'wellness' | 'mental' | 'completed'>('wellness');
+  
+  // Initialize active tab from route state if available
+  useEffect(() => {
+    if (location.state && location.state.initialTab) {
+      setActiveTab(location.state.initialTab);
+    }
+  }, [location.state]);
   
   const wellnessChallenges = [
     {
@@ -144,7 +155,12 @@ const WellnessChallenges: React.FC = () => {
   };
   
   const toggleChallengeCompletion = (id: string) => {
-    // This would be implemented with proper state management in a real app
+    toast({
+      title: "Challenge Status Updated",
+      description: "Your progress has been saved",
+      duration: 1500
+    });
+    // In a real app, this would update state and persist the changes
     console.log(`Toggling completion for challenge: ${id}`);
   };
   

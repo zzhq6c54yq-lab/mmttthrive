@@ -1,15 +1,17 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Video, ArrowLeft, Calendar, Clock, Upload, Trash2, Heart, Users, BookOpen } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Page from "@/components/Page";
 
 const VideoDiary: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'personal' | 'loved-ones'>('personal');
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   
   const personalVideoEntries = [
     {
@@ -80,6 +82,19 @@ const VideoDiary: React.FC = () => {
     }
   ];
   
+  // Set up video refs
+  useEffect(() => {
+    if (id) {
+      const video = [...personalVideoEntries, ...lovedOnesVideoEntries].find(v => v.id === id);
+      if (video && videoRefs.current[video.id]) {
+        const videoElement = videoRefs.current[video.id];
+        if (videoElement) {
+          videoElement.load();
+        }
+      }
+    }
+  }, [id]);
+  
   const handleBack = () => {
     navigate(-1);
   };
@@ -94,7 +109,6 @@ const VideoDiary: React.FC = () => {
   };
   
   const handleViewVideo = (videoId: string) => {
-    // In a real app, this would load the specific video
     toast({
       title: "Opening video",
       description: "Loading your video diary entry...",
@@ -137,10 +151,12 @@ const VideoDiary: React.FC = () => {
           
           <div className="bg-[#2a2a3c]/80 rounded-xl overflow-hidden shadow-xl mb-8">
             <video 
+              ref={el => videoRefs.current[video.id] = el}
               src={video.videoUrl} 
               controls 
               className="w-full aspect-video"
               poster={video.thumbnail}
+              preload="auto"
             />
             
             <div className="p-6">
@@ -153,11 +169,30 @@ const VideoDiary: React.FC = () => {
                 </div>
                 
                 <div className="flex space-x-4">
-                  <button className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center">
+                  <button 
+                    className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center"
+                    onClick={() => {
+                      toast({
+                        title: "Video Shared",
+                        description: "Your video has been shared successfully",
+                        duration: 1500
+                      });
+                    }}
+                  >
                     <Upload className="h-5 w-5 mr-2" />
                     Share
                   </button>
-                  <button className="text-red-400 hover:text-red-300 transition-colors flex items-center">
+                  <button 
+                    className="text-red-400 hover:text-red-300 transition-colors flex items-center"
+                    onClick={() => {
+                      toast({
+                        title: "Video Deleted",
+                        description: "Your video has been removed",
+                        duration: 1500
+                      });
+                      navigate("/video-diary");
+                    }}
+                  >
                     <Trash2 className="h-5 w-5 mr-2" />
                     Delete
                   </button>
@@ -244,7 +279,8 @@ const VideoDiary: React.FC = () => {
             <p className="text-gray-300 text-sm">
               Create heartfelt video messages for family members, friends, or support groups to express 
               gratitude, share your journey, or maintain connection during your recovery process. 
-              These messages can be shared directly or saved for meaningful occasions.
+              These messages can strengthen your support network and provide emotional comfort during challenging times.
+              Recording messages for loved ones can also help you articulate feelings that might be difficult to express in person.
             </p>
           </div>
         )}
@@ -284,11 +320,31 @@ const VideoDiary: React.FC = () => {
                 <p className="text-gray-300 text-sm">{entry.description}</p>
                 
                 <div className="flex mt-4 pt-4 border-t border-gray-700/50 justify-between">
-                  <button className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center text-sm">
+                  <button 
+                    className="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center text-sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toast({
+                        title: "Video Shared",
+                        description: "Your video has been shared successfully",
+                        duration: 1500
+                      });
+                    }}
+                  >
                     <Upload className="h-4 w-4 mr-1" />
                     Share
                   </button>
-                  <button className="text-red-400 hover:text-red-300 transition-colors flex items-center text-sm">
+                  <button 
+                    className="text-red-400 hover:text-red-300 transition-colors flex items-center text-sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toast({
+                        title: "Video Deleted",
+                        description: "Your video has been removed",
+                        duration: 1500
+                      });
+                    }}
+                  >
                     <Trash2 className="h-4 w-4 mr-1" />
                     Delete
                   </button>
