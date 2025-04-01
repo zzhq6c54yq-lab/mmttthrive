@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { 
   Send, X, Users, MessagesSquare, Info, 
-  ThumbsUp, Heart, Video, PhoneCall, Paperclip, Smile, Image, Gif
+  ThumbsUp, Heart, Video, PhoneCall, Paperclip, Smile, Image, Gift
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -48,9 +47,7 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
   const chatEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Simulate fetching chat history when dialog opens
     if (isOpen) {
-      // Mock data for demonstration
       const mockMessages: ChatMessage[] = [
         {
           id: "msg1",
@@ -117,11 +114,9 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
       setChatMessages(mockMessages);
       setActiveUsers(mockActiveUsers);
 
-      // Simulate someone typing after 3 seconds
       const typingTimer = setTimeout(() => {
         setIsTyping(true);
         
-        // Then stop typing and add a new message after 2 more seconds
         const messageTimer = setTimeout(() => {
           setIsTyping(false);
           
@@ -145,7 +140,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
   }, [isOpen, groupId]);
   
   useEffect(() => {
-    // Scroll to bottom when messages change
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -158,7 +152,7 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
     
     const newChatMessage: ChatMessage = {
       id: `msg${chatMessages.length + 1}`,
-      userId: "currentUser", // Simulating current user
+      userId: "currentUser",
       userName: "You",
       content: newMessage,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -167,14 +161,12 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
     setChatMessages([...chatMessages, newChatMessage]);
     setNewMessage("");
 
-    // Simulate someone responding after a bit
     setTimeout(() => {
       setIsTyping(true);
       
       setTimeout(() => {
         setIsTyping(false);
         
-        // Random response based on message content
         let responseContent = "Thanks for sharing that with the group. How has everyone else been dealing with similar situations?";
         
         if (newMessage.toLowerCase().includes("anxiety") || newMessage.toLowerCase().includes("anxious")) {
@@ -201,13 +193,10 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
     setChatMessages(messages => 
       messages.map(message => {
         if (message.id === messageId) {
-          // If message already has reactions
           if (message.reactions) {
-            // If this reaction type already exists
             const existingReactionIndex = message.reactions.findIndex(r => r.type === reactionType);
             
             if (existingReactionIndex !== -1) {
-              // Toggle user's reaction
               const reaction = message.reactions[existingReactionIndex];
               const newReaction = {
                 ...reaction,
@@ -220,14 +209,12 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
               
               return { ...message, reactions: newReactions };
             } else {
-              // Add new reaction type
               return {
                 ...message,
                 reactions: [...message.reactions, { type: reactionType, count: 1, userReacted: true }]
               };
             }
           } else {
-            // Add first reaction to this message
             return {
               ...message,
               reactions: [{ type: reactionType, count: 1, userReacted: true }]
@@ -238,7 +225,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
       })
     );
 
-    // Show toast for the reaction
     toast({
       title: "Reaction added",
       description: `You reacted with ${reactionType}`,
@@ -305,7 +291,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
         </DialogHeader>
         
         <div className="flex flex-grow overflow-hidden">
-          {/* Chat messages area */}
           <div className="flex-grow overflow-y-auto p-6">
             <div className="space-y-4">
               {chatMessages.map((message) => (
@@ -414,7 +399,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
             </div>
           </div>
           
-          {/* Side panel (conditionally rendered) */}
           {showInfo && (
             <div className="w-72 border-l overflow-y-auto p-4 flex-shrink-0 bg-gray-50">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
@@ -478,7 +462,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
           )}
         </div>
         
-        {/* Message input area */}
         <DialogFooter className="p-4 border-t flex-shrink-0">
           <form onSubmit={handleSendMessage} className="flex items-center gap-2 w-full">
             <div className="flex gap-1">
@@ -507,7 +490,7 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                 className="h-9 w-9 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
                 onClick={handleAttachmentAction}
               >
-                <Gif className="h-5 w-5" />
+                <Gift className="h-5 w-5" />
               </Button>
             </div>
             
