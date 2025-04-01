@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   MessageSquare, VideoIcon, Calendar, Book, Users, Activity, 
   Brain, Heart, Sparkles, Gamepad2, BarChart2, 
-  DumbellIcon, Clock, Pill, Coffee, Dumbbell, Zap
+  Clock, Pill, Coffee, Dumbbell, Zap
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 

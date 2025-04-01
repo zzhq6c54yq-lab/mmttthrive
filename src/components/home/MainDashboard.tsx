@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ interface MainDashboardProps {
   navigateToFeature: (path: string) => void;
   showHenry: boolean;
   toggleHenry: () => void;
+  userName: string;
 }
 
 const MainDashboard: React.FC<MainDashboardProps> = ({ 
@@ -27,7 +29,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   selectedGoals, 
   navigateToFeature,
   showHenry,
-  toggleHenry
+  toggleHenry,
+  userName
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -41,6 +44,15 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
   const handleQuizzesToggle = () => {
     setShowQuizzes(prev => !prev);
+  };
+  
+  const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
+    toast({
+      title: "Opening workshop",
+      description: `Loading ${workshopTitle}`,
+      duration: 1500,
+    });
+    navigate(`/workshop/${workshopId}`);
   };
   
   return (
@@ -71,8 +83,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       
       <div className="container max-w-6xl mx-auto px-4">
         <ThriveHeader
-          selectedQualities={selectedQualities}
-          selectedGoals={selectedGoals}
+          userName={userName}
+          showHenry={showHenry}
+          onHenryToggle={toggleHenry}
         />
         
         {/* Add prominent button for new wellness features right after the header */}
@@ -90,7 +103,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         
         <KeyFeatures navigateToFeature={navigateToFeature} />
         
-        <FeaturedWorkshops />
+        <FeaturedWorkshops 
+          navigate={navigate} 
+          onWorkshopClick={handleWorkshopClick} 
+        />
         
         <NewFeatures />
         
