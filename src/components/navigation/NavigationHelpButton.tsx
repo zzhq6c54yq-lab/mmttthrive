@@ -28,6 +28,16 @@ const NavigationHelpButton: React.FC = () => {
     setShowHelpDialog(true);
   };
 
+  const handleMainDashboard = () => {
+    toast({
+      title: "Returning to Main Dashboard",
+      description: "Taking you back to the main dashboard"
+    });
+    
+    // Always navigate to main screen with the 'main' screenState to avoid intro screens
+    navigate("/", { state: { screenState: 'main' } });
+  };
+
   // Don't render if button shouldn't be visible
   if (!isButtonVisible) {
     return null;
@@ -35,7 +45,7 @@ const NavigationHelpButton: React.FC = () => {
 
   return (
     <>
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center">
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center gap-3">
         <Button
           onClick={openHelp}
           className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
@@ -46,6 +56,22 @@ const NavigationHelpButton: React.FC = () => {
             <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
             <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">H</AvatarFallback>
           </Avatar>
+        </Button>
+        
+        <Button
+          onClick={handleMainDashboard}
+          className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#2563EB] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+          size="icon"
+          aria-label="Return to Main Dashboard"
+          title="Return to Main Dashboard"
+        >
+          <div className="relative w-5 h-5 overflow-hidden">
+            <img 
+              src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+              alt="Thrive MT Logo" 
+              className="h-5 w-5 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(184,115,51,1)]"
+            />
+          </div>
         </Button>
       </div>
       

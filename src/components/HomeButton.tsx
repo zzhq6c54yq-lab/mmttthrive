@@ -14,8 +14,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
 
   const handleHomeClick = () => {
     toast({
-      title: "Returning to Home",
-      description: "Taking you back to the main menu"
+      title: "Returning to Main Dashboard",
+      description: "Taking you back to the main dashboard"
     });
     
     // Always navigate to main screen with the 'main' screenState to avoid intro screens
@@ -28,8 +28,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       size="icon"
       className={`rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border-[#B87333]/40 hover:border-[#B87333] transition-all duration-300 transform hover:scale-105 ${className}`}
       onClick={handleHomeClick}
-      aria-label="Return to main screen"
-      title="Return to main screen"
+      aria-label="Return to main dashboard"
+      title="Return to main dashboard"
     >
       <div className="relative w-5 h-5 overflow-hidden">
         <img 

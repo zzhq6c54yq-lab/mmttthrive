@@ -73,7 +73,7 @@ const Page: React.FC<PageProps> = ({
               className="bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
               onClick={handleMainMenu}
             >
-              Main Menu
+              Main Dashboard
             </Button>
           </div>
         </div>
