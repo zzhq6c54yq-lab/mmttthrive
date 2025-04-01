@@ -1,27 +1,27 @@
 
-import React, { useState, useEffect, useRef } from "react";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogDescription,
-  DialogFooter
-} from "@/components/ui/dialog";
+import React, { useState, useRef, useEffect } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, UserRound } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { 
+  Send, X, Users, MessagesSquare, Info, 
+  ThumbsUp, Heart, Video, PhoneCall, Paperclip, Smile
+} from "lucide-react";
 
-interface Message {
+interface ChatMessage {
   id: string;
-  author: string;
-  avatar?: string;
-  isCurrentUser: boolean;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
   content: string;
   timestamp: string;
+  reactions?: {
+    type: string;
+    count: number;
+    userReacted: boolean;
+  }[];
 }
 
 interface ChatRoomDialogProps {
@@ -37,213 +37,330 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
   groupName,
   groupId
 }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const messageEndRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
+  const [activeUsers, setActiveUsers] = useState<{id: string, name: string, avatar?: string}[]>([]);
+  const [showInfo, setShowInfo] = useState(false);
   
-  // Generate some example messages when the chat room opens
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
+    // Simulate fetching chat history when dialog opens
     if (isOpen) {
-      const exampleMessages: Message[] = [
+      // Mock data for demonstration
+      const mockMessages: ChatMessage[] = [
         {
-          id: "1",
-          author: "HenrySupport",
-          avatar: "",
-          isCurrentUser: false,
-          content: `Welcome to the ${groupName} chat room! Feel free to share your thoughts and experiences with the group.`,
-          timestamp: "Just now"
+          id: "msg1",
+          userId: "user1",
+          userName: "AlexTherapist",
+          userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+          content: "Welcome everyone to our Anxiety Support Circle! I'm Alex, a licensed therapist specializing in anxiety disorders. This is a safe space for all of us to share experiences and support each other.",
+          timestamp: "10:00 AM",
+          reactions: [
+            { type: "❤️", count: 5, userReacted: false },
+            { type: "👍", count: 3, userReacted: false }
+          ]
         },
         {
-          id: "2",
-          author: "RecoveryJourney",
-          avatar: "",
-          isCurrentUser: false,
-          content: "Hello everyone! I'm excited to be part of this supportive community.",
-          timestamp: "Just now"
+          id: "msg2",
+          userId: "user2",
+          userName: "Sarah",
+          userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+          content: "Thanks for having this group. I've been struggling with social anxiety for years, and it's been getting worse since starting my new job. Looking forward to connecting with others who understand.",
+          timestamp: "10:05 AM",
+          reactions: [
+            { type: "❤️", count: 4, userReacted: false },
+            { type: "🤗", count: 2, userReacted: false }
+          ]
         },
         {
-          id: "3",
-          author: "MindfulnessSeeker",
-          avatar: "",
-          isCurrentUser: false,
-          content: "Does anyone have recommendations for good mindfulness practices that helped them?",
-          timestamp: "Just now"
+          id: "msg3",
+          userId: "user3",
+          userName: "Michael",
+          userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+          content: "Hi everyone. I've been dealing with panic attacks for about 2 years now. Recently started meditation which helps sometimes, but still struggling during work meetings. Anyone else experience this?",
+          timestamp: "10:08 AM"
+        },
+        {
+          id: "msg4",
+          userId: "user1",
+          userName: "AlexTherapist",
+          userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+          content: "Michael, many people experience anxiety in professional settings. Would you mind sharing what types of meditation you've been trying? Certain techniques can be especially helpful for anticipatory anxiety.",
+          timestamp: "10:12 AM"
+        },
+        {
+          id: "msg5",
+          userId: "user4",
+          userName: "Jamie",
+          userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jamie",
+          content: "Just joined. I've found breathing exercises really helpful before stressful situations. The 4-7-8 method has been a game changer for me (inhale for 4, hold for 7, exhale for 8).",
+          timestamp: "10:15 AM",
+          reactions: [
+            { type: "👍", count: 6, userReacted: false }
+          ]
         }
       ];
       
-      setMessages(exampleMessages);
+      const mockActiveUsers = [
+        { id: "user1", name: "AlexTherapist", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
+        { id: "user2", name: "Sarah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
+        { id: "user3", name: "Michael", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael" },
+        { id: "user4", name: "Jamie", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jamie" },
+        { id: "user5", name: "Taylor", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Taylor" },
+        { id: "user6", name: "Jordan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan" }
+      ];
+      
+      setChatMessages(mockMessages);
+      setActiveUsers(mockActiveUsers);
     }
-  }, [isOpen, groupName]);
+  }, [isOpen, groupId]);
   
-  // Scroll to bottom when messages change
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    // Scroll to bottom when messages change
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatMessages]);
   
-  const handleSendMessage = () => {
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    
     if (!newMessage.trim()) return;
     
-    const newMsg: Message = {
-      id: Date.now().toString(),
-      author: "You",
-      isCurrentUser: true,
+    const newChatMessage: ChatMessage = {
+      id: `msg${chatMessages.length + 1}`,
+      userId: "currentUser", // Simulating current user
+      userName: "You",
       content: newMessage,
-      timestamp: "Just now"
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
     
-    setMessages([...messages, newMsg]);
+    setChatMessages([...chatMessages, newChatMessage]);
     setNewMessage("");
-    
-    // Simulate a reply after a short delay
-    setTimeout(() => {
-      const replyMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        author: getRandomMember(),
-        isCurrentUser: false,
-        content: getRandomReply(groupId),
-        timestamp: "Just now"
-      };
-      
-      setMessages(prev => [...prev, replyMsg]);
-    }, 2000 + Math.random() * 3000);
   };
   
-  const getRandomMember = () => {
-    const members = ["MindfulMoment", "RecoveryPath", "AnxietyWarrior", "GratitudeDaily", "HealingJourney"];
-    return members[Math.floor(Math.random() * members.length)];
+  const handleReaction = (messageId: string, reactionType: string) => {
+    setChatMessages(messages => 
+      messages.map(message => {
+        if (message.id === messageId) {
+          // If message already has reactions
+          if (message.reactions) {
+            // If this reaction type already exists
+            const existingReactionIndex = message.reactions.findIndex(r => r.type === reactionType);
+            
+            if (existingReactionIndex !== -1) {
+              // Toggle user's reaction
+              const reaction = message.reactions[existingReactionIndex];
+              const newReaction = {
+                ...reaction,
+                userReacted: !reaction.userReacted,
+                count: reaction.userReacted ? reaction.count - 1 : reaction.count + 1
+              };
+              
+              const newReactions = [...message.reactions];
+              newReactions[existingReactionIndex] = newReaction;
+              
+              return { ...message, reactions: newReactions };
+            } else {
+              // Add new reaction type
+              return {
+                ...message,
+                reactions: [...message.reactions, { type: reactionType, count: 1, userReacted: true }]
+              };
+            }
+          } else {
+            // Add first reaction to this message
+            return {
+              ...message,
+              reactions: [{ type: reactionType, count: 1, userReacted: true }]
+            };
+          }
+        }
+        return message;
+      })
+    );
   };
   
-  const getRandomReply = (groupId: string) => {
-    const replies: Record<string, string[]> = {
-      "group-1": [
-        "I've found deep breathing exercises to be really helpful for my anxiety.",
-        "Has anyone tried progressive muscle relaxation? It's been a game-changer for me.",
-        "Thanks for sharing that. It's nice to know I'm not alone in this experience.",
-        "My therapist recommended journaling about anxiety triggers, and it's helped me identify patterns.",
-        "Does anyone have suggestions for managing work-related anxiety?"
-      ],
-      "group-2": [
-        "Day 45 of sobriety here. The urges still come but they're getting easier to manage.",
-        "I found that replacing my drinking habit with evening walks has been really effective.",
-        "My recovery group has been such a crucial support system for me.",
-        "It's important to celebrate the small victories in recovery. Every day counts!",
-        "Has anyone tried meditation as part of their recovery process?"
-      ],
-      "group-3": [
-        "I've been practicing mindfulness for 10 minutes each morning and it's changed my whole day.",
-        "The Headspace app has some great guided meditations for beginners.",
-        "I struggle with staying present during meditation. Any advice?",
-        "Mindful walking has been more effective for me than sitting meditation.",
-        "I find that mindfulness helps me catch negative thought patterns before they spiral."
-      ],
-      "group-4": [
-        "On my bad days, I try to just accomplish one small task. Sometimes that's enough.",
-        "Has anyone found certain foods or supplements that help with mood?",
-        "I've been tracking my mood daily and it's helping me see patterns.",
-        "It's hard to explain depression to people who haven't experienced it.",
-        "Remember that it's okay to have bad days. Recovery isn't linear."
-      ],
-      "group-5": [
-        "I've found that regular exercise has improved both my physical and mental health.",
-        "Has anyone tried incorporating more plant-based foods into their diet for mental wellness?",
-        "Sleep hygiene has been crucial for my overall wellbeing.",
-        "I'm working on reducing screen time before bed. It's tough but making a difference.",
-        "The mind-body connection is so important. When I neglect one, the other suffers too."
-      ]
-    };
-    
-    const defaultReplies = [
-      "Thanks for sharing your perspective.",
-      "I can relate to what you're saying.",
-      "That's a really good point.",
-      "I appreciate everyone's support here.",
-      "This community has been so helpful for my journey."
-    ];
-    
-    const groupReplies = replies[groupId] || defaultReplies;
-    return groupReplies[Math.floor(Math.random() * groupReplies.length)];
-  };
-  
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[80vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle>{groupName}</DialogTitle>
-          <DialogDescription>
-            Connect with others in this supportive community chat
-          </DialogDescription>
-        </DialogHeader>
-        
-        <ScrollArea className="flex-1 py-4 h-[50vh]">
-          <div className="space-y-4 px-1">
-            {messages.map((message) => (
-              <div 
-                key={message.id}
-                className={`flex ${message.isCurrentUser ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`flex ${message.isCurrentUser ? 'flex-row-reverse' : 'flex-row'} items-start gap-2 max-w-[80%]`}>
-                  <Avatar className="h-8 w-8">
-                    {message.avatar ? (
-                      <AvatarImage src={message.avatar} alt={message.author} />
-                    ) : (
-                      <AvatarFallback className={`${message.isCurrentUser ? 'bg-[#B87333]' : 'bg-gray-500'} text-white`}>
-                        {message.author.charAt(0)}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                  
-                  <div>
-                    <div className={`rounded-lg p-3 ${
-                      message.isCurrentUser 
-                        ? 'bg-[#B87333] text-white' 
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      <p className="text-sm">{message.content}</p>
-                    </div>
-                    <div className={`text-xs text-gray-500 mt-1 ${message.isCurrentUser ? 'text-right' : 'text-left'}`}>
-                      <span className="font-medium">{message.author}</span> · {message.timestamp}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div ref={messageEndRef} />
-          </div>
-        </ScrollArea>
-        
-        <DialogFooter className="flex-shrink-0">
-          <div className="flex w-full items-center gap-2">
-            <Avatar className="h-8 w-8 flex-shrink-0">
-              <AvatarFallback className="bg-[#B87333] text-white">
-                <UserRound className="h-4 w-4" />
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 relative">
-              <Input
-                placeholder="Type your message..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={handleKeyPress}
-                className="pr-12"
-              />
+      <DialogContent className="max-w-4xl h-[80vh] p-0 flex flex-col overflow-hidden">
+        <DialogHeader className="px-6 py-4 border-b flex-shrink-0">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <DialogTitle className="text-xl font-bold">{groupName}</DialogTitle>
+              <Badge variant="outline" className="bg-[#B87333]/10 text-[#B87333] border-[#B87333]/30">
+                <Users className="h-3 w-3 mr-1" />
+                {activeUsers.length} online
+              </Badge>
+            </div>
+            
+            <div className="flex items-center gap-2">
               <Button 
-                size="sm" 
-                className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#B87333] hover:bg-[#B87333]/90 p-1 h-auto"
-                onClick={handleSendMessage}
-                disabled={!newMessage.trim()}
+                variant="ghost" 
+                size="icon" 
+                className="h-9 w-9 rounded-full hover:bg-gray-100"
+                onClick={() => setShowInfo(!showInfo)}
               >
-                <Send className="h-4 w-4" />
+                <Info className="h-5 w-5" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-9 w-9 rounded-full hover:bg-gray-100"
+                onClick={() => onOpenChange(false)}
+              >
+                <X className="h-5 w-5" />
               </Button>
             </div>
           </div>
+        </DialogHeader>
+        
+        <div className="flex flex-grow overflow-hidden">
+          {/* Chat messages area */}
+          <div className="flex-grow overflow-y-auto p-6">
+            <div className="space-y-4">
+              {chatMessages.map((message) => (
+                <div 
+                  key={message.id} 
+                  className={`flex ${message.userId === "currentUser" ? "justify-end" : "justify-start"}`}
+                >
+                  <div className={`flex ${message.userId === "currentUser" ? "flex-row-reverse" : "flex-row"} gap-3 max-w-[80%]`}>
+                    {message.userId !== "currentUser" && (
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={message.userAvatar} />
+                        <AvatarFallback>{message.userName[0]}</AvatarFallback>
+                      </Avatar>
+                    )}
+                    
+                    <div>
+                      <div className={`flex items-center gap-2 mb-1 ${message.userId === "currentUser" ? "justify-end" : "justify-start"}`}>
+                        {message.userId !== "currentUser" && (
+                          <span className="font-medium text-sm">
+                            {message.userName}
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-500">
+                          {message.timestamp}
+                        </span>
+                      </div>
+                      
+                      <div 
+                        className={`rounded-2xl py-3 px-4 ${
+                          message.userId === "currentUser"
+                            ? "bg-[#B87333] text-white"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        <p className="whitespace-pre-wrap">{message.content}</p>
+                      </div>
+                      
+                      {message.reactions && message.reactions.length > 0 && (
+                        <div className={`flex gap-1 mt-1 ${message.userId === "currentUser" ? "justify-end" : "justify-start"}`}>
+                          {message.reactions.map((reaction, index) => (
+                            <button
+                              key={index}
+                              className={`text-xs inline-flex items-center gap-1 px-2 py-1 rounded-full ${
+                                reaction.userReacted 
+                                  ? "bg-[#B87333]/10 text-[#B87333]" 
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              }`}
+                              onClick={() => handleReaction(message.id, reaction.type)}
+                            >
+                              <span>{reaction.type}</span>
+                              <span>{reaction.count}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div ref={chatEndRef}></div>
+            </div>
+          </div>
+          
+          {/* Side panel (conditionally rendered) */}
+          {showInfo && (
+            <div className="w-72 border-l overflow-y-auto p-4 flex-shrink-0 bg-gray-50">
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Users className="h-5 w-5 text-[#B87333]" />
+                Group Members
+              </h3>
+              
+              <div className="space-y-3 mb-6">
+                {activeUsers.map((user) => (
+                  <div key={user.id} className="flex items-center gap-3">
+                    <div className="relative">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.avatar} />
+                        <AvatarFallback>{user.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white"></div>
+                    </div>
+                    <span className="text-sm font-medium">{user.name}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Info className="h-5 w-5 text-[#B87333]" />
+                About This Group
+              </h3>
+              
+              <div className="text-sm text-gray-600 space-y-3">
+                <p>
+                  This support circle meets virtually every Tuesday and Thursday at 7:00 PM EST for guided discussions on anxiety management strategies.
+                </p>
+                <p>
+                  All members are expected to maintain confidentiality and treat each other with respect and empathy.
+                </p>
+                <p>
+                  <span className="font-medium text-[#B87333]">Next meeting:</span> Tuesday, 7:00 PM EST
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Message input area */}
+        <DialogFooter className="p-4 border-t flex-shrink-0">
+          <form onSubmit={handleSendMessage} className="flex items-center gap-2 w-full">
+            <div className="flex gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              >
+                <Paperclip className="h-5 w-5" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              >
+                <Smile className="h-5 w-5" />
+              </Button>
+            </div>
+            
+            <Input
+              className="flex-grow"
+              placeholder="Type your message..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+            />
+            
+            <Button 
+              type="submit" 
+              className="bg-[#B87333] hover:bg-[#B87333]/90"
+              disabled={!newMessage.trim()}
+            >
+              <Send className="h-5 w-5" />
+            </Button>
+          </form>
         </DialogFooter>
       </DialogContent>
     </Dialog>

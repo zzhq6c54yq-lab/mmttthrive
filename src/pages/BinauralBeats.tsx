@@ -1,297 +1,253 @@
+
 import React, { useState, useRef, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { 
-  Play, Pause, Volume2, Volume, VolumeX, 
-  Moon, Brain, Heart, Music, Leaf, Cloud, 
-  Headphones, SkipBack, SkipForward, Sparkles,
-  BadgeInfo, WavesIcon, Zap, Stars, SunMoon,
-  Clock
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import Page from "@/components/Page";
+  Tabs, TabsContent, TabsList, TabsTrigger 
+} from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { 
+  Headphones, Music, ArrowLeft, Play, Pause, SkipForward, 
+  SkipBack, Repeat, VolumeX, Volume1, Volume2, ChevronDown,
+  Brain, Heart, Moon, Sparkles, Timer, Save, Star, HeartPulse, Laugh, ZoomIn
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import HomeButton from "@/components/HomeButton";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-const beatCategories = [
-  {
-    id: "chakra",
-    name: "Chakra Balancing",
-    icon: Brain,
-    color: "from-purple-600 to-indigo-600",
-    accent: "purple",
-    description: "Harmonize your energy centers with specific frequencies for each chakra.",
-    tracks: [
-      { id: "root", name: "Root Chakra (396 Hz)", frequency: 396, duration: 20 },
-      { id: "sacral", name: "Sacral Chakra (417 Hz)", frequency: 417, duration: 20 },
-      { id: "solar", name: "Solar Plexus (528 Hz)", frequency: 528, duration: 20 },
-      { id: "heart", name: "Heart Chakra (639 Hz)", frequency: 639, duration: 20 },
-      { id: "throat", name: "Throat Chakra (741 Hz)", frequency: 741, duration: 20 },
-      { id: "third-eye", name: "Third Eye (852 Hz)", frequency: 852, duration: 20 },
-      { id: "crown", name: "Crown Chakra (963 Hz)", frequency: 963, duration: 20 },
-    ]
-  },
-  {
-    id: "stress",
-    name: "Stress Relief",
-    icon: Leaf,
-    color: "from-green-500 to-emerald-400",
-    accent: "green",
-    description: "Calm your mind and release tension with these soothing frequencies.",
-    tracks: [
-      { id: "calm-mind", name: "Calm Mind (432 Hz)", frequency: 432, duration: 30 },
-      { id: "anxiety-relief", name: "Anxiety Relief (63 Hz)", frequency: 63, duration: 25 },
-      { id: "deep-relaxation", name: "Deep Relaxation (8 Hz)", frequency: 8, duration: 30 },
-      { id: "stress-release", name: "Stress Release (174 Hz)", frequency: 174, duration: 25 },
-    ]
-  },
-  {
-    id: "sleep",
-    name: "Sleep & Relaxation",
-    icon: Moon,
-    color: "from-blue-600 to-indigo-700",
-    accent: "blue",
-    description: "Achieve deeper, more restorative sleep with these gentle frequencies.",
-    tracks: [
-      { id: "deep-sleep", name: "Deep Sleep (3 Hz)", frequency: 3, duration: 480 }, // 8 hours
-      { id: "gentle-sleep", name: "Gentle Sleep (6 Hz)", frequency: 6, duration: 480 }, // 8 hours
-      { id: "bedtime-relaxation", name: "Bedtime Relaxation (4 Hz)", frequency: 4, duration: 60 },
-      { id: "night-calm", name: "Night Calm (2 Hz)", frequency: 2, duration: 480 }, // 8 hours
-    ]
-  },
-  {
-    id: "meditation",
-    name: "Meditation",
-    icon: Cloud,
-    color: "from-cyan-500 to-blue-500",
-    accent: "cyan",
-    description: "Enhance your meditation practice with frequencies that promote mindfulness.",
-    tracks: [
-      { id: "mindfulness", name: "Mindfulness (7.83 Hz)", frequency: 7.83, duration: 30 },
-      { id: "theta-meditation", name: "Theta Meditation (6 Hz)", frequency: 6, duration: 45 },
-      { id: "zen-focus", name: "Zen Focus (10 Hz)", frequency: 10, duration: 40 },
-      { id: "transcendental", name: "Transcendental (7 Hz)", frequency: 7, duration: 60 },
-    ]
-  },
-  {
-    id: "depression",
-    name: "Depression Relief",
-    icon: Heart,
-    color: "from-pink-500 to-rose-400",
-    accent: "pink",
-    description: "Lift your mood and promote emotional balance with these uplifting frequencies.",
-    tracks: [
-      { id: "mood-lift", name: "Mood Lift (10 Hz)", frequency: 10, duration: 30 },
-      { id: "happiness-boost", name: "Happiness Boost (8.4 Hz)", frequency: 8.4, duration: 25 },
-      { id: "joy-inducer", name: "Joy Inducer (7.5 Hz)", frequency: 7.5, duration: 30 },
-      { id: "serotonin-boost", name: "Serotonin Boost (10.5 Hz)", frequency: 10.5, duration: 25 },
-    ]
-  }
-];
+interface BinauralTrack {
+  id: string;
+  title: string;
+  description: string;
+  category: "meditation" | "sleep" | "focus" | "relax" | "healing" | "chakra" | "anxiety";
+  duration: string;
+  imageUrl: string;
+  audioUrl: string;
+  baseFrequency: number;
+  targetFrequency: number;
+  popular: boolean;
+  effects: string[];
+}
 
-const BinauralBeats: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const categoryParam = searchParams.get("category");
-  const trackParam = searchParams.get("track");
-  
-  const [activeCategory, setActiveCategory] = useState<string>(categoryParam || "chakra");
-  const [activeTrack, setActiveTrack] = useState<string>(trackParam || "root");
+const BinauralBeats = () => {
+  const [activeCategory, setActiveCategory] = useState<string>("meditation");
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [volume, setVolume] = useState<number>(50);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [currentTrack, setCurrentTrack] = useState<BinauralTrack | null>(null);
+  const [tracks, setTracks] = useState<BinauralTrack[]>([]);
+  const [volume, setVolume] = useState<number>(80);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
-  const [showInfo, setShowInfo] = useState<boolean>(false);
-
-  const leftOscillatorRef = useRef<OscillatorNode | null>(null);
-  const rightOscillatorRef = useRef<OscillatorNode | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number>(0);
+  const [showFavorites, setShowFavorites] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [showMoreInfo, setShowMoreInfo] = useState<boolean>(false);
+  const [timerActive, setTimerActive] = useState<boolean>(false);
+  const [timerDuration, setTimerDuration] = useState<number>(30); // minutes
+  
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const navigate = useNavigate();
   const { toast } = useToast();
-
+  
   useEffect(() => {
-    setSearchParams({ category: activeCategory, track: activeTrack });
-  }, [activeCategory, activeTrack, setSearchParams]);
-
-  const getCurrentCategory = () => beatCategories.find(cat => cat.id === activeCategory) || beatCategories[0];
-  const getCurrentTrack = () => {
-    const category = getCurrentCategory();
-    return category.tracks.find(track => track.id === activeTrack) || category.tracks[0];
-  };
-
-  const setupAudio = () => {
-    cleanup();
-
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    const audioContext = new AudioContext();
-    audioContextRef.current = audioContext;
-
-    const track = getCurrentTrack();
-    const baseFrequency = track.frequency;
-    const beatFrequency = 5;
-
-    const leftOscillator = audioContext.createOscillator();
-    const rightOscillator = audioContext.createOscillator();
-    
-    leftOscillator.type = 'sine';
-    rightOscillator.type = 'sine';
-    
-    leftOscillator.frequency.value = baseFrequency;
-    rightOscillator.frequency.value = baseFrequency + beatFrequency;
-    
-    leftOscillatorRef.current = leftOscillator;
-    rightOscillatorRef.current = rightOscillator;
-    
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = volume / 100;
-    gainNodeRef.current = gainNode;
-    
-    const leftPanner = audioContext.createStereoPanner();
-    leftPanner.pan.value = -1;
-    
-    const rightPanner = audioContext.createStereoPanner();
-    rightPanner.pan.value = 1;
-    
-    leftOscillator.connect(leftPanner);
-    rightOscillator.connect(rightPanner);
-    
-    leftPanner.connect(gainNode);
-    rightPanner.connect(gainNode);
-    
-    gainNode.connect(audioContext.destination);
-    
-    leftOscillator.start();
-    rightOscillator.start();
-    
-    startTimeRef.current = audioContext.currentTime;
-    setDuration(track.duration * 60);
-    
-    updateTime();
-  };
-
-  const cleanup = () => {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-    
-    if (leftOscillatorRef.current) {
-      try {
-        leftOscillatorRef.current.stop();
-        leftOscillatorRef.current.disconnect();
-      } catch (e) {
-        console.log("Error stopping left oscillator", e);
+    // Mock data
+    const tracksData: BinauralTrack[] = [
+      {
+        id: "alpha-waves",
+        title: "Alpha Waves",
+        description: "Promotes relaxation and reduces stress by generating alpha brain waves, ideal for light meditation.",
+        category: "meditation",
+        duration: "15:00",
+        imageUrl: "https://images.unsplash.com/photo-1520473378652-85d9c4aee6cf?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/alpha-waves.mp3", // Mock URL
+        baseFrequency: 200,
+        targetFrequency: 210,
+        popular: true,
+        effects: ["Reduces stress", "Promotes relaxation", "Enhances creativity", "Improves mood"]
+      },
+      {
+        id: "deep-sleep",
+        title: "Deep Sleep Delta",
+        description: "Helps you fall into deep sleep with delta waves that calm the mind and body.",
+        category: "sleep",
+        duration: "45:00",
+        imageUrl: "https://images.unsplash.com/photo-1617644910775-77d4eacedb3a?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/deep-sleep.mp3", // Mock URL
+        baseFrequency: 100,
+        targetFrequency: 104,
+        popular: true,
+        effects: ["Induces deep sleep", "Reduces insomnia", "Promotes neurogenesis", "Calms racing thoughts"]
+      },
+      {
+        id: "gamma-focus",
+        title: "Gamma Focus",
+        description: "Enhances concentration and mental clarity with gamma frequencies for deep focus.",
+        category: "focus",
+        duration: "30:00",
+        imageUrl: "https://images.unsplash.com/photo-1589409514187-c21d14df0d04?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/gamma-focus.mp3", // Mock URL
+        baseFrequency: 315,
+        targetFrequency: 355,
+        popular: false,
+        effects: ["Enhances focus", "Improves cognitive function", "Increases mental clarity", "Boosts productivity"]
+      },
+      {
+        id: "anxiety-relief",
+        title: "Anxiety Relief",
+        description: "Calms anxiety with theta waves that slow racing thoughts and promote tranquility.",
+        category: "anxiety",
+        duration: "20:00",
+        imageUrl: "https://images.unsplash.com/photo-1528495612343-9ca9f4a9f67c?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/anxiety-relief.mp3", // Mock URL
+        baseFrequency: 160,
+        targetFrequency: 167,
+        popular: true,
+        effects: ["Reduces anxiety", "Calms nervous system", "Alleviates panic", "Promotes relaxation"]
+      },
+      {
+        id: "heart-chakra",
+        title: "Heart Chakra Healing",
+        description: "Balances the heart chakra with 639 Hz frequency to promote love and compassion.",
+        category: "chakra",
+        duration: "25:00",
+        imageUrl: "https://images.unsplash.com/photo-1531171673193-f23ac4024c0d?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/heart-chakra.mp3", // Mock URL
+        baseFrequency: 639,
+        targetFrequency: 649,
+        popular: false,
+        effects: ["Balances heart chakra", "Increases compassion", "Enhances loving energy", "Emotional healing"]
+      },
+      {
+        id: "theta-healing",
+        title: "Theta Healing",
+        description: "Accesses the theta brainwave state for deep relaxation and emotional healing.",
+        category: "healing",
+        duration: "35:00",
+        imageUrl: "https://images.unsplash.com/photo-1603398921780-8e8537dc720c?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/theta-healing.mp3", // Mock URL
+        baseFrequency: 180,
+        targetFrequency: 185,
+        popular: false,
+        effects: ["Emotional healing", "Subconscious reprogramming", "Deep relaxation", "Intuition enhancement"]
+      },
+      {
+        id: "evening-relax",
+        title: "Evening Relaxation",
+        description: "Wind down in the evening with gentle frequencies that prepare your mind for sleep.",
+        category: "relax",
+        duration: "20:00",
+        imageUrl: "https://images.unsplash.com/photo-1455218873509-8097305ee378?auto=format&fit=crop&w=500&q=80",
+        audioUrl: "https://example.com/evening-relax.mp3", // Mock URL
+        baseFrequency: 136,
+        targetFrequency: 142,
+        popular: true,
+        effects: ["Evening wind-down", "Stress reduction", "Mental decompression", "Prepares for sleep"]
       }
+    ];
+    
+    setTracks(tracksData);
+    
+    // Load user favorites from localStorage
+    const savedFavorites = localStorage.getItem('binaural-favorites');
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
     }
     
-    if (rightOscillatorRef.current) {
-      try {
-        rightOscillatorRef.current.stop();
-        rightOscillatorRef.current.disconnect();
-      } catch (e) {
-        console.log("Error stopping right oscillator", e);
+    // Create audio element
+    audioRef.current = new Audio();
+    audioRef.current.volume = volume / 100;
+    
+    // Set up event listeners
+    if (audioRef.current) {
+      audioRef.current.addEventListener('timeupdate', updateProgress);
+      audioRef.current.addEventListener('loadedmetadata', onLoadedMetadata);
+      audioRef.current.addEventListener('ended', handleTrackEnd);
+    }
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeEventListener('timeupdate', updateProgress);
+        audioRef.current.removeEventListener('loadedmetadata', onLoadedMetadata);
+        audioRef.current.removeEventListener('ended', handleTrackEnd);
       }
-    }
-    
-    if (audioContextRef.current) {
-      try {
-        audioContextRef.current.close();
-      } catch (e) {
-        console.log("Error closing audio context", e);
-      }
-    }
-    
-    leftOscillatorRef.current = null;
-    rightOscillatorRef.current = null;
-    gainNodeRef.current = null;
-    audioContextRef.current = null;
-  };
+    };
+  }, []);
 
-  const updateTime = () => {
-    if (!audioContextRef.current || !isPlaying) return;
-    
-    const currentTime = audioContextRef.current.currentTime - startTimeRef.current;
-    setCurrentTime(currentTime);
-    
-    if (currentTime >= duration) {
-      handleStop();
+  // Handle track selection
+  const handleTrackSelect = (track: BinauralTrack) => {
+    if (currentTrack?.id === track.id) {
+      // Toggle play/pause if it's the same track
+      togglePlay();
       return;
     }
     
-    animationFrameRef.current = requestAnimationFrame(updateTime);
+    // Load new track
+    setCurrentTrack(track);
+    setIsPlaying(true);
+    
+    if (audioRef.current) {
+      audioRef.current.src = track.audioUrl;
+      audioRef.current.load();
+      audioRef.current.play().catch(error => {
+        // In a real app, handle the case where audio can't play due to browser restrictions
+        console.error('Could not play audio:', error);
+        setIsPlaying(false);
+        toast({
+          title: "Playback Error",
+          description: "Could not play audio. Please try again or use headphones for best experience.",
+          variant: "destructive",
+        });
+      });
+    }
+    
+    toast({
+      title: `Now Playing: ${track.title}`,
+      description: `${track.description.substring(0, 60)}...`,
+      duration: 3000,
+    });
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const handlePlayPause = () => {
+  // Audio control functions
+  const togglePlay = () => {
+    if (!currentTrack) return;
+    
     if (isPlaying) {
-      if (audioContextRef.current) {
-        audioContextRef.current.suspend();
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
+      audioRef.current?.pause();
     } else {
-      if (audioContextRef.current) {
-        audioContextRef.current.resume();
-        updateTime();
-      } else {
-        setupAudio();
-      }
-      
-      const track = getCurrentTrack();
-      toast({
-        title: "Now Playing",
-        description: `${track.name} - ${getCurrentCategory().name}`,
-        duration: 3000,
+      audioRef.current?.play().catch(() => {
+        toast({
+          title: "Playback Error",
+          description: "Could not play audio. Please try again.",
+          variant: "destructive",
+        });
       });
     }
     
     setIsPlaying(!isPlaying);
   };
 
-  const handleStop = () => {
-    setIsPlaying(false);
-    setCurrentTime(0);
-    cleanup();
-  };
-
-  const handleCategoryChange = (categoryId: string) => {
-    if (categoryId === activeCategory) return;
-    
-    const category = beatCategories.find(cat => cat.id === categoryId);
-    if (!category) return;
-    
-    setActiveCategory(categoryId);
-    setActiveTrack(category.tracks[0].id);
-    
-    if (isPlaying) {
-      handleStop();
-      setTimeout(() => {
-        setIsPlaying(true);
-        setupAudio();
-      }, 100);
+  const updateProgress = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
     }
   };
 
-  const handleTrackChange = (trackId: string) => {
-    if (trackId === activeTrack) return;
-    
-    setActiveTrack(trackId);
-    
-    if (isPlaying) {
-      handleStop();
-      setTimeout(() => {
-        setIsPlaying(true);
-        setupAudio();
-      }, 100);
+  const onLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleTrackEnd = () => {
+    setIsPlaying(false);
+    setCurrentTime(0);
+  };
+
+  const handleSeek = (value: number[]) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = value[0];
+      setCurrentTime(value[0]);
     }
   };
 
@@ -299,395 +255,635 @@ const BinauralBeats: React.FC = () => {
     const newVolume = value[0];
     setVolume(newVolume);
     
-    if (newVolume === 0) {
-      setIsMuted(true);
-    } else if (isMuted) {
-      setIsMuted(false);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume / 100;
     }
-    
-    if (gainNodeRef.current) {
-      gainNodeRef.current.gain.value = newVolume / 100;
-    }
-  };
-
-  const handleMuteToggle = () => {
-    if (gainNodeRef.current) {
-      if (isMuted) {
-        gainNodeRef.current.gain.value = volume / 100;
-      } else {
-        gainNodeRef.current.gain.value = 0;
-      }
-    }
-    
-    setIsMuted(!isMuted);
-  };
-
-  const handlePreviousTrack = () => {
-    const category = getCurrentCategory();
-    const currentIndex = category.tracks.findIndex(track => track.id === activeTrack);
-    const newIndex = currentIndex <= 0 ? category.tracks.length - 1 : currentIndex - 1;
-    handleTrackChange(category.tracks[newIndex].id);
   };
 
   const handleNextTrack = () => {
-    const category = getCurrentCategory();
-    const currentIndex = category.tracks.findIndex(track => track.id === activeTrack);
-    const newIndex = currentIndex >= category.tracks.length - 1 ? 0 : currentIndex + 1;
-    handleTrackChange(category.tracks[newIndex].id);
+    // Find next track in current category
+    if (!currentTrack) return;
+    
+    const categoryTracks = tracks.filter(t => t.category === activeCategory);
+    const currentIndex = categoryTracks.findIndex(t => t.id === currentTrack.id);
+    const nextIndex = (currentIndex + 1) % categoryTracks.length;
+    
+    handleTrackSelect(categoryTracks[nextIndex]);
   };
 
-  useEffect(() => {
-    return () => {
-      cleanup();
-    };
-  }, []);
+  const handlePrevTrack = () => {
+    // Find previous track in current category
+    if (!currentTrack) return;
+    
+    const categoryTracks = tracks.filter(t => t.category === activeCategory);
+    const currentIndex = categoryTracks.findIndex(t => t.id === currentTrack.id);
+    const prevIndex = (currentIndex - 1 + categoryTracks.length) % categoryTracks.length;
+    
+    handleTrackSelect(categoryTracks[prevIndex]);
+  };
 
-  const currentCategory = getCurrentCategory();
-  const currentTrack = getCurrentTrack();
+  const toggleFavorite = (trackId: string) => {
+    let newFavorites;
+    
+    if (favorites.includes(trackId)) {
+      newFavorites = favorites.filter(id => id !== trackId);
+      toast({
+        title: "Removed from Favorites",
+        description: "Track removed from your favorites",
+        duration: 2000,
+      });
+    } else {
+      newFavorites = [...favorites, trackId];
+      toast({
+        title: "Added to Favorites",
+        description: "Track added to your favorites",
+        duration: 2000,
+      });
+    }
+    
+    setFavorites(newFavorites);
+    localStorage.setItem('binaural-favorites', JSON.stringify(newFavorites));
+  };
 
-  const soundWaves = Array.from({ length: 12 }, (_, i) => i + 1);
+  // Filter tracks by category or favorites
+  const filteredTracks = tracks.filter(track => {
+    if (showFavorites) {
+      return favorites.includes(track.id);
+    }
+    return track.category === activeCategory;
+  });
+
+  // Format time for display
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
+  // Get icon for category
+  const getCategoryIcon = (category: string) => {
+    switch(category) {
+      case "meditation":
+        return <Brain className="h-5 w-5" />;
+      case "sleep":
+        return <Moon className="h-5 w-5" />;
+      case "focus":
+        return <ZoomIn className="h-5 w-5" />;
+      case "relax":
+        return <Laugh className="h-5 w-5" />;
+      case "healing":
+        return <Heart className="h-5 w-5" />;
+      case "chakra":
+        return <Sparkles className="h-5 w-5" />;
+      case "anxiety":
+        return <HeartPulse className="h-5 w-5" />;
+      default:
+        return <Music className="h-5 w-5" />;
+    }
+  };
+
+  // Start sleep timer
+  const startTimer = () => {
+    if (timerActive) {
+      setTimerActive(false);
+      toast({
+        title: "Sleep Timer Cancelled",
+        description: "The sleep timer has been cancelled.",
+        duration: 2000,
+      });
+      return;
+    }
+    
+    setTimerActive(true);
+    toast({
+      title: "Sleep Timer Started",
+      description: `Playback will stop in ${timerDuration} minutes.`,
+      duration: 3000,
+    });
+    
+    setTimeout(() => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+        toast({
+          title: "Sleep Timer Ended",
+          description: "Playback has been stopped by the timer.",
+          duration: 3000,
+        });
+      }
+      setTimerActive(false);
+    }, timerDuration * 60 * 1000);
+  };
 
   return (
-    <Page title="Binaural Beats Therapy">
-      <div className="min-h-screen bg-gradient-to-b from-[#0c1425] via-[#162037] to-[#1d2844] text-white relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full opacity-20">
-            <div className="absolute top-[10%] left-[5%] w-72 h-72 rounded-full bg-indigo-500/20 mix-blend-soft-light blur-[100px] animate-float" style={{animationDuration: '25s'}}></div>
-            <div className="absolute top-[40%] right-[5%] w-96 h-96 rounded-full bg-cyan-500/20 mix-blend-soft-light blur-[100px] animate-float" style={{animationDuration: '30s', animationDelay: '5s'}}></div>
-            <div className="absolute bottom-[10%] left-[20%] w-80 h-80 rounded-full bg-purple-500/20 mix-blend-soft-light blur-[100px] animate-float" style={{animationDuration: '20s', animationDelay: '10s'}}></div>
-          </div>
-        </div>
-        
-        <div className="container mx-auto px-4 py-12 relative z-10">
-          <div className="mb-12 text-center relative">
-            <div className="inline-flex justify-center items-center">
-              <div className="relative">
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-binaural-cyan to-binaural-indigo blur-md opacity-70"></div>
-                <div className="relative bg-[#162037] rounded-full p-3">
-                  <WavesIcon className="h-10 w-10 text-binaural-cyan" />
-                </div>
-              </div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-binaural-blue via-binaural-cyan to-binaural-teal text-transparent bg-clip-text ml-4">Binaural Beats Therapy</h1>
-            </div>
-            
-            <div className="max-w-3xl mx-auto mt-6 relative">
-              <p className="text-gray-300 text-lg">
-                Experience the healing power of binaural beats to reduce stress, improve focus, enhance meditation, and promote better sleep.
-              </p>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-binaural-cyan to-transparent rounded-full"></div>
-            </div>
-            
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="mt-8 text-binaural-cyan border-binaural-cyan/50 hover:bg-binaural-cyan/10 group relative overflow-hidden"
-              onClick={() => setShowInfo(!showInfo)}
-            >
-              <div className="absolute inset-0 w-full h-full bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></div>
-              <BadgeInfo className="h-4 w-4 mr-2 relative z-10" />
-              <span className="relative z-10">{showInfo ? "Hide Information" : "What are Binaural Beats?"}</span>
-            </Button>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-[#121826] via-[#1e293b] to-[#0f172a]">
+      <div className="bg-gradient-to-br from-[#1e293b] to-[#0f172a] text-white py-12 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23ffffff%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
           
-          {showInfo && (
-            <div className="max-w-4xl mx-auto mb-12 bg-white/5 backdrop-blur-md rounded-xl p-8 shadow-xl border border-white/10 animate-fade-in relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-60 h-60 bg-binaural-purple/10 rounded-full blur-3xl -z-10"></div>
-              <div className="absolute bottom-0 left-0 w-60 h-60 bg-binaural-blue/10 rounded-full blur-3xl -z-10"></div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-binaural-purple to-binaural-indigo flex items-center justify-center">
-                      <Zap className="h-4 w-4 text-white" />
-                    </div>
-                    <span>What are Binaural Beats?</span>
-                  </h2>
-                  <p className="mb-4 text-gray-300">
-                    Binaural beats occur when two slightly different frequencies are played separately to each ear,
-                    causing the brain to perceive a third "beat" frequency equal to the difference between the two tones.
-                  </p>
-                  <p className="text-gray-300">
-                    For example, if a 420 Hz tone is played in your left ear and a 430 Hz tone in your right ear,
-                    your brain perceives a 10 Hz binaural beat. This can help induce specific brainwave states
-                    associated with relaxation, focus, creativity, or sleep.
-                  </p>
-                </div>
-                
-                <div>
-                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-binaural-cyan to-binaural-teal flex items-center justify-center">
-                      <Headphones className="h-4 w-4 text-white" />
-                    </div>
-                    <span>How to Use</span>
-                  </h2>
-                  <ul className="space-y-3 text-gray-300">
-                    <li className="flex items-start">
-                      <Headphones className="h-5 w-5 mr-2 text-binaural-cyan mt-0.5" />
-                      <span>Use stereo headphones for the best experience</span>
-                    </li>
-                    <li className="flex items-start">
-                      <Moon className="h-5 w-5 mr-2 text-binaural-cyan mt-0.5" />
-                      <span>Find a quiet, comfortable place with minimal distractions</span>
-                    </li>
-                    <li className="flex items-start">
-                      <Clock className="h-5 w-5 mr-2 text-binaural-cyan mt-0.5" />
-                      <span>Start with short sessions (15-30 minutes) and gradually increase duration</span>
-                    </li>
-                    <li className="flex items-start">
-                      <Heart className="h-5 w-5 mr-2 text-binaural-cyan mt-0.5" />
-                      <span>Be consistent for best results - regular practice enhances benefits</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
-            {beatCategories.map((category) => {
-              const Icon = category.icon;
-              const isActive = category.id === activeCategory;
-              
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryChange(category.id)}
-                  className={cn(
-                    "rounded-2xl p-6 transition-all duration-500 flex flex-col items-center justify-center text-center h-40 shadow-xl group relative overflow-hidden",
-                    isActive 
-                      ? `bg-gradient-to-br ${category.color} text-white border-2 border-white/50` 
-                      : "bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:scale-105 hover:shadow-2xl"
-                  )}
-                >
-                  {isActive && (
-                    <div className="absolute inset-0 overflow-hidden">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="animate-ripple absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                        <span className="animate-ripple absolute inline-flex h-full w-full rounded-full bg-white opacity-75" style={{animationDelay: '0.5s'}}></span>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className={cn(
-                    "w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-500 relative overflow-hidden",
-                    isActive ? "bg-white/20" : "bg-white/5 group-hover:bg-white/10"
-                  )}>
-                    <Icon className={cn(
-                      "h-8 w-8 transition-all", 
-                      isActive ? "text-white" : "text-gray-400 group-hover:text-white"
-                    )} />
-                    
-                    <div className={cn(
-                      "absolute inset-0 rounded-full transition-opacity",
-                      isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                    )}>
-                      <span className="absolute inset-0 rounded-full bg-white/20 animate-pulse-ring"></span>
-                    </div>
-                  </div>
-                  
-                  <h3 className={cn(
-                    "font-medium text-lg transition-all",
-                    isActive ? "text-white" : "text-gray-300 group-hover:text-white"
-                  )}>
-                    {category.name}
-                  </h3>
-                  
-                  {isActive && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-lg shadow-white/30"></div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-          
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/10 mb-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-40 pointer-events-none"></div>
-            <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-binaural-${currentCategory.accent} to-transparent`}></div>
-            
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <div className={cn(
-                "w-10 h-10 rounded-full flex items-center justify-center relative",
-                `bg-gradient-to-br ${currentCategory.color}`
-              )}>
-                {React.createElement(currentCategory.icon, { className: "h-5 w-5 text-white" })}
-                <div className="absolute inset-0 rounded-full bg-white/30 animate-pulse opacity-60"></div>
-              </div>
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                {currentCategory.name} Tracks
-              </span>
-            </h2>
-            
-            <p className="text-gray-300 mb-8 text-lg max-w-3xl">{currentCategory.description}</p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {currentCategory.tracks.map((track) => (
-                <button
-                  key={track.id}
-                  onClick={() => handleTrackChange(track.id)}
-                  className={cn(
-                    "p-5 rounded-xl transition-all duration-300 text-left hover:scale-[1.02] relative overflow-hidden",
-                    track.id === activeTrack
-                      ? `bg-gradient-to-r ${currentCategory.color} text-white`
-                      : "bg-white/5 hover:bg-white/10 text-gray-200"
-                  )}
-                >
-                  {track.id === activeTrack && (
-                    <div className="absolute -inset-1 bg-gradient-to-r from-white/0 via-white/20 to-white/0 animate-wave"></div>
-                  )}
-                  
-                  <div className="flex items-center">
-                    <div className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center mr-3 relative",
-                      track.id === activeTrack ? "bg-white/20" : "bg-white/10"
-                    )}>
-                      <Music className="h-5 w-5" />
-                      
-                      {track.id === activeTrack && (
-                        <div className="absolute inset-0">
-                          <span className="absolute inset-0 rounded-full bg-white/40 animate-pulse-ring"></span>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-base">{track.name}</h3>
-                      <p className="text-sm opacity-80">{track.duration} min</p>
-                    </div>
-                  </div>
-                </button>
+          {/* Animated sound waves */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-full max-w-md h-24 flex items-center justify-center gap-1 opacity-10">
+              {[...Array(40)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="h-8 w-1 bg-white rounded-full"
+                  animate={{
+                    height: [8, Math.random() * 30 + 10, 8],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    delay: i * 0.05,
+                    ease: "easeInOut",
+                  }}
+                />
               ))}
             </div>
           </div>
           
-          <div className={`bg-gradient-to-r ${currentCategory.color} rounded-2xl p-10 shadow-2xl relative overflow-hidden`}>
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
-            
-            <div className="absolute bottom-0 left-0 right-0 h-24 flex items-end justify-center overflow-hidden">
-              <div className="flex items-end space-x-1 h-full">
-                {soundWaves.map((wave) => (
-                  <div 
-                    key={wave}
-                    className={cn(
-                      "w-2 bg-white/30 rounded-t-full",
-                      isPlaying ? "animate-pulse" : "h-1"
-                    )}
-                    style={{ 
-                      height: isPlaying ? `${Math.sin(wave / (soundWaves.length / Math.PI)) * 50 + 20}%` : '10%',
-                      animationDuration: `${0.7 + (wave / 10)}s`
-                    }}
-                  ></div>
-                ))}
+          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-gradient-to-br from-[#8B5CF6]/20 to-transparent blur-3xl"></div>
+          <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-gradient-to-tr from-[#3B82F6]/20 to-transparent blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex items-start justify-between mb-8">
+            <Button 
+              variant="link" 
+              className="text-white hover:text-[#8B5CF6] transition-colors p-0 flex items-center"
+              onClick={() => navigate("/")}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+            <HomeButton />
+          </div>
+          
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="relative">
+                  <div className="absolute -inset-1 bg-[#8B5CF6] rounded-full blur opacity-60"></div>
+                  <div className="relative">
+                    <Headphones className="h-10 w-10 text-white" />
+                  </div>
+                </div>
+                <h1 className="text-4xl font-bold">Binaural Beats Therapy</h1>
               </div>
+              <p className="text-xl text-gray-300">
+                Enhance your mental state with scientifically designed audio frequencies
+              </p>
             </div>
             
-            <div className="flex flex-col items-center relative z-10">
-              <div className="w-32 h-32 rounded-full bg-white/20 flex items-center justify-center mb-8 shadow-xl relative group animate-float" style={{animationDuration: '6s'}}>
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 animate-pulse"></div>
-                <Headphones className="h-16 w-16 text-white" />
-                
-                {isPlaying && (
+            <Badge 
+              variant="outline" 
+              className="px-4 py-2 bg-white/10 backdrop-blur-sm border-[#8B5CF6]/50 text-[#A78BFA]"
+            >
+              <Headphones className="h-4 w-4 mr-2" />
+              Use headphones for best results
+            </Badge>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
+              <TabsList className="h-12 gap-1">
+                <TabsTrigger 
+                  value="meditation" 
+                  className="flex items-center gap-1.5 data-[state=active]:bg-[#8B5CF6] min-w-[110px]"
+                >
+                  <Brain className="h-4 w-4" />
+                  Meditation
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="sleep" 
+                  className="flex items-center gap-1.5 data-[state=active]:bg-[#8B5CF6] min-w-[110px]"
+                >
+                  <Moon className="h-4 w-4" />
+                  Sleep
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="focus" 
+                  className="flex items-center gap-1.5 data-[state=active]:bg-[#8B5CF6] min-w-[110px]"
+                >
+                  <ZoomIn className="h-4 w-4" />
+                  Focus
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="relax" 
+                  className="flex items-center gap-1.5 data-[state=active]:bg-[#8B5CF6] min-w-[110px]"
+                >
+                  <Laugh className="h-4 w-4" />
+                  Relax
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="anxiety" 
+                  className="flex items-center gap-1.5 data-[state=active]:bg-[#8B5CF6] min-w-[110px]"
+                >
+                  <HeartPulse className="h-4 w-4" />
+                  Anxiety
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            
+            <Button
+              variant={showFavorites ? "default" : "outline"}
+              size="sm"
+              className={`
+                ${showFavorites 
+                  ? "bg-[#8B5CF6]" 
+                  : "text-[#8B5CF6] border-[#8B5CF6]/50"}
+              `}
+              onClick={() => setShowFavorites(!showFavorites)}
+            >
+              <Star className={`h-4 w-4 mr-1.5 ${showFavorites ? "fill-white" : ""}`} />
+              {showFavorites ? "All Tracks" : "My Favorites"}
+            </Button>
+          </div>
+          
+          {/* Tracks Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTracks.length > 0 ? (
+              filteredTracks.map((track, index) => (
+                <motion.div
+                  key={track.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="group"
+                >
+                  <Card className={`overflow-hidden h-full flex flex-col border-[#1e293b] bg-[#1e293b]/50 backdrop-blur-sm hover:bg-[#1e293b]/80 transition-all ${
+                    currentTrack?.id === track.id ? "ring-2 ring-[#8B5CF6]" : ""
+                  }`}>
+                    <div className="relative h-40 overflow-hidden">
+                      <img 
+                        src={track.imageUrl} 
+                        alt={track.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/90 to-transparent"></div>
+                      
+                      <div className="absolute top-2 right-2 z-10">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 bg-black/40 backdrop-blur-sm text-white hover:bg-black/60"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(track.id);
+                          }}
+                        >
+                          <Star className={`h-4 w-4 ${favorites.includes(track.id) ? "fill-[#8B5CF6] text-[#8B5CF6]" : ""}`} />
+                        </Button>
+                      </div>
+                      
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-16 w-16 rounded-full bg-[#8B5CF6]/80 text-white hover:bg-[#8B5CF6] backdrop-blur-sm"
+                            onClick={() => handleTrackSelect(track)}
+                          >
+                            {currentTrack?.id === track.id && isPlaying ? (
+                              <Pause className="h-8 w-8" />
+                            ) : (
+                              <Play className="h-8 w-8 ml-1" />
+                            )}
+                          </Button>
+                        </motion.div>
+                      </div>
+                      
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-[#8B5CF6]/70 backdrop-blur-sm text-white">
+                            {track.duration}
+                          </Badge>
+                          
+                          <Badge className="bg-black/40 backdrop-blur-sm text-white capitalize">
+                            {track.category}
+                          </Badge>
+                          
+                          {track.popular && (
+                            <Badge className="bg-[#3B82F6]/70 backdrop-blur-sm text-white">
+                              Popular
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <CardHeader className="py-4">
+                      <CardTitle className="text-xl font-semibold text-white group-hover:text-[#A78BFA] transition-colors">
+                        {track.title}
+                      </CardTitle>
+                      <CardDescription className="text-gray-300">
+                        {track.description}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="pt-0 pb-4 flex-grow">
+                      <div className="space-y-2">
+                        <div className="text-sm text-gray-400">
+                          <span className="font-medium text-gray-300">Frequency: </span>
+                          {track.baseFrequency} Hz ↔ {track.targetFrequency} Hz
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          {track.effects.map((effect, i) => (
+                            <Badge key={i} variant="outline" className="bg-[#1e293b] text-gray-300 border-gray-700">
+                              {effect}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                    
+                    <CardFooter className="pt-2 border-t border-gray-800">
+                      <Button 
+                        className="w-full gap-2 bg-[#8B5CF6]/20 hover:bg-[#8B5CF6]/30 text-[#A78BFA]"
+                        onClick={() => handleTrackSelect(track)}
+                      >
+                        {currentTrack?.id === track.id && isPlaying ? (
+                          <>
+                            <Pause className="h-4 w-4" />
+                            Pause
+                          </>
+                        ) : (
+                          <>
+                            <Play className="h-4 w-4" />
+                            Play
+                          </>
+                        )}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-16">
+                <Music className="h-16 w-16 text-gray-700 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">No tracks found</h3>
+                <p className="text-gray-400 mb-6">
+                  {showFavorites 
+                    ? "You haven't added any favorites yet. Browse categories and star the tracks you like."
+                    : "No tracks found in this category. Try a different category or check back later."}
+                </p>
+                {showFavorites && (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowFavorites(false)}
+                  >
+                    Browse All Tracks
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {/* Music Player Fixed at Bottom */}
+      <div className={`fixed bottom-0 left-0 right-0 backdrop-blur-lg transition-all duration-500 ease-in-out z-20 ${
+        currentTrack ? "translate-y-0" : "translate-y-full"
+      }`}>
+        <div className="bg-[#1e293b]/90 border-t border-gray-800 text-white p-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              {/* Track Info */}
+              <div className="flex items-center flex-grow gap-4">
+                {currentTrack && (
                   <>
-                    <div className="absolute inset-0 rounded-full border-4 border-white/30 animate-ping" style={{animationDuration: '2.5s'}}></div>
-                    <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping" style={{animationDuration: '3.5s'}}></div>
+                    <div className="relative h-16 w-16 rounded-md overflow-hidden">
+                      <img 
+                        src={currentTrack.imageUrl} 
+                        alt={currentTrack.title}
+                        className="h-full w-full object-cover"
+                      />
+                      {isPlaying && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                          <div className="flex items-center gap-1">
+                            {[...Array(3)].map((_, i) => (
+                              <motion.div
+                                key={i}
+                                className="h-8 w-1 bg-[#8B5CF6] rounded-full"
+                                animate={{
+                                  height: [8, 16, 8],
+                                }}
+                                transition={{
+                                  duration: 0.6,
+                                  repeat: Infinity,
+                                  delay: i * 0.2,
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-medium text-white flex items-center gap-2">
+                        {currentTrack.title}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 rounded-full"
+                          onClick={() => toggleFavorite(currentTrack.id)}
+                        >
+                          <Star className={`h-4 w-4 ${favorites.includes(currentTrack.id) ? "fill-[#8B5CF6] text-[#8B5CF6]" : "text-gray-400"}`} />
+                        </Button>
+                      </h3>
+                      <p className="text-sm text-gray-400 flex items-center gap-2">
+                        {getCategoryIcon(currentTrack.category)}
+                        <span className="capitalize">{currentTrack.category}</span>
+                        <span className="text-gray-500">•</span>
+                        <span>{currentTrack.duration}</span>
+                      </p>
+                    </div>
                   </>
                 )}
               </div>
               
-              <h3 className="text-3xl font-bold mb-2 text-white flex items-center gap-2">
-                <Stars className="h-5 w-5 animate-pulse" style={{animationDuration: '3s'}} />
-                <span>{currentTrack.name}</span>
-                <Stars className="h-5 w-5 animate-pulse" style={{animationDuration: '3s', animationDelay: '1.5s'}} />
-              </h3>
-              <p className="text-lg opacity-90 mb-8 font-light">{currentCategory.name}</p>
-              
-              <div className="w-full max-w-md mb-6 bg-white/10 backdrop-blur-sm rounded-full p-4">
-                <div className="flex justify-between mb-2 text-sm font-medium">
-                  <span>{formatTime(currentTime)}</span>
-                  <span>{formatTime(duration)}</span>
+              {/* Controls */}
+              <div className="flex-grow max-w-xl">
+                <div className="flex items-center justify-center gap-4 mb-2">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="h-8 w-8 text-gray-400 hover:text-white"
+                    onClick={handlePrevTrack}
+                  >
+                    <SkipBack className="h-5 w-5" />
+                  </Button>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="h-12 w-12 rounded-full bg-[#8B5CF6] text-white hover:bg-[#A78BFA]"
+                    onClick={togglePlay}
+                  >
+                    {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-0.5" />}
+                  </Button>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="h-8 w-8 text-gray-400 hover:text-white"
+                    onClick={handleNextTrack}
+                  >
+                    <SkipForward className="h-5 w-5" />
+                  </Button>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className={`h-8 w-8 ${timerActive ? "text-[#8B5CF6]" : "text-gray-400 hover:text-white"}`}
+                    onClick={startTimer}
+                  >
+                    <Timer className="h-5 w-5" />
+                  </Button>
                 </div>
-                <div className="h-3 bg-white/20 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-white/80 rounded-full transition-all"
-                    style={{ width: `${(currentTime / duration) * 100}%` }}
+                
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-gray-400 w-10 text-right">
+                    {formatTime(currentTime)}
+                  </span>
+                  
+                  <Slider
+                    value={[currentTime]}
+                    max={duration || 100}
+                    step={1}
+                    className="flex-grow"
+                    onValueChange={handleSeek}
                   />
+                  
+                  <span className="text-xs text-gray-400 w-10">
+                    {formatTime(duration)}
+                  </span>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-6 mb-10">
+              {/* Volume */}
+              <div className="flex items-center gap-2 w-full md:w-auto">
                 <Button 
+                  variant="ghost" 
                   size="icon"
-                  variant="secondary"
-                  className="rounded-full bg-white/20 hover:bg-white/30 text-white w-12 h-12 shadow-lg transition-all duration-300 hover:scale-110 relative overflow-hidden group"
-                  onClick={handlePreviousTrack}
+                  className="h-8 w-8 text-gray-400 hover:text-white"
                 >
-                  <div className="absolute inset-0 w-full h-full bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-full"></div>
-                  <SkipBack className="h-6 w-6 relative z-10" />
-                </Button>
-                
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="rounded-full w-20 h-20 bg-white/20 hover:bg-white/30 text-white shadow-xl transition-all duration-300 hover:scale-110 relative overflow-hidden group"
-                  onClick={handlePlayPause}
-                >
-                  <div className="absolute inset-0 w-full h-full bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-full"></div>
-                  <div className="relative z-10">
-                    {isPlaying ? (
-                      <Pause className="h-10 w-10" />
-                    ) : (
-                      <Play className="h-10 w-10 ml-1" />
-                    )}
-                  </div>
-                  {isPlaying && (
-                    <div className="absolute inset-0 rounded-full">
-                      <div className="absolute inset-0 rounded-full bg-white/20 animate-pulse-dot"></div>
-                    </div>
+                  {volume === 0 ? (
+                    <VolumeX className="h-5 w-5" />
+                  ) : volume < 50 ? (
+                    <Volume1 className="h-5 w-5" />
+                  ) : (
+                    <Volume2 className="h-5 w-5" />
                   )}
                 </Button>
                 
-                <Button 
-                  size="icon"
-                  variant="secondary"
-                  className="rounded-full bg-white/20 hover:bg-white/30 text-white w-12 h-12 shadow-lg transition-all duration-300 hover:scale-110 relative overflow-hidden group"
-                  onClick={handleNextTrack}
-                >
-                  <div className="absolute inset-0 w-full h-full bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-full"></div>
-                  <SkipForward className="h-6 w-6 relative z-10" />
-                </Button>
-              </div>
-              
-              <div className="flex items-center space-x-3 w-full max-w-xs">
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="rounded-full bg-white/20 hover:bg-white/30 text-white h-10 w-10 shadow-lg transition-all duration-300 hover:scale-110 relative overflow-hidden group"
-                  onClick={handleMuteToggle}
-                >
-                  <div className="absolute inset-0 w-full h-full bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out rounded-full"></div>
-                  <div className="relative z-10">
-                    {isMuted ? (
-                      <VolumeX className="h-5 w-5" />
-                    ) : volume > 50 ? (
-                      <Volume2 className="h-5 w-5" />
-                    ) : (
-                      <Volume className="h-5 w-5" />
-                    )}
-                  </div>
-                </Button>
-                
                 <Slider
-                  value={[isMuted ? 0 : volume]}
-                  min={0}
+                  value={[volume]}
                   max={100}
                   step={1}
+                  className="w-24"
                   onValueChange={handleVolumeChange}
-                  className="flex-1"
                 />
+                
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="h-8 w-8 text-gray-400 hover:text-white"
+                  onClick={() => setShowMoreInfo(!showMoreInfo)}
+                >
+                  <ChevronDown className={`h-5 w-5 transition-transform ${showMoreInfo ? "rotate-180" : ""}`} />
+                </Button>
               </div>
             </div>
+            
+            {/* Expanded Info */}
+            {showMoreInfo && currentTrack && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.3 }}
+                className="mt-4 pt-4 border-t border-gray-800"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-300 mb-2">About This Frequency</h4>
+                    <p className="text-sm text-gray-400">{currentTrack.description}</p>
+                    
+                    <div className="mt-4">
+                      <h4 className="text-sm font-medium text-gray-300 mb-2">Benefits</h4>
+                      <ul className="text-sm text-gray-400 space-y-1">
+                        {currentTrack.effects.map((effect, i) => (
+                          <li key={i} className="flex items-start">
+                            <div className="text-[#8B5CF6] mr-2">•</div>
+                            <span>{effect}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-300 mb-2">Sleep Timer</h4>
+                      <div className="flex items-center gap-3">
+                        <Slider
+                          value={[timerDuration]}
+                          min={5}
+                          max={120}
+                          step={5}
+                          className="flex-grow"
+                          onValueChange={(value) => setTimerDuration(value[0])}
+                          disabled={timerActive}
+                        />
+                        <span className="text-sm text-gray-400 w-16">
+                          {timerDuration} min
+                        </span>
+                        <Button 
+                          variant={timerActive ? "default" : "outline"}
+                          size="sm"
+                          className={timerActive ? "bg-[#8B5CF6]" : ""}
+                          onClick={startTimer}
+                        >
+                          {timerActive ? "Cancel" : "Start"}
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-300 mb-2">Pro Tips</h4>
+                      <div className="bg-[#0f172a] rounded-md p-3 space-y-2">
+                        <p className="text-sm text-gray-400 flex items-start">
+                          <Headphones className="h-4 w-4 mr-2 mt-0.5 text-[#8B5CF6]" />
+                          <span>Use stereo headphones for optimal binaural effect</span>
+                        </p>
+                        <p className="text-sm text-gray-400 flex items-start">
+                          <Moon className="h-4 w-4 mr-2 mt-0.5 text-[#8B5CF6]" />
+                          <span>Dimming lights enhances the relaxation experience</span>
+                        </p>
+                        <p className="text-sm text-gray-400 flex items-start">
+                          <Repeat className="h-4 w-4 mr-2 mt-0.5 text-[#8B5CF6]" />
+                          <span>Regular practice yields better long-term benefits</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 
