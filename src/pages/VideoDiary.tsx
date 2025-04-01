@@ -11,6 +11,7 @@ const VideoDiary: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'personal' | 'loved-ones'>('personal');
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   
   const personalVideoEntries = [
@@ -82,14 +83,27 @@ const VideoDiary: React.FC = () => {
     }
   ];
   
-  // Set up video refs
+  // Handle video playback
   useEffect(() => {
     if (id) {
-      const video = [...personalVideoEntries, ...lovedOnesVideoEntries].find(v => v.id === id);
+      const allVideos = [...personalVideoEntries, ...lovedOnesVideoEntries];
+      const video = allVideos.find(v => v.id === id);
+      
       if (video && videoRefs.current[video.id]) {
         const videoElement = videoRefs.current[video.id];
         if (videoElement) {
           videoElement.load();
+          
+          // Set event listener for when video metadata is loaded
+          const handleMetadataLoaded = () => {
+            setIsVideoLoaded(true);
+          };
+          
+          videoElement.addEventListener('loadedmetadata', handleMetadataLoaded);
+          
+          return () => {
+            videoElement.removeEventListener('loadedmetadata', handleMetadataLoaded);
+          };
         }
       }
     }
@@ -124,40 +138,36 @@ const VideoDiary: React.FC = () => {
   const renderVideoDetail = () => {
     if (id) {
       // Find the video from either personal or loved ones entries
-      const video = [...personalVideoEntries, ...lovedOnesVideoEntries].find(v => v.id === id);
+      const allVideos = [...personalVideoEntries, ...lovedOnesVideoEntries];
+      const video = allVideos.find(v => v.id === id);
       
       if (!video) {
         return (
-          <div className="container mx-auto max-w-6xl px-4 py-8">
-            <div className="flex items-center mb-6">
-              <button onClick={handleBack} className="mr-4 text-gray-400 hover:text-white">
-                <ArrowLeft className="h-6 w-6" />
-              </button>
-              <h1 className="text-3xl font-bold">Video Not Found</h1>
-            </div>
-            <p className="text-gray-300">The requested video could not be found.</p>
+          <div className="text-center py-8">
+            <h3 className="text-xl font-medium text-gray-400">Video not found</h3>
           </div>
         );
       }
       
       return (
         <div className="container mx-auto max-w-6xl px-4 py-8">
-          <div className="flex items-center mb-6">
-            <button onClick={handleBack} className="mr-4 text-gray-400 hover:text-white">
-              <ArrowLeft className="h-6 w-6" />
-            </button>
-            <h1 className="text-3xl font-bold">{video.title}</h1>
-          </div>
-          
           <div className="bg-[#2a2a3c]/80 rounded-xl overflow-hidden shadow-xl mb-8">
-            <video 
-              ref={el => videoRefs.current[video.id] = el}
-              src={video.videoUrl} 
-              controls 
-              className="w-full aspect-video"
-              poster={video.thumbnail}
-              preload="auto"
-            />
+            <div className="relative">
+              {!isVideoLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                  <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500"></div>
+                </div>
+              )}
+              <video 
+                ref={el => videoRefs.current[video.id] = el}
+                src={video.videoUrl} 
+                controls 
+                className="w-full aspect-video"
+                poster={video.thumbnail}
+                preload="auto"
+                onCanPlay={() => setIsVideoLoaded(true)}
+              />
+            </div>
             
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
@@ -199,7 +209,7 @@ const VideoDiary: React.FC = () => {
                 </div>
               </div>
               
-              <h3 className="text-xl font-bold text-white mb-3">Description</h3>
+              <h3 className="text-xl font-bold text-white mb-3">{video.title}</h3>
               <p className="text-gray-300">{video.description}</p>
             </div>
           </div>
@@ -213,13 +223,6 @@ const VideoDiary: React.FC = () => {
   const renderVideoList = () => {
     return (
       <div className="container mx-auto max-w-6xl px-4 py-8">
-        <div className="flex items-center mb-6">
-          <button onClick={handleBack} className="mr-4 text-gray-400 hover:text-white">
-            <ArrowLeft className="h-6 w-6" />
-          </button>
-          <h1 className="text-3xl font-bold">Video Diary</h1>
-        </div>
-        
         <div className="bg-[#2a2a3c]/50 backdrop-blur-md rounded-xl p-6 mb-8">
           <div className="flex items-start space-x-4">
             <div className="p-3 bg-indigo-500/20 rounded-lg">
@@ -281,6 +284,11 @@ const VideoDiary: React.FC = () => {
               gratitude, share your journey, or maintain connection during your recovery process. 
               These messages can strengthen your support network and provide emotional comfort during challenging times.
               Recording messages for loved ones can also help you articulate feelings that might be difficult to express in person.
+            </p>
+            <p className="text-gray-300 text-sm mt-3">
+              Research shows that expressing gratitude and appreciation to others not only benefits them but also
+              significantly improves your own mental well-being. The act of creating and sharing these messages
+              activates the brain's reward centers and releases dopamine and serotonin, promoting feelings of happiness and connection.
             </p>
           </div>
         )}

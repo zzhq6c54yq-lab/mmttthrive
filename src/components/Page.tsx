@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import HomeButton from "./HomeButton";
 
 interface PageProps {
@@ -26,16 +27,12 @@ const Page: React.FC<PageProps> = ({
     window.scrollTo(0, 0);
   }, []);
   
-  const handleMainMenu = () => {
-    navigate("/", { state: { screenState: 'main' } });
-  };
-  
   const handleBackClick = () => {
     if (onBackClick) {
       onBackClick();
     } else {
-      // Default behavior: always go back to main menu with main screenState
-      navigate("/", { state: { screenState: 'main' } });
+      // Default behavior: go back to previous page
+      navigate(-1);
     }
   };
   
@@ -51,30 +48,18 @@ const Page: React.FC<PageProps> = ({
         {/* Title in Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
           <div className="flex items-center gap-1">
-            {showBackButton && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
-                onClick={handleBackClick}
-              >
-                Back
-              </Button>
-            )}
-            <h1 className="text-lg md:text-xl font-light tracking-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
-            </h1>
-          </div>
-          
-          <div>
             <Button
               variant="outline"
               size="sm"
-              className="bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
-              onClick={handleMainMenu}
+              className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
+              onClick={handleBackClick}
             >
-              Main Dashboard
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Back
             </Button>
+            <h1 className="text-lg md:text-xl font-light tracking-tight">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
+            </h1>
           </div>
         </div>
         

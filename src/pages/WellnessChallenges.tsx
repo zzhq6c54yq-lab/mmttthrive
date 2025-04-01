@@ -1,13 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import { Calendar, ArrowLeft, Brain, Heart, Activity, CheckCircle } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Page from "@/components/Page";
 import { useToast } from "@/hooks/use-toast";
 
 const WellnessChallenges: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'wellness' | 'mental' | 'completed'>('wellness');
   
@@ -164,16 +164,91 @@ const WellnessChallenges: React.FC = () => {
     console.log(`Toggling completion for challenge: ${id}`);
   };
   
+  // If we have a specific challenge ID, render a details view
+  if (id) {
+    // Find the challenge from either wellness or mental health categories
+    const challenge = [...wellnessChallenges, ...mentalHealthChallenges].find(c => c.id === id);
+    
+    if (!challenge) {
+      return (
+        <Page title="Challenge Not Found">
+          <div className="p-6">
+            <p className="text-gray-300">The requested challenge could not be found.</p>
+          </div>
+        </Page>
+      );
+    }
+    
+    return (
+      <Page title={`${challenge.title} - Challenge`}>
+        <div className="px-4 py-8">
+          <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
+            <div className="flex items-start mb-6">
+              <div className={`p-4 rounded-lg mr-4 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
+                <challenge.icon className={`h-8 w-8 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
+              </div>
+              
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-2">{challenge.title}</h2>
+                <span className="inline-block bg-[#3a3a4c] text-xs text-gray-300 px-2 py-1 rounded">
+                  {challenge.category}
+                </span>
+                <p className="text-gray-300 mt-3">{challenge.description}</p>
+              </div>
+            </div>
+            
+            <div className="bg-[#1e1e2c] rounded-lg p-5">
+              <h3 className="text-lg font-medium text-white mb-3">How to Complete This Challenge</h3>
+              <ol className="space-y-3 text-gray-300">
+                <li className="flex items-start">
+                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">1</span>
+                  <span>Set aside dedicated time in your day for this activity</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">2</span>
+                  <span>Find a quiet, comfortable space where you won't be interrupted</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">3</span>
+                  <span>Follow the activity instructions and be present during the exercise</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">4</span>
+                  <span>Mark the challenge as complete once you've finished</span>
+                </li>
+              </ol>
+            </div>
+            
+            <div className="mt-6 flex justify-between items-center">
+              <div>
+                <span className="text-amber-400 text-lg font-medium">+{challenge.points} points</span>
+                <p className="text-sm text-gray-400">Complete this challenge to earn points</p>
+              </div>
+              
+              <button 
+                onClick={() => toggleChallengeCompletion(challenge.id)}
+                className={`px-5 py-3 rounded-xl flex items-center ${
+                  challenge.completed 
+                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' 
+                    : 'bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30'
+                } transition-colors`}
+              >
+                <CheckCircle className="h-5 w-5 mr-2" />
+                {challenge.completed ? 'Completed' : 'Mark as Complete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Page>
+    );
+  }
+  
+  // Otherwise, render the challenges list
   return (
     <Page title="Daily Wellness Challenges">
       <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
         <div className="container mx-auto max-w-6xl px-4 py-8">
-          <div className="flex items-center mb-6">
-            <button onClick={handleBack} className="mr-4 text-gray-400 hover:text-white">
-              <ArrowLeft className="h-6 w-6" />
-            </button>
-            <h1 className="text-3xl font-bold">Daily Challenges</h1>
-          </div>
+          <h1 className="text-3xl font-bold mb-6">Daily Challenges</h1>
           
           <p className="text-gray-300 mb-8">
             Complete daily challenges to improve your mental and physical wellbeing. Track your progress and earn points to unlock rewards.
@@ -217,7 +292,8 @@ const WellnessChallenges: React.FC = () => {
               {getActiveChallenges().map((challenge) => (
                 <div 
                   key={challenge.id}
-                  className="bg-[#1e1e2c] rounded-xl p-5 hover:bg-[#262638] transition-colors"
+                  className="bg-[#1e1e2c] rounded-xl p-5 hover:bg-[#262638] transition-colors cursor-pointer"
+                  onClick={() => navigate(`/wellness-challenges/${challenge.id}`)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start">
@@ -239,7 +315,10 @@ const WellnessChallenges: React.FC = () => {
                     <div className="flex flex-col items-end">
                       <span className="text-amber-400 font-medium">+{challenge.points} pts</span>
                       <button 
-                        onClick={() => toggleChallengeCompletion(challenge.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleChallengeCompletion(challenge.id);
+                        }}
                         className={`mt-4 p-2 rounded-full ${
                           challenge.completed 
                             ? 'bg-green-500/20 text-green-400' 
