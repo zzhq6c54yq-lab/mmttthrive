@@ -28,6 +28,21 @@ export const usePopupManagement = (screenState: string) => {
     localStorage.setItem('popupsShown', JSON.stringify(popupsShown));
   }, [popupsShown]);
 
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      // No need to do anything special here, just making sure the component re-renders
+      // when language changes
+      console.log("Language changed to:", localStorage.getItem('preferredLanguage'));
+    };
+    
+    window.addEventListener('languageChange', handleLanguageChange);
+    
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
+
   useEffect(() => {
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
@@ -53,6 +68,7 @@ export const usePopupManagement = (screenState: string) => {
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
     setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
+    localStorage.setItem('dashboardTutorialShown', 'true');
   };
 
   // Method to reset popup states (useful for testing)

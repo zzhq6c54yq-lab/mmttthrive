@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { 
@@ -10,7 +9,12 @@ import {
   DialogFooter 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Lightbulb, ChevronLeft, ChevronRight, X, Award, Bell, CheckCircle } from "lucide-react";
+import { 
+  Lightbulb, ChevronLeft, ChevronRight, X, Award, Bell, CheckCircle,
+  Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
+  ListChecks, Video, Puzzle, HeartHandshake, Headphones, Coffee, Moon,
+  HandHeart, Target
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -19,6 +23,7 @@ export interface TutorialStep {
   description: string;
   image?: string;
   highlight?: string;
+  icon?: React.ReactNode;
 }
 
 interface FeatureTutorialProps {
@@ -50,7 +55,8 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
         {
           title: getTranslatedText('welcomeTitle', featureId),
           description: getTranslatedText('introDescription', featureId),
-          image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png"
+          image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png",
+          icon: <Lightbulb className="h-12 w-12 text-amber-400" />
         }
       ];
 
@@ -62,32 +68,38 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
             {
               title: getTranslatedText('featureTitle', featureId),
               description: getTranslatedText('mainDescription', featureId),
-              highlight: "challenges-overview"
+              highlight: "challenges-overview",
+              icon: <ListChecks className="h-12 w-12 text-green-400" />
             },
             {
               title: getTranslatedText('pointsTitle', featureId),
               description: getTranslatedText('pointsDescription', featureId),
-              highlight: "points-system"
+              highlight: "points-system",
+              icon: <Award className="h-12 w-12 text-amber-400" />
             },
             {
               title: getTranslatedText('categoriesTitle', featureId),
               description: getTranslatedText('categoriesDescription', featureId),
-              highlight: "challenge-categories"
+              highlight: "challenge-categories",
+              icon: <Target className="h-12 w-12 text-blue-400" />
             },
             {
               title: getTranslatedText('completingTitle', featureId),
               description: getTranslatedText('completingDescription', featureId),
-              highlight: "complete-challenge"
+              highlight: "complete-challenge",
+              icon: <CheckCircle className="h-12 w-12 text-green-400" />
             },
             {
               title: getTranslatedText('redeemingTitle', featureId),
               description: getTranslatedText('redeemingDescription', featureId),
-              highlight: "redeem-points"
+              highlight: "redeem-points",
+              icon: <Award className="h-12 w-12 text-amber-400" />
             },
             {
               title: getTranslatedText('remindersTitle', featureId),
               description: getTranslatedText('remindersDescription', featureId),
-              highlight: "reminders"
+              highlight: "reminders",
+              icon: <Bell className="h-12 w-12 text-indigo-400" />
             }
           ];
         case "copay-credits":
@@ -96,17 +108,20 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
             {
               title: getTranslatedText('featureTitle', featureId),
               description: getTranslatedText('mainDescription', featureId),
-              highlight: "credits-overview"
+              highlight: "credits-overview",
+              icon: <Award className="h-12 w-12 text-amber-400" />
             },
             {
               title: getTranslatedText('earningTitle', featureId),
               description: getTranslatedText('earningDescription', featureId),
-              highlight: "earning-credits"
+              highlight: "earning-credits",
+              icon: <Award className="h-12 w-12 text-amber-400" />
             },
             {
               title: getTranslatedText('usingTitle', featureId),
               description: getTranslatedText('usingDescription', featureId),
-              highlight: "using-credits"
+              highlight: "using-credits",
+              icon: <HandHeart className="h-12 w-12 text-pink-400" />
             }
           ];
         case "real-time-therapy":
@@ -115,17 +130,20 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
             {
               title: getTranslatedText('featureTitle', featureId),
               description: getTranslatedText('mainDescription', featureId),
-              highlight: "therapy-overview"
+              highlight: "therapy-overview",
+              icon: <GraduationCap className="h-12 w-12 text-indigo-400" />
             },
             {
               title: getTranslatedText('sessionTitle', featureId),
               description: getTranslatedText('sessionDescription', featureId),
-              highlight: "booking-session"
+              highlight: "booking-session",
+              icon: <CalendarRange className="h-12 w-12 text-blue-400" />
             },
             {
               title: getTranslatedText('paymentTitle', featureId),
               description: getTranslatedText('paymentDescription', featureId),
-              highlight: "payment-options"
+              highlight: "payment-options",
+              icon: <Award className="h-12 w-12 text-amber-400" />
             }
           ];
         case "community-support":
@@ -134,17 +152,20 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
             {
               title: getTranslatedText('featureTitle', featureId),
               description: getTranslatedText('mainDescription', featureId),
-              highlight: "community-overview"
+              highlight: "community-overview",
+              icon: <Users className="h-12 w-12 text-indigo-400" />
             },
             {
               title: getTranslatedText('groupsTitle', featureId),
               description: getTranslatedText('groupsDescription', featureId),
-              highlight: "support-groups"
+              highlight: "support-groups",
+              icon: <Users className="h-12 w-12 text-indigo-400" />
             },
             {
               title: getTranslatedText('postingTitle', featureId),
               description: getTranslatedText('postingDescription', featureId),
-              highlight: "posting-guidelines"
+              highlight: "posting-guidelines",
+              icon: <Heart className="h-12 w-12 text-pink-400" />
             }
           ];
         case "resource-library":
@@ -153,17 +174,20 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
             {
               title: getTranslatedText('featureTitle', featureId),
               description: getTranslatedText('mainDescription', featureId),
-              highlight: "resources-overview"
+              highlight: "resources-overview",
+              icon: <Library className="h-12 w-12 text-indigo-400" />
             },
             {
               title: getTranslatedText('searchingTitle', featureId),
               description: getTranslatedText('searchingDescription', featureId),
-              highlight: "search-filter"
+              highlight: "search-filter",
+              icon: <Library className="h-12 w-12 text-indigo-400" />
             },
             {
               title: getTranslatedText('savingTitle', featureId),
               description: getTranslatedText('savingDescription', featureId),
-              highlight: "save-resources"
+              highlight: "save-resources",
+              icon: <Heart className="h-12 w-12 text-pink-400" />
             }
           ];
         case "dashboard":
@@ -172,20 +196,134 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
             {
               title: getTranslatedText('featureTitle', featureId),
               description: getTranslatedText('mainDescription', featureId),
-              highlight: "dashboard-overview"
+              highlight: "dashboard-overview",
+              icon: <Target className="h-12 w-12 text-blue-400" />
             },
             {
               title: getTranslatedText('widgetsTitle', featureId),
               description: getTranslatedText('widgetsDescription', featureId),
-              highlight: "dashboard-widgets"
+              highlight: "dashboard-widgets",
+              icon: <Puzzle className="h-12 w-12 text-green-400" />
+            },
+            {
+              title: getTranslatedText('dailyChallengesTitle', featureId),
+              description: getTranslatedText('dailyChallengesDescription', featureId),
+              highlight: "daily-challenges",
+              icon: <ListChecks className="h-12 w-12 text-green-400" />
+            },
+            {
+              title: getTranslatedText('gratitudeTitle', featureId),
+              description: getTranslatedText('gratitudeDescription', featureId),
+              highlight: "gratitude-visualizer",
+              icon: <Heart className="h-12 w-12 text-pink-400" />
+            },
+            {
+              title: getTranslatedText('videoDiaryTitle', featureId),
+              description: getTranslatedText('videoDiaryDescription', featureId),
+              highlight: "video-diary",
+              icon: <Video className="h-12 w-12 text-blue-400" />
+            },
+            {
+              title: getTranslatedText('appointmentsTitle', featureId),
+              description: getTranslatedText('appointmentsDescription', featureId),
+              highlight: "appointments",
+              icon: <CalendarRange className="h-12 w-12 text-blue-400" />
+            },
+            {
+              title: getTranslatedText('insightsTitle', featureId),
+              description: getTranslatedText('insightsDescription', featureId),
+              highlight: "insights",
+              icon: <Brain className="h-12 w-12 text-purple-400" />
+            },
+            {
+              title: getTranslatedText('workshopsTitle', featureId),
+              description: getTranslatedText('workshopsDescription', featureId),
+              highlight: "workshops",
+              icon: <CalendarRange className="h-12 w-12 text-blue-400" />
+            },
+            {
+              title: getTranslatedText('keyFeaturesTitle', featureId),
+              description: getTranslatedText('keyFeaturesDescription', featureId),
+              highlight: "key-features",
+              icon: <Lightbulb className="h-12 w-12 text-amber-400" />
             },
             {
               title: getTranslatedText('navigationTitle', featureId),
               description: getTranslatedText('navigationDescription', featureId),
-              highlight: "navigation"
+              highlight: "navigation",
+              icon: <Target className="h-12 w-12 text-blue-400" />
             }
           ];
-        // Add more features as needed
+        case "video-diary":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "video-diary-overview",
+              icon: <Video className="h-12 w-12 text-blue-400" />
+            }
+          ];
+        case "mindfulness":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "mindfulness-overview",
+              icon: <Moon className="h-12 w-12 text-indigo-400" />
+            }
+          ];
+        case "journaling":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "journaling-overview",
+              icon: <Heart className="h-12 w-12 text-pink-400" />
+            }
+          ];
+        case "binaural-beats":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "binaural-beats-overview",
+              icon: <Headphones className="h-12 w-12 text-purple-400" />
+            }
+          ];
+        case "lifestyle-integration":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "lifestyle-integration-overview",
+              icon: <Coffee className="h-12 w-12 text-brown-400" />
+            }
+          ];
+        case "mental-wellness-tools":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "mental-wellness-tools-overview",
+              icon: <LeafyGreen className="h-12 w-12 text-green-400" />
+            }
+          ];
+        case "my-sponsor":
+          return [
+            ...defaultSteps,
+            {
+              title: getTranslatedText('featureTitle', featureId),
+              description: getTranslatedText('mainDescription', featureId),
+              highlight: "my-sponsor-overview",
+              icon: <HeartHandshake className="h-12 w-12 text-red-400" />
+            }
+          ];
         default:
           return defaultSteps;
       }
@@ -195,7 +333,6 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
   }, [featureId, preferredLanguage]);
 
   const getTranslatedText = (type: string, feature: string) => {
-    // For brevity, we'll handle translations for the main features
     const translations: Record<string, Record<string, Record<string, string>>> = {
       'welcomeTitle': {
         'wellness-challenges': {
@@ -221,6 +358,34 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
         'resource-library': {
           'English': 'Welcome to Resource Library',
           'Español': 'Bienvenido a la Biblioteca de Recursos'
+        },
+        'video-diary': {
+          'English': 'Welcome to Video Diary',
+          'Español': 'Bienvenido al Diario en Video'
+        },
+        'mindfulness': {
+          'English': 'Welcome to Mindfulness & Sleep',
+          'Español': 'Bienvenido a Atención Plena y Sueño'
+        },
+        'journaling': {
+          'English': 'Welcome to Journaling',
+          'Español': 'Bienvenido a Diario Personal'
+        },
+        'binaural-beats': {
+          'English': 'Welcome to Binaural Beats',
+          'Español': 'Bienvenido a Ritmos Binaurales'
+        },
+        'lifestyle-integration': {
+          'English': 'Welcome to Lifestyle Integration',
+          'Español': 'Bienvenido a Integración de Estilo de Vida'
+        },
+        'mental-wellness-tools': {
+          'English': 'Welcome to Mental Wellness Tools',
+          'Español': 'Bienvenido a Herramientas de Bienestar Mental'
+        },
+        'my-sponsor': {
+          'English': 'Welcome to My Sponsor',
+          'Español': 'Bienvenido a Mi Patrocinador'
         }
       },
       'introDescription': {
@@ -247,6 +412,34 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
         'copay-credits': {
           'English': "I'm Henry, and I'll guide you through the Co-Pay Credits system.",
           'Español': "Soy Henry, y te guiaré a través del sistema de Créditos de Copago."
+        },
+        'video-diary': {
+          'English': "I'm Henry, and I'll guide you through the Video Diary feature.",
+          'Español': "Soy Henry, y te guiaré a través de la función de Diario en Video."
+        },
+        'mindfulness': {
+          'English': "I'm Henry, and I'll guide you through our Mindfulness & Sleep features.",
+          'Español': "Soy Henry, y te guiaré a través de nuestras funciones de Atención Plena y Sueño."
+        },
+        'journaling': {
+          'English': "I'm Henry, and I'll guide you through the Journaling feature.",
+          'Español': "Soy Henry, y te guiaré a través de la función de Diario Personal."
+        },
+        'binaural-beats': {
+          'English': "I'm Henry, and I'll guide you through our Binaural Beats therapy.",
+          'Español': "Soy Henry, y te guiaré a través de nuestra terapia de Ritmos Binaurales."
+        },
+        'lifestyle-integration': {
+          'English': "I'm Henry, and I'll guide you through Lifestyle Integration features.",
+          'Español': "Soy Henry, y te guiaré a través de las funciones de Integración de Estilo de Vida."
+        },
+        'mental-wellness-tools': {
+          'English': "I'm Henry, and I'll guide you through our Mental Wellness Tools.",
+          'Español': "Soy Henry, y te guiaré a través de nuestras Herramientas de Bienestar Mental."
+        },
+        'my-sponsor': {
+          'English': "I'm Henry, and I'll guide you through the My Sponsor feature.",
+          'Español': "Soy Henry, y te guiaré a través de la función de Mi Patrocinador."
         }
       },
       'featureTitle': {
@@ -273,6 +466,34 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
         'resource-library': {
           'English': 'Resource Library',
           'Español': 'Biblioteca de Recursos'
+        },
+        'video-diary': {
+          'English': 'Video Diary',
+          'Español': 'Diario en Video'
+        },
+        'mindfulness': {
+          'English': 'Mindfulness & Sleep',
+          'Español': 'Atención Plena y Sueño'
+        },
+        'journaling': {
+          'English': 'Journaling',
+          'Español': 'Diario Personal'
+        },
+        'binaural-beats': {
+          'English': 'Binaural Beats',
+          'Español': 'Ritmos Binaurales'
+        },
+        'lifestyle-integration': {
+          'English': 'Lifestyle Integration',
+          'Español': 'Integración de Estilo de Vida'
+        },
+        'mental-wellness-tools': {
+          'English': 'Mental Wellness Tools',
+          'Español': 'Herramientas de Bienestar Mental'
+        },
+        'my-sponsor': {
+          'English': 'My Sponsor',
+          'Español': 'Mi Patrocinador'
         }
       },
       'mainDescription': {
@@ -299,6 +520,34 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
         'resource-library': {
           'English': 'Access a wide range of mental health resources, articles, and tools.',
           'Español': 'Accede a una amplia gama de recursos, artículos y herramientas de salud mental.'
+        },
+        'video-diary': {
+          'English': 'Record video messages to track your journey or share with your therapist.',
+          'Español': 'Graba mensajes de video para seguir tu viaje o compartir con tu terapeuta.'
+        },
+        'mindfulness': {
+          'English': 'Record and visualize things you are grateful for to improve mental wellbeing.',
+          'Español': 'Registra y visualiza las cosas por las que estás agradecido para mejorar el bienestar mental.'
+        },
+        'journaling': {
+          'English': 'Record your thoughts and feelings to improve your mental health.',
+          'Español': 'Registra tus pensamientos y sentimientos para mejorar tu salud mental.'
+        },
+        'binaural-beats': {
+          'English': 'Listen to binaural beats to improve your mood and focus.',
+          'Español': 'Escucha ritmos binaurales para mejorar tu estado de ánimo y concentración.'
+        },
+        'lifestyle-integration': {
+          'English': 'Explore ways to integrate healthy habits into your daily life.',
+          'Español': 'Explora formas de integrar hábitos saludables en tu vida diaria.'
+        },
+        'mental-wellness-tools': {
+          'English': 'Use tools to support your mental health and well-being.',
+          'Español': 'Usa herramientas para apoyar tu salud mental y bienestar.'
+        },
+        'my-sponsor': {
+          'English': 'Learn about your sponsor and how they can support you.',
+          'Español': 'Aprende sobre tu patrocinador y cómo pueden apoyarte.'
         }
       },
       'pointsTitle': {
@@ -480,10 +729,93 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
           'English': 'Access all app features from your dashboard through the menu and feature cards.',
           'Español': 'Accede a todas las funciones de la aplicación desde tu panel a través del menú y las tarjetas de funciones.'
         }
+      },
+      'dailyChallengesTitle': {
+        'dashboard': {
+          'English': 'Daily Wellness Challenges',
+          'Español': 'Desafíos Diarios de Bienestar'
+        }
+      },
+      'dailyChallengesDescription': {
+        'dashboard': {
+          'English': 'Complete daily challenges to improve your mental health and earn rewards.',
+          'Español': 'Completa desafíos diarios para mejorar tu salud mental y ganar recompensas.'
+        }
+      },
+      'gratitudeTitle': {
+        'dashboard': {
+          'English': 'Gratitude Visualizer',
+          'Español': 'Visualizador de Gratitud'
+        }
+      },
+      'gratitudeDescription': {
+        'dashboard': {
+          'English': 'Record and visualize things you are grateful for to improve mental wellbeing.',
+          'Español': 'Registra y visualiza las cosas por las que estás agradecido para mejorar el bienestar mental.'
+        }
+      },
+      'videoDiaryTitle': {
+        'dashboard': {
+          'English': 'Video Diary',
+          'Español': 'Diario en Video'
+        }
+      },
+      'videoDiaryDescription': {
+        'dashboard': {
+          'English': 'Record video messages to track your journey or share with your therapist.',
+          'Español': 'Graba mensajes de video para seguir tu viaje o compartir con tu terapeuta.'
+        }
+      },
+      'appointmentsTitle': {
+        'dashboard': {
+          'English': 'Upcoming Appointments',
+          'Español': 'Próximas Citas'
+        }
+      },
+      'appointmentsDescription': {
+        'dashboard': {
+          'English': 'View and manage your upcoming therapy sessions and wellness appointments.',
+          'Español': 'Ve y administra tus próximas sesiones de terapia y citas de bienestar.'
+        }
+      },
+      'insightsTitle': {
+        'dashboard': {
+          'English': 'Insights',
+          'Español': 'Análisis'
+        }
+      },
+      'insightsDescription': {
+        'dashboard': {
+          'English': 'Track your mood and view insights about your mental health journey.',
+          'Español': 'Sigue tu estado de ánimo y ve análisis sobre tu viaje de salud mental.'
+        }
+      },
+      'workshopsTitle': {
+        'dashboard': {
+          'English': 'Featured Workshops',
+          'Español': 'Talleres Destacados'
+        }
+      },
+      'workshopsDescription': {
+        'dashboard': {
+          'English': 'Discover and join interactive workshops to learn new coping skills.',
+          'Español': 'Descubre y únete a talleres interactivos para aprender nuevas habilidades de afrontamiento.'
+        }
+      },
+      'keyFeaturesTitle': {
+        'dashboard': {
+          'English': 'Key Features',
+          'Español': 'Características Principales'
+        }
+      },
+      'keyFeaturesDescription': {
+        'dashboard': {
+          'English': 'Explore all the features available to support your mental wellness journey.',
+          'Español': 'Explora todas las características disponibles para apoyar tu viaje de bienestar mental.'
+        }
       }
     };
     
-    // Common button/navigation translations that should be available for all features
     const commonTranslations: Record<string, Record<string, string>> = {
       'next': {
         'English': 'Next',
@@ -507,12 +839,10 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
       }
     };
     
-    // Check if the requested translation is a common UI element
     if (commonTranslations[type]) {
       return commonTranslations[type][preferredLanguage] || commonTranslations[type]['English'];
     }
     
-    // Check if the feature-specific translation exists
     if (!translations[type] || !translations[type][feature] || !translations[type][feature][preferredLanguage]) {
       return type === 'next' ? 'Next' : 
              type === 'previous' ? 'Previous' : 
@@ -536,7 +866,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
   };
 
   const handleNext = () => {
-    if (currentStep < tutorialSteps.length - 1) {
+    if (tutorialSteps.length > 0 && currentStep < tutorialSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
       handleClose();
@@ -550,22 +880,33 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
   };
 
   const renderStepIcon = () => {
-    const step = tutorialSteps[currentStep];
-    // Fix: Add a null check to prevent accessing 'highlight' of undefined
-    if (!step) return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
-    
-    if (step.highlight === "points-system" || step.highlight === "earning-credits") {
-      return <Award className="h-12 w-12 text-amber-400 mb-2" />;
-    } else if (step.highlight === "reminders") {
-      return <Bell className="h-12 w-12 text-indigo-400 mb-2" />;
-    } else if (step.highlight === "complete-challenge") {
-      return <CheckCircle className="h-12 w-12 text-green-400 mb-2" />;
-    } else {
+    if (!tutorialSteps || tutorialSteps.length === 0) {
       return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
     }
+    
+    if (currentStep >= tutorialSteps.length) {
+      return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
+    }
+    
+    const step = tutorialSteps[currentStep];
+    
+    if (step.icon) {
+      return React.cloneElement(step.icon as React.ReactElement, { className: "mb-2" });
+    }
+    
+    if (step && step.highlight) {
+      if (step.highlight === "points-system" || step.highlight === "earning-credits") {
+        return <Award className="h-12 w-12 text-amber-400 mb-2" />;
+      } else if (step.highlight === "reminders") {
+        return <Bell className="h-12 w-12 text-indigo-400 mb-2" />;
+      } else if (step.highlight === "complete-challenge") {
+        return <CheckCircle className="h-12 w-12 text-green-400 mb-2" />;
+      }
+    }
+    
+    return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
   };
 
-  // If embedded mode, just render the content without dialog
   if (embedded) {
     return (
       <div className="bg-[#2a2a3c]/60 border border-[#3a3a4c] rounded-lg overflow-hidden">
@@ -623,10 +964,8 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
     );
   }
 
-  // Add safety check for regular dialog mode
   const hasValidStep = tutorialSteps.length > 0 && currentStep < tutorialSteps.length;
 
-  // Regular dialog mode
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md">

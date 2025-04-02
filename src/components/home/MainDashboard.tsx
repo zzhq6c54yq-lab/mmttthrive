@@ -50,8 +50,11 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
     
     if (comingFromOnboarding && !dashboardTutorialShown) {
-      setShowTutorial(true);
-      localStorage.setItem('dashboardTutorialShown', 'true');
+      // Slight delay to ensure UI is fully rendered
+      setTimeout(() => {
+        setShowTutorial(true);
+        localStorage.setItem('dashboardTutorialShown', 'true');
+      }, 500);
     }
   }, [location]);
   
