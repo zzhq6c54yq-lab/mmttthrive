@@ -1,16 +1,50 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Languages } from "lucide-react";
 
 interface IntroScreenProps {
   onContinue: () => void;
 }
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
+  const languages = ["English", "Español", "Français", "Deutsch", "中文", "العربية"];
+  
+  const handleLanguageChange = (language: string) => {
+    setSelectedLanguage(language);
+    // In a real implementation, this would update the app's language context
+    localStorage.setItem('preferredLanguage', language);
+  };
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
       <div className="floating-bg"></div>
+      
+      {/* Language selector at the top */}
+      <div className="absolute top-5 right-5 z-20">
+        <div className="flex items-center gap-2 bg-black/40 backdrop-blur-sm p-1 rounded-full">
+          <Languages className="h-5 w-5 text-[#B87333]" />
+          <div className="flex gap-1">
+            {languages.map((language) => (
+              <Button
+                key={language}
+                size="sm"
+                variant={selectedLanguage === language ? "gold" : "ghost"}
+                className={`text-xs py-1 px-2 h-7 rounded-full transition-all duration-300 ${
+                  selectedLanguage === language 
+                    ? "bg-[#B87333] text-white shadow-[0_0_10px_rgba(184,115,51,0.5)]" 
+                    : "text-white/70 hover:text-white hover:bg-[#B87333]/20"
+                }`}
+                onClick={() => handleLanguageChange(language)}
+              >
+                {language}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+      
       <div className="text-center max-w-2xl mx-auto px-4 z-10">
         <div className="mb-8">
           <img 
@@ -30,7 +64,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
         </p>
         <div className="mt-10 flex justify-center gap-4">
           <Button 
-            className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button"
+            className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button shadow-[0_0_15px_rgba(184,115,51,0.4)]"
             onClick={onContinue}
           >
             Begin Your Journey

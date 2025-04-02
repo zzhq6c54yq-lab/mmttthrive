@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Home } from "lucide-react";
-import HomeButton from "./HomeButton";
+import TutorialButton from "./tutorials/TutorialButton";
 
 interface PageProps {
   title: string;
@@ -12,6 +12,7 @@ interface PageProps {
   onBackClick?: () => void;
   fullWidth?: boolean;
   returnToMain?: boolean;
+  featureId?: string;
 }
 
 const Page: React.FC<PageProps> = ({ 
@@ -20,7 +21,8 @@ const Page: React.FC<PageProps> = ({
   showBackButton = true,
   onBackClick,
   fullWidth = false,
-  returnToMain = false
+  returnToMain = false,
+  featureId
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +37,7 @@ const Page: React.FC<PageProps> = ({
       onBackClick();
     } else if (returnToMain) {
       // Return to main dashboard page
-      navigate("/");
+      navigate("/", { state: { screenState: 'main' } });
     } else {
       // Default behavior: go back to previous page
       navigate(-1);
@@ -48,6 +50,9 @@ const Page: React.FC<PageProps> = ({
     navigate("/", { state: { screenState: 'main' } });
   };
   
+  // Get the preferred language from localStorage
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-1 px-1 relative overflow-x-hidden">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23B87333%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
@@ -57,7 +62,7 @@ const Page: React.FC<PageProps> = ({
         <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#B87333]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-full blur-3xl -z-10"></div>
         
-        {/* Title in Header */}
+        {/* Title in Header with language indicator */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
           <div className="flex items-center gap-1">
             {showBackButton && (
@@ -68,7 +73,11 @@ const Page: React.FC<PageProps> = ({
                 onClick={handleBackClick}
               >
                 <ArrowLeft className="h-4 w-4 mr-1" />
-                Back
+                {preferredLanguage === 'English' ? 'Back' : 
+                  preferredLanguage === 'Español' ? 'Atrás' :
+                  preferredLanguage === 'Français' ? 'Retour' :
+                  preferredLanguage === 'Deutsch' ? 'Zurück' :
+                  preferredLanguage === '中文' ? '返回' : 'رجوع'}
               </Button>
             )}
             <Button
@@ -78,18 +87,33 @@ const Page: React.FC<PageProps> = ({
               onClick={handleHomeClick}
             >
               <Home className="h-4 w-4 mr-1" />
-              Home
+              {preferredLanguage === 'English' ? 'Home' : 
+                preferredLanguage === 'Español' ? 'Inicio' :
+                preferredLanguage === 'Français' ? 'Accueil' :
+                preferredLanguage === 'Deutsch' ? 'Startseite' :
+                preferredLanguage === '中文' ? '主页' : 'الرئيسية'}
             </Button>
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>
           </div>
+          
+          {/* Add tutorial button if featureId is provided */}
+          {featureId && (
+            <TutorialButton featureId={featureId} />
+          )}
         </div>
         
         <div className="w-full">
           {children || (
             <div className="p-3 rounded-lg bg-white/5 text-center backdrop-blur-sm">
-              <p className="text-sm text-gray-300">Coming soon! This feature is under development.</p>
+              <p className="text-sm text-gray-300">
+                {preferredLanguage === 'English' ? 'Coming soon! This feature is under development.' : 
+                  preferredLanguage === 'Español' ? '¡Próximamente! Esta función está en desarrollo.' :
+                  preferredLanguage === 'Français' ? 'Bientôt disponible ! Cette fonctionnalité est en cours de développement.' :
+                  preferredLanguage === 'Deutsch' ? 'Demnächst verfügbar! Diese Funktion wird gerade entwickelt.' :
+                  preferredLanguage === '中文' ? '即将推出！此功能正在开发中。' : 'قريبا! هذه الميزة قيد التطوير.'}
+              </p>
             </div>
           )}
         </div>
