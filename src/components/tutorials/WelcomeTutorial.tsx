@@ -9,7 +9,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { 
   ChevronRight, ChevronLeft, Handshake, WalletCards, Crown, CheckCircle,
-  Shield, Heart, Brain, Briefcase, GraduationCap, Sparkles, X
+  Shield, Heart, Brain, Briefcase, GraduationCap, Sparkles, X,
+  CalendarRange, LineChart, Users, Library, PlusCircle, Video, 
+  Headphones, Moon, Book, UserCircle, Target, Compass, HandHeart,
+  ListChecks, MessageSquare, BarChart, Leaf, Flower, Tablet, Stethoscope,
+  Clock, Zap, BookOpen, HeartPulse, HelpCircle, Bell
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -19,7 +23,7 @@ interface WelcomeTutorialProps {
 }
 
 const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0);
   const navigate = useNavigate();
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
@@ -27,21 +31,21 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
   // Reset to first step when opened
   useEffect(() => {
     if (isOpen) {
-      setCurrentStep(0);
+      setStepIndex(0);
     }
   }, [isOpen]);
 
   const handleNext = () => {
-    if (currentStep < tutorialSteps.length - 1) {
-      setCurrentStep(prevStep => prevStep + 1);
+    if (stepIndex < tutorialSteps.length - 1) {
+      setStepIndex(prevStep => prevStep + 1);
     } else {
       onClose();
     }
   };
 
   const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prevStep => prevStep - 1);
+    if (stepIndex > 0) {
+      setStepIndex(prevStep => prevStep - 1);
     }
   };
 
@@ -502,6 +506,505 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
       )
     },
     
+    // Upcoming Appointments
+    {
+      id: "appointments",
+      title: isSpanish ? "Próximas Citas" : "Upcoming Appointments",
+      content: (
+        <div>
+          <div className="bg-gradient-to-br from-[#1A3A5F] to-[#142538] rounded-lg border border-blue-800/30 p-4 mb-6 shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl"></div>
+            
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center">
+                <CalendarRange className="h-5 w-5 text-blue-400 mr-2" />
+                <span>{isSpanish ? "Tus Próximas Citas" : "Your Upcoming Appointments"}</span>
+              </h3>
+              <Button variant="ghost" size="sm" className="h-7 text-xs text-blue-300 hover:text-blue-200 hover:bg-blue-500/20">
+                <PlusCircle className="h-3.5 w-3.5 mr-1" />
+                {isSpanish ? "Programar" : "Schedule"}
+              </Button>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
+                    <Clock className="h-5 w-5 text-blue-300" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium block">{isSpanish ? "Sesión de Terapia" : "Therapy Session"}</span>
+                    <span className="text-xs text-gray-400">{isSpanish ? "Mañana, 3:00 PM" : "Tomorrow, 3:00 PM"}</span>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm" className="h-7 text-xs">
+                  {isSpanish ? "Detalles" : "Details"}
+                </Button>
+              </div>
+              
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mr-3">
+                    <Users className="h-5 w-5 text-purple-300" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium block">{isSpanish ? "Grupo de Apoyo" : "Support Group"}</span>
+                    <span className="text-xs text-gray-400">{isSpanish ? "Viernes, 5:30 PM" : "Friday, 5:30 PM"}</span>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm" className="h-7 text-xs">
+                  {isSpanish ? "Detalles" : "Details"}
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 text-gray-300">
+            <h4 className="font-medium text-white flex items-center">
+              <CalendarRange className="h-5 w-5 text-blue-400 mr-2" />
+              {isSpanish ? "Gestión de Citas" : "Appointment Management"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "La sección de citas te muestra todas tus próximas sesiones programadas con terapeutas, grupos de apoyo, o talleres. Recibe recordatorios automáticos y accede fácilmente a tus citas virtuales." 
+                : "The appointments section shows you all your upcoming scheduled sessions with therapists, support groups, or workshops. Get automatic reminders and easily access your virtual appointments."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Book className="h-5 w-5 text-blue-400 mr-2" />
+              {isSpanish ? "Preparación para Sesiones" : "Session Preparation"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Haz clic en cualquier cita para ver detalles, prepararte para la sesión, o acceder a material preliminar recomendado por tu terapeuta. También puedes completar evaluaciones previas a la sesión." 
+                : "Click on any appointment to see details, prepare for the session, or access preliminary material recommended by your therapist. You can also complete pre-session assessments."}
+            </p>
+            
+            <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 p-3 rounded-lg border border-blue-500/20 mt-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Bell className="h-5 w-5 text-blue-400" />
+                <span className="text-white font-medium">
+                  {isSpanish ? "Recordatorios:" : "Reminders:"}
+                </span>
+              </div>
+              <p className="text-sm text-gray-300">
+                {isSpanish 
+                  ? "Recibirás recordatorios de tus citas 24 horas y 1 hora antes de cada sesión. Puedes personalizar estas notificaciones en la configuración." 
+                  : "You'll receive reminders for your appointments 24 hours and 1 hour before each session. You can customize these notifications in settings."}
+              </p>
+            </div>
+            
+            <div className="pt-2">
+              <Button 
+                variant="outline" 
+                className="w-full border-blue-500/30 text-blue-400 hover:bg-blue-500/20"
+                onClick={() => navigateToFeature("/appointments")}
+              >
+                {isSpanish ? "Ver Todas las Citas" : "View All Appointments"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // Mood & Insights
+    {
+      id: "insights",
+      title: isSpanish ? "Estado de Ánimo & Análisis" : "Mood & Insights",
+      content: (
+        <div>
+          <div className="bg-gradient-to-br from-[#2D2A4A] to-[#1C1A30] rounded-lg border border-indigo-900/30 p-4 mb-6 shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-violet-500/10 rounded-full blur-xl"></div>
+            
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center">
+                <Brain className="h-5 w-5 text-indigo-400 mr-2" />
+                <span>{isSpanish ? "Análisis de Bienestar" : "Wellness Insights"}</span>
+              </h3>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="bg-white/5 p-3 rounded-md border border-white/10">
+                <h4 className="text-sm font-medium text-indigo-300 mb-2 flex items-center">
+                  <LineChart className="h-4 w-4 mr-1" />
+                  {isSpanish ? "Patrones de Estado de Ánimo" : "Mood Patterns"}
+                </h4>
+                <div className="h-24 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-md flex items-end p-2">
+                  <div className="flex-1 h-10 bg-blue-500/30 rounded-sm mx-0.5"></div>
+                  <div className="flex-1 h-15 bg-blue-500/40 rounded-sm mx-0.5"></div>
+                  <div className="flex-1 h-12 bg-purple-500/40 rounded-sm mx-0.5"></div>
+                  <div className="flex-1 h-8 bg-purple-500/30 rounded-sm mx-0.5"></div>
+                  <div className="flex-1 h-16 bg-pink-500/40 rounded-sm mx-0.5"></div>
+                  <div className="flex-1 h-14 bg-pink-500/50 rounded-sm mx-0.5"></div>
+                  <div className="flex-1 h-20 bg-indigo-500/50 rounded-sm mx-0.5"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 text-gray-300">
+            <h4 className="font-medium text-white flex items-center">
+              <LineChart className="h-5 w-5 text-indigo-400 mr-2" />
+              {isSpanish ? "Análisis Personalizados" : "Personalized Insights"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "La sección de análisis proporciona información personalizada basada en tus actividades, patrones de estado de ánimo y progreso en la aplicación. Estos análisis te ayudan a entender mejor tu bienestar mental." 
+                : "The insights section provides personalized information based on your activities, mood patterns, and progress in the app. These insights help you better understand your mental wellbeing."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <BarChart className="h-5 w-5 text-indigo-400 mr-2" />
+              {isSpanish ? "Seguimiento de Patrones" : "Pattern Tracking"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Observa cómo cambian tus patrones de bienestar con el tiempo. Estos análisis se vuelven más precisos cuanto más utilices la aplicación, proporcionando una visión más profunda de tu salud mental." 
+                : "See how your wellness patterns change over time. These insights become more accurate the more you use the app, providing deeper visibility into your mental health."}
+            </p>
+            
+            <div className="bg-gradient-to-r from-indigo-500/10 to-violet-500/10 p-3 rounded-lg border border-indigo-500/20 mt-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="h-5 w-5 text-indigo-400" />
+                <span className="text-white font-medium">
+                  {isSpanish ? "Recomendaciones Inteligentes:" : "Smart Recommendations:"}
+                </span>
+              </div>
+              <p className="text-sm text-gray-300">
+                {isSpanish 
+                  ? "Basándose en tus análisis, recibirás recomendaciones personalizadas para mejorar tu bienestar mental y abordar áreas específicas de preocupación." 
+                  : "Based on your insights, you'll receive personalized recommendations to improve your mental wellbeing and address specific areas of concern."}
+              </p>
+            </div>
+            
+            <div className="pt-2">
+              <Button 
+                variant="outline" 
+                className="w-full border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20"
+                onClick={() => navigateToFeature("/insights")}
+              >
+                {isSpanish ? "Ver Todos los Análisis" : "View All Insights"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // Featured Workshops
+    {
+      id: "workshops",
+      title: isSpanish ? "Talleres Destacados" : "Featured Workshops",
+      content: (
+        <div>
+          <div className="bg-gradient-to-br from-[#2A3B4D] to-[#1A232D] rounded-lg border border-blue-900/30 p-4 mb-6 shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-xl"></div>
+            
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center">
+                <Users className="h-5 w-5 text-teal-400 mr-2" />
+                <span>{isSpanish ? "Talleres de Este Mes" : "This Month's Workshops"}</span>
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 group hover:bg-white/10 transition-all duration-300">
+                <div className="flex items-center mb-2">
+                  <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center mr-2">
+                    <Brain className="h-4 w-4 text-teal-300" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-sm font-medium">{isSpanish ? "Regulación Emocional" : "Emotional Regulation"}</span>
+                  </div>
+                  <div className="text-xs bg-teal-500/20 text-teal-300 py-0.5 px-2 rounded-full">
+                    {isSpanish ? "Popular" : "Popular"}
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mb-2">
+                  {isSpanish ? "Técnicas para manejar emociones intensas" : "Techniques for managing intense emotions"}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500">{isSpanish ? "Jun 15, 7PM" : "Jun 15, 7PM"}</span>
+                  <Button variant="ghost" size="sm" className="h-6 text-xs text-teal-300 hover:text-teal-200 hover:bg-teal-500/20 px-2 py-0">
+                    {isSpanish ? "Registrarse" : "Register"}
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 group hover:bg-white/10 transition-all duration-300">
+                <div className="flex items-center mb-2">
+                  <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-2">
+                    <Headphones className="h-4 w-4 text-blue-300" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-sm font-medium">{isSpanish ? "Atención Plena" : "Mindfulness"}</span>
+                  </div>
+                  <div className="text-xs bg-blue-500/20 text-blue-300 py-0.5 px-2 rounded-full">
+                    {isSpanish ? "Nuevo" : "New"}
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mb-2">
+                  {isSpanish ? "Prácticas diarias para reducir el estrés" : "Daily practices to reduce stress"}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500">{isSpanish ? "Jun 18, 6PM" : "Jun 18, 6PM"}</span>
+                  <Button variant="ghost" size="sm" className="h-6 text-xs text-blue-300 hover:text-blue-200 hover:bg-blue-500/20 px-2 py-0">
+                    {isSpanish ? "Registrarse" : "Register"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 text-gray-300">
+            <h4 className="font-medium text-white flex items-center">
+              <Users className="h-5 w-5 text-teal-400 mr-2" />
+              {isSpanish ? "Talleres Interactivos" : "Interactive Workshops"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Los talleres son sesiones educativas guiadas que cubren diversos temas de salud mental, desde técnicas de manejo del estrés hasta habilidades de comunicación. Están dirigidos por profesionales de salud mental." 
+                : "Workshops are guided educational sessions covering various mental health topics, from stress management techniques to communication skills. They are led by mental health professionals."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Video className="h-5 w-5 text-teal-400 mr-2" />
+              {isSpanish ? "Participación en Talleres" : "Workshop Participation"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Haz clic en un taller para ver detalles, unirte a una sesión en vivo, o acceder a contenido grabado. Puedes interactuar con facilitadores y otros participantes para una experiencia de aprendizaje enriquecedora." 
+                : "Click on a workshop to view details, join a live session, or access recorded content. You can interact with facilitators and other participants for an enriching learning experience."}
+            </p>
+            
+            <div className="bg-gradient-to-r from-teal-500/10 to-blue-500/10 p-3 rounded-lg border border-teal-500/20 mt-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-5 w-5 text-teal-400" />
+                <span className="text-white font-medium">
+                  {isSpanish ? "Beneficios:" : "Benefits:"}
+                </span>
+              </div>
+              <p className="text-sm text-gray-300">
+                {isSpanish 
+                  ? "Participar en talleres te permite aprender habilidades prácticas, conectar con otros en situaciones similares, y ganar créditos de copago para reducir el costo de las sesiones de terapia." 
+                  : "Participating in workshops allows you to learn practical skills, connect with others in similar situations, and earn co-pay credits to reduce the cost of therapy sessions."}
+              </p>
+            </div>
+            
+            <div className="pt-2">
+              <Button 
+                variant="outline" 
+                className="w-full border-teal-500/30 text-teal-400 hover:bg-teal-500/20"
+                onClick={() => navigateToFeature("/workshops")}
+              >
+                {isSpanish ? "Ver Todos los Talleres" : "View All Workshops"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // Key Features
+    {
+      id: "key-features",
+      title: isSpanish ? "Características Principales" : "Key Features",
+      content: (
+        <div>
+          <div className="bg-gradient-to-br from-[#2D2D3D] to-[#1D1D2D] rounded-lg border border-gray-700/30 p-4 mb-6 shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#B87333]/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#E5C5A1]/10 rounded-full blur-xl"></div>
+            
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center">
+                <Sparkles className="h-5 w-5 text-[#E5C5A1] mr-2" />
+                <span>{isSpanish ? "Características Destacadas" : "Featured Capabilities"}</span>
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 flex flex-col items-center text-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/20 flex items-center justify-center mb-2">
+                  <Video className="h-5 w-5 text-[#E5C5A1]" />
+                </div>
+                <span className="text-xs font-medium">{isSpanish ? "Diario en Video" : "Video Diary"}</span>
+              </div>
+              
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 flex flex-col items-center text-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-2">
+                  <UserCircle className="h-5 w-5 text-blue-300" />
+                </div>
+                <span className="text-xs font-medium">{isSpanish ? "Contenido Personalizado" : "Personalized Content"}</span>
+              </div>
+              
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 flex flex-col items-center text-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500/20 to-teal-500/20 flex items-center justify-center mb-2">
+                  <ListChecks className="h-5 w-5 text-green-300" />
+                </div>
+                <span className="text-xs font-medium">{isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges"}</span>
+              </div>
+              
+              <div className="bg-white/5 p-3 rounded-md border border-white/10 flex flex-col items-center text-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center mb-2">
+                  <HelpCircle className="h-5 w-5 text-amber-300" />
+                </div>
+                <span className="text-xs font-medium">{isSpanish ? "Cuestionarios" : "Quizzes"}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 text-gray-300">
+            <h4 className="font-medium text-white flex items-center">
+              <Video className="h-5 w-5 text-[#E5C5A1] mr-2" />
+              {isSpanish ? "Diario en Video" : "Video Diary"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Graba breves videos para documentar tu viaje de bienestar mental. Esta herramienta te permite expresarte de manera más personal y observar los cambios en tu estado emocional a lo largo del tiempo." 
+                : "Record short videos to document your mental wellness journey. This tool allows you to express yourself more personally and observe changes in your emotional state over time."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Library className="h-5 w-5 text-blue-400 mr-2" />
+              {isSpanish ? "Biblioteca de Recursos" : "Resource Library"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Accede a una extensa colección de artículos, videos y herramientas sobre salud mental, desarrollados por expertos y organizados por temas para facilitar tu búsqueda." 
+                : "Access an extensive collection of mental health articles, videos, and tools, developed by experts and organized by topic for easy searching."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Users className="h-5 w-5 text-purple-400 mr-2" />
+              {isSpanish ? "Apoyo Comunitario" : "Community Support"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Conéctate con personas que tienen experiencias similares en foros seguros y moderados. Comparte historias, consejos y encuentra comprensión en una comunidad de apoyo." 
+                : "Connect with people who have similar experiences in safe, moderated forums. Share stories, tips, and find understanding in a supportive community."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Headphones className="h-5 w-5 text-green-400 mr-2" />
+              {isSpanish ? "Tonos Binaurales" : "Binaural Beats"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Auriculares binaurales especialmente diseñados para inducir estados mentales específicos como relajación, enfoque o sueño profundo. Utiliza esta herramienta para ayudar a tu cerebro a sintonizarse con diferentes estados de conciencia." 
+                : "Specially designed binaural tones to induce specific mental states like relaxation, focus, or deep sleep. Use this tool to help your brain tune into different states of consciousness."}
+            </p>
+
+            <div className="pt-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button 
+                variant="outline" 
+                className="border-[#B87333]/30 text-[#E5C5A1] hover:bg-[#B87333]/20"
+                onClick={() => navigateToFeature("/video-diary")}
+              >
+                {isSpanish ? "Explorar Diario en Video" : "Explore Video Diary"}
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                className="border-blue-500/30 text-blue-400 hover:bg-blue-500/20"
+                onClick={() => navigateToFeature("/resource-library")}
+              >
+                {isSpanish ? "Explorar Recursos" : "Explore Resources"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // More Features
+    {
+      id: "more-features",
+      title: isSpanish ? "Más Características" : "More Features",
+      content: (
+        <div>
+          <div className="space-y-4 text-gray-300">
+            <h4 className="font-medium text-white flex items-center">
+              <Leaf className="h-5 w-5 text-green-400 mr-2" />
+              {isSpanish ? "Integración de Estilo de Vida" : "Lifestyle Integration"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Aprende cómo incorporar prácticas de bienestar mental en tu rutina diaria. Esta característica te proporciona sugerencias personalizadas para pequeños cambios que pueden tener un gran impacto en tu bienestar." 
+                : "Learn how to incorporate mental wellness practices into your daily routine. This feature provides personalized suggestions for small changes that can make a big impact on your wellbeing."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <HandHeart className="h-5 w-5 text-pink-400 mr-2" />
+              {isSpanish ? "Recursos Familiares" : "Family Resources"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Herramientas y recursos para ayudar a las familias a navegar por los desafíos de salud mental juntos. Incluye guías para conversaciones difíciles y actividades para fomentar conexiones saludables." 
+                : "Tools and resources to help families navigate mental health challenges together. Includes guides for difficult conversations and activities to foster healthy connections."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Flower className="h-5 w-5 text-purple-400 mr-2" />
+              {isSpanish ? "Terapias Alternativas" : "Alternative Therapies"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Explora enfoques complementarios para el bienestar mental, como arteterapia, musicoterapia, terapia asistida por animales y más. Descubre qué métodos podrían funcionar mejor para ti." 
+                : "Explore complementary approaches to mental wellbeing, such as art therapy, music therapy, animal-assisted therapy, and more. Discover which methods might work best for you."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <Moon className="h-5 w-5 text-blue-400 mr-2" />
+              {isSpanish ? "Herramientas para Dormir" : "Sleep Tools"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Mejora tu sueño con sonidos relajantes, meditaciones guiadas para conciliar el sueño, y seguimiento de patrones de sueño. El buen sueño es fundamental para la salud mental." 
+                : "Improve your sleep with relaxing sounds, guided sleep meditations, and tracking of sleep patterns. Good sleep is fundamental to mental health."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <MessageSquare className="h-5 w-5 text-amber-400 mr-2" />
+              {isSpanish ? "Apoyo en Crisis" : "Crisis Support"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Acceso a recursos de ayuda inmediata para momentos difíciles. Incluye líneas directas de crisis, técnicas de desescalada, y planes de seguridad personalizados para momentos de intensa angustia." 
+                : "Access to immediate help resources for difficult moments. Includes crisis hotlines, de-escalation techniques, and customized safety plans for times of intense distress."}
+            </p>
+            
+            <h4 className="font-medium text-white flex items-center">
+              <BarChart className="h-5 w-5 text-green-400 mr-2" />
+              {isSpanish ? "Análisis de Progreso" : "Progress Analytics"}
+            </h4>
+            <p>
+              {isSpanish 
+                ? "Visualiza tu progreso a lo largo del tiempo con estadísticas detalladas y representaciones gráficas. Identifica patrones, celebra logros y reconoce áreas para seguir mejorando." 
+                : "Visualize your progress over time with detailed statistics and graphical representations. Identify patterns, celebrate achievements, and recognize areas for continued improvement."}
+            </p>
+            
+            <div className="bg-gradient-to-r from-[#B87333]/10 to-[#E5C5A1]/10 p-3 rounded-lg border border-[#B87333]/20 mt-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-5 w-5 text-[#E5C5A1]" />
+                <span className="text-white font-medium">
+                  {isSpanish ? "Personalización:" : "Personalization:"}
+                </span>
+              </div>
+              <p className="text-sm text-gray-300">
+                {isSpanish 
+                  ? "Todas estas características se adaptan a tus necesidades específicas a medida que utilizas la aplicación. Cuanto más interactúes con Thrive MT, más personalizada será tu experiencia." 
+                  : "All of these features adapt to your specific needs as you use the app. The more you interact with Thrive MT, the more personalized your experience will become."}
+              </p>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    
     // Conclusion Step
     {
       id: "conclusion",
@@ -554,7 +1057,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
     }
   ];
   
-  const currentStep = tutorialSteps[currentStep];
+  const currentTutorialStep = tutorialSteps[stepIndex];
   
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -562,14 +1065,19 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
         <div className="flex items-center justify-between border-b border-gray-700 pb-4 mb-2">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-full bg-[#B87333]/20">
-              {currentStep.id === 'welcome' && <Sparkles className="h-5 w-5 text-[#E5C5A1]" />}
-              {currentStep.id === 'new-features' && <Handshake className="h-5 w-5 text-[#E5C5A1]" />}
-              {currentStep.id === 'daily-challenges' && <CheckCircle className="h-5 w-5 text-green-400" />}
-              {currentStep.id === 'specialized-programs' && <Shield className="h-5 w-5 text-blue-400" />}
-              {currentStep.id === 'gratitude-visualizer' && <Heart className="h-5 w-5 text-pink-400" />}
-              {currentStep.id === 'conclusion' && <Sparkles className="h-5 w-5 text-[#E5C5A1]" />}
+              {currentTutorialStep.id === 'welcome' && <Sparkles className="h-5 w-5 text-[#E5C5A1]" />}
+              {currentTutorialStep.id === 'new-features' && <Handshake className="h-5 w-5 text-[#E5C5A1]" />}
+              {currentTutorialStep.id === 'daily-challenges' && <CheckCircle className="h-5 w-5 text-green-400" />}
+              {currentTutorialStep.id === 'specialized-programs' && <Shield className="h-5 w-5 text-blue-400" />}
+              {currentTutorialStep.id === 'gratitude-visualizer' && <Heart className="h-5 w-5 text-pink-400" />}
+              {currentTutorialStep.id === 'appointments' && <CalendarRange className="h-5 w-5 text-blue-400" />}
+              {currentTutorialStep.id === 'insights' && <Brain className="h-5 w-5 text-indigo-400" />}
+              {currentTutorialStep.id === 'workshops' && <Users className="h-5 w-5 text-teal-400" />}
+              {currentTutorialStep.id === 'key-features' && <Sparkles className="h-5 w-5 text-[#E5C5A1]" />}
+              {currentTutorialStep.id === 'more-features' && <Library className="h-5 w-5 text-purple-400" />}
+              {currentTutorialStep.id === 'conclusion' && <Sparkles className="h-5 w-5 text-[#E5C5A1]" />}
             </div>
-            <h2 className="text-xl font-semibold">{currentStep.title}</h2>
+            <h2 className="text-xl font-semibold">{currentTutorialStep.title}</h2>
           </div>
           
           <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-400 hover:text-white">
@@ -579,13 +1087,13 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
         
         <ScrollArea className="max-h-[60vh] pr-4 -mr-4">
           <div className="py-2">
-            {currentStep.content}
+            {currentTutorialStep.content}
           </div>
         </ScrollArea>
         
         <DialogFooter className="flex justify-between space-x-2 pt-4 border-t border-gray-700">
           <div>
-            {currentStep > 0 && (
+            {stepIndex > 0 && (
               <Button 
                 variant="outline" 
                 onClick={handlePrevious}
@@ -603,7 +1111,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
                 <div 
                   key={index} 
                   className={`w-2 h-2 rounded-full ${
-                    currentStep === index 
+                    stepIndex === index 
                       ? 'bg-[#B87333]' 
                       : 'bg-gray-600'
                   }`}
@@ -615,7 +1123,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
               onClick={handleNext}
               className="bg-[#B87333] hover:bg-[#B87333]/80 text-white"
             >
-              {currentStep < tutorialSteps.length - 1 ? (
+              {stepIndex < tutorialSteps.length - 1 ? (
                 <>
                   {isSpanish ? "Siguiente" : "Next"}
                   <ChevronRight className="ml-1 w-4 h-4" />
