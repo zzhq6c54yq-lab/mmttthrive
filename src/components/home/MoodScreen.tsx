@@ -1,11 +1,10 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain } from "lucide-react";
+import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogDescription, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
 
 interface MoodScreenProps {
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
@@ -42,6 +41,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     emergencyHelp: isSpanish ? "Ayuda de emergencia" : "Emergency help",
     needHelp: isSpanish ? "¿Necesitas ayuda?" : "Need help?",
     getSupport: isSpanish ? "Obtener apoyo" : "Get support",
+    scrollDown: isSpanish ? "Desplázate para ver opciones" : "Scroll to see options",
   };
   
   // Mood data with simple icons and mental health colors
@@ -140,7 +140,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     }
   ];
 
-  // Handle mood selection - Simplified to directly select mood
+  // Handle mood selection - Show resources for sad/overwhelmed immediately
   const handleMoodClick = (mood: any) => {
     setSelectedMood(mood.id);
     
@@ -178,7 +178,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           transition={{ duration: 0.6 }}
           className="mb-10 text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
             {translations.title}
           </h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
@@ -186,9 +186,9 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           </p>
         </motion.div>
         
-        {/* Improved Mood Grid with larger spacing */}
+        {/* Mood Grid with larger spacing */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             {moods.map((mood, index) => (
               <motion.div
                 key={mood.id}
@@ -198,9 +198,9 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
               >
                 <button
                   onClick={() => handleMoodClick(mood)}
-                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-5 transition-all duration-300 bg-white/8 hover:bg-white/15 hover:scale-105 border-2 border-white/10 hover:border-white/20 shadow-xl"
+                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/10 hover:bg-white/15 hover:scale-105 border-2 border-white/10 hover:border-white/20 shadow-xl"
                 >
-                  <div className={`w-16 h-16 ${mood.color} rounded-full flex items-center justify-center mb-3 shadow-lg`}>
+                  <div className={`w-20 h-20 ${mood.color} rounded-full flex items-center justify-center mb-4 shadow-lg`}>
                     {mood.icon}
                   </div>
                   <span className="text-white text-lg font-medium">{mood.label}</span>
@@ -210,17 +210,25 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           </div>
         </div>
         
+        {/* Scroll indicator */}
+        <div className="flex justify-center mt-4 mb-8 text-white/50 animate-bounce">
+          <div className="flex flex-col items-center">
+            <ChevronDown className="h-6 w-6" />
+            <span className="text-sm">{translations.scrollDown}</span>
+          </div>
+        </div>
+        
         {/* Back Button */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-12 flex justify-center"
+          className="mt-4 flex justify-center"
         >
           <Button
             onClick={onPrevious}
             variant="outline"
-            className="border-[#B87333]/50 text-white hover:bg-[#B87333]/20"
+            className="border-[#B87333]/50 text-white hover:bg-[#B87333]/20 text-lg py-6 px-8"
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
             {translations.previous}
@@ -247,7 +255,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
               {translations.emergencyResources}
             </h4>
             
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 max-h-[40vh] overflow-y-auto pr-2">
               {emergencyResources.map((resource, index) => (
                 <div 
                   key={index} 
@@ -269,8 +277,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             
             {/* Visual cue - up and down arrows */}
             <div className="flex justify-center my-4">
-              <div className="text-red-400/40 animate-bounce">
-                <ArrowLeft className="rotate-90 w-6 h-6" />
+              <div className="text-red-400/60 animate-bounce">
+                <ChevronDown className="w-6 h-6" />
               </div>
             </div>
           </div>

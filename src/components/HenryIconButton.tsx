@@ -26,9 +26,18 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   
   // Only show on main dashboard, not on any initial screens
   const shouldShow = location.pathname !== "/" || screenState === 'main';
+  
+  // Don't show during emotional check-in flow
+  const isEmotionalCheckIn = location.pathname === "/" && (
+    screenState === 'mood' || 
+    screenState === 'moodResponse' || 
+    screenState === 'intro' || 
+    screenState === 'registration' || 
+    screenState === 'subscription'
+  );
 
   // Don't show the help button on initial screens
-  if (!shouldShow) {
+  if (!shouldShow || isEmotionalCheckIn) {
     return null;
   }
 
@@ -41,8 +50,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     }
   };
 
-  // Determine if we should show the MT logo tutorial button
-  const shouldShowMTButton = location.pathname === "/" && screenState === 'main';
+  // Determine if we should show the THRIVE logo tutorial button - only on main dashboard
+  const shouldShowThriveButton = location.pathname === "/" && screenState === 'main';
 
   return (
     <>
@@ -64,7 +73,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
         </Button>
         
         {/* Only show the THRIVE tutorial button on the main dashboard */}
-        {shouldShowMTButton && (
+        {shouldShowThriveButton && (
           <TutorialButton 
             featureId="dashboard" 
             variant="logo" 
