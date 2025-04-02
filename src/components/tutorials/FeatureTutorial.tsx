@@ -260,7 +260,11 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
           '中文': '完成每日挑战，改善您的心理健康并获取积分兑换共付额积分。',
           'العربية': 'أكمل التحديات اليومية لتحسين صحتك العقلية وكسب النقاط نحو ائتمانات الدفع المشترك.'
         }
-      },
+      }
+    };
+    
+    // Common button/navigation translations that should be available for all features
+    const commonTranslations: Record<string, Record<string, string>> = {
       'next': {
         'English': 'Next',
         'Español': 'Siguiente',
@@ -303,7 +307,12 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
       }
     };
     
-    // Default to English if translation not found
+    // Check if the requested translation is a common UI element
+    if (commonTranslations[type]) {
+      return commonTranslations[type][preferredLanguage] || commonTranslations[type]['English'];
+    }
+    
+    // Check if the feature-specific translation exists
     if (!translations[type] || !translations[type][feature]) {
       return type === 'next' ? 'Next' : 
              type === 'previous' ? 'Previous' : 
