@@ -102,7 +102,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* This is the WelcomeTutorial component that will replace the previous welcome dialog */}
+      {/* WelcomeTutorial component that replaces welcome dialog */}
       <WelcomeTutorial
         isOpen={isFirstVisit}
         onClose={handleCloseTutorial}
