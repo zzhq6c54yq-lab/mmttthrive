@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { PhoneCall, MessageSquare, LifeBuoy, Heart } from "lucide-react";
+import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
 
 interface MoodScreenProps {
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
@@ -19,6 +19,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
   // State for mood selection and dialog
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [showMoodDialog, setShowMoodDialog] = useState(false);
+  const [showResourcesDialog, setShowResourcesDialog] = useState(false);
   
   // Translations
   const translations = {
@@ -32,8 +33,9 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     overwhelmed: isSpanish ? "Abrumado" : "Overwhelmed",
     previous: isSpanish ? "Anterior" : "Previous",
     continueText: isSpanish ? "Continuar" : "Continue",
-    inspirationalMessage: isSpanish ? "Un mensaje para ti" : "A message for you",
     emergencyResources: isSpanish ? "Recursos de apoyo" : "Support resources",
+    warningText: isSpanish ? "Pareces estar pasando por un momento difícil" : "You seem to be going through a difficult time",
+    helpAvailable: isSpanish ? "Hay ayuda disponible" : "Help is available",
     callNow: isSpanish ? "Llamar ahora" : "Call now",
     textLine: isSpanish ? "Línea de texto" : "Text line",
     crisisSupport: isSpanish ? "Apoyo en crisis" : "Crisis support",
@@ -46,13 +48,13 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       id: 'happy',
       label: translations.happy,
       icon: <Smile className="w-full h-full" />,
-      color: "bg-yellow-500",
-      textColor: "text-yellow-500",
-      lightColor: "bg-yellow-100",
-      borderColor: "border-yellow-300",
+      color: "bg-green-500",
+      textColor: "text-green-500",
+      lightColor: "bg-green-100",
+      borderColor: "border-green-300",
       message: isSpanish 
-        ? "Tu alegría es un regalo para el mundo. Cada sonrisa que compartes tiene el poder de iluminar el día de alguien más. Hoy, permítete disfrutar de esta felicidad y dejar que te guíe hacia momentos aún más hermosos. Tu energía positiva es contagiosa y necesaria."
-        : "Your joy is a gift to the world. Each smile you share has the power to brighten someone else's day. Today, allow yourself to enjoy this happiness and let it guide you to even more beautiful moments. Your positive energy is contagious and needed."
+        ? "Tu alegría es un regalo para el mundo. Cada sonrisa que compartes tiene el poder de iluminar el día de alguien más."
+        : "Your joy is a gift to the world. Each smile you share has the power to brighten someone else's day."
     },
     {
       id: 'ok',
@@ -63,8 +65,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       lightColor: "bg-blue-100",
       borderColor: "border-blue-300",
       message: isSpanish 
-        ? "Estar 'más o menos' es un lugar de auténtica sabiduría. No todo tiene que ser extraordinario para ser valioso. En esta calma moderada, hay espacio para reflexionar y apreciar las pequeñas cosas. Recuerda que incluso en días promedio, estás creciendo y evolucionando."
-        : "Being 'just okay' is a place of genuine wisdom. Not everything needs to be extraordinary to be valuable. In this moderate calm, there's room to reflect and appreciate the little things. Remember that even on average days, you're still growing and evolving."
+        ? "Estar 'más o menos' es un lugar de auténtica sabiduría. No todo tiene que ser extraordinario para ser valioso."
+        : "Being 'just okay' is a place of genuine wisdom. Not everything needs to be extraordinary to be valuable."
     },
     {
       id: 'neutral',
@@ -75,8 +77,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       lightColor: "bg-gray-100",
       borderColor: "border-gray-300",
       message: isSpanish 
-        ? "La neutralidad es un lienzo en blanco lleno de posibilidades. Desde este espacio equilibrado, puedes elegir conscientemente hacia dónde dirigir tu energía. Esta sensación de calma centrada es una fuerza poderosa que te permite observar con claridad y actuar con intención. Confía en tu camino."
-        : "Neutrality is a blank canvas full of possibilities. From this balanced space, you can consciously choose where to direct your energy. This feeling of centered calm is a powerful force that allows you to observe with clarity and act with intention. Trust your path."
+        ? "La neutralidad es un lienzo en blanco lleno de posibilidades. Desde este espacio equilibrado, puedes elegir conscientemente hacia dónde dirigir tu energía."
+        : "Neutrality is a blank canvas full of possibilities. From this balanced space, you can consciously choose where to direct your energy."
     },
     {
       id: 'down',
@@ -87,8 +89,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       lightColor: "bg-indigo-100",
       borderColor: "border-indigo-300",
       message: isSpanish 
-        ? "Sentirse decaído no es un signo de debilidad, sino de humanidad. Tus emociones, incluso las difíciles, te enseñan sobre ti mismo y lo que necesitas. Sé amable contigo hoy. Recuerda que los momentos difíciles son como nubes pasajeras - no durarán para siempre, y el sol siempre regresa."
-        : "Feeling down isn't a sign of weakness, but of humanity. Your emotions, even the difficult ones, teach you about yourself and what you need. Be gentle with yourself today. Remember that difficult moments are like passing clouds - they won't last forever, and the sun always returns."
+        ? "Sentirse decaído no es un signo de debilidad, sino de humanidad. Tus emociones, incluso las difíciles, te enseñan sobre ti mismo y lo que necesitas."
+        : "Feeling down isn't a sign of weakness, but of humanity. Your emotions, even the difficult ones, teach you about yourself and what you need."
     },
     {
       id: 'sad',
@@ -99,20 +101,20 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       lightColor: "bg-purple-100",
       borderColor: "border-purple-300",
       message: isSpanish 
-        ? "Tu tristeza habla de tu profunda capacidad para sentir. En estos momentos vulnerables, recuerda que no estás solo, aunque el camino se sienta solitario. Permítete sentir plenamente, sabiendo que cada lágrima limpia y renueva. La esperanza siempre espera pacientemente para volver a tu corazón."
-        : "Your sadness speaks to your deep capacity to feel. In these vulnerable moments, remember you are not alone, even when the path feels solitary. Allow yourself to feel fully, knowing each tear cleanses and renews. Hope is always waiting patiently to return to your heart."
+        ? "Tu tristeza habla de tu profunda capacidad para sentir. En estos momentos vulnerables, recuerda que no estás solo, aunque el camino se sienta solitario."
+        : "Your sadness speaks to your deep capacity to feel. In these vulnerable moments, remember you are not alone, even when the path feels solitary."
     },
     {
       id: 'overwhelmed',
       icon: <Angry className="w-full h-full" />,
       label: translations.overwhelmed,
-      color: "bg-orange-500",
-      textColor: "text-orange-500",
-      lightColor: "bg-orange-100",
-      borderColor: "border-orange-300",
+      color: "bg-red-500",
+      textColor: "text-red-500",
+      lightColor: "bg-red-100",
+      borderColor: "border-red-300",
       message: isSpanish 
-        ? "Cuando todo se siente demasiado, recuerda respirar. No necesitas cargar el peso del mundo en tus hombros. Da un pequeño paso, solo uno, y luego el siguiente. Está bien establecer límites, pedir ayuda, y tomarte un momento para ti. Tu valor no está en lo que haces, sino en quién eres."
-        : "When everything feels too much, remember to breathe. You don't need to carry the weight of the world on your shoulders. Take one small step, just one, and then the next. It's okay to set boundaries, ask for help, and take a moment for yourself. Your worth isn't in what you do, but in who you are."
+        ? "Cuando todo se siente demasiado, recuerda respirar. No necesitas cargar el peso del mundo en tus hombros. Da un pequeño paso, solo uno, y luego el siguiente."
+        : "When everything feels too much, remember to breathe. You don't need to carry the weight of the world on your shoulders. Take one small step, just one, and then the next."
     }
   ];
 
@@ -154,9 +156,16 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     setShowMoodDialog(true);
   };
 
+  // Handle showing resources for sad/overwhelmed moods
+  const handleShowResources = () => {
+    setShowMoodDialog(false);
+    setShowResourcesDialog(true);
+  };
+
   // Handle continuing after showing message
   const handleContinue = () => {
     setShowMoodDialog(false);
+    setShowResourcesDialog(false);
     if (selectedMood) {
       onMoodSelect(selectedMood as any);
     }
@@ -173,7 +182,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-[#B87333]/3 rounded-full blur-3xl"></div>
       </div>
       
       {/* Content */}
@@ -183,9 +191,9 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
+          className="mb-8 text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
             {translations.title}
           </h1>
           <p className="text-lg text-white/80 max-w-xl mx-auto">
@@ -193,9 +201,9 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           </p>
         </motion.div>
         
-        {/* Mood Grid */}
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-8 max-w-4xl mx-auto">
+        {/* Simplified Mood Grid */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
             {moods.map((mood, index) => (
               <motion.div
                 key={mood.id}
@@ -205,17 +213,12 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
               >
                 <button
                   onClick={() => handleMoodClick(mood)}
-                  className={`h-full w-full flex flex-col items-center rounded-2xl p-5 md:p-6 transition-all duration-300 bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:scale-105 hover:shadow-lg`}
+                  className="w-full h-24 md:h-28 flex flex-col items-center justify-center rounded-lg p-3 transition-all duration-300 bg-white/5 hover:bg-white/10 hover:scale-105"
                 >
-                  <div className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full ${mood.lightColor} ${mood.borderColor} border-2 mb-4 text-white`}>
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center ${mood.color}`}>
-                      {mood.icon}
-                    </div>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${mood.color} mb-2`}>
+                    {mood.icon}
                   </div>
-                  <h3 className="text-lg md:text-xl font-medium text-white">
-                    {mood.label}
-                  </h3>
-                  <div className={`mt-3 h-1 w-10 ${mood.color} rounded-full opacity-80`}></div>
+                  <span className="text-white font-medium">{mood.label}</span>
                 </button>
               </motion.div>
             ))}
@@ -227,11 +230,12 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-12 flex justify-center"
+          className="mt-8 flex justify-center"
         >
           <Button
             onClick={onPrevious}
-            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white font-medium px-6 py-6 h-auto text-lg rounded-xl"
+            variant="outline"
+            className="border-[#B87333]/50 text-white hover:bg-[#B87333]/20"
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
             {translations.previous}
@@ -241,10 +245,10 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       
       {/* Inspirational Message Dialog */}
       <Dialog open={showMoodDialog} onOpenChange={setShowMoodDialog}>
-        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/30 text-white max-w-lg">
+        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/30 text-white max-w-md">
           <DialogHeader>
             <DialogTitle className={`text-xl font-bold flex items-center gap-2 ${getSelectedMood()?.textColor}`}>
-              <div className={`p-2 rounded-full ${getSelectedMood()?.lightColor}`}>
+              <div className={`p-2 rounded-full ${getSelectedMood()?.color}`}>
                 {getSelectedMood()?.icon}
               </div>
               {getSelectedMood()?.label}
@@ -253,46 +257,79 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           
           <div className="mt-2">
             {/* Inspirational message */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-5 border border-white/10 mb-4">
-              <p className="text-white/90 leading-relaxed text-lg italic">
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <p className="text-white/90 leading-relaxed">
                 "{getSelectedMood()?.message}"
               </p>
             </div>
-            
-            {/* Emergency resources for sad and overwhelmed moods */}
-            {(selectedMood === 'sad' || selectedMood === 'overwhelmed') && (
-              <div className="mt-6">
-                <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-400" />
-                  {translations.emergencyResources}
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {emergencyResources.map((resource, index) => (
-                    <div 
-                      key={index} 
-                      className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 hover:bg-white/10 transition-colors"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="p-2 bg-[#B87333]/20 rounded-full text-[#B87333]">
-                          {resource.icon}
-                        </div>
-                        <div>
-                          <h5 className="font-medium mb-1">{resource.title}</h5>
-                          <p className="text-white/70 text-sm mb-2">{resource.description}</p>
-                          <p className="text-[#B87333] font-bold">{resource.contact}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          </div>
+          
+          <DialogFooter className="mt-4 flex flex-col gap-2">
+            {(selectedMood === 'sad' || selectedMood === 'overwhelmed') ? (
+              <Button 
+                className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+                onClick={handleShowResources}
+              >
+                {translations.continueText}
+              </Button>
+            ) : (
+              <Button 
+                className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+                onClick={handleContinue}
+              >
+                {translations.continueText}
+              </Button>
             )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Support Resources Dialog (only for sad/overwhelmed) */}
+      <Dialog open={showResourcesDialog} onOpenChange={setShowResourcesDialog}>
+        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/30 text-white max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2 text-red-400">
+              <AlertTriangle className="h-6 w-6 text-red-400" />
+              {translations.helpAvailable}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="mt-2">
+            <div className="bg-red-500/10 backdrop-blur-sm rounded-lg p-4 border border-red-500/20 mb-4">
+              <p className="text-white/90 leading-relaxed">
+                {translations.warningText}
+              </p>
+            </div>
+            
+            <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+              <Heart className="h-5 w-5 text-red-400" />
+              {translations.emergencyResources}
+            </h4>
+            
+            <div className="grid grid-cols-1 gap-3">
+              {emergencyResources.map((resource, index) => (
+                <div 
+                  key={index} 
+                  className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-red-500/20 rounded-full text-red-400">
+                      {resource.icon}
+                    </div>
+                    <div>
+                      <h5 className="font-medium mb-1">{resource.title}</h5>
+                      <p className="text-white/70 text-sm mb-1">{resource.description}</p>
+                      <p className="text-red-400 font-bold">{resource.contact}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           
           <DialogFooter className="mt-4">
             <Button 
-              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white py-2"
+              className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-white"
               onClick={handleContinue}
             >
               {translations.continueText}
