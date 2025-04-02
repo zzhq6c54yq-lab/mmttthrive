@@ -63,6 +63,7 @@ import ScrollToTop from './components/ScrollToTop';
 function App() {
   return (
     <Router>
+      {/* ScrollToTop must be inside Router to have access to Router context */}
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Index />} />
