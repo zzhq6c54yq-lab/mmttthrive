@@ -1,7 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed, PhoneCall, MessageSquare, Headphones, AlertTriangle } from "lucide-react";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface MoodResponseProps {
@@ -11,7 +11,6 @@ interface MoodResponseProps {
 }
 
 const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, onPrevious }) => {
-  const [showEmergencyServices, setShowEmergencyServices] = useState(false);
   const [activeAffirmation, setActiveAffirmation] = useState(0);
   
   // Get preferred language
@@ -20,17 +19,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   
   // Translations
   const translations = {
-    emergencyTitle: isSpanish ? "Servicios de Apoyo de Emergencia Disponibles" : "Emergency Support Services Available",
-    emergencyDesc: isSpanish ? "Si estás experimentando una crisis, la ayuda está disponible ahora mismo." : "If you're experiencing a crisis, help is available right now.",
-    crisisHelpline: isSpanish ? "Línea de Ayuda para Crisis" : "Crisis Helpline",
-    crisisNumber: isSpanish ? "Llama al 988 - Disponible 24/7" : "Call 988 - Available 24/7",
-    textSupport: isSpanish ? "Apoyo por Mensaje de Texto" : "Text Support",
-    textDetails: isSpanish ? "Envía HOME al 741741" : "Text HOME to 741741",
-    suicidePrevention: isSpanish ? "Línea de Prevención del Suicidio" : "Suicide Prevention Lifeline",
-    emergencyServices: isSpanish ? "Servicios de Emergencia" : "Emergency Services",
-    emergency911: isSpanish ? "Llama al 911 para ayuda inmediata" : "Call 911 for immediate help",
-    continueTo: isSpanish ? "Continuar a Recursos de Apoyo" : "Continue to Support Resources",
-    continueToRegister: isSpanish ? "Continuar con el Registro" : "Continue to Register",
     continue: isSpanish ? "Continuar" : "Continue",
     previous: isSpanish ? "Anterior" : "Previous",
     happyTitle: isSpanish ? "¡Tu Luz Brilla Hoy!" : "Your Light Shines Bright Today!",
@@ -206,83 +194,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     
     return () => clearInterval(interval);
   }, [selectedMood, isSpanish]);
-  
-  const handleContinue = () => {
-    if (selectedMood === 'sad' || selectedMood === 'overwhelmed') {
-      setShowEmergencyServices(true);
-    } else {
-      onContinue();
-    }
-  };
-
-  const renderEmergencyServices = () => {
-    return (
-      <Dialog open={showEmergencyServices} onOpenChange={setShowEmergencyServices}>
-        <DialogContent className="max-w-md bg-red-50 border-2 border-red-500">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold text-center text-red-700">
-              {translations.emergencyTitle}
-            </DialogTitle>
-            <DialogDescription className="text-center pt-2 text-red-600 text-lg">
-              {translations.emergencyDesc}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4 my-4">
-            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
-              <PhoneCall className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0" />
-              <div>
-                <h3 className="font-medium text-red-700 text-lg">{translations.crisisHelpline}</h3>
-                <p className="text-red-600 text-base">{translations.crisisNumber}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
-              <MessageSquare className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0" />
-              <div>
-                <h3 className="font-medium text-red-700 text-lg">{translations.textSupport}</h3>
-                <p className="text-red-600 text-base">{translations.textDetails}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
-              <Headphones className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0" />
-              <div>
-                <h3 className="font-medium text-red-700 text-lg">{translations.suicidePrevention}</h3>
-                <p className="text-red-600 text-base">1-800-273-8255</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
-              <AlertTriangle className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0 animate-pulse" />
-              <div>
-                <h3 className="font-medium text-red-700 text-lg">{translations.emergencyServices}</h3>
-                <p className="text-red-600 text-base">{translations.emergency911}</p>
-              </div>
-            </div>
-            
-            <div className="flex justify-center my-4">
-              <div className="text-red-400 animate-bounce">
-                <ArrowLeft className="rotate-90 w-6 h-6" />
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter className="flex justify-center">
-            <Button 
-              className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-6"
-              onClick={() => {
-                setShowEmergencyServices(false);
-                onContinue();
-              }}
-            >
-              {translations.continueTo}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    );
-  };
 
   if (!selectedMood) return null;
   
@@ -294,22 +205,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl transform rotate-12"></div>
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[#B87333]/5 rounded-full blur-3xl"></div>
       </div>
-      
-      <motion.div 
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="absolute top-6 right-6 z-20"
-      >
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center shadow-lg p-1">
-          <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center">
-            <div className="text-[#B87333] font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
-              <span className="text-xl">MT</span>
-              <span className="text-[8px] opacity-80 -mt-1">THRIVE</span>
-            </div>
-          </div>
-        </div>
-      </motion.div>
       
       <div className="z-10 w-full max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative">
@@ -383,7 +278,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               
               <Button 
                 className="bg-[#B87333] hover:bg-[#B87333]/90 text-white text-lg py-6 px-8"
-                onClick={handleContinue}
+                onClick={onContinue}
               >
                 {translations.continue}
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -392,8 +287,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
           </div>
         </div>
       </div>
-      
-      {renderEmergencyServices()}
     </div>
   );
 };

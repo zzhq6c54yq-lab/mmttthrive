@@ -19,7 +19,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
   
   // State for mood selection and dialogs
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [showMoodDialog, setShowMoodDialog] = useState(false);
   const [showResourcesDialog, setShowResourcesDialog] = useState(false);
   
   // Translations
@@ -141,22 +140,16 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     }
   ];
 
-  // Handle mood selection
+  // Handle mood selection - Simplified to directly select mood
   const handleMoodClick = (mood: any) => {
     setSelectedMood(mood.id);
-    setShowMoodDialog(true);
-  };
-
-  // Handle continuing after showing message
-  const handleContinue = () => {
-    setShowMoodDialog(false);
     
     // For sad/overwhelmed moods, show resources first
-    if (selectedMood === 'sad' || selectedMood === 'overwhelmed') {
+    if (mood.id === 'sad' || mood.id === 'overwhelmed') {
       setShowResourcesDialog(true);
-    } else if (selectedMood) {
+    } else if (mood.id) {
       // For other moods, proceed directly
-      onMoodSelect(selectedMood as any);
+      onMoodSelect(mood.id as any);
     }
   };
   
@@ -166,11 +159,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     if (selectedMood) {
       onMoodSelect(selectedMood as any);
     }
-  };
-
-  // Get selected mood object
-  const getSelectedMood = () => {
-    return moods.find(m => m.id === selectedMood);
   };
 
   return (
@@ -239,45 +227,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           </Button>
         </motion.div>
       </div>
-      
-      {/* Inspirational Message Dialog - Enhanced */}
-      <Dialog open={showMoodDialog} onOpenChange={setShowMoodDialog}>
-        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/30 text-white max-w-md">
-          <DialogHeader>
-            <DialogTitle className={`text-2xl font-bold flex items-center gap-3 ${getSelectedMood()?.textColor}`}>
-              <div className={`p-2 rounded-full ${getSelectedMood()?.color}`}>
-                {getSelectedMood()?.icon}
-              </div>
-              {getSelectedMood()?.label}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="mt-4">
-            {/* Inspirational message - larger text and better formatting */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-              <p className="text-white/90 leading-relaxed text-lg md:text-xl text-center">
-                "{getSelectedMood()?.message}"
-              </p>
-            </div>
-            
-            {/* Visual cue - up and down arrows */}
-            <div className="flex justify-center my-4">
-              <div className="text-white/40 animate-bounce">
-                <ArrowLeft className="rotate-90 w-6 h-6" />
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter className="mt-2">
-            <Button 
-              className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-white text-lg py-6"
-              onClick={handleContinue}
-            >
-              {translations.continueText}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
       
       {/* Support Resources Dialog (only for sad/overwhelmed) - Enhanced Alert */}
       <AlertDialog open={showResourcesDialog} onOpenChange={setShowResourcesDialog}>

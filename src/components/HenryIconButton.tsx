@@ -63,7 +63,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
           </div>
         </Button>
         
-        {/* Only show the MT logo tutorial button on the main dashboard */}
+        {/* Only show the THRIVE tutorial button on the main dashboard */}
         {shouldShowMTButton && (
           <TutorialButton 
             featureId="dashboard" 
