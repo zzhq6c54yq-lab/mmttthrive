@@ -36,67 +36,73 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     overwhelmedTooltip: isSpanish ? "Las cosas se sienten intensas, pero busco equilibrio" : "Things feel intense, but I'm seeking balance"
   };
 
-  // Mood data with additional styling information
+  // Mood data with updated styling information for a more modern and sleek look
   const moods = [
     {
       id: 'happy',
       label: translations.happy,
       icon: <Smile className="w-full h-full" />,
       tooltip: translations.happyTooltip,
-      color: "from-yellow-300 to-amber-400",
+      gradient: "bg-gradient-to-br from-yellow-300 to-amber-400",
+      shadowColor: "shadow-amber-200/50",
       textColor: "text-amber-700",
-      iconColor: "text-amber-500",
-      bgLight: "bg-amber-100"
+      iconGradient: "bg-gradient-to-br from-yellow-200 to-amber-300",
+      accentColor: "amber-400"
     },
     {
       id: 'ok',
       label: translations.justOk,
       icon: <Annoyed className="w-full h-full" />,
       tooltip: translations.justOkTooltip,
-      color: "from-blue-300 to-sky-400",
+      gradient: "bg-gradient-to-br from-blue-300 to-sky-400",
+      shadowColor: "shadow-sky-200/50",
       textColor: "text-sky-700",
-      iconColor: "text-sky-500",
-      bgLight: "bg-sky-100"
+      iconGradient: "bg-gradient-to-br from-blue-200 to-sky-300",
+      accentColor: "sky-400"
     },
     {
       id: 'neutral',
       label: translations.neutral,
       icon: <Meh className="w-full h-full" />,
       tooltip: translations.neutralTooltip,
-      color: "from-gray-300 to-gray-400",
+      gradient: "bg-gradient-to-br from-gray-300 to-gray-400",
+      shadowColor: "shadow-gray-200/50",
       textColor: "text-gray-700",
-      iconColor: "text-gray-500",
-      bgLight: "bg-gray-100"
+      iconGradient: "bg-gradient-to-br from-gray-200 to-gray-300",
+      accentColor: "gray-400"
     },
     {
       id: 'down',
       label: translations.down,
       icon: <HeartCrack className="w-full h-full" />,
       tooltip: translations.downTooltip,
-      color: "from-indigo-300 to-indigo-400",
+      gradient: "bg-gradient-to-br from-indigo-300 to-indigo-400",
+      shadowColor: "shadow-indigo-200/50",
       textColor: "text-indigo-700",
-      iconColor: "text-indigo-500",
-      bgLight: "bg-indigo-100"
+      iconGradient: "bg-gradient-to-br from-indigo-200 to-indigo-300",
+      accentColor: "indigo-400"
     },
     {
       id: 'sad',
       label: translations.sad,
       icon: <Frown className="w-full h-full" />,
       tooltip: translations.sadTooltip,
-      color: "from-purple-300 to-purple-400",
+      gradient: "bg-gradient-to-br from-purple-300 to-purple-400",
+      shadowColor: "shadow-purple-200/50",
       textColor: "text-purple-700",
-      iconColor: "text-purple-500",
-      bgLight: "bg-purple-100"
+      iconGradient: "bg-gradient-to-br from-purple-200 to-purple-300",
+      accentColor: "purple-400"
     },
     {
       id: 'overwhelmed',
       label: translations.overwhelmed,
       icon: <Angry className="w-full h-full" />,
       tooltip: translations.overwhelmedTooltip,
-      color: "from-orange-300 to-orange-400",
+      gradient: "bg-gradient-to-br from-orange-300 to-orange-400",
+      shadowColor: "shadow-orange-200/50",
       textColor: "text-orange-700",
-      iconColor: "text-orange-500",
-      bgLight: "bg-orange-100"
+      iconGradient: "bg-gradient-to-br from-orange-200 to-orange-300",
+      accentColor: "orange-400"
     }
   ];
 
@@ -172,21 +178,31 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             >
               <button 
                 onClick={() => onMoodSelect(mood.id as any)}
-                className={`w-full h-full flex flex-col items-center rounded-2xl overflow-hidden transition-all duration-300 ${
-                  hoveredMood === mood.id 
-                    ? "scale-105 shadow-lg" 
-                    : "scale-100 shadow"
-                }`}
+                className="w-full h-full flex flex-col items-center overflow-hidden transition-all duration-300 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl hover:shadow-2xl"
+                style={{
+                  transform: hoveredMood === mood.id ? 'scale(1.05)' : 'scale(1)',
+                  transition: 'all 0.3s ease'
+                }}
                 aria-label={mood.label}
               >
-                <div className={`w-full bg-gradient-to-br ${mood.color} p-6 flex justify-center`}>
-                  <div className={`w-16 h-16 md:w-20 md:h-20 ${mood.iconColor}`}>
+                {/* Top section with icon */}
+                <div className={`w-full p-6 text-center ${mood.gradient} bg-opacity-90`}>
+                  <div className={`w-20 h-20 mx-auto rounded-full p-4 ${mood.iconGradient} shadow-lg ${mood.shadowColor} text-white`}>
                     {mood.icon}
                   </div>
                 </div>
-                <div className={`w-full ${mood.bgLight} p-4`}>
-                  <h3 className={`text-lg font-medium ${mood.textColor}`}>{mood.label}</h3>
-                  <p className={`text-sm ${mood.textColor}/70 mt-1`}>{mood.tooltip}</p>
+                
+                {/* Content section */}
+                <div className="w-full bg-white/10 backdrop-blur-md p-5 flex-1 flex flex-col justify-between">
+                  <h3 className={`text-xl font-medium text-white mb-2`}>
+                    {mood.label}
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    {mood.tooltip}
+                  </p>
+                  <div className="mt-4 w-full">
+                    <div className={`h-1 w-1/3 bg-${mood.accentColor} rounded-full mx-auto opacity-70`}></div>
+                  </div>
                 </div>
               </button>
             </motion.div>

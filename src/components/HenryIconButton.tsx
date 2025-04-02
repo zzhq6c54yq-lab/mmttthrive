@@ -47,13 +47,13 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
         <Button
           variant="bronze"
           size="h-icon"
-          className={`rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
+          className={`rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-xl hover:shadow-[0_0_25px_rgba(184,115,51,0.6)] ${className}`}
           onClick={handleClick}
           aria-label="Ask for Help"
           title="Ask for Help"
         >
           <div className="h-14 w-14 flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
-            <Avatar className="h-10 w-10 rounded-full border border-[#B87333]/30">
+            <Avatar className="h-10 w-10 rounded-full border border-[#B87333]/30 shadow-inner">
               <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
               <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">H</AvatarFallback>
             </Avatar>
@@ -63,7 +63,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
         <TutorialButton 
           featureId="dashboard" 
           variant="logo" 
-          className="shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)]"
+          className="shadow-xl hover:shadow-[0_0_25px_rgba(184,115,51,0.6)]"
         />
       </div>
       

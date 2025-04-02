@@ -48,10 +48,10 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
           variant="ghost"
           size="icon"
           onClick={handleOpenTutorial}
-          className={`p-0 h-16 w-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#B87333] hover:to-[#E5C5A1] hover:opacity-90 ${className}`}
+          className={`p-0 h-16 w-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#B87333] hover:to-[#E5C5A1] hover:opacity-90 shadow-lg ${className}`}
           aria-label={isSpanish ? "Abrir tutorial" : "Open tutorial"}
         >
-          <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center p-1">
+          <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center p-1 backdrop-blur-md border border-[#B87333]/30">
             <div className="text-[#B87333] font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
               <span className="text-xl">MT</span>
               <span className="text-[8px] opacity-80 -mt-1">THRIVE</span>
@@ -74,7 +74,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       <Button
         variant="outline"
         size="sm"
-        className={`bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs ${className}`}
+        className={`bg-white/5 hover:bg-white/15 border-white/10 text-white/90 backdrop-blur-sm shadow-md hover:shadow-lg text-xs ${className}`}
         onClick={handleOpenTutorial}
       >
         <HelpCircle className="h-4 w-4 mr-1.5" />
