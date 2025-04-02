@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -11,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Lightbulb, ChevronRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import FeatureTutorial from "@/components/tutorials/FeatureTutorial";
+import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 
 const Index = () => {
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
@@ -24,13 +23,8 @@ const Index = () => {
     email: '',
     password: '',
   });
-  const [showFeatureTutorial, setShowFeatureTutorial] = useState(false);
+  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
-  const [currentFeatureId, setCurrentFeatureId] = useState<string>("dashboard");
-  const [tutorialCompleted, setTutorialCompleted] = useState(false);
-  const [autoProgressTutorial, setAutoProgressTutorial] = useState(false);
-  const [tutorialInterval, setTutorialInterval] = useState<NodeJS.Timeout | null>(null);
 
   const mousePosition = useMousePosition();
   const navigate = useNavigate();
@@ -91,7 +85,7 @@ const Index = () => {
       console.log("Coming from onboarding screen?", comingFromOnboarding);
       
       if (comingFromOnboarding) {
-        console.log("INDEX TRIGGER: Forcing tutorial to show for transition from", prevState, "to main");
+        console.log("INDEX TRIGGER: Forcing welcome tutorial to show for transition from", prevState, "to main");
         
         localStorage.setItem('dashboardTutorialShown', 'false');
         
@@ -104,143 +98,14 @@ const Index = () => {
         }
         
         setTimeout(() => {
-          setShowMainTutorial(true);
-          setCurrentFeatureId("dashboard");
-          setTutorialStep(0);
-          setAutoProgressTutorial(true);
-          console.log("Tutorial visibility forcibly set to true with delay");
+          setShowWelcomeTutorial(true);
+          console.log("Welcome tutorial visibility forcibly set to true with delay");
         }, 300);
       }
     }
     
     localStorage.setItem('prevScreenState', screenState);
-  }, [screenState, setShowMainTutorial]);
-
-  useEffect(() => {
-    if (showMainTutorial && autoProgressTutorial) {
-      if (tutorialInterval) {
-        clearInterval(tutorialInterval);
-      }
-      
-      const interval = setInterval(() => {
-        if (tutorialStep < mainFeatures.length - 1) {
-          setTutorialStep(step => step + 1);
-          setCurrentFeatureId(mainFeatures[tutorialStep + 1].id);
-        } else {
-          handleFinishTutorial();
-          clearInterval(interval);
-        }
-      }, 8000);
-      
-      setTutorialInterval(interval);
-    }
-    
-    return () => {
-      if (tutorialInterval) {
-        clearInterval(tutorialInterval);
-      }
-    };
-  }, [showMainTutorial, autoProgressTutorial, tutorialStep]);
-
-  const mainFeatures = [
-    { id: "dashboard", title: getTranslatedText('dashboardTitle'), description: getTranslatedText('dashboardDesc') },
-    { id: "wellness-challenges", title: getTranslatedText('challengesTitle'), description: getTranslatedText('challengesDesc') },
-    { id: "real-time-therapy", title: getTranslatedText('therapyTitle'), description: getTranslatedText('therapyDesc') },
-    { id: "community-support", title: getTranslatedText('communityTitle'), description: getTranslatedText('communityDesc') },
-    { id: "resource-library", title: getTranslatedText('resourcesTitle'), description: getTranslatedText('resourcesDesc') },
-    { id: "copay-credits", title: getTranslatedText('coPayTitle'), description: getTranslatedText('coPayDesc') }
-  ];
-
-  function getTranslatedText(key: string) {
-    const translations: Record<string, Record<string, string>> = {
-      'welcomeTitle': {
-        'English': 'Welcome to Thrive MT!',
-        'Español': '¡Bienvenido a Thrive MT!'
-      },
-      'tourQuestion': {
-        'English': 'Would you like a guided tour of the app\'s features?',
-        'Español': '¿Te gustaría un recorrido guiado por las funciones de la aplicación?'
-      },
-      'henryIntro': {
-        'English': 'Hi, I\'m Henry, your mental wellness assistant! I can guide you through the app\'s features to help you get started.',
-        'Español': 'Hola, soy Henry, ¡tu asistente de bienestar mental! Puedo guiarte a través de las funciones de la aplicación para ayudarte a comenzar.'
-      },
-      'tutorialAccess': {
-        'English': 'Each feature has its own tutorial that you can access anytime by clicking the "How to use this feature" button.',
-        'Español': 'Cada función tiene su propio tutorial al que puedes acceder en cualquier momento haciendo clic en el botón "Cómo usar esta función".'
-      },
-      'skipForNow': {
-        'English': 'Skip for now',
-        'Español': 'Omitir por ahora'
-      },
-      'showMeAround': {
-        'English': 'Show me around',
-        'Español': 'Muéstrame el lugar'
-      },
-      'next': {
-        'English': 'Next',
-        'Español': 'Siguiente'
-      },
-      'finish': {
-        'English': 'Finish Tour',
-        'Español': 'Finalizar recorrido'
-      },
-      'mainFeatures': {
-        'English': 'Main Features',
-        'Español': 'Características principales'
-      },
-      'dashboardTitle': {
-        'English': 'Dashboard',
-        'Español': 'Panel'
-      },
-      'dashboardDesc': {
-        'English': 'Your personal mental health control center',
-        'Español': 'Tu centro de control de salud mental personal'
-      },
-      'challengesTitle': {
-        'English': 'Wellness Challenges',
-        'Español': 'Desafíos de Bienestar'
-      },
-      'challengesDesc': {
-        'English': 'Complete daily activities to improve your well-being',
-        'Español': 'Completa actividades diarias para mejorar tu bienestar'
-      },
-      'therapyTitle': {
-        'English': 'Real-Time Therapy',
-        'Español': 'Terapia en Tiempo Real'
-      },
-      'therapyDesc': {
-        'English': 'Connect with therapists when you need support',
-        'Español': 'Conéctate con terapeutas cuando necesites apoyo'
-      },
-      'communityTitle': {
-        'English': 'Community Support',
-        'Español': 'Apoyo Comunitario'
-      },
-      'communityDesc': {
-        'English': 'Join a community of individuals on similar journeys',
-        'Español': 'Únete a una comunidad de personas en viajes similares'
-      },
-      'resourcesTitle': {
-        'English': 'Resource Library',
-        'Español': 'Biblioteca de Recursos'
-      },
-      'resourcesDesc': {
-        'English': 'Access mental health articles, videos, and tools',
-        'Español': 'Accede a artículos, videos y herramientas de salud mental'
-      },
-      'coPayTitle': {
-        'English': 'Co-Pay Credits',
-        'Español': 'Créditos de Copago'
-      },
-      'coPayDesc': {
-        'English': 'Earn rewards for consistent engagement',
-        'Español': 'Gana recompensas por una participación constante'
-      }
-    };
-    
-    return translations[key][preferredLanguage] || translations[key]['English'];
-  }
+  }, [screenState]);
 
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -366,61 +231,16 @@ const Index = () => {
 
   const handleStartTutorial = () => {
     setIsFirstVisit(false);
-    setShowMainTutorial(true);
-    setTutorialStep(0);
-    setCurrentFeatureId(mainFeatures[0].id);
-    setAutoProgressTutorial(true);
+    setShowWelcomeTutorial(true);
   };
 
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
-    setTutorialCompleted(true);
     markTutorialCompleted();
     toast({
       title: isSpanish ? "Tutorial Omitido" : "Tutorial Skipped",
       description: isSpanish ? "Puedes acceder a los tutoriales en cualquier momento a través del botón de Ayuda." : "You can access tutorials anytime through the Help button.",
     });
-  };
-
-  const handleNextFeatureTutorial = () => {
-    if (tutorialStep < mainFeatures.length - 1) {
-      setTutorialStep(tutorialStep + 1);
-      setCurrentFeatureId(mainFeatures[tutorialStep + 1].id);
-    } else {
-      handleFinishTutorial();
-    }
-  };
-
-  const handleFinishTutorial = () => {
-    if (tutorialInterval) {
-      clearInterval(tutorialInterval);
-      setTutorialInterval(null);
-    }
-    
-    setShowMainTutorial(false);
-    setTutorialStep(0);
-    setTutorialCompleted(true);
-    setAutoProgressTutorial(false);
-    markTutorialCompleted();
-    
-    toast({
-      title: isSpanish ? "Tutorial Completado" : "Tutorial Completed",
-      description: isSpanish ? "Siempre puedes acceder a los tutoriales haciendo clic en los botones 'Cómo usar esta función'." : "You can always access feature tutorials by clicking 'How to use this feature' buttons.",
-    });
-    
-    setShowHenry(true);
-  };
-
-  const closeTutorialAndMarkCompleted = () => {
-    if (tutorialInterval) {
-      clearInterval(tutorialInterval);
-      setTutorialInterval(null);
-    }
-    
-    setShowMainTutorial(false);
-    setTutorialCompleted(true);
-    setAutoProgressTutorial(false);
-    markTutorialCompleted();
   };
 
   return (
@@ -499,54 +319,13 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showMainTutorial} onOpenChange={closeTutorialAndMarkCompleted}>
-        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
-          {currentFeatureId && (
-            <FeatureTutorial 
-              featureId={currentFeatureId} 
-              onClose={() => {}} 
-              embedded={true}
-            />
-          )}
-          
-          <DialogFooter className="flex justify-between mt-4">
-            <Button 
-              variant="outline"
-              onClick={() => {
-                closeTutorialAndMarkCompleted();
-                if (tutorialInterval) {
-                  clearInterval(tutorialInterval);
-                  setTutorialInterval(null);
-                }
-              }}
-              className="border-gray-600 text-gray-300 hover:bg-gray-700"
-            >
-              {getTranslatedText('skipForNow')}
-            </Button>
-            
-            <Button 
-              onClick={() => {
-                setAutoProgressTutorial(false);
-                if (tutorialInterval) {
-                  clearInterval(tutorialInterval);
-                  setTutorialInterval(null);
-                }
-                handleNextFeatureTutorial();
-              }}
-              className="bg-indigo-500 hover:bg-indigo-600 text-white"
-            >
-              {tutorialStep < mainFeatures.length - 1 ? (
-                <>
-                  {getTranslatedText('next')}
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </>
-              ) : (
-                getTranslatedText('finish')
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <WelcomeTutorial
+        isOpen={showWelcomeTutorial}
+        onClose={() => {
+          setShowWelcomeTutorial(false);
+          markTutorialCompleted();
+        }}
+      />
     </div>
   );
 };
