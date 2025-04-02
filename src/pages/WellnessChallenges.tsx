@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const WellnessChallenges: React.FC = () => {
   const navigate = useNavigate();
@@ -172,7 +173,13 @@ const WellnessChallenges: React.FC = () => {
   };
   
   const handleBack = () => {
-    navigate(-1);
+    if (id) {
+      // If in challenge detail view, go back to challenge list
+      navigate("/wellness-challenges");
+    } else {
+      // If in challenge list view, go back to dashboard
+      navigate("/");
+    }
   };
   
   const toggleChallengeCompletion = (id: string) => {
@@ -249,7 +256,7 @@ const WellnessChallenges: React.FC = () => {
     
     if (!challenge) {
       return (
-        <Page title="Challenge Not Found">
+        <Page title="Challenge Not Found" returnToMain={true}>
           <div className="p-6">
             <p className="text-gray-300">The requested challenge could not be found.</p>
           </div>
@@ -258,88 +265,90 @@ const WellnessChallenges: React.FC = () => {
     }
     
     return (
-      <Page title={`${challenge.title} - Challenge`}>
-        <div className="px-4 py-8">
-          <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
-            <div className="flex items-start mb-6">
-              <div className={`p-4 rounded-lg mr-4 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
-                <challenge.icon className={`h-8 w-8 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
+      <Page title={`${challenge.title} - Challenge`} onBackClick={handleBack}>
+        <ScrollArea className="h-[calc(100vh-140px)]">
+          <div className="px-4 py-8">
+            <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
+              <div className="flex items-start mb-6">
+                <div className={`p-4 rounded-lg mr-4 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
+                  <challenge.icon className={`h-8 w-8 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
+                </div>
+                
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-2">{challenge.title}</h2>
+                  <span className="inline-block bg-[#3a3a4c] text-xs text-gray-300 px-2 py-1 rounded">
+                    {challenge.category}
+                  </span>
+                  <p className="text-gray-300 mt-3">{challenge.description}</p>
+                </div>
               </div>
               
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-2">{challenge.title}</h2>
-                <span className="inline-block bg-[#3a3a4c] text-xs text-gray-300 px-2 py-1 rounded">
-                  {challenge.category}
-                </span>
-                <p className="text-gray-300 mt-3">{challenge.description}</p>
+              <div className="bg-[#1e1e2c] rounded-lg p-5">
+                <h3 className="text-lg font-medium text-white mb-3">How to Complete This Challenge</h3>
+                <ol className="space-y-3 text-gray-300">
+                  <li className="flex items-start">
+                    <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">1</span>
+                    <span>Set aside dedicated time in your day for this activity</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">2</span>
+                    <span>Find a quiet, comfortable space where you won't be interrupted</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">3</span>
+                    <span>Follow the activity instructions and be present during the exercise</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">4</span>
+                    <span>Mark the challenge as complete once you've finished</span>
+                  </li>
+                </ol>
+              </div>
+              
+              <div className="mt-6 flex justify-between items-center">
+                <div>
+                  <span className="text-amber-400 text-lg font-medium">+{challenge.points} points</span>
+                  <p className="text-sm text-gray-400">Complete this challenge to earn points</p>
+                </div>
+                
+                <button 
+                  onClick={() => toggleChallengeCompletion(challenge.id)}
+                  className={`px-5 py-3 rounded-xl flex items-center ${
+                    challenge.completed 
+                      ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' 
+                      : 'bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30'
+                  } transition-colors`}
+                >
+                  <CheckCircle className="h-5 w-5 mr-2" />
+                  {challenge.completed ? 'Completed' : 'Mark as Complete'}
+                </button>
               </div>
             </div>
             
-            <div className="bg-[#1e1e2c] rounded-lg p-5">
-              <h3 className="text-lg font-medium text-white mb-3">How to Complete This Challenge</h3>
-              <ol className="space-y-3 text-gray-300">
-                <li className="flex items-start">
-                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">1</span>
-                  <span>Set aside dedicated time in your day for this activity</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">2</span>
-                  <span>Find a quiet, comfortable space where you won't be interrupted</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">3</span>
-                  <span>Follow the activity instructions and be present during the exercise</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="inline-block bg-indigo-500/20 text-indigo-300 rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5">4</span>
-                  <span>Mark the challenge as complete once you've finished</span>
-                </li>
-              </ol>
-            </div>
-            
-            <div className="mt-6 flex justify-between items-center">
-              <div>
-                <span className="text-amber-400 text-lg font-medium">+{challenge.points} points</span>
-                <p className="text-sm text-gray-400">Complete this challenge to earn points</p>
+            {/* Self-Care Reminder Card */}
+            <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium text-white">Self-Care Reminders</h3>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="bg-indigo-500/20 hover:bg-indigo-500/30 border-indigo-500/30 text-indigo-300"
+                  onClick={() => setShowReminderDialog(true)}
+                >
+                  <Bell className="h-4 w-4 mr-2" />
+                  Set Reminders
+                </Button>
               </div>
-              
-              <button 
-                onClick={() => toggleChallengeCompletion(challenge.id)}
-                className={`px-5 py-3 rounded-xl flex items-center ${
-                  challenge.completed 
-                    ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' 
-                    : 'bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30'
-                } transition-colors`}
-              >
-                <CheckCircle className="h-5 w-5 mr-2" />
-                {challenge.completed ? 'Completed' : 'Mark as Complete'}
-              </button>
+              <p className="text-gray-300 mb-4">
+                Don't forget to take care of yourself! Set up reminders to ensure you complete this challenge and take time for self-care.
+              </p>
+              <div className="flex items-center gap-2 text-gray-400 text-sm">
+                <Clock className="h-4 w-4 text-indigo-300" />
+                <span>Current reminder: {reminderSettings.morning ? 'Morning' : ''} {reminderSettings.afternoon ? 'Afternoon' : ''} {reminderSettings.evening ? 'Evening' : ''}</span>
+              </div>
             </div>
           </div>
-          
-          {/* Self-Care Reminder Card */}
-          <div className="bg-[#2a2a3c]/80 rounded-xl p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-white">Self-Care Reminders</h3>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="bg-indigo-500/20 hover:bg-indigo-500/30 border-indigo-500/30 text-indigo-300"
-                onClick={() => setShowReminderDialog(true)}
-              >
-                <Bell className="h-4 w-4 mr-2" />
-                Set Reminders
-              </Button>
-            </div>
-            <p className="text-gray-300 mb-4">
-              Don't forget to take care of yourself! Set up reminders to ensure you complete this challenge and take time for self-care.
-            </p>
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <Clock className="h-4 w-4 text-indigo-300" />
-              <span>Current reminder: {reminderSettings.morning ? 'Morning' : ''} {reminderSettings.afternoon ? 'Afternoon' : ''} {reminderSettings.evening ? 'Evening' : ''}</span>
-            </div>
-          </div>
-        </div>
+        </ScrollArea>
         
         {/* Points Rewards Dialog */}
         <Dialog open={showPointsDialog} onOpenChange={setShowPointsDialog}>
@@ -351,33 +360,35 @@ const WellnessChallenges: React.FC = () => {
               </DialogDescription>
             </DialogHeader>
             
-            <div className="py-4">
-              <div className="bg-[#1e1e2c] rounded-lg p-4 mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-gray-300">Available Points</span>
-                  <span className="text-amber-400 font-bold text-lg">{points}</span>
+            <ScrollArea className="h-[50vh] max-h-[400px] pr-4 -mr-4">
+              <div className="py-4">
+                <div className="bg-[#1e1e2c] rounded-lg p-4 mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-300">Available Points</span>
+                    <span className="text-amber-400 font-bold text-lg">{points}</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-300">Redeemable Co-Pay Credits</span>
+                    <span className="text-green-400 font-bold text-lg">${Math.floor(points/1000)}</span>
+                  </div>
+                  <Progress value={(points % 1000) / 10} className="h-2 bg-gray-700">
+                    <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
+                  </Progress>
+                  <p className="text-xs text-gray-400 mt-2">
+                    {1000 - (points % 1000)} more points until your next co-pay credit
+                  </p>
                 </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-gray-300">Redeemable Co-Pay Credits</span>
-                  <span className="text-green-400 font-bold text-lg">${Math.floor(points/1000)}</span>
+                
+                <div className="space-y-2">
+                  <h4 className="font-medium text-white mb-2">Points Conversion</h4>
+                  <p className="text-gray-300 text-sm">
+                    • Every 1,000 points = $1 in co-pay credits<br />
+                    • Credits can be used for therapy sessions or at Thrive Apparel<br />
+                    • Points are earned by completing daily, weekly, and monthly challenges
+                  </p>
                 </div>
-                <Progress value={(points % 1000) / 10} className="h-2 bg-gray-700">
-                  <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
-                </Progress>
-                <p className="text-xs text-gray-400 mt-2">
-                  {1000 - (points % 1000)} more points until your next co-pay credit
-                </p>
               </div>
-              
-              <div className="space-y-2">
-                <h4 className="font-medium text-white mb-2">Points Conversion</h4>
-                <p className="text-gray-300 text-sm">
-                  • Every 1,000 points = $1 in co-pay credits<br />
-                  • Credits can be used for therapy sessions or at Thrive Apparel<br />
-                  • Points are earned by completing daily, weekly, and monthly challenges
-                </p>
-              </div>
-            </div>
+            </ScrollArea>
             
             <DialogFooter className="flex justify-between">
               <Button 
@@ -408,67 +419,91 @@ const WellnessChallenges: React.FC = () => {
               </DialogDescription>
             </DialogHeader>
             
-            <div className="py-4 space-y-6">
-              <div className="space-y-4">
-                <h4 className="font-medium text-white">Reminder Time</h4>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Switch 
-                      id="morning" 
-                      checked={reminderSettings.morning}
-                      onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, morning: checked}))}
-                    />
-                    <Label htmlFor="morning" className="text-gray-300">Morning (8:00 AM)</Label>
+            <ScrollArea className="h-[60vh] max-h-[500px] pr-4 -mr-4">
+              <div className="py-4 space-y-6">
+                <div className="space-y-4">
+                  <h4 className="font-medium text-white">Reminder Time</h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Switch 
+                        id="morning" 
+                        checked={reminderSettings.morning}
+                        onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, morning: checked}))}
+                      />
+                      <Label htmlFor="morning" className="text-gray-300">Morning (8:00 AM)</Label>
+                    </div>
+                    <Bell className="h-4 w-4 text-amber-400" />
                   </div>
-                  <Bell className="h-4 w-4 text-amber-400" />
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Switch 
+                        id="afternoon" 
+                        checked={reminderSettings.afternoon} 
+                        onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, afternoon: checked}))}
+                      />
+                      <Label htmlFor="afternoon" className="text-gray-300">Afternoon (1:00 PM)</Label>
+                    </div>
+                    <Bell className="h-4 w-4 text-amber-400" />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Switch 
+                        id="evening" 
+                        checked={reminderSettings.evening} 
+                        onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, evening: checked}))}
+                      />
+                      <Label htmlFor="evening" className="text-gray-300">Evening (7:00 PM)</Label>
+                    </div>
+                    <Bell className="h-4 w-4 text-amber-400" />
+                  </div>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Switch 
-                      id="afternoon" 
-                      checked={reminderSettings.afternoon} 
-                      onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, afternoon: checked}))}
-                    />
-                    <Label htmlFor="afternoon" className="text-gray-300">Afternoon (1:00 PM)</Label>
+                <div className="space-y-4">
+                  <h4 className="font-medium text-white">Notification Settings</h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Switch 
+                        id="notifications" 
+                        checked={reminderSettings.notifications} 
+                        onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, notifications: checked}))}
+                      />
+                      <Label htmlFor="notifications" className="text-gray-300">Push Notifications</Label>
+                    </div>
                   </div>
-                  <Bell className="h-4 w-4 text-amber-400" />
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Switch 
-                      id="evening" 
-                      checked={reminderSettings.evening} 
-                      onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, evening: checked}))}
-                    />
-                    <Label htmlFor="evening" className="text-gray-300">Evening (7:00 PM)</Label>
+                <div className="bg-indigo-900/30 p-4 rounded-lg border border-indigo-500/20">
+                  <h4 className="font-medium text-white mb-2">Self-Care Tip</h4>
+                  <p className="text-gray-300 text-sm">
+                    Consistency is key to building healthy habits. Setting regular reminders helps you prioritize self-care and mental wellness.
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="font-medium text-white">Custom Self-Care Reminders</h4>
+                  <div className="space-y-2 bg-[#1e1e2c] p-4 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded-full bg-indigo-500 mr-3"></div>
+                      <p className="text-gray-300">Take deep breaths when feeling overwhelmed</p>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded-full bg-purple-500 mr-3"></div>
+                      <p className="text-gray-300">Drink water throughout the day</p>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded-full bg-amber-500 mr-3"></div>
+                      <p className="text-gray-300">Stretch for 5 minutes every hour</p>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 rounded-full bg-green-500 mr-3"></div>
+                      <p className="text-gray-300">Practice gratitude before bed</p>
+                    </div>
                   </div>
-                  <Bell className="h-4 w-4 text-amber-400" />
                 </div>
               </div>
-              
-              <div className="space-y-4">
-                <h4 className="font-medium text-white">Notification Settings</h4>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Switch 
-                      id="notifications" 
-                      checked={reminderSettings.notifications} 
-                      onCheckedChange={(checked) => setReminderSettings(prev => ({...prev, notifications: checked}))}
-                    />
-                    <Label htmlFor="notifications" className="text-gray-300">Push Notifications</Label>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-indigo-900/30 p-4 rounded-lg border border-indigo-500/20">
-                <h4 className="font-medium text-white mb-2">Self-Care Tip</h4>
-                <p className="text-gray-300 text-sm">
-                  Consistency is key to building healthy habits. Setting regular reminders helps you prioritize self-care and mental wellness.
-                </p>
-              </div>
-            </div>
+            </ScrollArea>
             
             <DialogFooter>
               <Button 
@@ -486,204 +521,208 @@ const WellnessChallenges: React.FC = () => {
   
   // Otherwise, render the challenges list
   return (
-    <Page title="Daily Wellness Challenges">
-      <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
-        <div className="container mx-auto max-w-6xl px-4 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-start mb-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Daily Challenges</h1>
-              <p className="text-gray-300 mb-4">
-                Complete daily challenges to improve your mental and physical wellbeing.
-              </p>
-            </div>
-            
-            <div className="flex flex-col items-end gap-2">
-              <div className="flex gap-2 items-center mb-1">
-                <span className="text-amber-400 font-bold text-xl">{points}</span>
-                <Award className="h-5 w-5 text-amber-400" />
-              </div>
-              <div className="flex gap-3">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-xs h-8 border-indigo-500/30 bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20"
-                  onClick={() => setShowReminderDialog(true)}
-                >
-                  <Bell className="h-3.5 w-3.5 mr-1.5" />
-                  Reminders
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-xs h-8 border-amber-500/30 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
-                  onClick={() => setShowPointsDialog(true)}
-                >
-                  <Award className="h-3.5 w-3.5 mr-1.5" />
-                  Rewards
-                </Button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Points Progress Card */}
-          <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 rounded-xl p-5 mb-8 border border-amber-500/20">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <Page title="Daily Wellness Challenges" returnToMain={true}>
+      <ScrollArea className="h-[calc(100vh-140px)]">
+        <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
+          <div className="container mx-auto max-w-6xl px-4 py-8">
+            <div className="flex flex-col md:flex-row justify-between items-start mb-6">
               <div>
-                <h3 className="text-lg font-medium text-white mb-1 flex items-center gap-2">
-                  <Award className="h-5 w-5 text-amber-400" />
-                  Rewards Progress
-                </h3>
-                <p className="text-gray-300 text-sm mb-3">Every 1,000 points = $1 co-pay credit</p>
+                <h1 className="text-3xl font-bold mb-2">Daily Challenges</h1>
+                <p className="text-gray-300 mb-4">
+                  Complete daily challenges to improve your mental and physical wellbeing.
+                </p>
               </div>
               
-              <div className="flex flex-col md:flex-row items-end md:items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-300">Today:</span>
-                  <span className="text-white font-medium">+20 points</span>
+              <div className="flex flex-col items-end gap-2">
+                <div className="flex gap-2 items-center mb-1">
+                  <span className="text-amber-400 font-bold text-xl">{points}</span>
+                  <Award className="h-5 w-5 text-amber-400" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-300">This Week:</span>
-                  <span className="text-white font-medium">+75 points</span>
+                <div className="flex gap-3">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-xs h-8 border-indigo-500/30 bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20"
+                    onClick={() => setShowReminderDialog(true)}
+                  >
+                    <Bell className="h-3.5 w-3.5 mr-1.5" />
+                    Reminders
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-xs h-8 border-amber-500/30 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
+                    onClick={() => setShowPointsDialog(true)}
+                  >
+                    <Award className="h-3.5 w-3.5 mr-1.5" />
+                    Rewards
+                  </Button>
                 </div>
-                <Button 
-                  className="bg-amber-500 hover:bg-amber-600 text-black font-medium text-sm"
-                  onClick={() => setShowPointsDialog(true)}
-                >
-                  Redeem Points
-                </Button>
               </div>
             </div>
             
-            <div className="mt-4">
-              <div className="flex justify-between items-center mb-1.5 text-xs text-gray-300">
-                <span>Current: {points} points</span>
-                <span>Next Reward: 1,000 points</span>
+            {/* Points Progress Card */}
+            <div className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 rounded-xl p-5 mb-8 border border-amber-500/20">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-medium text-white mb-1 flex items-center gap-2">
+                    <Award className="h-5 w-5 text-amber-400" />
+                    Rewards Progress
+                  </h3>
+                  <p className="text-gray-300 text-sm mb-3">Every 1,000 points = $1 co-pay credit</p>
+                </div>
+                
+                <div className="flex flex-col md:flex-row items-end md:items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-amber-300">Today:</span>
+                    <span className="text-white font-medium">+20 points</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-amber-300">This Week:</span>
+                    <span className="text-white font-medium">+75 points</span>
+                  </div>
+                  <Button 
+                    className="bg-amber-500 hover:bg-amber-600 text-black font-medium text-sm"
+                    onClick={() => setShowPointsDialog(true)}
+                  >
+                    Redeem Points
+                  </Button>
+                </div>
               </div>
-              <Progress value={(points % 1000) / 10} max={100} className="h-2.5 bg-gray-700/50">
-                <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
-              </Progress>
-              <p className="text-amber-300/80 text-xs mt-1.5 text-right">
-                {1000 - (points % 1000)} more points until your next co-pay credit
-              </p>
+              
+              <div className="mt-4">
+                <div className="flex justify-between items-center mb-1.5 text-xs text-gray-300">
+                  <span>Current: {points} points</span>
+                  <span>Next Reward: 1,000 points</span>
+                </div>
+                <Progress value={(points % 1000) / 10} max={100} className="h-2.5 bg-gray-700/50">
+                  <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
+                </Progress>
+                <p className="text-amber-300/80 text-xs mt-1.5 text-right">
+                  {1000 - (points % 1000)} more points until your next co-pay credit
+                </p>
+              </div>
             </div>
-          </div>
-          
-          <div className="flex flex-wrap gap-3 mb-8">
-            <button
-              onClick={() => setActiveTab('wellness')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'wellness'
-                  ? 'bg-indigo-500 text-white'
-                  : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
-              }`}
-            >
-              Wellness Challenges
-            </button>
-            <button
-              onClick={() => setActiveTab('mental')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'mental'
-                  ? 'bg-purple-500 text-white'
-                  : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
-              }`}
-            >
-              Mental Health
-            </button>
-            <button
-              onClick={() => setActiveTab('completed')}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                activeTab === 'completed'
-                  ? 'bg-green-500 text-white'
-                  : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
-              }`}
-            >
-              Completed ({completedChallenges.length})
-            </button>
-          </div>
-          
-          <div className="bg-[#2a2a3c]/80 rounded-2xl p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {getActiveChallenges().map((challenge) => (
-                <div 
-                  key={challenge.id}
-                  className="bg-[#1e1e2c] rounded-xl p-5 hover:bg-[#262638] transition-colors cursor-pointer"
-                  onClick={() => navigate(`/wellness-challenges/${challenge.id}`)}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start">
-                      <div className={`p-3 rounded-lg mr-4 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
-                        <challenge.icon className={`h-6 w-6 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
+            
+            <div className="flex flex-wrap gap-3 mb-8">
+              <button
+                onClick={() => setActiveTab('wellness')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  activeTab === 'wellness'
+                    ? 'bg-indigo-500 text-white'
+                    : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
+                }`}
+              >
+                Wellness Challenges
+              </button>
+              <button
+                onClick={() => setActiveTab('mental')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  activeTab === 'mental'
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
+                }`}
+              >
+                Mental Health
+              </button>
+              <button
+                onClick={() => setActiveTab('completed')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  activeTab === 'completed'
+                    ? 'bg-green-500 text-white'
+                    : 'bg-[#3a3a4c]/50 text-gray-300 hover:bg-[#3a3a4c]'
+                }`}
+              >
+                Completed ({completedChallenges.length})
+              </button>
+            </div>
+            
+            <div className="bg-[#2a2a3c]/80 rounded-2xl p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {getActiveChallenges().map((challenge) => (
+                  <div 
+                    key={challenge.id}
+                    className="bg-[#1e1e2c] rounded-xl p-5 hover:bg-[#262638] transition-colors cursor-pointer"
+                    onClick={() => navigate(`/wellness-challenges/${challenge.id}`)}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start">
+                        <div className={`p-3 rounded-lg mr-4 ${challenge.completed ? 'bg-green-500/20' : 'bg-indigo-500/20'}`}>
+                          <challenge.icon className={`h-6 w-6 ${challenge.completed ? 'text-green-400' : 'text-indigo-400'}`} />
+                        </div>
+                        
+                        <div>
+                          <div className="flex items-center">
+                            <h3 className="font-medium text-lg text-white">{challenge.title}</h3>
+                          </div>
+                          <span className="inline-block bg-[#3a3a4c] text-xs text-gray-300 px-2 py-1 rounded mt-1">
+                            {challenge.category}
+                          </span>
+                          <p className="text-gray-400 mt-2">{challenge.description}</p>
+                        </div>
                       </div>
                       
-                      <div>
-                        <div className="flex items-center">
-                          <h3 className="font-medium text-lg text-white">{challenge.title}</h3>
-                        </div>
-                        <span className="inline-block bg-[#3a3a4c] text-xs text-gray-300 px-2 py-1 rounded mt-1">
-                          {challenge.category}
-                        </span>
-                        <p className="text-gray-400 mt-2">{challenge.description}</p>
+                      <div className="flex flex-col items-end">
+                        <span className="text-amber-400 font-medium">+{challenge.points} pts</span>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleChallengeCompletion(challenge.id);
+                          }}
+                          className={`mt-4 p-2 rounded-full ${
+                            challenge.completed 
+                              ? 'bg-green-500/20 text-green-400' 
+                              : 'bg-gray-700/50 text-gray-400 hover:bg-gray-700 hover:text-white'
+                          } transition-colors`}
+                        >
+                          <CheckCircle className="h-6 w-6" />
+                        </button>
                       </div>
                     </div>
-                    
-                    <div className="flex flex-col items-end">
-                      <span className="text-amber-400 font-medium">+{challenge.points} pts</span>
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleChallengeCompletion(challenge.id);
-                        }}
-                        className={`mt-4 p-2 rounded-full ${
-                          challenge.completed 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : 'bg-gray-700/50 text-gray-400 hover:bg-gray-700 hover:text-white'
-                        } transition-colors`}
-                      >
-                        <CheckCircle className="h-6 w-6" />
-                      </button>
-                    </div>
                   </div>
+                ))}
+              </div>
+              
+              {getActiveChallenges().length === 0 && (
+                <div className="text-center py-12">
+                  <h3 className="text-xl font-medium text-gray-400">No challenges in this category</h3>
                 </div>
-              ))}
+              )}
             </div>
             
-            {getActiveChallenges().length === 0 && (
-              <div className="text-center py-12">
-                <h3 className="text-xl font-medium text-gray-400">No challenges in this category</h3>
+            {/* Points History */}
+            <div className="mt-8 bg-[#2a2a3c]/80 rounded-2xl p-6">
+              <h3 className="text-xl font-medium text-white mb-4">Points History</h3>
+              <div className="space-y-3">
+                {pointsHistory.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between py-3 border-b border-[#3a3a4c] last:border-0">
+                    <div>
+                      <div className="text-sm font-medium text-white">{item.action}</div>
+                      <div className="text-xs text-gray-400">{item.date}</div>
+                    </div>
+                    <div className={`font-medium ${item.points > 0 ? 'text-green-400' : 'text-amber-500'} flex items-center gap-1`}>
+                      {item.points > 0 ? '+ ' : '- '}
+                      {Math.abs(item.points)} {item.points > 0 && <Award className="h-3.5 w-3.5" />}
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
-          
-          {/* Points History */}
-          <div className="mt-8 bg-[#2a2a3c]/80 rounded-2xl p-6">
-            <h3 className="text-xl font-medium text-white mb-4">Points History</h3>
-            <div className="space-y-3">
-              {pointsHistory.map((item, index) => (
-                <div key={index} className="flex items-center justify-between py-3 border-b border-[#3a3a4c] last:border-0">
-                  <div>
-                    <div className="text-sm font-medium text-white">{item.action}</div>
-                    <div className="text-xs text-gray-400">{item.date}</div>
-                  </div>
-                  <div className={`font-medium ${item.points > 0 ? 'text-green-400' : 'text-amber-500'} flex items-center gap-1`}>
-                    {item.points > 0 ? '+ ' : '- '}
-                    {Math.abs(item.points)} {item.points > 0 && <Award className="h-3.5 w-3.5" />}
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
-        
-        {/* Points Rewards Dialog */}
-        <Dialog open={showPointsDialog} onOpenChange={setShowPointsDialog}>
-          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
-            <DialogHeader>
-              <DialogTitle className="text-xl text-white">Redeem Points for Rewards</DialogTitle>
-              <DialogDescription className="text-gray-300">
-                Convert your earned points into co-pay credits
-              </DialogDescription>
-            </DialogHeader>
-            
+      </ScrollArea>
+      
+      {/* Points Rewards Dialog */}
+      <Dialog open={showPointsDialog} onOpenChange={setShowPointsDialog}>
+        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-white">Redeem Points for Rewards</DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Convert your earned points into co-pay credits
+            </DialogDescription>
+          </DialogHeader>
+          
+          <ScrollArea className="h-[50vh] max-h-[400px] pr-4 -mr-4">
             <div className="py-4">
               <div className="bg-[#1e1e2c] rounded-lg p-4 mb-4">
                 <div className="flex justify-between items-center mb-2">
@@ -720,36 +759,38 @@ const WellnessChallenges: React.FC = () => {
                 </div>
               </div>
             </div>
-            
-            <DialogFooter className="flex justify-between">
-              <Button 
-                variant="outline" 
-                onClick={() => setShowPointsDialog(false)}
-                className="border-gray-600 text-gray-300 hover:bg-gray-700"
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={handleRedeemPoints}
-                disabled={points < 1000}
-                className="bg-amber-500 hover:bg-amber-600 text-black"
-              >
-                Redeem Now
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-        
-        {/* Reminder Settings Dialog */}
-        <Dialog open={showReminderDialog} onOpenChange={setShowReminderDialog}>
-          <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
-            <DialogHeader>
-              <DialogTitle className="text-xl text-white">Self-Care Reminders</DialogTitle>
-              <DialogDescription className="text-gray-300">
-                Set up reminders to complete your wellness challenges
-              </DialogDescription>
-            </DialogHeader>
-            
+          </ScrollArea>
+          
+          <DialogFooter className="flex justify-between">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowPointsDialog(false)}
+              className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleRedeemPoints}
+              disabled={points < 1000}
+              className="bg-amber-500 hover:bg-amber-600 text-black"
+            >
+              Redeem Now
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Reminder Settings Dialog */}
+      <Dialog open={showReminderDialog} onOpenChange={setShowReminderDialog}>
+        <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-white">Self-Care Reminders</DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Set up reminders to complete your wellness challenges
+            </DialogDescription>
+          </DialogHeader>
+          
+          <ScrollArea className="h-[60vh] max-h-[500px] pr-4 -mr-4">
             <div className="py-4 space-y-6">
               <div className="space-y-4">
                 <h4 className="font-medium text-white">Reminder Times</h4>
@@ -826,18 +867,18 @@ const WellnessChallenges: React.FC = () => {
                 </div>
               </div>
             </div>
-            
-            <DialogFooter>
-              <Button 
-                onClick={handleUpdateReminders}
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white"
-              >
-                Save Reminder Settings
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+          </ScrollArea>
+          
+          <DialogFooter>
+            <Button 
+              onClick={handleUpdateReminders}
+              className="w-full bg-indigo-500 hover:bg-indigo-600 text-white"
+            >
+              Save Reminder Settings
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Page>
   );
 };

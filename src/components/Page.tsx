@@ -1,8 +1,8 @@
 
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ArrowLeft, Home } from "lucide-react";
 import HomeButton from "./HomeButton";
 
 interface PageProps {
@@ -11,6 +11,7 @@ interface PageProps {
   showBackButton?: boolean;
   onBackClick?: () => void;
   fullWidth?: boolean;
+  returnToMain?: boolean;
 }
 
 const Page: React.FC<PageProps> = ({ 
@@ -18,9 +19,11 @@ const Page: React.FC<PageProps> = ({
   children, 
   showBackButton = true,
   onBackClick,
-  fullWidth = false
+  fullWidth = false,
+  returnToMain = false
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   
   useEffect(() => {
     // Scroll to top when the component mounts
@@ -30,10 +33,17 @@ const Page: React.FC<PageProps> = ({
   const handleBackClick = () => {
     if (onBackClick) {
       onBackClick();
+    } else if (returnToMain) {
+      // Return to main dashboard page
+      navigate("/");
     } else {
       // Default behavior: go back to previous page
       navigate(-1);
     }
+  };
+  
+  const handleHomeClick = () => {
+    navigate("/");
   };
   
   return (
@@ -59,6 +69,15 @@ const Page: React.FC<PageProps> = ({
                 Back
               </Button>
             )}
+            <Button
+              variant="outline"
+              size="sm"
+              className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
+              onClick={handleHomeClick}
+            >
+              <Home className="h-4 w-4 mr-1" />
+              Home
+            </Button>
             <h1 className="text-lg md:text-xl font-light tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
             </h1>
