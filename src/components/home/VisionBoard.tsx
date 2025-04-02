@@ -32,47 +32,201 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "Crea Tu Tablero de Visión" : "Create Your Vision Board",
+    subtitle: isSpanish 
+      ? "Selecciona las cualidades que quieres encarnar y las metas que quieres lograr en tu viaje de bienestar mental. ¡Haz que este tablero de visión sea tu propio mapa personal hacia la transformación!"
+      : "Select the qualities you want to embody and goals you want to achieve on your mental wellness journey. Make this vision board your own personal roadmap to transformation!",
+    qualitiesTab: isSpanish ? "Cualidades" : "Qualities",
+    goalsTab: isSpanish ? "Metas" : "Goals",
+    qualitiesSelected: isSpanish ? "cualidades seleccionadas" : "qualities selected",
+    goalsSelected: isSpanish ? "metas seleccionadas" : "goals selected",
+    previous: isSpanish ? "Anterior" : "Previous",
+    skip: isSpanish ? "Omitir" : "Skip",
+    continue: isSpanish ? "Continuar" : "Continue",
+    personalizedRecs: isSpanish ? "Ver Tus Recomendaciones Personalizadas" : "See Your Personalized Recommendations",
+    personalizedSubtitle: isSpanish ? "Hemos creado contenido único basado en tus selecciones" : "We've crafted unique content based on your selections",
+    visitPersonalized: isSpanish ? "Visitar Contenido Personalizado" : "Visit Personalized Content",
+    of: isSpanish ? "de" : "of"
+  };
+  
+  // Inspiration messages
+  const inspirations = isSpanish 
+    ? [
+        "¡Tu tablero de visión es un mapa hacia tu futuro yo!",
+        "Cada cualidad que eliges planta una semilla de crecimiento.",
+        "Estas metas no son solo sueños - son tu destino.",
+        "¡Tu futuro yo te está animando ahora mismo!",
+        "Cada selección es un paso hacia la persona en la que te estás convirtiendo.",
+        "Estás diseñando tu vida con intención - ¡qué poderoso!",
+        "Pequeñas elecciones hoy crean grandes cambios mañana.",
+        "Tu tablero de visión es tan único como tu huella digital.",
+        "Las cualidades que seleccionas hoy dan forma a quién serás mañana.",
+        "Tu viaje es solo tuyo - ¡hazlo magnífico!"
+      ]
+    : [
+        "Your vision board is a map to your future self!",
+        "Each quality you choose plants a seed of growth.",
+        "These goals aren't just dreams - they're your destination.",
+        "Your future self is cheering you on right now!",
+        "Every selection is a step toward the person you're becoming.",
+        "You're designing your life with intention - how powerful!",
+        "Small choices today create big changes tomorrow.",
+        "Your vision board is as unique as your fingerprint.",
+        "The qualities you select today shape who you'll be tomorrow.",
+        "Your journey is yours alone - make it magnificent!"
+      ];
 
+  // Quality items
   const qualities = [
-    { id: "peaceful", label: "Peaceful", icon: "🕊️", description: "Finding inner calm amidst life's storms" },
-    { id: "mindful", label: "Mindful", icon: "🧠", description: "Present in each moment, aware of your thoughts" },
-    { id: "resilient", label: "Resilient", icon: "🌱", description: "Bouncing back stronger from challenges" },
-    { id: "grateful", label: "Grateful", icon: "🙏", description: "Appreciating the gifts in your life" },
-    { id: "balanced", label: "Balanced", icon: "⚖️", description: "Finding harmony in all life dimensions" },
-    { id: "creative", label: "Creative", icon: "🎨", description: "Expressing yourself in unique ways" },
-    { id: "empathetic", label: "Empathetic", icon: "💗", description: "Understanding others with compassion" },
-    { id: "focused", label: "Focused", icon: "🎯", description: "Directing your energy with intention" },
-    { id: "present", label: "Present", icon: "⏱️", description: "Fully engaged in the here and now" },
-    { id: "joyful", label: "Joyful", icon: "😊", description: "Finding delight in everyday moments" },
-    { id: "energetic", label: "Energetic", icon: "⚡", description: "Living with vibrance and enthusiasm" }
+    { 
+      id: "peaceful", 
+      label: isSpanish ? "Tranquilo" : "Peaceful", 
+      icon: "🕊️", 
+      description: isSpanish ? "Encontrar calma interior en medio de las tormentas de la vida" : "Finding inner calm amidst life's storms" 
+    },
+    { 
+      id: "mindful", 
+      label: isSpanish ? "Consciente" : "Mindful", 
+      icon: "🧠", 
+      description: isSpanish ? "Presente en cada momento, consciente de tus pensamientos" : "Present in each moment, aware of your thoughts" 
+    },
+    { 
+      id: "resilient", 
+      label: isSpanish ? "Resiliente" : "Resilient", 
+      icon: "🌱", 
+      description: isSpanish ? "Recuperándote más fuerte después de los desafíos" : "Bouncing back stronger from challenges" 
+    },
+    { 
+      id: "grateful", 
+      label: isSpanish ? "Agradecido" : "Grateful", 
+      icon: "🙏", 
+      description: isSpanish ? "Apreciando los regalos en tu vida" : "Appreciating the gifts in your life" 
+    },
+    { 
+      id: "balanced", 
+      label: isSpanish ? "Equilibrado" : "Balanced", 
+      icon: "⚖️", 
+      description: isSpanish ? "Encontrando armonía en todas las dimensiones de la vida" : "Finding harmony in all life dimensions" 
+    },
+    { 
+      id: "creative", 
+      label: isSpanish ? "Creativo" : "Creative", 
+      icon: "🎨", 
+      description: isSpanish ? "Expresándote de maneras únicas" : "Expressing yourself in unique ways" 
+    },
+    { 
+      id: "empathetic", 
+      label: isSpanish ? "Empático" : "Empathetic", 
+      icon: "💗", 
+      description: isSpanish ? "Comprendiendo a otros con compasión" : "Understanding others with compassion" 
+    },
+    { 
+      id: "focused", 
+      label: isSpanish ? "Enfocado" : "Focused", 
+      icon: "🎯", 
+      description: isSpanish ? "Dirigiendo tu energía con intención" : "Directing your energy with intention" 
+    },
+    { 
+      id: "present", 
+      label: isSpanish ? "Presente" : "Present", 
+      icon: "⏱️", 
+      description: isSpanish ? "Completamente involucrado en el aquí y ahora" : "Fully engaged in the here and now" 
+    },
+    { 
+      id: "joyful", 
+      label: isSpanish ? "Alegre" : "Joyful", 
+      icon: "😊", 
+      description: isSpanish ? "Encontrando deleite en los momentos cotidianos" : "Finding delight in everyday moments" 
+    },
+    { 
+      id: "energetic", 
+      label: isSpanish ? "Energético" : "Energetic", 
+      icon: "⚡", 
+      description: isSpanish ? "Viviendo con vibración y entusiasmo" : "Living with vibrance and enthusiasm" 
+    }
   ];
 
+  // Goal items
   const goals = [
-    { id: "reducing-anxiety", label: "Reducing Anxiety", icon: "🌈", description: "Finding peace when worry creeps in" },
-    { id: "managing-stress", label: "Managing Stress", icon: "🌊", description: "Flowing with life's pressure points" },
-    { id: "improving-sleep", label: "Improving Sleep", icon: "💤", description: "Restful nights for energized days" },
-    { id: "emotional-regulation", label: "Emotional Regulation", icon: "🎭", description: "Mastering your emotional responses" },
-    { id: "better-relationships", label: "Better Relationships", icon: "🤝", description: "Nurturing connections that matter" },
-    { id: "work-life-balance", label: "Work-Life Balance", icon: "⚖️", description: "Harmony between ambition and wellbeing" },
-    { id: "finding-purpose", label: "Finding Purpose", icon: "🧭", description: "Discovering what makes your soul sing" },
-    { id: "building-confidence", label: "Building Confidence", icon: "💪", description: "Strengthening your self-belief" },
-    { id: "setting-boundaries", label: "Setting Boundaries", icon: "🛡️", description: "Protecting your energy and values" },
-    { id: "career-growth", label: "Career Growth", icon: "📈", description: "Advancing your professional journey" },
-    { id: "health-wellness", label: "Health & Wellness", icon: "🌿", description: "Nurturing your body and mind" },
-    { id: "overcoming-trauma", label: "Overcoming Trauma", icon: "🌄", description: "Healing past wounds for future growth" }
-  ];
-
-  const inspirations = [
-    "Your vision board is a map to your future self!",
-    "Each quality you choose plants a seed of growth.",
-    "These goals aren't just dreams - they're your destination.",
-    "Your future self is cheering you on right now!",
-    "Every selection is a step toward the person you're becoming.",
-    "You're designing your life with intention - how powerful!",
-    "Small choices today create big changes tomorrow.",
-    "Your vision board is as unique as your fingerprint.",
-    "The qualities you select today shape who you'll be tomorrow.",
-    "Your journey is yours alone - make it magnificent!"
+    { 
+      id: "reducing-anxiety", 
+      label: isSpanish ? "Reducir Ansiedad" : "Reducing Anxiety", 
+      icon: "🌈", 
+      description: isSpanish ? "Encontrar paz cuando la preocupación se instala" : "Finding peace when worry creeps in" 
+    },
+    { 
+      id: "managing-stress", 
+      label: isSpanish ? "Manejar el Estrés" : "Managing Stress", 
+      icon: "🌊", 
+      description: isSpanish ? "Fluyendo con los puntos de presión de la vida" : "Flowing with life's pressure points" 
+    },
+    { 
+      id: "improving-sleep", 
+      label: isSpanish ? "Mejorar el Sueño" : "Improving Sleep", 
+      icon: "💤", 
+      description: isSpanish ? "Noches de descanso para días con energía" : "Restful nights for energized days" 
+    },
+    { 
+      id: "emotional-regulation", 
+      label: isSpanish ? "Regulación Emocional" : "Emotional Regulation", 
+      icon: "🎭", 
+      description: isSpanish ? "Dominar tus respuestas emocionales" : "Mastering your emotional responses" 
+    },
+    { 
+      id: "better-relationships", 
+      label: isSpanish ? "Mejores Relaciones" : "Better Relationships", 
+      icon: "🤝", 
+      description: isSpanish ? "Nutriendo conexiones que importan" : "Nurturing connections that matter" 
+    },
+    { 
+      id: "work-life-balance", 
+      label: isSpanish ? "Equilibrio Trabajo-Vida" : "Work-Life Balance", 
+      icon: "⚖️", 
+      description: isSpanish ? "Armonía entre ambición y bienestar" : "Harmony between ambition and wellbeing" 
+    },
+    { 
+      id: "finding-purpose", 
+      label: isSpanish ? "Encontrar Propósito" : "Finding Purpose", 
+      icon: "🧭", 
+      description: isSpanish ? "Descubriendo lo que hace cantar a tu alma" : "Discovering what makes your soul sing" 
+    },
+    { 
+      id: "building-confidence", 
+      label: isSpanish ? "Construir Confianza" : "Building Confidence", 
+      icon: "💪", 
+      description: isSpanish ? "Fortaleciendo tu autoconfianza" : "Strengthening your self-belief" 
+    },
+    { 
+      id: "setting-boundaries", 
+      label: isSpanish ? "Establecer Límites" : "Setting Boundaries", 
+      icon: "🛡️", 
+      description: isSpanish ? "Protegiendo tu energía y valores" : "Protecting your energy and values" 
+    },
+    { 
+      id: "career-growth", 
+      label: isSpanish ? "Crecimiento Profesional" : "Career Growth", 
+      icon: "📈", 
+      description: isSpanish ? "Avanzando en tu viaje profesional" : "Advancing your professional journey" 
+    },
+    { 
+      id: "health-wellness", 
+      label: isSpanish ? "Salud y Bienestar" : "Health & Wellness", 
+      icon: "🌿", 
+      description: isSpanish ? "Nutriendo tu cuerpo y mente" : "Nurturing your body and mind" 
+    },
+    { 
+      id: "overcoming-trauma", 
+      label: isSpanish ? "Superar Trauma" : "Overcoming Trauma", 
+      icon: "🌄", 
+      description: isSpanish ? "Sanando heridas pasadas para el crecimiento futuro" : "Healing past wounds for future growth" 
+    }
   ];
 
   useEffect(() => {
@@ -88,7 +242,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     }, 8000);
     
     return () => clearInterval(timer);
-  }, [inspirationMessages]);
+  }, [inspirationMessages, inspirations]);
 
   // Use a debounced toggle function to prevent rapid firing of state changes
   const handleToggle = (id: string, type: 'quality' | 'goal') => {
@@ -183,11 +337,10 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
       <div className="container mx-auto max-w-5xl relative z-10">
         <div className="text-center mb-8 relative">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-pulse">
-            Create Your Vision Board
+            {translations.title}
           </h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-            Select the qualities you want to embody and goals you want to achieve on your mental wellness journey.
-            Make this vision board your own personal roadmap to transformation!
+            {translations.subtitle}
           </p>
           
           <div className={`fixed top-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#B87333]/90 to-[#E5C5A1]/90 text-white px-6 py-3 rounded-lg shadow-lg backdrop-blur-md transition-all duration-500 z-50 max-w-md ${showInspirationMsg ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
@@ -209,7 +362,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             disabled={isProcessing}
           >
             <Star className={`h-4 w-4 ${activeTab === 'qualities' ? 'text-white' : 'text-[#B87333]'}`} />
-            <span className="font-medium">Qualities</span>
+            <span className="font-medium">{translations.qualitiesTab}</span>
           </button>
           <button
             onClick={() => !isProcessing && setActiveTab('goals')}
@@ -221,7 +374,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             disabled={isProcessing}
           >
             <Target className={`h-4 w-4 ${activeTab === 'goals' ? 'text-white' : 'text-[#B87333]'}`} />
-            <span className="font-medium">Goals</span>
+            <span className="font-medium">{translations.goalsTab}</span>
           </button>
         </div>
 
@@ -229,8 +382,8 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
           <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 text-white/80">
             <span className="font-medium">
               {activeTab === 'qualities' 
-                ? `${selectedQualities.length} of ${qualities.length} qualities selected` 
-                : `${selectedGoals.length} of ${goals.length} goals selected`}
+                ? `${selectedQualities.length} ${translations.of} ${qualities.length} ${translations.qualitiesSelected}` 
+                : `${selectedGoals.length} ${translations.of} ${goals.length} ${translations.goalsSelected}`}
             </span>
           </div>
         </div>
@@ -302,7 +455,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             className="bg-white/5 border-white/20 text-white/70 hover:bg-white/10 hover:text-white"
             disabled={isProcessing}
           >
-            Previous
+            {translations.previous}
           </Button>
           
           <Button 
@@ -311,7 +464,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             className="text-white/60 hover:text-white hover:bg-white/5"
             disabled={isProcessing}
           >
-            Skip
+            {translations.skip}
           </Button>
           
           <Button 
@@ -319,7 +472,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
             className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] shadow-lg hover:shadow-xl transition-all duration-300"
             disabled={isProcessing}
           >
-            Continue
+            {translations.continue}
           </Button>
         </div>
 
@@ -330,8 +483,8 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
                 <Lightbulb className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-medium text-white">See Your Personalized Recommendations</h3>
-                <p className="text-white/70">We've crafted unique content based on your selections</p>
+                <h3 className="text-xl font-medium text-white">{translations.personalizedRecs}</h3>
+                <p className="text-white/70">{translations.personalizedSubtitle}</p>
               </div>
             </div>
             <Button 
@@ -339,7 +492,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
               className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] shadow-lg group transition-all duration-300"
               disabled={isProcessing}
             >
-              Visit Personalized Content
+              {translations.visitPersonalized}
               <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
