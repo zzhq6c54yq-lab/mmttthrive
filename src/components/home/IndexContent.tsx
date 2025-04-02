@@ -70,16 +70,15 @@ const IndexContent: React.FC<IndexContentProps> = ({
   const { toast } = useToast();
   const [forceTutorial, setForceTutorial] = useState(false);
   
-  // ALWAYS force the tutorial to show for testing purposes
+  // Force tutorial on first load of main screen
   useEffect(() => {
-    console.log("DEBUG: Initial mount of IndexContent - forcing tutorial");
     if (screenState === 'main') {
-      console.log("DEBUG: Main screen detected - setting forceTutorial to true");
+      console.log("Main screen detected - setting forceTutorial to true");
       setForceTutorial(true);
     }
   }, []);
   
-  // Effect to handle tutorial display logic and test with URL parameter
+  // Effect to handle tutorial display logic
   useEffect(() => {
     // Check for URL parameter to force tutorial display
     const queryParams = new URLSearchParams(window.location.search);
@@ -90,9 +89,9 @@ const IndexContent: React.FC<IndexContentProps> = ({
     }
     
     if (screenState === 'main') {
-      console.log("IndexContent - Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
+      console.log("Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
       
-      // Force tutorial display if coming from onboarding
+      // Check if coming from onboarding flow
       const prevScreenState = localStorage.getItem('prevScreenState');
       console.log("Previous screen state:", prevScreenState);
       
@@ -104,19 +103,18 @@ const IndexContent: React.FC<IndexContentProps> = ({
       );
       
       if (comingFromOnboarding || showMainTutorial) {
-        console.log("Coming from onboarding or showMainTutorial is true - setting isFirstVisit to true");
+        console.log("Coming from onboarding or showMainTutorial is true");
         
         // Ensure the tutorial shows
         setIsFirstVisit(true);
-        setForceTutorial(true); // Force tutorial display
+        setForceTutorial(true);
         
-        // Set a flag to remember this was an onboarding transition
+        // Set a flag for onboarding completion
         if (comingFromOnboarding) {
-          console.log("Setting flag for onboarding completion");
           sessionStorage.setItem('justCompletedOnboarding', 'true');
         }
         
-        // Force clear localStorage items that might prevent tutorial from showing
+        // Force clear localStorage items that might prevent tutorial
         localStorage.removeItem('popupsShown');
         localStorage.removeItem('hasVisitedThriveMT');
         localStorage.removeItem('dashboardTutorialShown');
@@ -125,12 +123,12 @@ const IndexContent: React.FC<IndexContentProps> = ({
   }, [screenState, showMainTutorial, setIsFirstVisit, isFirstVisit]);
 
   const handleCloseTutorial = () => {
-    console.log("handleCloseTutorial called - marking tutorial as completed");
+    console.log("Tutorial closed - marking as completed");
     setIsFirstVisit(false);
     setForceTutorial(false);
     markTutorialCompleted();
     
-    // If this was immediately after onboarding, show a welcome toast
+    // Show welcome toast after onboarding
     if (sessionStorage.getItem('justCompletedOnboarding')) {
       toast({
         title: getTranslatedText("welcomeToThrive"),
@@ -140,15 +138,15 @@ const IndexContent: React.FC<IndexContentProps> = ({
     }
   };
 
-  console.log("IndexContent rendering with screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial, "forceTutorial:", forceTutorial);
+  console.log("IndexContent rendering - screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial, "forceTutorial:", forceTutorial);
 
-  // Determine if tutorial should be visible - simplified logic to prioritize forced display
+  // Determine if tutorial should be visible
   const shouldShowTutorial = forceTutorial || (screenState === 'main' && (isFirstVisit || showMainTutorial));
   console.log("Should show tutorial:", shouldShowTutorial);
 
   return (
     <div className="relative z-10">
-      {/* Test button to force show tutorial - for debugging */}
+      {/* Test button to force show tutorial */}
       {screenState === 'main' && (
         <div className="absolute top-20 right-4 z-50">
           <Button
@@ -195,7 +193,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* Tutorial - always rendered but hidden when not needed */}
+      {/* Tutorial */}
       <TestTutorial
         isOpen={shouldShowTutorial}
         onClose={handleCloseTutorial}
