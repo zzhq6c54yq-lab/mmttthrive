@@ -70,30 +70,38 @@ const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   const { toast } = useToast();
   
-  // Effect to check if we should show the welcome tutorial
+  // Effect to handle tutorial display logic
   useEffect(() => {
     if (screenState === 'main') {
       console.log("IndexContent - Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
       
-      // Detect first visit or explicit tutorial flag  
-      if (showMainTutorial) {
-        console.log("Setting isFirstVisit to true based on showMainTutorial flag");
+      // Force tutorial display if coming from onboarding
+      const prevScreenState = localStorage.getItem('prevScreenState');
+      console.log("Previous screen state:", prevScreenState);
+      
+      const comingFromOnboarding = (
+        prevScreenState === 'visionBoard' || 
+        prevScreenState === 'subscription' || 
+        prevScreenState === 'register' || 
+        prevScreenState === 'moodResponse'
+      );
+      
+      if (comingFromOnboarding || showMainTutorial) {
+        console.log("Coming from onboarding or showMainTutorial is true - setting isFirstVisit to true");
+        
+        // Ensure the tutorial shows
         setIsFirstVisit(true);
         
-        // Check for transition from onboarding screens
-        const prevScreenState = localStorage.getItem('prevScreenState');
-        const comingFromOnboarding = (
-          prevScreenState === 'visionBoard' || 
-          prevScreenState === 'subscription' || 
-          prevScreenState === 'register' || 
-          prevScreenState === 'moodResponse'
-        );
-        
+        // Set a flag to remember this was an onboarding transition
         if (comingFromOnboarding) {
-          console.log("Coming from onboarding screen: ", prevScreenState);
-          // Set a flag in session storage to remember this was an onboarding transition
+          console.log("Setting flag for onboarding completion");
           sessionStorage.setItem('justCompletedOnboarding', 'true');
         }
+        
+        // Clear localStorage items that might prevent tutorial from showing
+        localStorage.removeItem('popupsShown');
+        localStorage.removeItem('hasVisitedThriveMT');
+        localStorage.removeItem('dashboardTutorialShown');
       }
     }
   }, [screenState, showMainTutorial, setIsFirstVisit, isFirstVisit]);
@@ -149,7 +157,14 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* Enhanced WelcomeTutorial component with improved visuals */}
+      {/* Debug - Add visible indicator when tutorial should be showing */}
+      {shouldShowTutorial ? (
+        console.log("Rendering welcome tutorial because shouldShowTutorial is true")
+      ) : (
+        console.log("NOT rendering welcome tutorial because shouldShowTutorial is false")
+      )}
+      
+      {/* Enhanced WelcomeTutorial component with improved visibility */}
       <WelcomeTutorial
         isOpen={shouldShowTutorial}
         onClose={handleCloseTutorial}

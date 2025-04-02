@@ -17,12 +17,20 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
   
   useEffect(() => {
     console.log("WelcomeTutorial rendered with isOpen:", isOpen);
+    
+    // Debug - track rendering
+    if (isOpen) {
+      console.log("Tutorial is OPEN");
+    } else {
+      console.log("Tutorial is CLOSED");
+    }
   }, [isOpen]);
   
   // Reset step when dialog opens
   useEffect(() => {
     if (isOpen) {
       setCurrentStep(0);
+      console.log("WelcomeTutorial - Dialog opened, resetting to step 0");
     }
   }, [isOpen]);
 
@@ -69,6 +77,7 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
+      console.log("WelcomeTutorial dialog open state changing to:", open);
       if (!open) onClose();
     }}>
       <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md max-h-[80vh] relative">
@@ -77,7 +86,10 @@ const WelcomeTutorial: React.FC<WelcomeTutorialProps> = ({ isOpen, onClose }) =>
           variant="ghost" 
           size="icon" 
           className="absolute top-2 right-2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 z-50"
-          onClick={onClose}
+          onClick={() => {
+            console.log("Close button clicked in WelcomeTutorial");
+            onClose();
+          }}
         >
           <X className="h-4 w-4" />
         </Button>

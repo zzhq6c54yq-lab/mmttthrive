@@ -59,7 +59,19 @@ const Header = () => {
 
   const handleToggleTutorial = () => {
     console.log("Opening tutorial from header");
+    
+    // Reset any flags that might prevent tutorial from showing
+    localStorage.removeItem('popupsShown');
+    localStorage.removeItem('hasVisitedThriveMT');
+    localStorage.removeItem('dashboardTutorialShown');
+    
+    // Force show the tutorial
     setShowWelcomeTutorial(true);
+  };
+
+  const handleCloseTutorial = () => {
+    console.log("Closing tutorial from header");
+    setShowWelcomeTutorial(false);
   };
 
   return (
@@ -159,7 +171,7 @@ const Header = () => {
         {/* Enhanced Welcome Tutorial Dialog */}
         <WelcomeTutorial
           isOpen={showWelcomeTutorial}
-          onClose={() => setShowWelcomeTutorial(false)}
+          onClose={handleCloseTutorial}
         />
       </header>
     </TooltipProvider>
