@@ -46,7 +46,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
 
   return (
     <>
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center gap-3">
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center gap-4">
         <Button
           variant="bronze"
           size="h-icon"
@@ -55,8 +55,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
           aria-label="Ask for Help"
           title="Ask for Help"
         >
-          <div className="h-14 w-14 flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
-            <Avatar className="h-10 w-10 rounded-full border border-[#B87333]/30 shadow-inner">
+          <div className="h-16 w-16 flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
+            <Avatar className="h-12 w-12 rounded-full border border-[#B87333]/30 shadow-inner">
               <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
               <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">H</AvatarFallback>
             </Avatar>

@@ -51,8 +51,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       id: 'happy',
       label: translations.happy,
       icon: <Smile className="w-full h-full" />,
-      color: "bg-green-500",
-      textColor: "text-green-500",
+      color: "bg-emerald-500",
+      textColor: "text-emerald-600",
       message: isSpanish 
         ? "Tu alegría es un regalo para el mundo. Cada sonrisa que compartes tiene el poder de iluminar el día de alguien más."
         : "Your joy is a gift to the world. Each smile you share has the power to brighten someone else's day."
@@ -61,8 +61,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       id: 'ok',
       label: translations.justOk,
       icon: <Brain className="w-full h-full" />,
-      color: "bg-blue-500",
-      textColor: "text-blue-500",
+      color: "bg-sky-500",
+      textColor: "text-sky-600",
       message: isSpanish 
         ? "Estar 'más o menos' es un lugar de auténtica sabiduría. No todo tiene que ser extraordinario para ser valioso."
         : "Being 'just okay' is a place of genuine wisdom. Not everything needs to be extraordinary to be valuable."
@@ -71,8 +71,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       id: 'neutral',
       label: translations.neutral,
       icon: <Meh className="w-full h-full" />,
-      color: "bg-gray-500",
-      textColor: "text-gray-500",
+      color: "bg-slate-500",
+      textColor: "text-slate-600",
       message: isSpanish 
         ? "La neutralidad es un lienzo en blanco lleno de posibilidades. Desde este espacio equilibrado, puedes elegir conscientemente hacia dónde dirigir tu energía."
         : "Neutrality is a blank canvas full of possibilities. From this balanced space, you can consciously choose where to direct your energy."
@@ -81,8 +81,8 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
       id: 'down',
       label: translations.down,
       icon: <HeartCrack className="w-full h-full" />,
-      color: "bg-purple-500",
-      textColor: "text-purple-500",
+      color: "bg-violet-500",
+      textColor: "text-violet-600",
       message: isSpanish 
         ? "Sentirse decaído no es un signo de debilidad, sino de humanidad. Tus emociones, incluso las difíciles, te enseñan sobre ti mismo y lo que necesitas."
         : "Feeling down isn't a sign of weakness, but of humanity. Your emotions, even the difficult ones, teach you about yourself and what you need."
@@ -188,19 +188,19 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-8 text-center"
+          className="mb-10 text-center"
         >
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
             {translations.title}
           </h1>
-          <p className="text-lg text-white/80 max-w-xl mx-auto">
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
             {translations.subtitle}
           </p>
         </motion.div>
         
-        {/* Simplified Mood Grid */}
+        {/* Improved Mood Grid with larger spacing */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 max-w-2xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {moods.map((mood, index) => (
               <motion.div
                 key={mood.id}
@@ -210,12 +210,12 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
               >
                 <button
                   onClick={() => handleMoodClick(mood)}
-                  className="w-full flex flex-col items-center justify-center rounded-lg p-4 transition-all duration-300 bg-white/5 hover:bg-white/10 hover:scale-105 border border-white/10"
+                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-5 transition-all duration-300 bg-white/8 hover:bg-white/15 hover:scale-105 border-2 border-white/10 hover:border-white/20 shadow-xl"
                 >
-                  <div className={`w-14 h-14 ${mood.color} rounded-full flex items-center justify-center mb-2`}>
+                  <div className={`w-16 h-16 ${mood.color} rounded-full flex items-center justify-center mb-3 shadow-lg`}>
                     {mood.icon}
                   </div>
-                  <span className="text-white font-medium">{mood.label}</span>
+                  <span className="text-white text-lg font-medium">{mood.label}</span>
                 </button>
               </motion.div>
             ))}
@@ -227,7 +227,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-8 flex justify-center"
+          className="mt-12 flex justify-center"
         >
           <Button
             onClick={onPrevious}
@@ -240,11 +240,11 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
         </motion.div>
       </div>
       
-      {/* Inspirational Message Dialog - Simplified */}
+      {/* Inspirational Message Dialog - Enhanced */}
       <Dialog open={showMoodDialog} onOpenChange={setShowMoodDialog}>
         <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/30 text-white max-w-md">
           <DialogHeader>
-            <DialogTitle className={`text-xl font-bold flex items-center gap-2 ${getSelectedMood()?.textColor}`}>
+            <DialogTitle className={`text-2xl font-bold flex items-center gap-3 ${getSelectedMood()?.textColor}`}>
               <div className={`p-2 rounded-full ${getSelectedMood()?.color}`}>
                 {getSelectedMood()?.icon}
               </div>
@@ -252,18 +252,25 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
             </DialogTitle>
           </DialogHeader>
           
-          <div className="mt-2">
-            {/* Inspirational message */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
-              <p className="text-white/90 leading-relaxed">
+          <div className="mt-4">
+            {/* Inspirational message - larger text and better formatting */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <p className="text-white/90 leading-relaxed text-lg md:text-xl text-center">
                 "{getSelectedMood()?.message}"
               </p>
             </div>
+            
+            {/* Visual cue - up and down arrows */}
+            <div className="flex justify-center my-4">
+              <div className="text-white/40 animate-bounce">
+                <ArrowLeft className="rotate-90 w-6 h-6" />
+              </div>
+            </div>
           </div>
           
-          <DialogFooter className="mt-4">
+          <DialogFooter className="mt-2">
             <Button 
-              className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+              className="w-full bg-[#B87333] hover:bg-[#B87333]/90 text-white text-lg py-6"
               onClick={handleContinue}
             >
               {translations.continueText}
@@ -272,49 +279,56 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
         </DialogContent>
       </Dialog>
       
-      {/* Support Resources Dialog (only for sad/overwhelmed) - Redesigned as Alert */}
+      {/* Support Resources Dialog (only for sad/overwhelmed) - Enhanced Alert */}
       <AlertDialog open={showResourcesDialog} onOpenChange={setShowResourcesDialog}>
-        <AlertDialogContent className="bg-[#1a1a1f] border border-red-500/30 text-white max-w-md">
+        <AlertDialogContent className="bg-[#1a1a1f] border-2 border-red-500/50 text-white max-w-md">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-bold flex items-center gap-2 text-red-400">
-              <AlertTriangle className="h-6 w-6 text-red-400" />
+            <AlertDialogTitle className="text-2xl font-bold flex items-center gap-3 text-red-400">
+              <AlertTriangle className="h-7 w-7 text-red-400" />
               {translations.needHelp}
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-white/90">
+            <AlertDialogDescription className="text-white/90 text-lg">
               {translations.warningText}
             </AlertDialogDescription>
           </AlertDialogHeader>
           
-          <div className="mt-4">
-            <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+          <div className="mt-6">
+            <h4 className="text-xl text-white font-semibold mb-4 flex items-center gap-2">
               <Heart className="h-5 w-5 text-red-400" />
               {translations.emergencyResources}
             </h4>
             
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-4">
               {emergencyResources.map((resource, index) => (
                 <div 
                   key={index} 
-                  className="bg-red-950/20 border border-red-500/20 backdrop-blur-sm rounded-lg p-3 hover:bg-red-900/20 transition-colors"
+                  className="bg-red-950/20 border border-red-500/20 backdrop-blur-sm rounded-lg p-4 hover:bg-red-900/20 transition-colors"
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-4">
                     <div className="p-2 bg-red-500/20 rounded-full text-red-400">
                       {resource.icon}
                     </div>
                     <div>
-                      <h5 className="font-medium mb-1">{resource.title}</h5>
-                      <p className="text-white/70 text-sm mb-1">{resource.description}</p>
-                      <p className="text-red-400 font-bold">{resource.contact}</p>
+                      <h5 className="font-medium text-lg mb-1">{resource.title}</h5>
+                      <p className="text-white/70 mb-2">{resource.description}</p>
+                      <p className="text-red-400 font-bold text-lg">{resource.contact}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+            
+            {/* Visual cue - up and down arrows */}
+            <div className="flex justify-center my-4">
+              <div className="text-red-400/40 animate-bounce">
+                <ArrowLeft className="rotate-90 w-6 h-6" />
+              </div>
+            </div>
           </div>
           
-          <AlertDialogFooter className="mt-6">
+          <AlertDialogFooter className="mt-4">
             <AlertDialogAction 
-              className="w-full bg-red-600 hover:bg-red-700 text-white"
+              className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-6"
               onClick={handleResourcesContinue}
             >
               {translations.continueText}

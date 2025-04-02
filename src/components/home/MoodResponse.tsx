@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Annoyed, PhoneCall, MessageSquare, Headphones, AlertTriangle } from "lucide-react";
@@ -34,7 +33,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     continueToRegister: isSpanish ? "Continuar con el Registro" : "Continue to Register",
     continue: isSpanish ? "Continuar" : "Continue",
     previous: isSpanish ? "Anterior" : "Previous",
-    // Mood-specific title translations
     happyTitle: isSpanish ? "¡Tu Luz Brilla Hoy!" : "Your Light Shines Bright Today!",
     okTitle: isSpanish ? "Tu Día Tiene Potencial Ilimitado" : "Your Day Has Unlimited Potential",
     neutralTitle: isSpanish ? "Tu Centro Calmado Es Tu Fortaleza" : "Your Calm Center Is Your Strength",
@@ -174,12 +172,12 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   // Helper function to get the correct icon based on mood
   const getMoodIcon = () => {
     switch (selectedMood) {
-      case 'happy': return <Smile className="w-full h-full text-yellow-400" />;
-      case 'ok': return <Annoyed className="w-full h-full text-blue-400" />;
-      case 'neutral': return <Meh className="w-full h-full text-gray-400" />;
-      case 'down': return <HeartCrack className="w-full h-full text-indigo-400" />;
-      case 'sad': return <Frown className="w-full h-full text-purple-400" />;
-      case 'overwhelmed': return <Angry className="w-full h-full text-orange-400" />;
+      case 'happy': return <Smile className="w-full h-full text-emerald-400" />;
+      case 'ok': return <Annoyed className="w-full h-full text-sky-400" />;
+      case 'neutral': return <Meh className="w-full h-full text-slate-400" />;
+      case 'down': return <HeartCrack className="w-full h-full text-violet-400" />;
+      case 'sad': return <Frown className="w-full h-full text-indigo-400" />;
+      case 'overwhelmed': return <Angry className="w-full h-full text-rose-400" />;
       default: return null;
     }
   };
@@ -187,12 +185,12 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   // Helper function to get background gradient based on mood
   const getBackgroundGradient = () => {
     switch (selectedMood) {
-      case 'happy': return 'from-yellow-500/10 via-amber-500/5 to-[#1a1a1f]';
-      case 'ok': return 'from-blue-500/10 via-sky-500/5 to-[#1a1a1f]';
-      case 'neutral': return 'from-gray-500/10 via-slate-500/5 to-[#1a1a1f]';
-      case 'down': return 'from-indigo-500/10 via-indigo-500/5 to-[#1a1a1f]';
-      case 'sad': return 'from-purple-500/10 via-purple-500/5 to-[#1a1a1f]';
-      case 'overwhelmed': return 'from-orange-500/10 via-orange-500/5 to-[#1a1a1f]';
+      case 'happy': return 'from-emerald-500/10 via-amber-500/5 to-[#1a1a1f]';
+      case 'ok': return 'from-sky-500/10 via-sky-500/5 to-[#1a1a1f]';
+      case 'neutral': return 'from-slate-500/10 via-slate-500/5 to-[#1a1a1f]';
+      case 'down': return 'from-violet-500/10 via-violet-500/5 to-[#1a1a1f]';
+      case 'sad': return 'from-indigo-500/10 via-indigo-500/5 to-[#1a1a1f]';
+      case 'overwhelmed': return 'from-rose-500/10 via-rose-500/5 to-[#1a1a1f]';
       default: return 'from-[#1a1a1f] to-[#1a1a1f]';
     }
   };
@@ -222,51 +220,57 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
       <Dialog open={showEmergencyServices} onOpenChange={setShowEmergencyServices}>
         <DialogContent className="max-w-md bg-red-50 border-2 border-red-500">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-center text-red-700">
+            <DialogTitle className="text-2xl font-semibold text-center text-red-700">
               {translations.emergencyTitle}
             </DialogTitle>
-            <DialogDescription className="text-center pt-2 text-red-600">
+            <DialogDescription className="text-center pt-2 text-red-600 text-lg">
               {translations.emergencyDesc}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4 my-4">
-            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
-              <PhoneCall className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
+              <PhoneCall className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-red-700">{translations.crisisHelpline}</h3>
-                <p className="text-sm text-red-600">{translations.crisisNumber}</p>
+                <h3 className="font-medium text-red-700 text-lg">{translations.crisisHelpline}</h3>
+                <p className="text-red-600 text-base">{translations.crisisNumber}</p>
               </div>
             </div>
             
-            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
-              <MessageSquare className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
+              <MessageSquare className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-red-700">{translations.textSupport}</h3>
-                <p className="text-sm text-red-600">{translations.textDetails}</p>
+                <h3 className="font-medium text-red-700 text-lg">{translations.textSupport}</h3>
+                <p className="text-red-600 text-base">{translations.textDetails}</p>
               </div>
             </div>
             
-            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
-              <Headphones className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0" />
+            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
+              <Headphones className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-red-700">{translations.suicidePrevention}</h3>
-                <p className="text-sm text-red-600">1-800-273-8255</p>
+                <h3 className="font-medium text-red-700 text-lg">{translations.suicidePrevention}</h3>
+                <p className="text-red-600 text-base">1-800-273-8255</p>
               </div>
             </div>
             
-            <div className="flex items-start p-3 bg-red-100 rounded-lg border border-red-300">
-              <AlertTriangle className="text-red-600 mr-3 mt-1 h-5 w-5 flex-shrink-0 animate-pulse" />
+            <div className="flex items-start p-4 bg-red-100 rounded-lg border border-red-300">
+              <AlertTriangle className="text-red-600 mr-3 mt-1 h-6 w-6 flex-shrink-0 animate-pulse" />
               <div>
-                <h3 className="font-medium text-red-700">{translations.emergencyServices}</h3>
-                <p className="text-sm text-red-600">{translations.emergency911}</p>
+                <h3 className="font-medium text-red-700 text-lg">{translations.emergencyServices}</h3>
+                <p className="text-red-600 text-base">{translations.emergency911}</p>
+              </div>
+            </div>
+            
+            <div className="flex justify-center my-4">
+              <div className="text-red-400 animate-bounce">
+                <ArrowLeft className="rotate-90 w-6 h-6" />
               </div>
             </div>
           </div>
           
           <DialogFooter className="flex justify-center">
             <Button 
-              className="w-full bg-red-600 hover:bg-red-700 text-white"
+              className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-6"
               onClick={() => {
                 setShowEmergencyServices(false);
                 onContinue();
@@ -286,13 +290,11 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center bg-gradient-to-b ${getBackgroundGradient()} animate-fade-in relative`}>
-      {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl transform rotate-12"></div>
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[#B87333]/5 rounded-full blur-3xl"></div>
       </div>
       
-      {/* Thrive MT Logo in circle */}
       <motion.div 
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -315,12 +317,12 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
           <div className="absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
           
           <div className="relative z-10">
-            <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+            <div className="flex flex-col md:flex-row items-center gap-10 mb-12">
               <motion.div 
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-32 h-32 p-4 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0"
+                className="w-36 h-36 p-4 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-lg"
               >
                 {getMoodIcon()}
               </motion.div>
@@ -330,7 +332,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight leading-tight"
+                  className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight"
                 >
                   {getTitle()}
                 </motion.h2>
@@ -339,7 +341,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
-                  className="relative min-h-[6rem] overflow-hidden bg-[#1a1a1f]/40 p-4 rounded-xl backdrop-blur-sm"
+                  className="relative min-h-[8rem] overflow-hidden bg-[#1a1a1f]/40 p-6 rounded-xl backdrop-blur-sm"
                 >
                   {affirmations.map((affirmation, index) => (
                     <motion.p
@@ -350,12 +352,18 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                         y: index === activeAffirmation ? 0 : 20
                       }}
                       transition={{ duration: 0.5 }}
-                      className="absolute inset-0 flex items-center justify-center px-4 text-xl md:text-2xl text-white/90 font-light"
+                      className="absolute inset-0 flex items-center justify-center px-6 text-2xl md:text-3xl text-white/90 font-light"
                     >
                       {affirmation}
                     </motion.p>
                   ))}
                 </motion.div>
+                
+                <div className="flex justify-center my-4">
+                  <div className="text-white/40 animate-bounce">
+                    <ArrowLeft className="rotate-90 w-6 h-6" />
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -363,22 +371,22 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="flex flex-col md:flex-row justify-center md:justify-between gap-4"
+              className="flex flex-col md:flex-row justify-center md:justify-between gap-6"
             >
               <Button 
-                className="bg-white/20 hover:bg-white/30 text-white"
+                className="bg-white/20 hover:bg-white/30 text-white text-lg py-6"
                 onClick={onPrevious}
               >
-                <ArrowLeft className="mr-2 h-4 w-4" />
+                <ArrowLeft className="mr-2 h-5 w-5" />
                 {translations.previous}
               </Button>
               
               <Button 
-                className="bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+                className="bg-[#B87333] hover:bg-[#B87333]/90 text-white text-lg py-6 px-8"
                 onClick={handleContinue}
               >
                 {translations.continue}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </motion.div>
           </div>
