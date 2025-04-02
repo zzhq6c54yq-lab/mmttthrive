@@ -60,6 +60,7 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
           </div>
         </Button>
         
+        {/* Changed from TutorialButton with question mark to the MT logo version */}
         <TutorialButton 
           featureId="dashboard" 
           variant="logo" 

@@ -53,7 +53,7 @@ export const usePopupManagement = (screenState: string) => {
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
       // Show transition tutorial when coming from onboarding screens 
-      // and if not shown yet
+      // and if not shown yet - uses the same FeatureTutorial component
       if (!popupsShown.transitionTutorial && 
           (prevScreenState === 'visionBoard' || 
            prevScreenState === 'subscription' || 
@@ -61,7 +61,7 @@ export const usePopupManagement = (screenState: string) => {
         setShowTransitionTutorial(true);
         setPopupsShown(prev => ({ ...prev, transitionTutorial: true }));
         
-        // Also mark dashboard tutorial as pending
+        // Also mark dashboard tutorial as pending to ensure content is consistent
         localStorage.removeItem('dashboardTutorialShown');
       }
       

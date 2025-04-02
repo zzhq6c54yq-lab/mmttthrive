@@ -53,8 +53,8 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         >
           <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center p-1 backdrop-blur-md border border-[#B87333]/30">
             <div className="text-[#B87333] font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+              <span className="text-[8px] opacity-80 mb-0.5">THRIVE</span>
               <span className="text-xl">MT</span>
-              <span className="text-[8px] opacity-80 -mt-1">THRIVE</span>
             </div>
           </div>
         </Button>
