@@ -85,12 +85,11 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
             </>
           )}
           <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
-            <div className="relative w-8 h-8 overflow-hidden">
-              <img 
-                src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-                alt="Thrive MT Logo" 
-                className="h-8 w-8 filter drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"
-              />
+            <div className="relative w-8 h-8 overflow-hidden flex items-center justify-center">
+              <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+                <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
+                <span>MT</span>
+              </div>
             </div>
           </div>
         </Button>
@@ -138,7 +137,10 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         className={`bg-white/5 hover:bg-white/15 border-white/10 text-white/90 backdrop-blur-sm shadow-md hover:shadow-lg text-xs ${className}`}
         onClick={handleOpenTutorial}
       >
-        <HelpCircle className="h-4 w-4 mr-1.5" />
+        <div className="text-white/90 font-bold text-xs leading-none tracking-tighter flex flex-col items-center mr-1.5">
+          <span className="text-[5px] opacity-90">THRIVE</span>
+          <span>MT</span>
+        </div>
         {isSpanish ? "Cómo usar esta función" : "How to use this feature"}
       </Button>
       

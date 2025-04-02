@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
-  Moon, Sun, Bell, Languages, Lock, MessageSquare
+  Moon, Sun, Bell, Lock, MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,22 +56,6 @@ const Header = () => {
     });
   };
 
-  const toggleLanguage = () => {
-    const newLanguage = isSpanish ? 'English' : 'Español';
-    localStorage.setItem('preferredLanguage', newLanguage);
-    
-    // Force a re-render of the app to apply the language change immediately
-    window.dispatchEvent(new Event('languageChange'));
-    
-    toast({
-      title: isSpanish ? "Language Changed" : "Idioma Cambiado",
-      description: isSpanish ? "Language set to English" : "Idioma establecido a Español",
-    });
-    
-    // Log the language change
-    console.log(`Language toggled to: ${newLanguage}`);
-  };
-
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
       {/* Tutorial Button */}
@@ -83,19 +67,10 @@ const Header = () => {
         title={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
         onClick={() => setShowWelcomeTutorial(true)}
       >
-        <HelpCircle className="h-5 w-5 text-[#B87333]" />
-      </Button>
-    
-      {/* Language Button */}
-      <Button 
-        variant="outline" 
-        size="icon" 
-        className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
-        aria-label={isSpanish ? "Cambiar idioma" : "Language toggle"}
-        title={isSpanish ? "Cambiar idioma" : "Language toggle"}
-        onClick={toggleLanguage}
-      >
-        <Languages className="h-5 w-5 text-[#B87333]" />
+        <div className="text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
+          <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
+          <span>MT</span>
+        </div>
       </Button>
       
       {/* User Menu */}
@@ -144,10 +119,6 @@ const Header = () => {
             <DropdownMenuItem>
               <Lock className="mr-2 h-4 w-4" />
               <span>{isSpanish ? "Configuración de Privacidad" : "Privacy Settings"}</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={toggleLanguage}>
-              <Languages className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "English" : "Español"}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

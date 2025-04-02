@@ -81,8 +81,8 @@ const HelpNavButton: React.FC = () => {
         >
           <div className="bg-[#1a1a1f]/80 rounded-full h-9 w-9 flex items-center justify-center">
             <div className="text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
+              <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
               <span>MT</span>
-              <span className="text-[6px] opacity-80 -mt-0.5">THRIVE</span>
             </div>
           </div>
         </Button>

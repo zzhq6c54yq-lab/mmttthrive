@@ -53,16 +53,15 @@ export const usePopupManagement = (screenState: string) => {
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
       // Always show the tutorial when coming from emotional check-in (mood, moodResponse) 
-      // or plan selection (subscription) screens, but only once per session
-      if (!popupsShown.transitionTutorial && 
-          (prevScreenState === 'visionBoard' || 
-           prevScreenState === 'subscription' || 
-           prevScreenState === 'moodResponse' ||
-           prevScreenState === 'mood')) {
-        // Force show the welcome tutorial
+      // or plan selection (subscription) screens, or vision board
+      if (prevScreenState === 'visionBoard' || 
+          prevScreenState === 'subscription' || 
+          prevScreenState === 'moodResponse' ||
+          prevScreenState === 'mood' ||
+          prevScreenState === 'register') {
+        // Force show the welcome tutorial by resetting the flag
         localStorage.setItem('dashboardTutorialShown', 'false');
         setShowTransitionTutorial(true);
-        setPopupsShown(prev => ({ ...prev, transitionTutorial: true }));
       }
       
       // Show co-pay credit popup if not shown yet
