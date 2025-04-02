@@ -64,12 +64,15 @@ const TestTutorial: React.FC<TestTutorialProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  // Extreme debug logging
+  console.log("TUTORIAL DEBUG - Rendering TestTutorial with isOpen:", isOpen);
+
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => {
       console.log("TestTutorial dialog open state changing to:", open);
       if (!open) onClose();
     }}>
-      <AlertDialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md max-h-[80vh] relative z-[9999]">
+      <AlertDialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md max-h-[80vh] relative z-[2000]">
         {/* Close button (X) in the top-right corner */}
         <Button 
           variant="ghost" 

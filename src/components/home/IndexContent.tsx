@@ -2,11 +2,9 @@
 import React, { useEffect, useState } from "react";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import TestTutorial from "@/components/tutorials/TestTutorial";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 
 interface IndexContentProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
@@ -72,6 +70,15 @@ const IndexContent: React.FC<IndexContentProps> = ({
   const { toast } = useToast();
   const [forceTutorial, setForceTutorial] = useState(false);
   
+  // ALWAYS force the tutorial to show for testing purposes
+  useEffect(() => {
+    console.log("DEBUG: Initial mount of IndexContent - forcing tutorial");
+    if (screenState === 'main') {
+      console.log("DEBUG: Main screen detected - setting forceTutorial to true");
+      setForceTutorial(true);
+    }
+  }, []);
+  
   // Effect to handle tutorial display logic and test with URL parameter
   useEffect(() => {
     // Check for URL parameter to force tutorial display
@@ -101,6 +108,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
         
         // Ensure the tutorial shows
         setIsFirstVisit(true);
+        setForceTutorial(true); // Force tutorial display
         
         // Set a flag to remember this was an onboarding transition
         if (comingFromOnboarding) {
@@ -134,8 +142,8 @@ const IndexContent: React.FC<IndexContentProps> = ({
 
   console.log("IndexContent rendering with screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial, "forceTutorial:", forceTutorial);
 
-  // Determine if tutorial should be visible - now with forced option
-  const shouldShowTutorial = forceTutorial || ((isFirstVisit || showMainTutorial) && screenState === 'main');
+  // Determine if tutorial should be visible - simplified logic to prioritize forced display
+  const shouldShowTutorial = forceTutorial || (screenState === 'main' && (isFirstVisit || showMainTutorial));
   console.log("Should show tutorial:", shouldShowTutorial);
 
   return (
@@ -146,7 +154,10 @@ const IndexContent: React.FC<IndexContentProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setForceTutorial(true)}
+            onClick={() => {
+              console.log("Force tutorial button clicked");
+              setForceTutorial(true);
+            }}
             className="bg-red-500/80 hover:bg-red-600 text-white border-red-400"
           >
             Force Tutorial
@@ -184,13 +195,11 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* Using new TestTutorial component that uses AlertDialog instead of Dialog */}
-      {shouldShowTutorial && (
-        <TestTutorial
-          isOpen={shouldShowTutorial}
-          onClose={handleCloseTutorial}
-        />
-      )}
+      {/* Tutorial - always rendered but hidden when not needed */}
+      <TestTutorial
+        isOpen={shouldShowTutorial}
+        onClose={handleCloseTutorial}
+      />
     </div>
   );
 };

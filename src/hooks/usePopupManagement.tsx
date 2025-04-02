@@ -12,11 +12,15 @@ export const usePopupManagement = (screenState: string) => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
   const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
-  const [showMainTutorial, setShowMainTutorial] = useState(false);
+  const [showMainTutorial, setShowMainTutorial] = useState(true); // Default to true to force tutorial initially
   const [popupsShown, setPopupsShown] = useState<PopupState>(() => {
-    // Try to get popup state from localStorage to persist between sessions
-    const savedState = localStorage.getItem('popupsShown');
-    return savedState ? JSON.parse(savedState) : {
+    // Clear localStorage completely for testing purposes
+    localStorage.removeItem('popupsShown');
+    localStorage.removeItem('hasVisitedThriveMT');
+    localStorage.removeItem('dashboardTutorialShown');
+    
+    // Initialize with all popups not shown
+    return {
       coPayCredit: false,
       henryIntro: false,
       mainTutorial: false,
@@ -38,11 +42,6 @@ export const usePopupManagement = (screenState: string) => {
       }
     }
   }, []);
-
-  // Save popup state to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('popupsShown', JSON.stringify(popupsShown));
-  }, [popupsShown]);
 
   // Main effect for handling popups based on screen state
   useEffect(() => {
@@ -66,32 +65,17 @@ export const usePopupManagement = (screenState: string) => {
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
       
-      // Enhanced handling for main tutorial - more aggressive reset
-      const hasVisitedThriveMT = localStorage.getItem('hasVisitedThriveMT');
-      const comingFromOnboarding = (
-        prevScreenState === 'visionBoard' || 
-        prevScreenState === 'subscription' || 
-        prevScreenState === 'register' || 
-        prevScreenState === 'moodResponse'
-      );
+      // IMPORTANT: For tutorial testing - ALWAYS force tutorial to show when in main screen
+      console.log("On main screen - forcing tutorial to show");
+      setShowMainTutorial(true);
       
-      console.log("Tutorial check - hasVisitedThriveMT:", hasVisitedThriveMT, 
-                 "Coming from onboarding:", comingFromOnboarding,
-                 "popupsShown.mainTutorial:", popupsShown.mainTutorial);
+      // Aggressively reset flags to ensure it shows
+      localStorage.removeItem('popupsShown');
+      localStorage.removeItem('hasVisitedThriveMT');
+      localStorage.removeItem('dashboardTutorialShown');
       
-      // Much more aggressive checking to ensure tutorial shows
-      if (!hasVisitedThriveMT || comingFromOnboarding || !popupsShown.mainTutorial || screenState === 'main') {
-        console.log("Setting showMainTutorial to TRUE - forcing tutorial display");
-        setShowMainTutorial(true);
-        
-        // Aggressively reset flags to ensure it shows
-        localStorage.removeItem('popupsShown');
-        localStorage.removeItem('hasVisitedThriveMT');
-        localStorage.removeItem('dashboardTutorialShown');
-        
-        if (popupsShown.mainTutorial) {
-          setPopupsShown(prev => ({ ...prev, mainTutorial: false }));
-        }
+      if (popupsShown.mainTutorial) {
+        setPopupsShown(prev => ({ ...prev, mainTutorial: false }));
       }
     }
     
