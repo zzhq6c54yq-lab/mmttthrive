@@ -4,24 +4,29 @@ import { Brain, TrendingUp, AlertCircle, Clock } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const InsightsSection = () => {
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
   // Mock data for insights
   const moodData = {
     average: 7.2,
     improvement: "+12%",
-    triggers: ["Work stress", "Poor sleep", "Social media"],
+    triggers: isSpanish 
+      ? ["Estrés laboral", "Mal sueño", "Redes sociales"] 
+      : ["Work stress", "Poor sleep", "Social media"],
     patterns: [
-      { day: "Mon", value: 45 },
-      { day: "Tue", value: 65 },
-      { day: "Wed", value: 60 },
-      { day: "Thu", value: 80 },
-      { day: "Fri", value: 75 },
-      { day: "Sat", value: 85 },
-      { day: "Sun", value: 90 },
+      { day: isSpanish ? "Lun" : "Mon", value: 45 },
+      { day: isSpanish ? "Mar" : "Tue", value: 65 },
+      { day: isSpanish ? "Mié" : "Wed", value: 60 },
+      { day: isSpanish ? "Jue" : "Thu", value: 80 },
+      { day: isSpanish ? "Vie" : "Fri", value: 75 },
+      { day: isSpanish ? "Sáb" : "Sat", value: 85 },
+      { day: isSpanish ? "Dom" : "Sun", value: 90 },
     ],
     timeOfDay: [
-      { time: "Morning", mood: "7.5" },
-      { time: "Afternoon", mood: "6.8" },
-      { time: "Evening", mood: "7.4" },
+      { time: isSpanish ? "Mañana" : "Morning", mood: "7.5" },
+      { time: isSpanish ? "Tarde" : "Afternoon", mood: "6.8" },
+      { time: isSpanish ? "Noche" : "Evening", mood: "7.4" },
     ]
   };
 
@@ -38,15 +43,21 @@ const InsightsSection = () => {
             <div className="absolute inset-0 bg-[#B87333]/20 rounded-full blur-sm"></div>
             <Brain className="h-5 w-5 text-[#B87333] relative" />
           </div>
-          Mood Insights
+          {isSpanish ? "Análisis de Estado de Ánimo" : "Mood Insights"}
         </CardTitle>
-        <CardDescription>Patterns and trends in your mood entries</CardDescription>
+        <CardDescription>
+          {isSpanish 
+            ? "Patrones y tendencias en tus registros de estado de ánimo" 
+            : "Patterns and trends in your mood entries"}
+        </CardDescription>
       </CardHeader>
       <CardContent className="relative z-10">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-sm text-muted-foreground">Average Mood</span>
+              <span className="text-sm text-muted-foreground">
+                {isSpanish ? "Estado de Ánimo Promedio" : "Average Mood"}
+              </span>
               <div className="text-2xl font-bold">{moodData.average}/10</div>
             </div>
             <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full text-xs">
@@ -56,7 +67,9 @@ const InsightsSection = () => {
           </div>
 
           <div>
-            <span className="text-sm text-muted-foreground">Weekly Trend</span>
+            <span className="text-sm text-muted-foreground">
+              {isSpanish ? "Tendencia Semanal" : "Weekly Trend"}
+            </span>
             <div className="mt-2 flex items-end space-x-1">
               {moodData.patterns.map((day) => (
                 <div key={day.day} className="flex-1 flex flex-col items-center">
@@ -71,7 +84,9 @@ const InsightsSection = () => {
           </div>
 
           <div>
-            <span className="text-sm text-muted-foreground">Time of Day Impact</span>
+            <span className="text-sm text-muted-foreground">
+              {isSpanish ? "Impacto por Hora del Día" : "Time of Day Impact"}
+            </span>
             <div className="mt-2 grid grid-cols-3 gap-2">
               {moodData.timeOfDay.map((time, index) => (
                 <div key={index} className="text-center p-1.5 bg-[#B87333]/5 rounded-md">
@@ -86,7 +101,9 @@ const InsightsSection = () => {
           </div>
 
           <div>
-            <span className="text-sm text-muted-foreground">Potential Triggers</span>
+            <span className="text-sm text-muted-foreground">
+              {isSpanish ? "Posibles Desencadenantes" : "Potential Triggers"}
+            </span>
             <div className="mt-2 flex flex-wrap gap-2">
               {moodData.triggers.map((trigger, index) => (
                 <span 
@@ -106,7 +123,9 @@ const InsightsSection = () => {
             href="/progress-reports" 
             className="text-sm text-[#B87333] hover:text-[#A56625] underline-offset-4 hover:underline relative group"
           >
-            <span className="relative z-10">View Detailed Reports</span>
+            <span className="relative z-10">
+              {isSpanish ? "Ver Informes Detallados" : "View Detailed Reports"}
+            </span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#B87333]/30 group-hover:w-full transition-all duration-300"></span>
           </a>
         </div>

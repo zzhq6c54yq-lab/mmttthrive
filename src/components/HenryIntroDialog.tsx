@@ -12,64 +12,122 @@ interface HenryIntroDialogProps {
 }
 
 const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange }) => {
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md bg-white/5 backdrop-blur-md border border-[#B87333]/20">
         <DialogHeader className="text-center">
           <div className="flex justify-center mb-2">
             <Avatar className="h-24 w-24 border-4 border-[#B87333]/50">
-              <AvatarImage src="/photo-1485827404703-89b55fcc595e.jpg" alt="Henry" />
+              <AvatarImage src="/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png" alt="Henry" />
               <AvatarFallback className="bg-[#B87333]/20 text-[#B87333] text-2xl">
                 H
               </AvatarFallback>
             </Avatar>
           </div>
-          <DialogTitle className="text-2xl gradient-heading">Meet Henry</DialogTitle>
+          <DialogTitle className="text-2xl gradient-heading">
+            {isSpanish ? "Conoce a Henry" : "Meet Henry"}
+          </DialogTitle>
           <DialogDescription className="text-base text-white">
-            Your personalized mental health specialist
+            {isSpanish 
+              ? "Tu especialista en salud mental personalizado" 
+              : "Your personalized mental health specialist"}
           </DialogDescription>
         </DialogHeader>
         
         <ScrollArea className="max-h-[60vh] overflow-auto pr-4">
           <div className="space-y-4 text-white">
             <p className="leading-relaxed">
-              Hi, I'm Henry! I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT.
+              {isSpanish 
+                ? "¡Hola, soy Henry! Estoy aquí para ayudarte a navegar tu viaje de salud mental y brindarte apoyo personalizado mientras exploras Thrive MT."
+                : "Hi, I'm Henry! I'm here to help you navigate your mental health journey and provide personalized support as you explore Thrive MT."}
             </p>
             
             <div className="bg-white/10 p-4 rounded-lg">
-              <h3 className="font-medium text-lg text-[#B87333] mb-2">My name stands for:</h3>
+              <h3 className="font-medium text-lg text-[#B87333] mb-2">
+                {isSpanish ? "Mi nombre significa:" : "My name stands for:"}
+              </h3>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <Heart className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">H</span>elpful guidance through your mental health journey</span>
+                  <span>
+                    <span className="font-bold text-[#B87333]">H</span>
+                    {isSpanish 
+                      ? "orientación útil a través de tu viaje de salud mental" 
+                      : "elpful guidance through your mental health journey"}
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Brain className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">E</span>vidence-based strategies for emotional wellbeing</span>
+                  <span>
+                    <span className="font-bold text-[#B87333]">E</span>
+                    {isSpanish 
+                      ? "strategias basadas en evidencia para el bienestar emocional" 
+                      : "vidence-based strategies for emotional wellbeing"}
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Smile className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">N</span>urturing support whenever you need it</span>
+                  <span>
+                    <span className="font-bold text-[#B87333]">N</span>
+                    {isSpanish 
+                      ? "utriente apoyo cuando lo necesites" 
+                      : "urturing support whenever you need it"}
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">R</span>eliable resources tailored to your needs</span>
+                  <span>
+                    <span className="font-bold text-[#B87333]">R</span>
+                    {isSpanish 
+                      ? "ecursos confiables adaptados a tus necesidades" 
+                      : "eliable resources tailored to your needs"}
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Heart className="h-5 w-5 text-[#B87333]" />
-                  <span><span className="font-bold text-[#B87333]">Y</span>our companion on the path to mental wellness</span>
+                  <span>
+                    <span className="font-bold text-[#B87333]">Y</span>
+                    {isSpanish 
+                      ? " tu compañero en el camino hacia el bienestar mental" 
+                      : "our companion on the path to mental wellness"}
+                  </span>
                 </li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-medium text-lg text-[#B87333] mb-2">How I can help:</h3>
+              <h3 className="font-medium text-lg text-[#B87333] mb-2">
+                {isSpanish ? "Cómo puedo ayudar:" : "How I can help:"}
+              </h3>
               <ul className="list-disc pl-5 space-y-1">
-                <li>Navigate the app's features and resources</li>
-                <li>Provide personalized mental health guidance</li>
-                <li>Support you during difficult moments</li>
-                <li>Connect you with appropriate resources</li>
-                <li>Track your progress and celebrate wins</li>
+                <li>
+                  {isSpanish 
+                    ? "Navegar por las funciones y recursos de la aplicación" 
+                    : "Navigate the app's features and resources"}
+                </li>
+                <li>
+                  {isSpanish 
+                    ? "Proporcionar orientación personalizada sobre salud mental" 
+                    : "Provide personalized mental health guidance"}
+                </li>
+                <li>
+                  {isSpanish 
+                    ? "Apoyarte durante momentos difíciles" 
+                    : "Support you during difficult moments"}
+                </li>
+                <li>
+                  {isSpanish 
+                    ? "Conectarte con recursos apropiados" 
+                    : "Connect you with appropriate resources"}
+                </li>
+                <li>
+                  {isSpanish 
+                    ? "Seguir tu progreso y celebrar logros" 
+                    : "Track your progress and celebrate wins"}
+                </li>
               </ul>
             </div>
           </div>
@@ -80,7 +138,9 @@ const HenryIntroDialog: React.FC<HenryIntroDialogProps> = ({ open, onOpenChange 
             className="group hero-button bg-[#B87333] hover:bg-[#B87333]/80"
             onClick={() => onOpenChange(false)}
           >
-            Start Your Journey With Henry
+            {isSpanish 
+              ? "Comienza Tu Viaje Con Henry" 
+              : "Start Your Journey With Henry"}
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </DialogFooter>

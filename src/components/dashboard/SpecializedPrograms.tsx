@@ -8,27 +8,35 @@ import { useToast } from "@/hooks/use-toast";
 const SpecializedPrograms: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
 
   const specializedPrograms = [
     {
-      title: "Department of Defense",
-      description: "Resources and support for military personnel and veterans",
+      title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
+      description: isSpanish 
+        ? "Recursos y apoyo para personal militar y veteranos" 
+        : "Resources and support for military personnel and veterans",
       icon: Shield,
       path: "/department-of-defense",
       gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
       borderColor: "#0EA5E9"
     },
     {
-      title: "The College Experience",
-      description: "Mental health support for students navigating campus life",
+      title: isSpanish ? "La Experiencia Universitaria" : "The College Experience",
+      description: isSpanish 
+        ? "Apoyo de salud mental para estudiantes en la vida universitaria" 
+        : "Mental health support for students navigating campus life",
       icon: GraduationCap,
       path: "/college-portal",
       gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
       borderColor: "#8B5CF6"
     },
     {
-      title: "Small Business",
-      description: "Mental health resources for entrepreneurs and small business owners",
+      title: isSpanish ? "Pequeñas Empresas" : "Small Business",
+      description: isSpanish 
+        ? "Recursos de salud mental para emprendedores y dueños de pequeñas empresas" 
+        : "Mental health resources for entrepreneurs and small business owners",
       icon: Briefcase,
       path: "/small-business-portal",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
@@ -38,8 +46,10 @@ const SpecializedPrograms: React.FC = () => {
   
   const handleFeatureClick = (path: string) => {
     toast({
-      title: "Navigating...",
-      description: "Taking you to your selected feature",
+      title: isSpanish ? "Navegando..." : "Navigating...",
+      description: isSpanish 
+        ? "Llevándote a la función seleccionada" 
+        : "Taking you to your selected feature",
       duration: 1500,
     });
     
@@ -52,7 +62,7 @@ const SpecializedPrograms: React.FC = () => {
         <h2 className="text-3xl font-bold text-gray-800 inline-flex items-center gap-3 relative">
           <Sparkles className="h-6 w-6 text-[#B87333]" />
           <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
-            Specialized Programs
+            {isSpanish ? "Programas Especializados" : "Specialized Programs"}
           </span>
         </h2>
         <div className="absolute -bottom-2 left-0 w-64 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
@@ -86,7 +96,7 @@ const SpecializedPrograms: React.FC = () => {
                   handleFeatureClick(program.path);
                 }}
               >
-                Explore Program
+                {isSpanish ? "Explorar Programa" : "Explore Program"}
               </Button>
             </div>
             

@@ -10,31 +10,39 @@ import { useToast } from "@/hooks/use-toast";
 const QuizzesSection = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
   
-  // Mock data for quizzes
+  // Mock data for quizzes with translations
   const quizzes = [
     {
       id: 1,
-      title: "Mental Health Basics",
-      description: "Test your knowledge about fundamental mental health concepts",
+      title: isSpanish ? "Conceptos Básicos de Salud Mental" : "Mental Health Basics",
+      description: isSpanish 
+        ? "Prueba tus conocimientos sobre conceptos fundamentales de salud mental" 
+        : "Test your knowledge about fundamental mental health concepts",
       completionRate: 75,
       questions: 10,
-      timeEstimate: "5 min",
+      timeEstimate: isSpanish ? "5 min" : "5 min",
     },
     {
       id: 2,
-      title: "Stress Management",
-      description: "Learn about effective stress reduction techniques",
+      title: isSpanish ? "Manejo del Estrés" : "Stress Management",
+      description: isSpanish 
+        ? "Aprende sobre técnicas efectivas para reducir el estrés" 
+        : "Learn about effective stress reduction techniques",
       completionRate: 0,
       questions: 8,
-      timeEstimate: "4 min",
+      timeEstimate: isSpanish ? "4 min" : "4 min",
     },
   ];
 
   const handleStartQuiz = (quizId: number) => {
     toast({
-      title: "Quiz Starting",
-      description: "Taking you to the selected quiz...",
+      title: isSpanish ? "Iniciando Cuestionario" : "Quiz Starting",
+      description: isSpanish 
+        ? "Llevándote al cuestionario seleccionado..." 
+        : "Taking you to the selected quiz...",
       duration: 1500,
     });
     
@@ -49,8 +57,10 @@ const QuizzesSection = () => {
   
   const handleExploreQuizzes = () => {
     toast({
-      title: "Exploring Quizzes",
-      description: "Taking you to all available quizzes",
+      title: isSpanish ? "Explorando Cuestionarios" : "Exploring Quizzes",
+      description: isSpanish 
+        ? "Llevándote a todos los cuestionarios disponibles" 
+        : "Taking you to all available quizzes",
       duration: 1500,
     });
     
@@ -64,9 +74,13 @@ const QuizzesSection = () => {
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <HelpCircle className="h-5 w-5 text-[#B87333]" />
-          Mental Health Quizzes
+          {isSpanish ? "Cuestionarios de Salud Mental" : "Mental Health Quizzes"}
         </CardTitle>
-        <CardDescription>Fun and educational quizzes to enhance your knowledge</CardDescription>
+        <CardDescription>
+          {isSpanish 
+            ? "Cuestionarios divertidos y educativos para mejorar tu conocimiento" 
+            : "Fun and educational quizzes to enhance your knowledge"}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -82,7 +96,7 @@ const QuizzesSection = () => {
                     {quiz.completionRate > 0 && (
                       <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
                         <CheckCircle className="h-3 w-3 mr-1" />
-                        In progress
+                        {isSpanish ? "En progreso" : "In progress"}
                       </span>
                     )}
                   </h4>
@@ -93,14 +107,16 @@ const QuizzesSection = () => {
                   className="h-7 rounded-full bg-[#B87333] hover:bg-[#A56625] text-white"
                   onClick={() => handleStartQuiz(quiz.id)}
                 >
-                  {quiz.completionRate > 0 ? "Continue" : "Start"}
+                  {quiz.completionRate > 0 
+                    ? (isSpanish ? "Continuar" : "Continue") 
+                    : (isSpanish ? "Iniciar" : "Start")}
                 </Button>
               </div>
               
               {quiz.completionRate > 0 && (
                 <div className="mt-3">
                   <div className="flex justify-between text-xs mb-1">
-                    <span>Progress</span>
+                    <span>{isSpanish ? "Progreso" : "Progress"}</span>
                     <span>{quiz.completionRate}%</span>
                   </div>
                   <Progress value={quiz.completionRate} className="h-1.5" />
@@ -109,7 +125,7 @@ const QuizzesSection = () => {
               
               <div className="mt-2 flex items-center text-xs text-muted-foreground">
                 <Lightbulb className="h-3 w-3 mr-1" />
-                <span>{quiz.questions} questions</span>
+                <span>{quiz.questions} {isSpanish ? "preguntas" : "questions"}</span>
                 <span className="mx-2">•</span>
                 <span>{quiz.timeEstimate}</span>
               </div>
@@ -124,7 +140,7 @@ const QuizzesSection = () => {
             className="text-[#B87333] border-[#B87333]/30 hover:bg-[#B87333]/5 hover:border-[#B87333]"
             onClick={handleExploreQuizzes}
           >
-            Explore More Quizzes
+            {isSpanish ? "Explorar Más Cuestionarios" : "Explore More Quizzes"}
             <ArrowRight className="ml-2 h-3 w-3" />
           </Button>
         </div>

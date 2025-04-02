@@ -18,11 +18,12 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     }
   }, []);
   
-  const toggleSpanish = () => {
-    const newValue = !isSpanish;
-    setIsSpanish(newValue);
-    // This will update the app's language context
-    localStorage.setItem('preferredLanguage', newValue ? 'Español' : 'English');
+  const selectLanguage = (language: 'English' | 'Español') => {
+    const newIsSpanish = language === 'Español';
+    setIsSpanish(newIsSpanish);
+    
+    // Set language preference in localStorage
+    localStorage.setItem('preferredLanguage', language);
     
     // Force a re-render of the app to apply the language change immediately
     window.dispatchEvent(new Event('languageChange'));
@@ -32,8 +33,22 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
       <div className="floating-bg"></div>
       
-      {/* Spanish language toggle button at the top */}
-      <div className="absolute top-6 right-6 z-20">
+      {/* Language selection options at the top */}
+      <div className="absolute top-6 right-6 z-20 flex gap-2">
+        <Button
+          size="sm"
+          variant={!isSpanish ? "gold" : "ghost"}
+          className={`text-xs py-1 px-3 h-8 rounded-full transition-all duration-300 ${
+            !isSpanish 
+              ? "bg-[#B87333] text-white shadow-[0_0_10px_rgba(184,115,51,0.5)]" 
+              : "text-white/70 hover:text-white hover:bg-[#B87333]/20 border border-[#B87333]/30"
+          }`}
+          onClick={() => selectLanguage('English')}
+        >
+          <Languages className="h-4 w-4 mr-1.5" />
+          English
+        </Button>
+        
         <Button
           size="sm"
           variant={isSpanish ? "gold" : "ghost"}
@@ -42,10 +57,10 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
               ? "bg-[#B87333] text-white shadow-[0_0_10px_rgba(184,115,51,0.5)]" 
               : "text-white/70 hover:text-white hover:bg-[#B87333]/20 border border-[#B87333]/30"
           }`}
-          onClick={toggleSpanish}
+          onClick={() => selectLanguage('Español')}
         >
           <Languages className="h-4 w-4 mr-1.5" />
-          {isSpanish ? "English" : "Para usuarios de habla hispana"}
+          Español
         </Button>
       </div>
       
