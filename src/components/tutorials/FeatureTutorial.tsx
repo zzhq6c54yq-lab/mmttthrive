@@ -551,6 +551,9 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
 
   const renderStepIcon = () => {
     const step = tutorialSteps[currentStep];
+    // Fix: Add a null check to prevent accessing 'highlight' of undefined
+    if (!step) return <Lightbulb className="h-12 w-12 text-amber-400 mb-2" />;
+    
     if (step.highlight === "points-system" || step.highlight === "earning-credits") {
       return <Award className="h-12 w-12 text-amber-400 mb-2" />;
     } else if (step.highlight === "reminders") {
@@ -566,7 +569,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
   if (embedded) {
     return (
       <div className="bg-[#2a2a3c]/60 border border-[#3a3a4c] rounded-lg overflow-hidden">
-        {tutorialSteps.length > 0 && (
+        {tutorialSteps.length > 0 && currentStep < tutorialSteps.length && (
           <div className="py-4 text-center px-4">
             {renderStepIcon()}
             <h3 className="text-lg font-medium text-white mb-2">
@@ -620,6 +623,9 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
     );
   }
 
+  // Add safety check for regular dialog mode
+  const hasValidStep = tutorialSteps.length > 0 && currentStep < tutorialSteps.length;
+
   // Regular dialog mode
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -639,7 +645,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
         </DialogHeader>
         
         <ScrollArea className="max-h-[60vh]">
-          {tutorialSteps.length > 0 && (
+          {hasValidStep && (
             <div className="py-4 text-center">
               {renderStepIcon()}
               <h3 className="text-lg font-medium text-white mb-2">
@@ -681,7 +687,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
               onClick={handleNext}
               className="bg-indigo-500 hover:bg-indigo-600 text-white"
             >
-              {currentStep < tutorialSteps.length - 1 ? (
+              {hasValidStep && currentStep < tutorialSteps.length - 1 ? (
                 <>
                   {getTranslatedText('next', featureId)}
                   <ChevronRight className="h-4 w-4 ml-1" />

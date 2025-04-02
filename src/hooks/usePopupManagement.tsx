@@ -42,6 +42,10 @@ export const usePopupManagement = (screenState: string) => {
       if (!popupsShown.henryIntro) {
         setShowHenry(true);
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
+        
+        // Also mark dashboard tutorial as pending
+        // The actual tutorial will be shown by MainDashboard component
+        localStorage.removeItem('dashboardTutorialShown');
       }
     }
   }, [screenState, popupsShown]);
@@ -59,6 +63,7 @@ export const usePopupManagement = (screenState: string) => {
       mainTutorial: false
     });
     localStorage.removeItem('popupsShown');
+    localStorage.removeItem('dashboardTutorialShown');
   };
 
   return {

@@ -1,6 +1,6 @@
 
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/Header";
 import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
@@ -13,6 +13,7 @@ import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
 import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
+import FeatureTutorial from "@/components/tutorials/FeatureTutorial";
 
 interface MainDashboardProps {
   userName: string;
@@ -32,9 +33,31 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   navigateToFeature
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
+  
+  const [showTutorial, setShowTutorial] = useState(false);
+  
+  // Check if this is the first time loading the dashboard from onboarding
+  useEffect(() => {
+    // If coming from vision board or subscription plan screens, show tutorial
+    const state = location.state as { from?: string } | null;
+    const comingFromOnboarding = state?.from === 'visionBoard' || state?.from === 'subscription';
+    
+    // Only show tutorial once by checking localStorage
+    const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
+    
+    if (comingFromOnboarding && !dashboardTutorialShown) {
+      setShowTutorial(true);
+      localStorage.setItem('dashboardTutorialShown', 'true');
+    }
+  }, [location]);
+  
+  const handleTutorialClose = () => {
+    setShowTutorial(false);
+  };
   
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
     toast({
@@ -124,6 +147,17 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 
         <KeyFeatures />
       </div>
+      
+      {showTutorial && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+          <div className="w-full max-w-lg mx-4">
+            <FeatureTutorial 
+              featureId="dashboard" 
+              onClose={handleTutorialClose}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
