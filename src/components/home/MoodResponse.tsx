@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -13,6 +14,9 @@ interface MoodResponseProps {
 const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, onPrevious }) => {
   const [activeAffirmation, setActiveAffirmation] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [isScrolledToTop, setIsScrolledToTop] = useState(true);
+  const affirmationScrollRef = React.useRef<HTMLDivElement>(null);
   
   // Get preferred language
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
@@ -28,7 +32,8 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     downTitle: isSpanish ? "Tu Resiliencia Es Extraordinaria" : "Your Resilience Is Remarkable",
     sadTitle: isSpanish ? "Tu Corazón Tiene Inmensa Capacidad" : "Your Heart Has Immense Capacity",
     overwhelmedTitle: isSpanish ? "Tu Poder Interior Es Mayor Que Cualquier Desafío" : "Your Inner Power Is Greater Than Any Challenge",
-    scrollDown: isSpanish ? "Desplázate para más" : "Scroll for more"
+    scrollDown: isSpanish ? "Desplázate para más" : "Scroll down for more",
+    scrollUp: isSpanish ? "Desplázate hacia arriba" : "Scroll up for more"
   };
   
   // Enhanced Happy affirmations - longer and more heartfelt
@@ -185,23 +190,34 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     }
   };
   
-  // Hide scroll indicator after 5 seconds
+  // Enhanced scroll indicator function that monitors scroll position
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+    
+    // Check if scrolled to top
+    setIsScrolledToTop(scrollTop === 0);
+    
+    // Check if scrolled to bottom
+    setIsScrolledToBottom(Math.abs(scrollHeight - clientHeight - scrollTop) < 10);
+  };
+  
+  // Hide scroll indicator after 8 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowScrollIndicator(false);
-    }, 5000);
+    }, 8000);
     
     return () => clearTimeout(timer);
   }, []);
   
-  // Cycle through affirmations every 8 seconds (longer to read the more extensive text)
+  // Cycle through affirmations every 12 seconds (longer to read the more extensive text)
   useEffect(() => {
     const affirmations = getAffirmations();
     if (affirmations.length === 0) return;
     
     const interval = setInterval(() => {
       setActiveAffirmation(prev => (prev + 1) % affirmations.length);
-    }, 8000);
+    }, 12000);
     
     return () => clearInterval(interval);
   }, [selectedMood, isSpanish]);
@@ -209,6 +225,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   if (!selectedMood) return null;
   
   const affirmations = getAffirmations();
+  const currentAffirmation = affirmations[activeAffirmation] || "";
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center bg-gradient-to-b ${getBackgroundGradient()} animate-fade-in relative`}>
@@ -247,32 +264,37 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
-                  className="relative min-h-[15rem] md:min-h-[12rem] overflow-hidden bg-[#1a1a1f]/40 p-6 rounded-xl backdrop-blur-sm"
+                  className="relative min-h-[18rem] md:min-h-[15rem] flex flex-col bg-[#1a1a1f]/40 rounded-xl backdrop-blur-sm"
                 >
-                  {affirmations.map((affirmation, index) => (
-                    <motion.p
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ 
-                        opacity: index === activeAffirmation ? 1 : 0,
-                        y: index === activeAffirmation ? 0 : 20
-                      }}
-                      transition={{ duration: 0.5 }}
-                      className="absolute inset-0 flex items-center justify-center px-6 text-xl md:text-2xl text-white/90 font-light leading-relaxed"
-                    >
-                      {affirmation}
-                    </motion.p>
-                  ))}
+                  {/* Scroll up indicator - only show when not at top */}
+                  <div className={`flex justify-center py-2 ${isScrolledToTop ? 'opacity-0' : 'opacity-80'} transition-opacity duration-300`}>
+                    <div className="flex flex-col items-center text-white/80">
+                      <ChevronUp className="w-5 h-5 animate-bounce" />
+                      <span className="text-xs">{translations.scrollUp}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Scrollable affirmation area */}
+                  <ScrollArea 
+                    className="px-6 py-4 flex-grow"
+                    onScroll={handleScroll}
+                    ref={affirmationScrollRef}
+                  >
+                    <div className="text-xl md:text-2xl text-white/90 font-light leading-relaxed">
+                      {currentAffirmation}
+                    </div>
+                  </ScrollArea>
+                  
+                  {/* Scroll down indicator - only show when not at bottom */}
+                  <div className={`flex justify-center py-2 ${isScrolledToBottom ? 'opacity-0' : 'opacity-80'} transition-opacity duration-300`}>
+                    <div className="flex flex-col items-center text-white/80">
+                      <span className="text-xs">{translations.scrollDown}</span>
+                      <ChevronDown className="w-5 h-5 animate-bounce" />
+                    </div>
+                  </div>
                 </motion.div>
                 
-                {/* Scrolling indicator with up/down arrows */}
-                <div className={`flex justify-center my-6 transition-opacity duration-700 ${showScrollIndicator ? 'opacity-100' : 'opacity-40'}`}>
-                  <div className="flex flex-col items-center gap-1 text-white/70">
-                    <ChevronUp className="w-5 h-5 animate-bounce" style={{ animationDuration: '1.5s' }} />
-                    <p className="text-sm">{translations.scrollDown}</p>
-                    <ChevronDown className="w-5 h-5 animate-bounce" style={{ animationDuration: '1.5s', animationDelay: '0.5s' }} />
-                  </div>
-                </div>
+                {/* Removed cycling affirmations and replaced with static text + scroll */}
               </div>
             </div>
             
