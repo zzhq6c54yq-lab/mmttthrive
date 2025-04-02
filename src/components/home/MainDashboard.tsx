@@ -35,10 +35,27 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
-  
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
   
   // Check if this is the first time loading the dashboard from onboarding
   useEffect(() => {

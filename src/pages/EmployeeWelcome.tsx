@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -23,14 +23,34 @@ const EmployeeWelcome: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
 
   const handleNavigate = (path) => {
     if (isNavigating) return;
     
     setIsNavigating(true);
     toast({
-      title: "Navigating",
-      description: "Opening your personalized wellness resources",
+      title: isSpanish ? "Navegando" : "Navigating",
+      description: isSpanish ? "Abriendo tus recursos de bienestar personalizados" : "Opening your personalized wellness resources",
       duration: 2000
     });
     
@@ -39,6 +59,36 @@ const EmployeeWelcome: React.FC = () => {
       setIsNavigating(false);
     }, 500);
   };
+
+  const features = [
+    {
+      title: isSpanish ? "Recursos de Bienestar" : "Wellness Resources", 
+      description: isSpanish 
+        ? "Contenido seleccionado por expertos para ayudarte a prosperar en el trabajo y en casa" 
+        : "Expert-curated content to help you thrive at work and home",
+      icon: <BookOpen className="h-8 w-8 text-white" />,
+      path: "/employee-readiness?tab=resources",
+      color: "from-[#22C55E] to-[#4ADE80]"
+    },
+    {
+      title: isSpanish ? "Talleres Interactivos" : "Interactive Workshops", 
+      description: isSpanish 
+        ? "Únete a sesiones en vivo para desarrollar habilidades y mejorar el bienestar" 
+        : "Join live sessions to build skills and boost wellbeing",
+      icon: <Brain className="h-8 w-8 text-white" />,
+      path: "/employee-readiness?tab=workshops",
+      color: "from-[#8B5CF6] to-[#A78BFA]"
+    },
+    {
+      title: isSpanish ? "Evaluaciones de Bienestar" : "Wellbeing Assessments", 
+      description: isSpanish 
+        ? "Obtén información personalizada para entender tu salud mental" 
+        : "Get personalized insights to understand your mental health",
+      icon: <Target className="h-8 w-8 text-white" />,
+      path: "/employee-readiness?tab=assessments",
+      color: "from-[#EC4899] to-[#F472B6]"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#334155] text-white py-8 px-4 relative">
@@ -54,51 +104,41 @@ const EmployeeWelcome: React.FC = () => {
         
         <div className="flex flex-col items-center justify-center text-center px-4 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] to-[#4ADE80]">
-            Employee Mental Wellness Portal
+            {isSpanish ? "Portal de Bienestar Mental para Empleados" : "Employee Mental Wellness Portal"}
           </h1>
           
           <div className="max-w-2xl mb-8">
             <p className="text-xl text-white/90 font-medium">
-              Welcome to your personal mental wellness space designed specifically for employees like you.
+              {isSpanish 
+                ? "Bienvenido a tu espacio personal de bienestar mental diseñado específicamente para empleados como tú."
+                : "Welcome to your personal mental wellness space designed specifically for employees like you."}
             </p>
             
             <p className="text-lg mb-8 text-white/90">
-              Taking care of your mental health is just as important as your physical health. 
-              Choose from our variety of wellness resources to support your journey.
+              {isSpanish 
+                ? "Cuidar de tu salud mental es tan importante como tu salud física. Elige entre nuestra variedad de recursos de bienestar para apoyar tu viaje."
+                : "Taking care of your mental health is just as important as your physical health. Choose from our variety of wellness resources to support your journey."}
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-10">
-            <FeatureCard 
-              title="Wellness Resources" 
-              description="Expert-curated content to help you thrive at work and home"
-              icon={<BookOpen className="h-8 w-8 text-white" />}
-              onClick={() => handleNavigate("/employee-readiness?tab=resources")}
-              color="from-[#22C55E] to-[#4ADE80]"
-            />
-            
-            <FeatureCard 
-              title="Interactive Workshops" 
-              description="Join live sessions to build skills and boost wellbeing"
-              icon={<Brain className="h-8 w-8 text-white" />}
-              onClick={() => handleNavigate("/employee-readiness?tab=workshops")}
-              color="from-[#8B5CF6] to-[#A78BFA]"
-            />
-            
-            <FeatureCard 
-              title="Wellbeing Assessments" 
-              description="Get personalized insights to understand your mental health"
-              icon={<Target className="h-8 w-8 text-white" />}
-              onClick={() => handleNavigate("/employee-readiness?tab=assessments")}
-              color="from-[#EC4899] to-[#F472B6]"
-            />
+            {features.map((feature, index) => (
+              <FeatureCard 
+                key={index}
+                title={feature.title} 
+                description={feature.description}
+                icon={feature.icon}
+                onClick={() => handleNavigate(feature.path)}
+                color={feature.color}
+              />
+            ))}
           </div>
           
           <Button 
             onClick={() => handleNavigate("/employee-readiness")}
             className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 border border-white/20 rounded-full"
           >
-            Explore Full Wellness Portal <Rocket className="ml-2 h-5 w-5" />
+            {isSpanish ? "Explorar Portal de Bienestar Completo" : "Explore Full Wellness Portal"} <Rocket className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>

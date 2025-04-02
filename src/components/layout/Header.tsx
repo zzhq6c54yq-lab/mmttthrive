@@ -79,7 +79,8 @@ const Header = () => {
         variant="outline" 
         size="icon" 
         className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
-        aria-label="App Tutorial"
+        aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
+        title={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
         onClick={() => setShowWelcomeTutorial(true)}
       >
         <HelpCircle className="h-5 w-5 text-[#B87333]" />
@@ -90,7 +91,8 @@ const Header = () => {
         variant="outline" 
         size="icon" 
         className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
-        aria-label="Language toggle"
+        aria-label={isSpanish ? "Cambiar idioma" : "Language toggle"}
+        title={isSpanish ? "Cambiar idioma" : "Language toggle"}
         onClick={toggleLanguage}
       >
         <Languages className="h-5 w-5 text-[#B87333]" />
@@ -103,7 +105,8 @@ const Header = () => {
             variant="outline" 
             size="icon" 
             className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
-            aria-label="User menu"
+            aria-label={isSpanish ? "Menú de usuario" : "User menu"}
+            title={isSpanish ? "Menú de usuario" : "User menu"}
           >
             <User className="h-5 w-5 text-[#B87333]" />
           </Button>

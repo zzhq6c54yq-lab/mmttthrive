@@ -57,7 +57,7 @@ import SubscriptionPlansPage from './pages/SubscriptionPlansPage';
 import BinauralBeats from './pages/BinauralBeats';
 import VideoDiary from './pages/VideoDiary';
 import WellnessChallenges from './pages/WellnessChallenges';
-import HelpNavButton from './components/help/HelpNavButton';
+import NavigationHelpButton from './components/navigation/NavigationHelpButton';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -134,7 +134,7 @@ function App() {
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
       
-      <HelpNavButton />
+      <NavigationHelpButton />
       <Toaster />
       <SonnerToaster position="top-right" expand={false} richColors />
     </Router>
