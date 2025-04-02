@@ -43,8 +43,12 @@ export const useTranslation = () => {
         'Español': 'Omitir por ahora'
       },
       'showMeAround': {
-        'English': 'Show me around',
-        'Español': 'Muéstrame el lugar'
+        'English': 'Next',
+        'Español': 'Siguiente'
+      },
+      'welcomeMessage': {
+        'English': 'Let\'s explore the main features of Thrive MT together to help you start your mental',
+        'Español': 'Exploremos juntos las principales características de Thrive MT para ayudarte a comenzar tu salud mental'
       }
     };
     
