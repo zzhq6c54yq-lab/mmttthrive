@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-import TestTutorial from "@/components/tutorials/TestTutorial";
+import MainTutorial from "@/components/tutorials/MainTutorial";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 
@@ -68,94 +68,62 @@ const IndexContent: React.FC<IndexContentProps> = ({
   markTutorialCompleted
 }) => {
   const { toast } = useToast();
-  const [forceTutorial, setForceTutorial] = useState(false);
+  const [tutorialVisible, setTutorialVisible] = useState(false);
   
-  // Force tutorial on first load of main screen
+  // Check URL parameters and screen state to determine if tutorial should be shown
   useEffect(() => {
-    if (screenState === 'main') {
-      console.log("Main screen detected - setting forceTutorial to true");
-      setForceTutorial(true);
-    }
-  }, []);
-  
-  // Effect to handle tutorial display logic
-  useEffect(() => {
-    // Check for URL parameter to force tutorial display
+    // Get URL parameters
     const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('tutorial')) {
-      console.log("Forcing tutorial display due to URL parameter");
-      setForceTutorial(true);
-      return;
-    }
+    const forceTutorial = queryParams.has('tutorial') || queryParams.has('reset');
     
-    if (screenState === 'main') {
-      console.log("Main screen detected. isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial);
+    console.log("IndexContent: Checking tutorial visibility. Screen:", screenState, 
+                "showMainTutorial:", showMainTutorial, 
+                "forceTutorial param:", forceTutorial);
+    
+    // Show tutorial if on main screen AND (showMainTutorial OR URL parameter)
+    if (screenState === 'main' && (showMainTutorial || forceTutorial)) {
+      console.log("IndexContent: Showing tutorial");
+      setTutorialVisible(true);
       
-      // Check if coming from onboarding flow
-      const prevScreenState = localStorage.getItem('prevScreenState');
-      console.log("Previous screen state:", prevScreenState);
-      
-      const comingFromOnboarding = (
-        prevScreenState === 'visionBoard' || 
-        prevScreenState === 'subscription' || 
-        prevScreenState === 'register' || 
-        prevScreenState === 'moodResponse'
-      );
-      
-      if (comingFromOnboarding || showMainTutorial) {
-        console.log("Coming from onboarding or showMainTutorial is true");
-        
-        // Ensure the tutorial shows
+      // Set first visit flag for proper animations/transitions
+      if (forceTutorial) {
         setIsFirstVisit(true);
-        setForceTutorial(true);
-        
-        // Set a flag for onboarding completion
-        if (comingFromOnboarding) {
-          sessionStorage.setItem('justCompletedOnboarding', 'true');
-        }
-        
-        // Force clear localStorage items that might prevent tutorial
-        localStorage.removeItem('popupsShown');
-        localStorage.removeItem('hasVisitedThriveMT');
-        localStorage.removeItem('dashboardTutorialShown');
       }
     }
-  }, [screenState, showMainTutorial, setIsFirstVisit, isFirstVisit]);
+  }, [screenState, showMainTutorial, setIsFirstVisit]);
 
-  const handleCloseTutorial = () => {
-    console.log("Tutorial closed - marking as completed");
-    setIsFirstVisit(false);
-    setForceTutorial(false);
+  // Handle tutorial close
+  const handleTutorialClose = () => {
+    console.log("IndexContent: Tutorial closed");
+    setTutorialVisible(false);
     markTutorialCompleted();
     
-    // Show welcome toast after onboarding
-    if (sessionStorage.getItem('justCompletedOnboarding')) {
+    // Show welcome toast
+    if (screenState === 'main') {
       toast({
         title: getTranslatedText("welcomeToThrive"),
         description: getTranslatedText("exploreAllFeatures"),
       });
-      sessionStorage.removeItem('justCompletedOnboarding');
     }
   };
 
-  console.log("IndexContent rendering - screenState:", screenState, "isFirstVisit:", isFirstVisit, "showMainTutorial:", showMainTutorial, "forceTutorial:", forceTutorial);
-
-  // Determine if tutorial should be visible
-  const shouldShowTutorial = forceTutorial || (screenState === 'main' && (isFirstVisit || showMainTutorial));
-  console.log("Should show tutorial:", shouldShowTutorial);
+  // Force show tutorial (debug button)
+  const handleForceTutorial = () => {
+    console.log("IndexContent: Force tutorial button clicked");
+    localStorage.removeItem('mainTutorialShown');
+    localStorage.setItem('forceTutorial', 'true');
+    setTutorialVisible(true);
+  };
 
   return (
     <div className="relative z-10">
-      {/* Test button to force show tutorial */}
+      {/* Debug: Force tutorial button (only on main screen) */}
       {screenState === 'main' && (
         <div className="absolute top-20 right-4 z-50">
           <Button
             variant="outline"
             size="sm"
-            onClick={() => {
-              console.log("Force tutorial button clicked");
-              setForceTutorial(true);
-            }}
+            onClick={handleForceTutorial}
             className="bg-red-500/80 hover:bg-red-600 text-white border-red-400"
           >
             Force Tutorial
@@ -193,10 +161,10 @@ const IndexContent: React.FC<IndexContentProps> = ({
         setScreenState={setScreenState}
       />
       
-      {/* Tutorial */}
-      <TestTutorial
-        isOpen={shouldShowTutorial}
-        onClose={handleCloseTutorial}
+      {/* Main Tutorial */}
+      <MainTutorial
+        isOpen={tutorialVisible}
+        onClose={handleTutorialClose}
       />
     </div>
   );

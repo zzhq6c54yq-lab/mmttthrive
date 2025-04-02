@@ -54,20 +54,25 @@ const Index = () => {
       setShowHenry(true);
     }
     
-    // Special handling for debug purposes - you can add ?reset=true to URL to reset states
+    // Reset states for debugging
     if (location.search.includes('reset=true')) {
-      console.log("Resetting all popup states due to URL parameter");
+      console.log("Index: Resetting all popup states due to URL parameter");
       resetPopupStates();
     }
   }, [location.state, location.search, setShowHenry, resetPopupStates]);
 
-  // Check if it's the first visit and show tutorial accordingly
+  // Check if tutorial should be shown for main screen
   useEffect(() => {
-    console.log("Index - First visit check with screen:", screenState, "showMainTutorial:", showMainTutorial);
+    console.log("Index: Main screen check with screen:", screenState, "showMainTutorial:", showMainTutorial);
     
-    if (screenState === 'main' && showMainTutorial) {
-      console.log("Setting isFirstVisit to true for main screen with showMainTutorial active");
-      setIsFirstVisit(true);
+    if (screenState === 'main') {
+      // Ensure we properly detect first visit for tutorial purposes
+      const isReturningVisitor = localStorage.getItem('mainTutorialShown') === 'true';
+      
+      if (!isReturningVisitor || showMainTutorial) {
+        console.log("Index: Setting isFirstVisit flag for tutorial");
+        setIsFirstVisit(true);
+      }
     }
   }, [screenState, showMainTutorial, setIsFirstVisit]);
 

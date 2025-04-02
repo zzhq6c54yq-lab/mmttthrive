@@ -5,28 +5,18 @@ interface PopupState {
   coPayCredit: boolean;
   henryIntro: boolean;
   mainTutorial: boolean;
-  transitionTutorial: boolean;
 }
 
 export const usePopupManagement = (screenState: string) => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
-  const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
-  const [showMainTutorial, setShowMainTutorial] = useState(true); // Set to true by default
+  const [showMainTutorial, setShowMainTutorial] = useState(false);
   const [popupsShown, setPopupsShown] = useState<PopupState>(() => {
-    // Initialize with empty state
-    const storedState = localStorage.getItem('popupsShown');
-    
-    // For testing purposes, always reset the storage
-    localStorage.removeItem('popupsShown');
-    localStorage.removeItem('hasVisitedThriveMT');
-    localStorage.removeItem('dashboardTutorialShown');
-    
+    // Initialize state
     return {
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: false,
-      transitionTutorial: false
+      mainTutorial: false
     };
   });
 
@@ -34,18 +24,17 @@ export const usePopupManagement = (screenState: string) => {
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     if (queryParams.has('reset') || queryParams.has('tutorial')) {
-      console.log("Resetting popup states due to URL parameter");
+      console.log("usePopupManagement: Resetting popup states due to URL parameter");
       resetPopupStates();
       
       // Force tutorial to show
       setShowMainTutorial(true);
-      console.log("Setting showMainTutorial to true due to URL parameter");
     }
   }, []);
 
   // Main effect for handling popups based on screen state
   useEffect(() => {
-    console.log("usePopupManagement - Current screen:", screenState, "showMainTutorial:", showMainTutorial);
+    console.log("usePopupManagement: Current screen:", screenState, "showMainTutorial:", showMainTutorial);
     
     if (screenState === 'main') {
       // Show co-pay credit popup if not shown yet
@@ -54,7 +43,7 @@ export const usePopupManagement = (screenState: string) => {
         setPopupsShown(prev => ({ ...prev, coPayCredit: true }));
       }
       
-      // Show Henry when navigating to main from registration or vision board
+      // Show Henry when navigating to main from certain screens
       const prevScreenState = localStorage.getItem('prevScreenState');
       if (!popupsShown.henryIntro && 
           (prevScreenState === 'visionBoard' || prevScreenState === 'subscription')) {
@@ -62,52 +51,46 @@ export const usePopupManagement = (screenState: string) => {
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
       }
       
-      // ALWAYS force tutorial to show when in main screen
-      console.log("On main screen - forcing tutorial to show");
-      setShowMainTutorial(true);
+      // Check if tutorial should be shown
+      const tutorialShown = localStorage.getItem('mainTutorialShown') === 'true';
       
-      // Reset flags to ensure tutorial shows
-      localStorage.removeItem('popupsShown');
-      localStorage.removeItem('hasVisitedThriveMT');
-      localStorage.removeItem('dashboardTutorialShown');
+      if (!tutorialShown || localStorage.getItem('forceTutorial') === 'true') {
+        console.log("usePopupManagement: Main screen - showing tutorial");
+        setShowMainTutorial(true);
+        
+        // Clear force flag
+        localStorage.removeItem('forceTutorial');
+      }
     }
     
-    // Save current screen state as previous for next navigation
+    // Save current screen state for next navigation
     localStorage.setItem('prevScreenState', screenState);
   }, [screenState]);
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
-    console.log("Marking tutorial as completed");
-    setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
+    console.log("usePopupManagement: Marking tutorial as completed");
+    setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
     setShowMainTutorial(false);
-    localStorage.setItem('hasVisitedThriveMT', 'true');
-    localStorage.setItem('dashboardTutorialShown', 'true');
+    localStorage.setItem('mainTutorialShown', 'true');
   };
 
-  // Method to reset popup states (useful for testing)
+  // Method to reset popup states
   const resetPopupStates = () => {
-    console.log("Resetting all popup states");
+    console.log("usePopupManagement: Resetting all popup states");
     
-    // Clear ALL localStorage items that might interfere
     localStorage.removeItem('popupsShown');
-    localStorage.removeItem('hasVisitedThriveMT');
+    localStorage.removeItem('mainTutorialShown');
     localStorage.removeItem('prevScreenState');
-    localStorage.removeItem('dashboardTutorialShown');
-    localStorage.removeItem('tutorialShown');
+    localStorage.setItem('forceTutorial', 'true');
     
-    // Reset state
     setPopupsShown({
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: false,
-      transitionTutorial: false
+      mainTutorial: false
     });
     
-    // Force show tutorial
     setShowMainTutorial(true);
-    
-    console.log("Reset complete - tutorial should now show on next navigation to main screen");
   };
 
   return {
@@ -115,8 +98,6 @@ export const usePopupManagement = (screenState: string) => {
     setShowCoPayCredit,
     showHenry,
     setShowHenry,
-    showTransitionTutorial,
-    setShowTransitionTutorial,
     showMainTutorial,
     setShowMainTutorial,
     popupsShown,

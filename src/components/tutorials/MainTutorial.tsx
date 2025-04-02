@@ -1,28 +1,36 @@
 
 import React, { useState, useEffect } from "react";
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from "@/components/ui/alert-dialog";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, ChevronRight, ChevronLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface TestTutorialProps {
+interface TutorialProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const TestTutorial: React.FC<TestTutorialProps> = ({ isOpen, onClose }) => {
+const MainTutorial: React.FC<TutorialProps> = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   
-  // Reset step when dialog opens
+  // Reset to first step when tutorial opens
   useEffect(() => {
     if (isOpen) {
       setCurrentStep(0);
-      console.log("TestTutorial - Dialog opened, resetting to step 0");
+      console.log("MainTutorial: Dialog opened, reset to step 0");
     }
   }, [isOpen]);
 
+  // Tutorial content
   const steps = [
     {
       title: isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT",
@@ -64,30 +72,31 @@ const TestTutorial: React.FC<TestTutorialProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  console.log("TestTutorial - Rendering with isOpen:", isOpen);
-
   return (
-    <AlertDialog open={isOpen} onOpenChange={(open) => {
-      console.log("AlertDialog open changing to:", open);
-      if (!open) onClose();
-    }}>
-      <AlertDialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-md max-h-[80vh] relative z-[2000]">
-        {/* Close button (X) in the top-right corner */}
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={(open) => {
+        console.log("MainTutorial: Dialog open changing to:", open);
+        if (!open) onClose();
+      }}
+    >
+      <DialogContent 
+        className="max-w-md max-h-[90vh] bg-[#2a2a3c] border-[#3a3a4c] text-white overflow-visible"
+        style={{ zIndex: 9999 }}
+      >
+        {/* Close button */}
         <Button 
           variant="ghost" 
           size="icon" 
-          className="absolute top-2 right-2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 z-50"
-          onClick={() => {
-            console.log("Close button clicked");
-            onClose();
-          }}
+          className="absolute top-2 right-2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10"
+          onClick={onClose}
         >
           <X className="h-4 w-4" />
         </Button>
         
-        <AlertDialogHeader>
+        <DialogHeader>
           <div className="flex items-center gap-3">
-            {/* Dimensional logo in dialog */}
+            {/* Dimensional logo */}
             <div className="relative h-10 w-10 group">
               <div className="absolute inset-[-8px] rounded-full bg-gradient-to-r from-[#B87333]/40 to-[#E5C5A1]/40 blur-lg animate-pulse"></div>
               <div className="absolute inset-[-12px] rounded-full border border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>
@@ -101,15 +110,15 @@ const TestTutorial: React.FC<TestTutorialProps> = ({ isOpen, onClose }) => {
             </div>
             
             <div>
-              <AlertDialogTitle className="text-xl text-white">
+              <DialogTitle className="text-xl text-white">
                 {isSpanish ? "Tutorial de Thrive" : "Thrive Tutorial"}
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-gray-300">
+              </DialogTitle>
+              <DialogDescription className="text-gray-300">
                 {isSpanish ? "Paso" : "Step"} {currentStep + 1} {isSpanish ? "de" : "of"} {steps.length}
-              </AlertDialogDescription>
+              </DialogDescription>
             </div>
           </div>
-        </AlertDialogHeader>
+        </DialogHeader>
         
         <ScrollArea className="max-h-[50vh] pr-4 mt-4">
           <div className="space-y-4">
@@ -118,7 +127,7 @@ const TestTutorial: React.FC<TestTutorialProps> = ({ isOpen, onClose }) => {
           </div>
         </ScrollArea>
         
-        <div className="mt-6 flex justify-between">
+        <DialogFooter className="mt-6 flex justify-between">
           <div className="flex-1">
             {currentStep > 0 && (
               <Button 
@@ -145,10 +154,10 @@ const TestTutorial: React.FC<TestTutorialProps> = ({ isOpen, onClose }) => {
               isSpanish ? "Completar" : "Complete"
             )}
           </Button>
-        </div>
-      </AlertDialogContent>
-    </AlertDialog>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default TestTutorial;
+export default MainTutorial;
