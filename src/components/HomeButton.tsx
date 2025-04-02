@@ -31,12 +31,11 @@ const HomeButton: React.FC<HomeButtonProps> = ({ className = "" }) => {
       aria-label="Return to main dashboard"
       title="Return to main dashboard"
     >
-      <div className="relative w-5 h-5 overflow-hidden">
-        <img 
-          src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
-          alt="Thrive MT Logo" 
-          className="h-5 w-5 filter drop-shadow-[0_0_5px_rgba(184,115,51,0.8)] transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(184,115,51,1)]"
-        />
+      <div className="relative w-6 h-6 overflow-hidden flex items-center justify-center">
+        <div className="text-[#B87333] font-bold text-base leading-none tracking-tighter flex flex-col items-center">
+          <span>MT</span>
+          <span className="text-[6px] opacity-80 -mt-0.5">THRIVE</span>
+        </div>
       </div>
     </Button>
   );
