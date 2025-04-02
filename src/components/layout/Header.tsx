@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
@@ -16,11 +16,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import WelcomeTutorial from "../tutorials/WelcomeTutorial";
 
 const Header = () => {
   const { toast } = useToast();
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
+  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
   
   const handleLogout = () => {
     toast({
@@ -51,6 +53,17 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
+      {/* Tutorial Button */}
+      <Button 
+        variant="outline" 
+        size="icon" 
+        className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
+        aria-label="App Tutorial"
+        onClick={() => setShowWelcomeTutorial(true)}
+      >
+        <HelpCircle className="h-5 w-5 text-[#B87333]" />
+      </Button>
+    
       {/* Language Button */}
       <Button 
         variant="outline" 
@@ -125,6 +138,12 @@ const Header = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      
+      {/* Welcome Tutorial Dialog */}
+      <WelcomeTutorial
+        isOpen={showWelcomeTutorial}
+        onClose={() => setShowWelcomeTutorial(false)}
+      />
     </header>
   );
 };
