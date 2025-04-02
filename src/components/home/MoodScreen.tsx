@@ -45,7 +45,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     getSupport: isSpanish ? "Obtener apoyo" : "Get support",
   };
   
-  // Mood data with inspirational messages - simplified with mental health colors
+  // Mood data with simple icons and mental health colors
   const moods = [
     {
       id: 'happy',
