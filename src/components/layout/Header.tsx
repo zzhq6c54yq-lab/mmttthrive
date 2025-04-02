@@ -61,9 +61,8 @@ const Header = () => {
     console.log("Opening tutorial from header");
     
     // Reset any flags that might prevent tutorial from showing
-    localStorage.removeItem('popupsShown');
-    localStorage.removeItem('hasVisitedThriveMT');
-    localStorage.removeItem('dashboardTutorialShown');
+    localStorage.removeItem('mainTutorialShown');
+    localStorage.setItem('forceTutorial', 'true');
     
     // Force show the tutorial
     setShowWelcomeTutorial(true);
