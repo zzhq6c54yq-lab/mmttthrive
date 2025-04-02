@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check } from "lucide-react";
@@ -20,54 +21,6 @@ interface SubscriptionScreenProps {
   onSkip: () => void;
 }
 
-const subscriptionPlans: SubscriptionPlan[] = [
-  {
-    title: "Basic",
-    price: "Free",
-    description: "Start your mental health journey with essential features",
-    features: [
-      "Access to essential mental wellness tools",
-      "Join virtual meetings and classes",
-      "Digital sponsor access",
-      "Limited workshop access"
-    ],
-    icon: Package,
-    color: "bg-gray-100 text-gray-800 border-gray-200",
-    recommended: false
-  },
-  {
-    title: "Gold",
-    price: "$5/month",
-    description: "Enhanced features for a more personalized experience",
-    features: [
-      "5% bonus on all co-pay credits",
-      "Access to all mental wellness tools",
-      "Extended workshop library",
-      "Priority access to virtual meetings",
-      "Personalized wellness plan"
-    ],
-    icon: Trophy,
-    color: "bg-[#FEF7CD] text-[#B87333] border-[#B87333]/30",
-    recommended: true
-  },
-  {
-    title: "Platinum",
-    price: "$10/month",
-    description: "Our most comprehensive mental health package",
-    features: [
-      "10% bonus on all co-pay credits",
-      "Unlimited access to all platform features",
-      "Premium workshop content",
-      "Early access to new features",
-      "Advanced analytics and insights",
-      "Personalized wellness roadmap"
-    ],
-    icon: Gem,
-    color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
-    recommended: false
-  }
-];
-
 const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   selectedPlan,
   onPlanSelect,
@@ -75,12 +28,112 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "Elige Tu Plan" : "Choose Your Plan",
+    subtitle: isSpanish ? "Selecciona la suscripción que mejor se adapte a tus necesidades de bienestar mental" : "Select the subscription that best fits your mental wellness needs",
+    basic: {
+      title: isSpanish ? "Básico" : "Basic",
+      price: isSpanish ? "Gratis" : "Free",
+      description: isSpanish ? "Comienza tu viaje de salud mental con funciones esenciales" : "Start your mental health journey with essential features",
+      features: isSpanish ? [
+        "Acceso a herramientas esenciales de bienestar mental",
+        "Únete a reuniones y clases virtuales",
+        "Acceso a patrocinador digital",
+        "Acceso limitado a talleres"
+      ] : [
+        "Access to essential mental wellness tools",
+        "Join virtual meetings and classes",
+        "Digital sponsor access",
+        "Limited workshop access"
+      ]
+    },
+    gold: {
+      title: isSpanish ? "Oro" : "Gold",
+      price: isSpanish ? "$5/mes" : "$5/month",
+      description: isSpanish ? "Funciones mejoradas para una experiencia más personalizada" : "Enhanced features for a more personalized experience",
+      features: isSpanish ? [
+        "5% de bonificación en todos los créditos de copago",
+        "Acceso a todas las herramientas de bienestar mental",
+        "Biblioteca de talleres ampliada",
+        "Acceso prioritario a reuniones virtuales",
+        "Plan de bienestar personalizado"
+      ] : [
+        "5% bonus on all co-pay credits",
+        "Access to all mental wellness tools",
+        "Extended workshop library",
+        "Priority access to virtual meetings",
+        "Personalized wellness plan"
+      ]
+    },
+    platinum: {
+      title: isSpanish ? "Platino" : "Platinum",
+      price: isSpanish ? "$10/mes" : "$10/month",
+      description: isSpanish ? "Nuestro paquete de salud mental más completo" : "Our most comprehensive mental health package",
+      features: isSpanish ? [
+        "10% de bonificación en todos los créditos de copago",
+        "Acceso ilimitado a todas las funciones de la plataforma",
+        "Contenido premium de talleres",
+        "Acceso anticipado a nuevas funciones",
+        "Análisis e información avanzados",
+        "Hoja de ruta de bienestar personalizada"
+      ] : [
+        "10% bonus on all co-pay credits",
+        "Unlimited access to all platform features",
+        "Premium workshop content",
+        "Early access to new features",
+        "Advanced analytics and insights",
+        "Personalized wellness roadmap"
+      ]
+    },
+    recommend: isSpanish ? "Recomendado" : "Recommended",
+    select: isSpanish ? "Seleccionar Plan" : "Select Plan",
+    selected: isSpanish ? "Seleccionado" : "Selected",
+    previous: isSpanish ? "Anterior" : "Previous",
+    continue: isSpanish ? "Continuar" : "Continue",
+    skip: isSpanish ? "Omitir por Ahora" : "Skip for Now"
+  };
+  
+  const subscriptionPlans: SubscriptionPlan[] = [
+    {
+      title: translations.basic.title,
+      price: translations.basic.price,
+      description: translations.basic.description,
+      features: translations.basic.features,
+      icon: Package,
+      color: "bg-gray-100 text-gray-800 border-gray-200",
+      recommended: false
+    },
+    {
+      title: translations.gold.title,
+      price: translations.gold.price,
+      description: translations.gold.description,
+      features: translations.gold.features,
+      icon: Trophy,
+      color: "bg-[#FEF7CD] text-[#B87333] border-[#B87333]/30",
+      recommended: true
+    },
+    {
+      title: translations.platinum.title,
+      price: translations.platinum.price,
+      description: translations.platinum.description,
+      features: translations.platinum.features,
+      icon: Gem,
+      color: "bg-[#E5DEFF] text-[#7E69AB] border-[#7E69AB]/30",
+      recommended: false
+    }
+  ];
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#1a1a1f] to-[#2a2a35] text-white animate-fade-in py-10">
       <div className="max-w-5xl w-full mx-auto px-4">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Choose Your Plan</h2>
-          <p className="text-xl text-gray-300">Select the subscription that best fits your mental wellness needs</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">{translations.title}</h2>
+          <p className="text-xl text-gray-300">{translations.subtitle}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -113,12 +166,12 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
                   className={`w-full ${selectedPlan === plan.title ? 'bg-[#B87333] hover:bg-[#B87333]/90' : 'bg-black/30 hover:bg-black/40'}`}
                   onClick={() => onPlanSelect(plan.title)}
                 >
-                  {selectedPlan === plan.title ? 'Selected' : 'Select Plan'}
+                  {selectedPlan === plan.title ? translations.selected : translations.select}
                 </Button>
               </div>
               {plan.recommended && (
                 <div className="absolute top-0 right-0 bg-[#B87333] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                  Recommended
+                  {translations.recommend}
                 </div>
               )}
             </div>
@@ -132,20 +185,20 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
             onClick={onPrevious}
           >
             <ArrowLeft className="h-4 w-4" />
-            Previous
+            {translations.previous}
           </Button>
           <Button 
             className="bg-[#B87333] hover:bg-[#B87333]/90 flex items-center gap-2"
             onClick={onContinue}
           >
-            Continue
+            {translations.continue}
             <ArrowRight className="h-4 w-4" />
           </Button>
           <Button 
             variant="ghost"
             onClick={onSkip}
           >
-            Skip for Now
+            {translations.skip}
           </Button>
         </div>
       </div>

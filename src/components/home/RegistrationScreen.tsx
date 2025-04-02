@@ -23,16 +23,32 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
+  // Get preferred language
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+  const isSpanish = preferredLanguage === 'Español';
+  
+  // Translations
+  const translations = {
+    title: isSpanish ? "Crea Tu Cuenta" : "Create Your Account",
+    subtitle: isSpanish ? "Únete a Thrive MT para comenzar tu viaje de bienestar mental" : "Join Thrive MT to start your mental wellness journey",
+    fullName: isSpanish ? "Nombre Completo" : "Full Name",
+    email: isSpanish ? "Correo Electrónico" : "Email Address",
+    password: isSpanish ? "Contraseña" : "Password",
+    register: isSpanish ? "Registrarse" : "Register",
+    previous: isSpanish ? "Anterior" : "Previous",
+    skipRegistration: isSpanish ? "Continuar Sin Registro" : "Continue Without Registration",
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FA] animate-fade-in">
       <div className="max-w-md w-full mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-2">Create Your Account</h2>
-          <p className="text-gray-600">Join Thrive MT to start your mental wellness journey</p>
+          <h2 className="text-3xl font-bold mb-2">{translations.title}</h2>
+          <p className="text-gray-600">{translations.subtitle}</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-md">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">{translations.fullName}</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input 
@@ -42,12 +58,12 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                 value={userInfo.name}
                 onChange={onUserInfoChange}
                 className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none"
-                placeholder="John Doe"
+                placeholder={isSpanish ? "Juan Pérez" : "John Doe"}
               />
             </div>
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">{translations.email}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input 
@@ -57,12 +73,12 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                 value={userInfo.email}
                 onChange={onUserInfoChange}
                 className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none"
-                placeholder="john@example.com"
+                placeholder={isSpanish ? "juan@ejemplo.com" : "john@example.com"}
               />
             </div>
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">{translations.password}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input 
@@ -81,7 +97,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
               type="submit"
               className="w-full bg-[#B87333] hover:bg-[#B87333]/90"
             >
-              Register
+              {translations.register}
             </Button>
           </div>
         </form>
@@ -92,13 +108,13 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
             onClick={onPrevious}
           >
             <ArrowLeft className="h-4 w-4" />
-            Previous
+            {translations.previous}
           </Button>
           <Button 
             variant="outline"
             onClick={onSkip}
           >
-            Continue Without Registration
+            {translations.skipRegistration}
           </Button>
         </div>
       </div>
