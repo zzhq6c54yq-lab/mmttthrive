@@ -4,6 +4,8 @@ import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 interface IndexContentProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
