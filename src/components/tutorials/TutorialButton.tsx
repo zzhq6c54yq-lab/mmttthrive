@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { HelpCircle, ChevronRight, X } from "lucide-react";
@@ -60,6 +59,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   }, []);
 
   const handleOpenTutorial = () => {
+    console.log("Opening tutorial for feature:", featureId);
     setShowTutorial(true);
   };
 

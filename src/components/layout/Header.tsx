@@ -57,6 +57,11 @@ const Header = () => {
     });
   };
 
+  const handleToggleTutorial = () => {
+    console.log("Opening tutorial from header");
+    setShowWelcomeTutorial(true);
+  };
+
   return (
     <TooltipProvider>
       <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
@@ -68,7 +73,8 @@ const Header = () => {
               size="icon" 
               className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white/10 backdrop-blur-sm shadow-lg hover:bg-[#B87333]/20 transition-all duration-300 hover:shadow-[0_0_15px_#B87333] relative overflow-hidden"
               aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
-              onClick={() => setShowWelcomeTutorial(true)}
+              onClick={handleToggleTutorial}
+              title={isSpanish ? "Abrir Tutorial" : "Open Tutorial"}
             >
               {/* Animated rings */}
               <div className="absolute inset-[-5px] rounded-full border border-[#B87333]/30 animate-spin" style={{animationDuration: '15s'}}></div>

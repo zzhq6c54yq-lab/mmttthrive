@@ -117,6 +117,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
 
   // Determine if tutorial should be visible
   const shouldShowTutorial = (isFirstVisit || showMainTutorial) && screenState === 'main';
+  console.log("Should show tutorial:", shouldShowTutorial);
 
   return (
     <div className="relative">
