@@ -28,6 +28,26 @@ const Page: React.FC<PageProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
   
   useEffect(() => {
     // Scroll to top when the component mounts
@@ -53,17 +73,16 @@ const Page: React.FC<PageProps> = ({
   };
   
   const toggleLanguage = () => {
-    const currentLanguage = localStorage.getItem('preferredLanguage') || 'English';
-    const newLanguage = currentLanguage === 'English' ? 'Español' : 'English';
+    const newLanguage = isSpanish ? 'English' : 'Español';
     localStorage.setItem('preferredLanguage', newLanguage);
+    setIsSpanish(!isSpanish);
     
     // Force a re-render of the app to apply the language change immediately
     window.dispatchEvent(new Event('languageChange'));
+    
+    // Log the language change
+    console.log(`Language toggled to: ${newLanguage}`);
   };
-  
-  // Get the preferred language from localStorage
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
   
   // Determine if this is the main dashboard page
   const isMainDashboard = location.pathname === "/" && 
@@ -90,7 +109,7 @@ const Page: React.FC<PageProps> = ({
       }
     };
     
-    return translations[key][preferredLanguage] || translations[key]['English'];
+    return isSpanish ? translations[key]['Español'] : translations[key]['English'];
   };
   
   return (

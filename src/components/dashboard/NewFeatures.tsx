@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,26 @@ import { useToast } from "@/hooks/use-toast";
 const NewFeatures: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
   
-  // Get preferred language
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
   
   // Translations
   const translations = {

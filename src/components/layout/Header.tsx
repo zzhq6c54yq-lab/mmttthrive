@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
@@ -20,9 +20,27 @@ import WelcomeTutorial from "../tutorials/WelcomeTutorial";
 
 const Header = () => {
   const { toast } = useToast();
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
+  
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
   
   const handleLogout = () => {
     toast({
@@ -49,6 +67,9 @@ const Header = () => {
       title: isSpanish ? "Language Changed" : "Idioma Cambiado",
       description: isSpanish ? "Language set to English" : "Idioma establecido a Español",
     });
+    
+    // Log the language change
+    console.log(`Language toggled to: ${newLanguage}`);
   };
 
   return (

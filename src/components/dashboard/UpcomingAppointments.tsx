@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Clock, Video } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,29 +9,63 @@ import { useToast } from "@/hooks/use-toast";
 const UpcomingAppointments = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
 
-  // Mock data for appointments
+  // Translations
+  const translations = {
+    title: isSpanish ? "Próximas Citas" : "Upcoming Appointments",
+    description: isSpanish ? "Tus sesiones y eventos programados" : "Your scheduled sessions and events",
+    joinSession: isSpanish ? "Unirse" : "Join",
+    viewAll: isSpanish ? "Ver Todas las Citas" : "View All Appointments",
+    noAppointments: isSpanish ? "No hay citas próximas" : "No upcoming appointments",
+    scheduleNow: isSpanish ? "Programar Ahora" : "Schedule Now",
+    joiningSession: isSpanish ? "Uniéndose a la Sesión" : "Joining Session",
+    connecting: isSpanish ? "Conectándose a tu cita..." : "Connecting to your appointment...",
+    openingSchedule: isSpanish ? "Abriendo Calendario" : "Opening Schedule",
+    takingToSchedule: isSpanish ? "Llevándote a tu calendario completo de citas" : "Taking you to your full appointment schedule",
+  };
+
+  // Mock data for appointments with translations
   const appointments = [
     {
       id: 1,
-      title: "Therapy Session with Dr. Johnson",
+      title: isSpanish ? "Sesión de Terapia con Dr. Johnson" : "Therapy Session with Dr. Johnson",
       date: "2023-06-15",
-      time: "10:00 AM",
+      time: isSpanish ? "10:00 AM" : "10:00 AM",
       type: "video",
     },
     {
       id: 2,
-      title: "Mindfulness Workshop",
+      title: isSpanish ? "Taller de Mindfulness" : "Mindfulness Workshop",
       date: "2023-06-18",
-      time: "2:00 PM",
+      time: isSpanish ? "2:00 PM" : "2:00 PM",
       type: "group",
     },
   ];
 
   const handleJoinAppointment = (appointmentId: number) => {
     toast({
-      title: "Joining Session",
-      description: "Connecting to your appointment...",
+      title: translations.joiningSession,
+      description: translations.connecting,
       duration: 1500,
     });
     // In a real app, this would navigate to the meeting room
@@ -41,8 +75,8 @@ const UpcomingAppointments = () => {
 
   const handleViewAllAppointments = () => {
     toast({
-      title: "Opening Schedule",
-      description: "Taking you to your full appointment schedule",
+      title: translations.openingSchedule,
+      description: translations.takingToSchedule,
       duration: 1500,
     });
     navigate("/scheduling");
@@ -50,8 +84,8 @@ const UpcomingAppointments = () => {
 
   const handleScheduleNow = () => {
     toast({
-      title: "Schedule Appointment",
-      description: "Opening appointment scheduling",
+      title: isSpanish ? "Programar Cita" : "Schedule Appointment",
+      description: isSpanish ? "Abriendo programación de citas" : "Opening appointment scheduling",
       duration: 1500,
     });
     navigate("/scheduling");
@@ -62,9 +96,9 @@ const UpcomingAppointments = () => {
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <Calendar className="h-5 w-5 text-[#B87333]" />
-          Upcoming Appointments
+          {translations.title}
         </CardTitle>
-        <CardDescription>Your scheduled sessions and events</CardDescription>
+        <CardDescription>{translations.description}</CardDescription>
       </CardHeader>
       <CardContent>
         {appointments.length > 0 ? (
@@ -84,7 +118,7 @@ const UpcomingAppointments = () => {
                 <div className="flex-1">
                   <h4 className="text-sm font-medium">{appointment.title}</h4>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(appointment.date).toLocaleDateString("en-US", {
+                    {new Date(appointment.date).toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
                       weekday: "short",
                       month: "short",
                       day: "numeric",
@@ -98,21 +132,21 @@ const UpcomingAppointments = () => {
                   className="text-xs border-[#B87333]/20 hover:border-[#B87333]/60 hover:bg-[#B87333]/5"
                   onClick={() => handleJoinAppointment(appointment.id)}
                 >
-                  Join
+                  {translations.joinSession}
                 </Button>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-6 text-muted-foreground">
-            <p>No upcoming appointments</p>
+            <p>{translations.noAppointments}</p>
             <Button
               variant="outline"
               size="sm"
               className="mt-2 border-[#B87333]/20 hover:border-[#B87333]/60 hover:bg-[#B87333]/5"
               onClick={handleScheduleNow}
             >
-              Schedule Now
+              {translations.scheduleNow}
             </Button>
           </div>
         )}
@@ -122,7 +156,7 @@ const UpcomingAppointments = () => {
             className="text-sm text-[#B87333] hover:text-[#A56625]"
             onClick={handleViewAllAppointments}
           >
-            View All Appointments
+            {translations.viewAll}
           </Button>
         </div>
       </CardContent>

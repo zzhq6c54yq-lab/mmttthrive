@@ -27,6 +27,9 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     
     // Force a re-render of the app to apply the language change immediately
     window.dispatchEvent(new Event('languageChange'));
+
+    // Add a console log to verify the language change
+    console.log(`Language changed to: ${language}`);
   };
   
   return (

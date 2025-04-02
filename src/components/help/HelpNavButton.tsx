@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import HelpDialog from "@/components/help/HelpDialog";
 import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
@@ -10,9 +10,29 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 const HelpNavButton: React.FC = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showIntroDialog, setShowIntroDialog] = useState(false);
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isButtonVisible = useButtonVisibility();
+  
+  // Check language preference and listen for changes
+  useEffect(() => {
+    const checkLanguage = () => {
+      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
+      setIsSpanish(preferredLanguage === 'Español');
+    };
+    
+    // Check initial language
+    checkLanguage();
+    
+    // Listen for language change events
+    window.addEventListener('languageChange', checkLanguage);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('languageChange', checkLanguage);
+    };
+  }, []);
   
   // Handle opening the help dialog
   const openHelp = (e: React.MouseEvent) => {
@@ -43,7 +63,8 @@ const HelpNavButton: React.FC = () => {
           onClick={openHelp}
           className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
           size="icon"
-          aria-label="Get Help"
+          aria-label={isSpanish ? "Obtener Ayuda" : "Get Help"}
+          title={isSpanish ? "Obtener Ayuda" : "Get Help"}
         >
           <Avatar className="h-10 w-10 border-2 border-white/30">
             <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
@@ -55,8 +76,8 @@ const HelpNavButton: React.FC = () => {
           onClick={handleMainDashboard}
           className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#2563EB] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
           size="icon"
-          aria-label="Return to Main Dashboard"
-          title="Return to Main Dashboard"
+          aria-label={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
+          title={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
         >
           <div className="relative w-5 h-5 overflow-hidden">
             <img 
