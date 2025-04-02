@@ -5,18 +5,21 @@ interface PopupState {
   coPayCredit: boolean;
   henryIntro: boolean;
   mainTutorial: boolean;
+  transitionTutorial: boolean;
 }
 
 export const usePopupManagement = (screenState: string) => {
   const [showCoPayCredit, setShowCoPayCredit] = useState(false);
   const [showHenry, setShowHenry] = useState(false);
+  const [showTransitionTutorial, setShowTransitionTutorial] = useState(false);
   const [popupsShown, setPopupsShown] = useState<PopupState>(() => {
     // Try to get popup state from localStorage to persist between sessions
     const savedState = localStorage.getItem('popupsShown');
     return savedState ? JSON.parse(savedState) : {
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: false
+      mainTutorial: false,
+      transitionTutorial: false
     };
   });
 
@@ -44,8 +47,24 @@ export const usePopupManagement = (screenState: string) => {
   }, []);
 
   useEffect(() => {
+    // Track previous screen state
+    const prevScreenState = localStorage.getItem('prevScreenState');
+    
     // Show popups during initial flow when transferring to main menu
     if (screenState === 'main') {
+      // Show transition tutorial when coming from onboarding screens 
+      // and if not shown yet
+      if (!popupsShown.transitionTutorial && 
+          (prevScreenState === 'visionBoard' || 
+           prevScreenState === 'subscription' || 
+           prevScreenState === 'moodResponse')) {
+        setShowTransitionTutorial(true);
+        setPopupsShown(prev => ({ ...prev, transitionTutorial: true }));
+        
+        // Also mark dashboard tutorial as pending
+        localStorage.removeItem('dashboardTutorialShown');
+      }
+      
       // Show co-pay credit popup if not shown yet
       if (!popupsShown.coPayCredit) {
         setShowCoPayCredit(true);
@@ -57,17 +76,16 @@ export const usePopupManagement = (screenState: string) => {
       if (!popupsShown.henryIntro) {
         setShowHenry(true);
         setPopupsShown(prev => ({ ...prev, henryIntro: true }));
-        
-        // Also mark dashboard tutorial as pending
-        // The actual tutorial will be shown by MainDashboard component
-        localStorage.removeItem('dashboardTutorialShown');
       }
     }
+    
+    // Save current screen state as previous for next navigation
+    localStorage.setItem('prevScreenState', screenState);
   }, [screenState, popupsShown]);
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
-    setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
+    setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     localStorage.setItem('dashboardTutorialShown', 'true');
   };
 
@@ -76,10 +94,12 @@ export const usePopupManagement = (screenState: string) => {
     setPopupsShown({
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: false
+      mainTutorial: false,
+      transitionTutorial: false
     });
     localStorage.removeItem('popupsShown');
     localStorage.removeItem('dashboardTutorialShown');
+    localStorage.removeItem('prevScreenState');
   };
 
   return {
@@ -87,6 +107,8 @@ export const usePopupManagement = (screenState: string) => {
     setShowCoPayCredit,
     showHenry,
     setShowHenry,
+    showTransitionTutorial,
+    setShowTransitionTutorial,
     popupsShown,
     markTutorialCompleted,
     resetPopupStates

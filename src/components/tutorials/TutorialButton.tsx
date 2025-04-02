@@ -7,11 +7,13 @@ import FeatureTutorial from "./FeatureTutorial";
 interface TutorialButtonProps {
   featureId: string;
   className?: string;
+  variant?: "default" | "logo";
 }
 
 const TutorialButton: React.FC<TutorialButtonProps> = ({ 
   featureId,
-  className = "" 
+  className = "",
+  variant = "default" 
 }) => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
@@ -38,6 +40,34 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   const handleOpenTutorial = () => {
     setShowTutorial(true);
   };
+
+  if (variant === "logo") {
+    return (
+      <>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleOpenTutorial}
+          className={`p-0 h-16 w-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#B87333] hover:to-[#E5C5A1] hover:opacity-90 ${className}`}
+          aria-label={isSpanish ? "Abrir tutorial" : "Open tutorial"}
+        >
+          <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center p-1">
+            <div className="text-[#B87333] font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+              <span className="text-xl">MT</span>
+              <span className="text-[8px] opacity-80 -mt-1">THRIVE</span>
+            </div>
+          </div>
+        </Button>
+        
+        {showTutorial && (
+          <FeatureTutorial 
+            featureId={featureId} 
+            onClose={() => setShowTutorial(false)} 
+          />
+        )}
+      </>
+    );
+  }
 
   return (
     <>

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import HelpChatDialog from "./HelpChatDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import TutorialButton from "./tutorials/TutorialButton";
 
 interface HenryIconButtonProps {
   className?: string;
@@ -42,21 +43,29 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
 
   return (
     <>
-      <Button
-        variant="bronze"
-        size="h-icon"
-        className={`rounded-full fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
-        onClick={handleClick}
-        aria-label="Ask for Help"
-        title="Ask for Help"
-      >
-        <div className="h-full w-full flex items-center justify-center">
-          <Avatar className="h-10 w-10 rounded-full border border-[#B87333]/30">
-            <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
-            <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">H</AvatarFallback>
-          </Avatar>
-        </div>
-      </Button>
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center gap-3">
+        <Button
+          variant="bronze"
+          size="h-icon"
+          className={`rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 p-0 shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)] ${className}`}
+          onClick={handleClick}
+          aria-label="Ask for Help"
+          title="Ask for Help"
+        >
+          <div className="h-14 w-14 flex items-center justify-center bg-gradient-to-br from-[#B87333] to-[#E5C5A1]">
+            <Avatar className="h-10 w-10 rounded-full border border-[#B87333]/30">
+              <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+              <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">H</AvatarFallback>
+            </Avatar>
+          </div>
+        </Button>
+        
+        <TutorialButton 
+          featureId="dashboard" 
+          variant="logo" 
+          className="shadow-lg hover:shadow-[0_0_15px_rgba(184,115,51,0.6)]"
+        />
+      </div>
       
       <HelpChatDialog isOpen={isHelpOpen} onOpenChange={setIsHelpOpen} />
     </>

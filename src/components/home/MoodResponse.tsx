@@ -292,13 +292,30 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[#B87333]/5 rounded-full blur-3xl"></div>
       </div>
       
+      {/* Thrive MT Logo in circle */}
+      <motion.div 
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="absolute top-6 right-6 z-20"
+      >
+        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center shadow-lg p-1">
+          <div className="w-full h-full rounded-full bg-[#1a1a1f]/80 flex items-center justify-center">
+            <div className="text-[#B87333] font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
+              <span className="text-xl">MT</span>
+              <span className="text-[8px] opacity-80 -mt-1">THRIVE</span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+      
       <div className="z-10 w-full max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative">
           <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
           <div className="absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
           
           <div className="relative z-10">
-            <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
               <motion.div 
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -322,7 +339,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
-                  className="relative h-24 md:h-16 overflow-hidden"
+                  className="relative min-h-[6rem] overflow-hidden bg-[#1a1a1f]/40 p-4 rounded-xl backdrop-blur-sm"
                 >
                   {affirmations.map((affirmation, index) => (
                     <motion.p
@@ -333,7 +350,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                         y: index === activeAffirmation ? 0 : 20
                       }}
                       transition={{ duration: 0.5 }}
-                      className="absolute inset-0 text-xl md:text-2xl text-white/90 font-light"
+                      className="absolute inset-0 flex items-center justify-center px-4 text-xl md:text-2xl text-white/90 font-light"
                     >
                       {affirmation}
                     </motion.p>

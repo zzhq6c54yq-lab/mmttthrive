@@ -53,6 +53,26 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   handleRegister,
   setScreenState
 }) => {
+  // Save previous state to localStorage for transition detection
+  React.useEffect(() => {
+    localStorage.setItem('prevScreenState', screenState);
+  }, [screenState]);
+
+  // Reset transition tutorial flags when starting a new session
+  React.useEffect(() => {
+    if (screenState === 'intro') {
+      localStorage.removeItem('dashboardTutorialShown');
+      
+      // Get popup state and reset transition tutorial flag
+      const popupsShown = localStorage.getItem('popupsShown');
+      if (popupsShown) {
+        const parsedState = JSON.parse(popupsShown);
+        parsedState.transitionTutorial = false;
+        localStorage.setItem('popupsShown', JSON.stringify(parsedState));
+      }
+    }
+  }, []);
+
   const handlePrevious = () => {
     let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main' = 'intro';
     
