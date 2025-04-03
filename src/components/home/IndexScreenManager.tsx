@@ -1,4 +1,3 @@
-
 import React from "react";
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
@@ -53,19 +52,14 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   handleRegister,
   setScreenState
 }) => {
-  // Save previous state to localStorage for transition detection
   React.useEffect(() => {
     const prevState = localStorage.getItem('prevScreenState');
     console.log("IndexScreenManager: Screen changing from", prevState, "to", screenState);
     localStorage.setItem('prevScreenState', screenState);
-    
-    // Removed tutorial trigger logic for transitioning to main
   }, [screenState]);
 
-  // Reset transition tutorial flags when starting a new session
   React.useEffect(() => {
     if (screenState === 'intro') {
-      // Just tracking that we're starting a new session, no tutorial reset needed
       console.log("Starting new session from intro screen");
     }
   }, [screenState]);

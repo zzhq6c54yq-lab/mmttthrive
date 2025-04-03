@@ -1,10 +1,10 @@
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown } from "lucide-react";
+import { Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogDescription, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface MoodScreenProps {
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
@@ -30,7 +30,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     down: isSpanish ? "Decaído" : "Feeling Down",
     sad: isSpanish ? "Triste" : "Sad",
     overwhelmed: isSpanish ? "Abrumado" : "Overwhelmed",
-    previous: isSpanish ? "Anterior" : "Previous",
     continueText: isSpanish ? "Continuar" : "Continue",
     emergencyResources: isSpanish ? "Recursos de apoyo" : "Support resources",
     warningText: isSpanish ? "Pareces estar pasando por un momento difícil" : "You seem to be going through a difficult time",
@@ -41,7 +40,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
     emergencyHelp: isSpanish ? "Ayuda de emergencia" : "Emergency help",
     needHelp: isSpanish ? "¿Necesitas ayuda?" : "Need help?",
     getSupport: isSpanish ? "Obtener apoyo" : "Get support",
-    scrollDown: isSpanish ? "Desplázate para ver opciones" : "Scroll to see options",
+    reflectPrompt: isSpanish ? "Tómate un momento para reflexionar" : "Take a moment to reflect",
   };
   
   // Mood data with simple icons and mental health colors
@@ -162,45 +161,92 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#1a1a1f] to-[#2a2a35] text-white relative">
-      {/* Background decorations */}
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1a1f] via-[#221F26] to-[#2a2a35] text-white relative overflow-hidden">
+      {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#B87333]/10 rounded-full blur-3xl opacity-70"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B87333]/10 rounded-full blur-3xl opacity-70"></div>
+        <div className="absolute top-1/4 right-1/3 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 left-1/4 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl"></div>
+        
+        {/* Subtle geometric patterns */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.15) 2px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
       </div>
       
-      {/* Content */}
+      {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-10 flex-1 flex flex-col">
-        {/* Header */}
+        {/* Header Section */}
         <motion.div 
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-10 text-center"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-16 text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]/90">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="inline-block mb-8"
+          >
+            <div className="h-20 w-20 mx-auto rounded-full flex items-center justify-center bg-gradient-to-br from-[#B87333]/80 to-[#E5C5A1]/80 p-1">
+              <div className="h-full w-full rounded-full bg-[#221F26]/90 flex items-center justify-center border border-[#B87333]/30">
+                <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-4xl font-bold">H</span>
+              </div>
+            </div>
+          </motion.div>
+          
+          <motion.h1 
+            className="text-5xl md:text-6xl font-light mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#B87333]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1 }}
+          >
             {translations.title}
-          </h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto">
+          </motion.h1>
+          
+          <motion.p 
+            className="text-xl text-white/90 max-w-2xl mx-auto font-light"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+          >
             {translations.subtitle}
-          </p>
+          </motion.p>
+          
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="mt-8 bg-white/5 backdrop-blur-sm max-w-lg mx-auto rounded-lg p-4 border border-white/10"
+          >
+            <p className="text-white/80 italic">{translations.reflectPrompt}</p>
+          </motion.div>
         </motion.div>
         
-        {/* Mood Grid with larger spacing */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+        {/* Mood Grid with elegant animations */}
+        <div className="flex-1 flex items-center justify-center max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
             {moods.map((mood, index) => (
               <motion.div
                 key={mood.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
+                transition={{ 
+                  delay: index * 0.1 + 0.5, 
+                  duration: 0.6,
+                  ease: "easeOut"
+                }}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.98 }}
               >
                 <button
                   onClick={() => handleMoodClick(mood)}
-                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/10 hover:bg-white/15 hover:scale-105 border-2 border-white/10 hover:border-white/20 shadow-xl"
+                  className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#B87333]/30 backdrop-blur-sm shadow-lg"
                 >
-                  <div className={`w-20 h-20 ${mood.color} rounded-full flex items-center justify-center mb-4 shadow-lg`}>
+                  <div className={`w-20 h-20 ${mood.color} rounded-full flex items-center justify-center mb-4 shadow-lg transform transition-transform duration-300 group-hover:scale-110`}>
                     {mood.icon}
                   </div>
                   <span className="text-white text-lg font-medium">{mood.label}</span>
@@ -210,89 +256,60 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect, onPrevious }) => 
           </div>
         </div>
         
-        {/* Scroll indicator */}
-        <div className="flex justify-center mt-4 mb-8 text-white/50 animate-bounce">
-          <div className="flex flex-col items-center">
-            <ChevronDown className="h-6 w-6" />
-            <span className="text-sm">{translations.scrollDown}</span>
-          </div>
-        </div>
-        
-        {/* Back Button */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-4 flex justify-center"
-        >
-          <Button
-            onClick={onPrevious}
-            variant="outline"
-            className="border-[#B87333]/50 text-white hover:bg-[#B87333]/20 text-lg py-6 px-8"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            {translations.previous}
-          </Button>
-        </motion.div>
-      </div>
-      
-      {/* Support Resources Dialog (only for sad/overwhelmed) - Enhanced Alert */}
-      <AlertDialog open={showResourcesDialog} onOpenChange={setShowResourcesDialog}>
-        <AlertDialogContent className="bg-[#1a1a1f] border-2 border-red-500/50 text-white max-w-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-2xl font-bold flex items-center gap-3 text-red-400">
-              <AlertTriangle className="h-7 w-7 text-red-400" />
-              {translations.needHelp}
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-white/90 text-lg">
-              {translations.warningText}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          
-          <div className="mt-6">
-            <h4 className="text-xl text-white font-semibold mb-4 flex items-center gap-2">
-              <Heart className="h-5 w-5 text-red-400" />
-              {translations.emergencyResources}
-            </h4>
+        {/* Support Resources Dialog (only for sad/overwhelmed) */}
+        <AlertDialog open={showResourcesDialog} onOpenChange={setShowResourcesDialog}>
+          <AlertDialogContent className="bg-[#1a1a1f]/95 backdrop-blur-xl border-2 border-red-500/50 text-white max-w-md">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-2xl font-bold flex items-center gap-3 text-red-400">
+                <AlertTriangle className="h-7 w-7 text-red-400" />
+                {translations.needHelp}
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-white/90 text-lg">
+                {translations.warningText}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
             
-            <div className="grid grid-cols-1 gap-4 max-h-[40vh] overflow-y-auto pr-2">
-              {emergencyResources.map((resource, index) => (
-                <div 
-                  key={index} 
-                  className="bg-red-950/20 border border-red-500/20 backdrop-blur-sm rounded-lg p-4 hover:bg-red-900/20 transition-colors"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="p-2 bg-red-500/20 rounded-full text-red-400">
-                      {resource.icon}
+            <div className="mt-6">
+              <h4 className="text-xl text-white font-semibold mb-4 flex items-center gap-2">
+                <Heart className="h-5 w-5 text-red-400" />
+                {translations.emergencyResources}
+              </h4>
+              
+              <div className="grid grid-cols-1 gap-4 max-h-[40vh] overflow-y-auto pr-2 pb-2">
+                {emergencyResources.map((resource, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.4 }}
+                    className="bg-red-950/20 border border-red-500/20 backdrop-blur-sm rounded-lg p-4 hover:bg-red-900/20 transition-colors"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 bg-red-500/20 rounded-full text-red-400">
+                        {resource.icon}
+                      </div>
+                      <div>
+                        <h5 className="font-medium text-lg mb-1">{resource.title}</h5>
+                        <p className="text-white/70 mb-2">{resource.description}</p>
+                        <p className="text-red-400 font-bold text-lg">{resource.contact}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h5 className="font-medium text-lg mb-1">{resource.title}</h5>
-                      <p className="text-white/70 mb-2">{resource.description}</p>
-                      <p className="text-red-400 font-bold text-lg">{resource.contact}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {/* Visual cue - up and down arrows */}
-            <div className="flex justify-center my-4">
-              <div className="text-red-400/60 animate-bounce">
-                <ChevronDown className="w-6 h-6" />
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </div>
-          
-          <AlertDialogFooter className="mt-4">
-            <AlertDialogAction 
-              className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-6"
-              onClick={handleResourcesContinue}
-            >
-              {translations.continueText}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            
+            <AlertDialogFooter className="mt-6">
+              <AlertDialogAction 
+                className="w-full bg-red-600 hover:bg-red-700 text-white text-lg py-4 rounded-lg"
+                onClick={handleResourcesContinue}
+              >
+                {translations.continueText}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 };
