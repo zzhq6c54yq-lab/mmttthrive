@@ -54,11 +54,11 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
         </Button>
         
         {currentTutorial.image && (
-          <div className="w-full h-48 md:h-56 overflow-hidden border-b border-white/10">
+          <div className="w-full flex justify-center items-center py-6 border-b border-white/10 bg-gradient-to-r from-[#181820] via-[#221F26] to-[#181820]">
             <img 
               src={currentTutorial.image} 
               alt={currentTutorial.title} 
-              className="w-full h-full object-cover"
+              className="h-24 w-24 object-contain"
             />
           </div>
         )}
@@ -113,22 +113,23 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Welcome to Your Thrive MT Dashboard",
           description: "This is your personalized space for mental wellness. We've designed it to be intuitive and supportive of your journey.",
-          image: "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"
+          image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
         },
         {
           title: "Daily Wellness Challenges",
-          description: "Engage with daily activities designed to boost your mental wellbeing. Each challenge takes just a few minutes but can have lasting benefits.",
-          image: "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png"
+          description: "Engage with daily activities designed to boost your mental wellbeing. Each challenge takes just a few minutes but can have lasting benefits."
         },
         {
           title: "Specialized Programs",
-          description: "Explore programs tailored to specific needs and situations. Whether you're a college student, military member, or dealing with specific challenges, we have resources for you.",
-          image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png"
+          description: "Explore programs tailored to specific needs and situations. Whether you're a college student, military member, or dealing with specific challenges, we have resources for you."
         },
         {
           title: "Track Your Progress",
-          description: "Monitor your wellness journey with our tracking tools. See your growth, recognize patterns, and celebrate your achievements.",
-          image: "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png"
+          description: "Monitor your wellness journey with our tracking tools. See your growth, recognize patterns, and celebrate your achievements."
+        },
+        {
+          title: "Access Tutorials Anytime",
+          description: "Need help? Look for the Thrive/MT button in the top right corner of your screen. Click it anytime to see these tutorials again and learn about features."
         }
       ];
     case 'workshops':
@@ -136,15 +137,15 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Explore Wellness Workshops",
           description: "Discover a variety of workshops designed to support different aspects of your mental health journey.",
-          image: "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png"
+          image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
         },
         {
           title: "Workshop Structure",
-          description: "Each workshop includes videos, interactive exercises, and downloadable resources to help you apply what you learn.",
+          description: "Each workshop includes videos, interactive exercises, and downloadable resources to help you apply what you learn."
         },
         {
           title: "Track Your Progress",
-          description: "As you complete workshops, your progress is tracked, allowing you to see your journey and build on your achievements.",
+          description: "As you complete workshops, your progress is tracked, allowing you to see your journey and build on your achievements."
         }
       ];
     default:
@@ -156,7 +157,11 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         },
         {
           title: "Getting Started",
-          description: "Explore the dashboard to find daily challenges, specialized programs, and resources tailored to your needs.",
+          description: "Explore the dashboard to find daily challenges, specialized programs, and resources tailored to your needs."
+        },
+        {
+          title: "Access Tutorials Anytime",
+          description: "Need help? Look for the Thrive/MT button in the top right corner of your screen. Click it anytime to see these tutorials again."
         }
       ];
   }
