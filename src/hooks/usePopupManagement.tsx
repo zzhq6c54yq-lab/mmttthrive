@@ -16,25 +16,32 @@ export const usePopupManagement = (screenState: string) => {
     return {
       coPayCredit: false,
       henryIntro: false,
-      mainTutorial: false
+      mainTutorial: localStorage.getItem('mainTutorialShown') === 'true'
     };
   });
 
-  // Reset popup state when URL has reset parameter
+  // Reset popup state when URL has reset parameter or when forced tutorial is enabled
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('reset') || queryParams.has('tutorial')) {
-      console.log("usePopupManagement: Resetting popup states due to URL parameter");
+    const forceTutorial = localStorage.getItem('forceTutorial') === 'true';
+    
+    if (queryParams.has('reset') || queryParams.has('tutorial') || forceTutorial) {
+      console.log("usePopupManagement: Resetting popup states due to URL parameter or forceTutorial flag");
       resetPopupStates();
       
-      // Force tutorial to show
-      setShowMainTutorial(true);
+      // Force tutorial to show (delay slightly to ensure state updates properly)
+      setTimeout(() => {
+        setShowMainTutorial(true);
+      }, 100);
     }
   }, []);
 
   // Main effect for handling popups based on screen state
   useEffect(() => {
-    console.log("usePopupManagement: Current screen:", screenState, "showMainTutorial:", showMainTutorial);
+    console.log("usePopupManagement: Current screen:", screenState, 
+                "showMainTutorial:", showMainTutorial,
+                "forceTutorial:", localStorage.getItem('forceTutorial'),
+                "mainTutorialShown:", localStorage.getItem('mainTutorialShown'));
     
     if (screenState === 'main') {
       // Show co-pay credit popup if not shown yet
@@ -53,13 +60,17 @@ export const usePopupManagement = (screenState: string) => {
       
       // Check if tutorial should be shown
       const tutorialShown = localStorage.getItem('mainTutorialShown') === 'true';
+      const forceTutorial = localStorage.getItem('forceTutorial') === 'true';
       
-      if (!tutorialShown || localStorage.getItem('forceTutorial') === 'true') {
-        console.log("usePopupManagement: Main screen - showing tutorial");
-        setShowMainTutorial(true);
+      if (!tutorialShown || forceTutorial) {
+        console.log("usePopupManagement: Main screen - should show tutorial", 
+                    "tutorialShown:", tutorialShown, 
+                    "forceTutorial:", forceTutorial);
         
-        // Clear force flag
-        localStorage.removeItem('forceTutorial');
+        // Small delay to ensure state is ready
+        setTimeout(() => {
+          setShowMainTutorial(true);
+        }, 100);
       }
     }
     
@@ -73,23 +84,29 @@ export const usePopupManagement = (screenState: string) => {
     setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
     setShowMainTutorial(false);
     localStorage.setItem('mainTutorialShown', 'true');
+    localStorage.removeItem('forceTutorial');
   };
 
   // Method to reset popup states
   const resetPopupStates = () => {
     console.log("usePopupManagement: Resetting all popup states");
     
-    localStorage.removeItem('popupsShown');
+    // Clean local storage entries
     localStorage.removeItem('mainTutorialShown');
     localStorage.removeItem('prevScreenState');
+    localStorage.removeItem('popupsShown');
+    
+    // Set force tutorial flag
     localStorage.setItem('forceTutorial', 'true');
     
+    // Reset state
     setPopupsShown({
       coPayCredit: false,
       henryIntro: false,
       mainTutorial: false
     });
     
+    // Ensure tutorial will be shown
     setShowMainTutorial(true);
   };
 

@@ -30,6 +30,11 @@ const MainTutorial: React.FC<TutorialProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // Debug rendering
+  useEffect(() => {
+    console.log("MainTutorial rendered with isOpen:", isOpen);
+  }, [isOpen]);
+
   // Tutorial content - Enhanced with detailed feature descriptions
   const steps = [
     {
@@ -143,7 +148,10 @@ const MainTutorial: React.FC<TutorialProps> = ({ isOpen, onClose }) => {
           variant="ghost" 
           size="icon" 
           className="absolute top-2 right-2 h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10"
-          onClick={onClose}
+          onClick={() => {
+            console.log("MainTutorial: Close button clicked");
+            onClose();
+          }}
         >
           <X className="h-4 w-4" />
         </Button>

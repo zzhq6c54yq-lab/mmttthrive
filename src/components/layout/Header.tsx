@@ -16,13 +16,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import WelcomeTutorial from "../tutorials/WelcomeTutorial";
+import MainTutorial from "../tutorials/MainTutorial";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Header = () => {
   const { toast } = useToast();
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
-  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   
   // Check language preference and listen for changes
   useEffect(() => {
@@ -57,20 +57,21 @@ const Header = () => {
     });
   };
 
-  const handleToggleTutorial = () => {
-    console.log("Opening tutorial from header");
+  const handleOpenTutorial = () => {
+    console.log("Opening tutorial from header button");
     
     // Reset any flags that might prevent tutorial from showing
     localStorage.removeItem('mainTutorialShown');
     localStorage.setItem('forceTutorial', 'true');
     
     // Force show the tutorial
-    setShowWelcomeTutorial(true);
+    setShowTutorial(true);
   };
 
   const handleCloseTutorial = () => {
     console.log("Closing tutorial from header");
-    setShowWelcomeTutorial(false);
+    setShowTutorial(false);
+    localStorage.setItem('mainTutorialShown', 'true');
   };
 
   return (
@@ -84,7 +85,7 @@ const Header = () => {
               size="icon" 
               className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white/10 backdrop-blur-sm shadow-lg hover:bg-[#B87333]/20 transition-all duration-300 hover:shadow-[0_0_15px_#B87333] relative overflow-hidden"
               aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
-              onClick={handleToggleTutorial}
+              onClick={handleOpenTutorial}
               title={isSpanish ? "Abrir Tutorial" : "Open Tutorial"}
             >
               {/* Animated rings */}
@@ -167,9 +168,9 @@ const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         
-        {/* Enhanced Welcome Tutorial Dialog */}
-        <WelcomeTutorial
-          isOpen={showWelcomeTutorial}
+        {/* Main Tutorial Dialog - Using MainTutorial directly */}
+        <MainTutorial
+          isOpen={showTutorial}
           onClose={handleCloseTutorial}
         />
       </header>

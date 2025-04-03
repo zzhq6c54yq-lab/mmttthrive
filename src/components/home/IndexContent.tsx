@@ -71,23 +71,28 @@ const IndexContent: React.FC<IndexContentProps> = ({
   
   // Check URL parameters and screen state to determine if tutorial should be shown
   useEffect(() => {
-    // Get URL parameters
+    // Get URL parameters and force tutorial flag
     const queryParams = new URLSearchParams(window.location.search);
-    const forceTutorial = queryParams.has('tutorial') || queryParams.has('reset');
+    const forceTutorial = queryParams.has('tutorial') || queryParams.has('reset') || localStorage.getItem('forceTutorial') === 'true';
     
     console.log("IndexContent: Checking tutorial visibility. Screen:", screenState, 
                 "showMainTutorial:", showMainTutorial, 
-                "forceTutorial param:", forceTutorial);
+                "forceTutorial:", forceTutorial,
+                "localStorage.forceTutorial:", localStorage.getItem('forceTutorial'));
     
-    // Show tutorial if on main screen AND (showMainTutorial OR URL parameter)
+    // Show tutorial if on main screen AND (showMainTutorial OR URL parameter OR force flag)
     if (screenState === 'main' && (showMainTutorial || forceTutorial)) {
-      console.log("IndexContent: Showing tutorial");
-      setTutorialVisible(true);
+      console.log("IndexContent: Showing tutorial - conditions met");
+      setTimeout(() => {
+        setTutorialVisible(true);
+      }, 200); // Small delay to ensure state is updated
       
       // Set first visit flag for proper animations/transitions
       if (forceTutorial) {
         setIsFirstVisit(true);
       }
+    } else {
+      console.log("IndexContent: Not showing tutorial - conditions not met");
     }
   }, [screenState, showMainTutorial, setIsFirstVisit]);
 
@@ -96,6 +101,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
     console.log("IndexContent: Tutorial closed");
     setTutorialVisible(false);
     markTutorialCompleted();
+    localStorage.removeItem('forceTutorial');
     
     // Show welcome toast
     if (screenState === 'main') {
