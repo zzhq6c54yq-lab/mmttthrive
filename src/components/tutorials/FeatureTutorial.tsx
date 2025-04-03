@@ -14,9 +14,10 @@ interface TutorialStep {
 interface FeatureTutorialProps {
   featureId: string;
   onClose: () => void;
+  embedded?: boolean;
 }
 
-const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose }) => {
+const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, embedded = false }) => {
   const [currentStep, setCurrentStep] = useState(0);
   
   // Get tutorial content based on feature ID
@@ -129,7 +130,6 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
           description: "Monitor your wellness journey with our tracking tools. See your growth, recognize patterns, and celebrate your achievements.",
           image: "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png"
         }
-        // Removed the last 3 slides as requested
       ];
     case 'workshops':
       return [
