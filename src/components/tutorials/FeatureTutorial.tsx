@@ -105,7 +105,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
   );
 };
 
-// Tutorial steps for different features
+// Tutorial steps for different features - streamlined to remove redundancy
 const getTutorialSteps = (featureId: string): TutorialStep[] => {
   switch (featureId) {
     case 'dashboard':
@@ -126,10 +126,6 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Track Your Progress",
           description: "Monitor your wellness journey with our tracking tools. See your growth, recognize patterns, and celebrate your achievements."
-        },
-        {
-          title: "Access Tutorials Anytime",
-          description: "Need help? Look for the Thrive/MT button in the top right corner of your screen. Click it anytime to see these tutorials again and learn about features."
         }
       ];
     case 'workshops':
@@ -158,10 +154,6 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Getting Started",
           description: "Explore the dashboard to find daily challenges, specialized programs, and resources tailored to your needs."
-        },
-        {
-          title: "Access Tutorials Anytime",
-          description: "Need help? Look for the Thrive/MT button in the top right corner of your screen. Click it anytime to see these tutorials again."
         }
       ];
   }
