@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,9 +40,6 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
   
   const currentTutorial = tutorialSteps[currentStep];
   
-  // Determine if this is the first step with the Thrive logo
-  const isFirstStepWithThriveLogo = currentStep === 0 && currentTutorial.image?.includes("f2c6ac08-6331-4884-950d-7f94d68ff15f");
-  
   return (
     <Card className="w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
       <div className="relative">
@@ -60,7 +58,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
             <img 
               src={currentTutorial.image} 
               alt={currentTutorial.title} 
-              className={`object-contain ${isFirstStepWithThriveLogo ? "h-16 w-16" : "h-24 w-24"}`}
+              className="h-24 w-24 object-contain"
             />
           </div>
         )}
@@ -107,16 +105,11 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
   );
 };
 
-// Tutorial steps for different features - streamlined to remove redundancy
+// Tutorial steps for different features - removing the welcome slide from dashboard tutorial
 const getTutorialSteps = (featureId: string): TutorialStep[] => {
   switch (featureId) {
     case 'dashboard':
       return [
-        {
-          title: "Welcome to Your Thrive MT Dashboard",
-          description: "This is your personalized space for mental wellness. We've designed it to be intuitive and supportive of your journey.",
-          image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
-        },
         {
           title: "Daily Wellness Challenges",
           description: "Engage with daily activities designed to boost your mental wellbeing. Each challenge takes just a few minutes but can have lasting benefits."
