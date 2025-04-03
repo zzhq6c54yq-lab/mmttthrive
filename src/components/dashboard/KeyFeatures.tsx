@@ -35,7 +35,6 @@ const KeyFeatures: React.FC = () => {
   // Translations
   const translations = {
     title: isSpanish ? "Características Principales" : "Key Features",
-    subtitle: isSpanish ? "Herramientas y recursos diseñados para tu bienestar" : "Tools and resources designed for your wellbeing",
     navigating: isSpanish ? "Navegando..." : "Navigating...",
     takingTo: isSpanish ? "Llevándote a la función seleccionada" : "Taking you to your selected feature"
   };
@@ -150,7 +149,6 @@ const KeyFeatures: React.FC = () => {
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
               {translations.title}
             </h2>
-            <p className="text-gray-300 mt-1">{translations.subtitle}</p>
           </div>
           <div className="hidden md:block">
             <Sparkles className="h-8 w-8 text-[#E5C5A1] opacity-60 animate-pulse" />
