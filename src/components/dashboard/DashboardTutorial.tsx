@@ -51,11 +51,28 @@ const DashboardTutorial: React.FC<DashboardTutorialProps> = ({
           </CardHeader>
           
           <CardContent>
-            <p className="text-white/90">
+            <p className="text-white/90 mb-6">
               {isSpanish 
                 ? "Tu panel de bienestar mental personalizado está listo. Lo hemos diseñado para apoyar tu viaje hacia una mejor salud mental, centrándote en Horizontes Esperanzadores, Empoderamiento a través de la Educación, Conexiones Nutridas, Resiliencia y Recuperación, y asegurando que Tu Viaje Importa."
                 : "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health, focusing on Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and ensuring Your Journey Matters."}
             </p>
+            
+            <div className="flex items-center justify-center my-4">
+              <div className="flex flex-col items-center">
+                <div className="bg-purple-600/20 p-3 rounded-full border border-purple-400/40 mb-2">
+                  <img 
+                    src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                    alt="Thrive Button" 
+                    className="h-12 w-12 object-contain"
+                  />
+                </div>
+                <p className="text-white text-sm text-center">
+                  {isSpanish
+                    ? "Busca este botón en la esquina superior derecha para acceder al tutorial en cualquier momento"
+                    : "Look for this button in the top right corner to access the tutorial anytime"}
+                </p>
+              </div>
+            </div>
           </CardContent>
           
           <CardFooter className="flex justify-center">

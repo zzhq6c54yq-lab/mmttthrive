@@ -37,9 +37,11 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   
   // Check if coming from onboarding screens and show tutorial if needed
   useEffect(() => {
-    // Check if coming from onboarding screens
+    // Get the previous screen state from localStorage
     const prevScreenState = localStorage.getItem('prevScreenState');
     const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
+    
+    // Consider coming from onboarding if the previous screen was one of the onboarding screens
     const comingFromOnboarding = prevScreenState === 'visionBoard' || 
                               prevScreenState === 'subscription' || 
                               prevScreenState === 'moodResponse' || 
@@ -78,6 +80,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         onWorkshopClick={handleWorkshopClick}
       />
       
+      {/* This is the only tutorial dialog that should show during onboarding to main transition */}
       <DashboardTutorial 
         showTutorial={showTutorial}
         userName={userName}
