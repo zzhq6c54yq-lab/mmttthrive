@@ -22,7 +22,7 @@ interface FeatureTutorialProps {
 }
 
 const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, embedded = false, userName = "" }) => {
-  const { isSpanish } = useTranslation();
+  const { isSpanish, getTranslatedText } = useTranslation();
   
   // For dashboard, we'll only show the welcome screen
   const tutorialSteps = getTutorialSteps(featureId, userName, isSpanish);
@@ -73,9 +73,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
               </div>
             </div>
             <p className="text-sm text-white/80">
-              {isSpanish 
-                ? "Busque este botón en la esquina superior derecha para obtener ayuda en cualquier momento."
-                : "Look for this button in the top right corner for a full tutorial anytime."}
+              {getTranslatedText('tutorialButtonHelp')}
             </p>
           </div>
         </div>
@@ -86,7 +84,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
           className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
           onClick={onClose}
         >
-          <CheckCircle2 className="mr-2 h-4 w-4" /> {isSpanish ? "Entendido" : "Got it"}
+          <CheckCircle2 className="mr-2 h-4 w-4" /> {getTranslatedText('gotIt')}
         </Button>
       </CardFooter>
     </Card>

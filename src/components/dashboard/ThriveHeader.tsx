@@ -5,6 +5,7 @@ import { Footprints } from "lucide-react";
 import HenryIntroDialog from "../henry/HenryIntroDialog";
 import HelpDialog from "../help/HelpDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import useTranslation from "@/hooks/useTranslation";
 
 interface ThriveHeaderProps {
   userName: string;
@@ -19,6 +20,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
 }) => {
   const [showIntroDialog, setShowIntroDialog] = useState(false);
   const [showChatDialog, setShowChatDialog] = useState(false);
+  const { isSpanish, getTranslatedText } = useTranslation();
   const displayName = userName || "Friend";
   
   const handleHenryButtonClick = () => {
@@ -79,14 +81,14 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
               <div className="text-center md:text-left">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
-                    Welcome to
+                    {getTranslatedText('welcome')}
                   </span>
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] via-[#B87333] to-[#E5C5A1] animate-gradient-x" style={{backgroundSize: '200% auto', animationDelay: '0.5s'}}>
                     Thrive MT
                   </span>
                 </h1>
                 <p className="mt-3 text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1]/90 to-[#B87333]/90">
-                  Hey {displayName}! Let's work on your mental health journey
+                  {isSpanish ? `¡Hola ${displayName}! Trabajemos en tu viaje de salud mental` : `Hey ${displayName}! Let's work on your mental health journey`}
                 </p>
               </div>
             </div>
@@ -106,7 +108,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                     <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
                   </Avatar>
                   <span className="relative z-10 text-white">
-                    Meet Henry
+                    {getTranslatedText('meetHenry')}
                   </span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>

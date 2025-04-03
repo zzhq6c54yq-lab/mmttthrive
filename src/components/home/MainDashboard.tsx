@@ -29,7 +29,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isSpanish } = useTranslation();
+  const { isSpanish, getTranslatedText } = useTranslation();
   const [showTutorial, setShowTutorial] = useState(false);
   const { handleWorkshopClick } = useWorkshopNavigation();
   
@@ -38,10 +38,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
     // Check if coming from onboarding screens
     const prevScreenState = localStorage.getItem('prevScreenState');
     const comingFromOnboarding = prevScreenState === 'visionBoard' || 
-                                prevScreenState === 'subscription' || 
-                                prevScreenState === 'moodResponse' || 
-                                prevScreenState === 'mood' || 
-                                prevScreenState === 'register';
+                              prevScreenState === 'subscription' || 
+                              prevScreenState === 'moodResponse' || 
+                              prevScreenState === 'mood' || 
+                              prevScreenState === 'register';
     
     console.log("DASHBOARD TRIGGER: Previous screen state:", prevScreenState);
     console.log("Coming from onboarding:", comingFromOnboarding);

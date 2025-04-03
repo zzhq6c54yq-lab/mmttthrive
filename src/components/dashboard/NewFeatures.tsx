@@ -4,46 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
 
 const NewFeatures: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const { isSpanish, getTranslatedText } = useTranslation();
   
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
-  
-  // Translations
-  const translations = {
-    newFeatures: isSpanish ? "Nuevas Características" : "New Features",
-    barterSystem: isSpanish ? "Sistema de Trueque" : "Barter System",
-    upgradePlan: isSpanish ? "Mejorar Plan" : "Upgrade Plan",
-    premiumTools: isSpanish ? "Herramientas premium" : "Premium tools",
-    coPayCredits: isSpanish ? "Créditos de Copago" : "Co-Pay Credits",
-    navigating: isSpanish ? "Navegando a" : "Navigating to",
-    loading: isSpanish ? "Cargando la función solicitada..." : "Loading your requested feature..."
-  };
-
   const handleNavigation = (path: string, title: string) => {
     toast({
-      title: `${translations.navigating} ${title}`,
-      description: translations.loading,
+      title: `${isSpanish ? 'Navegando a' : 'Navigating to'} ${title}`,
+      description: isSpanish ? 'Cargando la función solicitada...' : 'Loading your requested feature...',
       duration: 2000
     });
     
@@ -67,7 +38,7 @@ const NewFeatures: React.FC = () => {
         <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
           <Sparkles className="h-5 w-5 text-[#B87333] mr-2" />
           <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333]">
-            {translations.newFeatures}
+            {getTranslatedText('newFeatures')}
           </span>
         </h3>
         
@@ -75,18 +46,18 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => handleNavigation("/barter-system", translations.barterSystem)}
+            onClick={() => handleNavigation("/barter-system", getTranslatedText('barterSystem'))}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
-            <span className="font-medium">{translations.barterSystem}</span>
+            <span className="font-medium">{getTranslatedText('barterSystem')}</span>
           </Button>
           
           <Button 
             variant="gold"
             className="flex items-center gap-2 px-5 py-5 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
-            onClick={() => handleNavigation("/subscription-plans", translations.upgradePlan)}
+            onClick={() => handleNavigation("/subscription-plans", getTranslatedText('upgradePlan'))}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] opacity-100 background-animate" style={{backgroundSize: '200% auto'}}></div>
             
@@ -100,8 +71,8 @@ const NewFeatures: React.FC = () => {
               <Crown className="h-5 w-5 text-white group-hover:text-white transition-colors" />
             </div>
             <div className="z-10 flex flex-col items-start">
-              <span className="font-bold text-black text-sm">{translations.upgradePlan}</span>
-              <span className="text-xs text-black/80">{translations.premiumTools}</span>
+              <span className="font-bold text-black text-sm">{getTranslatedText('upgradePlan')}</span>
+              <span className="text-xs text-black/80">{getTranslatedText('premiumTools')}</span>
             </div>
             
             <Zap className="h-5 w-5 ml-1 text-black group-hover:translate-x-1 transition-transform z-10" />
@@ -110,12 +81,12 @@ const NewFeatures: React.FC = () => {
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
-            onClick={() => handleNavigation("/copay-credits", translations.coPayCredits)}
+            onClick={() => handleNavigation("/copay-credits", getTranslatedText('coPayCredits'))}
           >
             <div className="p-2 rounded-full bg-[#B87333]/20 group-hover:bg-[#B87333]/30 transition-colors">
               <WalletCards className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
-            <span className="font-medium">{translations.coPayCredits}</span>
+            <span className="font-medium">{getTranslatedText('coPayCredits')}</span>
           </Button>
         </div>
       </div>

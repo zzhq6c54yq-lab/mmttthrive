@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Package, Trophy, Gem, Check } from "lucide-react";
+import useTranslation from "@/hooks/useTranslation";
 
 interface SubscriptionPlan {
   title: string;
@@ -28,9 +29,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
-  // Get preferred language
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
+  const { isSpanish, getTranslatedText } = useTranslation();
   
   // Translations
   const translations = {
