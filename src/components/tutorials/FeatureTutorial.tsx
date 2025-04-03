@@ -126,6 +126,10 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Track Your Progress",
           description: "Monitor your wellness journey with our tracking tools. See your growth, recognize patterns, and celebrate your achievements."
+        },
+        {
+          title: "Find Help Anytime",
+          description: "Need assistance? Look for the Thrive MT button in the top right corner of the screen next to your profile icon. Click it anytime to access the full site tutorial."
         }
       ];
     case 'workshops':
@@ -142,6 +146,10 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Track Your Progress",
           description: "As you complete workshops, your progress is tracked, allowing you to see your journey and build on your achievements."
+        },
+        {
+          title: "Find Help Anytime",
+          description: "Need assistance? Look for the Thrive MT button in the top right corner of the screen next to your profile icon. Click it anytime to access the full site tutorial."
         }
       ];
     default:
@@ -154,6 +162,10 @@ const getTutorialSteps = (featureId: string): TutorialStep[] => {
         {
           title: "Getting Started",
           description: "Explore the dashboard to find daily challenges, specialized programs, and resources tailored to your needs."
+        },
+        {
+          title: "Find Help Anytime",
+          description: "Need assistance? Look for the Thrive MT button in the top right corner of the screen next to your profile icon. Click it anytime to access the full site tutorial."
         }
       ];
   }
