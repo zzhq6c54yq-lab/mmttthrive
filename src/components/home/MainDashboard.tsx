@@ -8,6 +8,7 @@ import DashboardBackground from "@/components/dashboard/DashboardBackground";
 import DashboardContent from "@/components/dashboard/DashboardContent";
 import DashboardTutorial from "@/components/dashboard/DashboardTutorial";
 import { useWorkshopNavigation } from "@/components/dashboard/useWorkshopNavigation";
+import useTranslation from "@/hooks/useTranslation";
 
 interface MainDashboardProps {
   userName: string;
@@ -28,28 +29,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const { isSpanish } = useTranslation();
   const [showTutorial, setShowTutorial] = useState(false);
   const { handleWorkshopClick } = useWorkshopNavigation();
-  
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
   
   // Check if coming from onboarding screens and force tutorial if needed
   useEffect(() => {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import useTranslation from "@/hooks/useTranslation";
 
 interface MoodResponseProps {
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -17,10 +18,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const [isScrolledToTop, setIsScrolledToTop] = useState(true);
   const affirmationScrollRef = React.useRef<HTMLDivElement>(null);
-  
-  // Get preferred language
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
+  const { isSpanish } = useTranslation();
   
   // Translations
   const translations = {
@@ -124,204 +122,178 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   // Enhanced Overwhelmed affirmations - longer and more heartfelt
   const overwhelmedAffirmations = isSpanish
     ? [
-        "La intensidad que estás sintiendo ahora contiene un potencial extraordinario – como el combustible concentrado que impulsa los avances más significativos de nuestras vidas. Cuando te sientas más abrumado, recuerda que esta energía puede ser redirigida y transformada en el catalizador de tu crecimiento más profundo.",
-        "Tienes todo el permiso del mundo para establecer límites, para decir no, para hacer una pausa y respirar. El autocuidado no es egoísmo; es el acto más valiente de amor propio que puedes practicar. Priorizar tu bienestar no es opcional – es esencial para que puedas seguir compartiendo tus dones únicos con el mundo.",
-        "Esta sensación abrumadora que estás experimentando es temporal – como nubes de tormenta que pasan frente al sol. Tu paz interior es la constante permanente, siempre esperando ser redescubierta detrás de los pensamientos turbulentos y las emociones intensas que eventualmente se desvanecerán.",
-        "Tu conciencia de estos sentimientos revela una inteligencia emocional extraordinaria – una capacidad para reconocer y nombrar tus experiencias que muchos nunca desarrollan. Este mismo conocimiento que ahora parece tan pesado es en realidad la herramienta que te ayudará a navegarlos con cada vez más gracia.",
-        "Simplemente por estar aquí ahora, respirando a través de esta intensidad, ya estás tomando pasos positivos hacia adelante. Cada momento que permaneces presente, cada respiración consciente, cada pequeño acto de autocuidado es una victoria significativa. Avanzas no a pesar de lo que sientes, sino a través de ello."
+        "La intensidad que estás sintiendo ahora contiene un potencial extraordinario – como el combustible concentrado que impulsa los avances más significativos de nuestras vidas. Cuando te sientas más abrumado, recuerda que esta energía puede ser redirigida y transformada en creatividad, resolución y crecimiento.",
+        "Respirar conscientemente en este momento es un acto de auténtica valentía. Cada inhalación te ancla en el presente, recordándote que no necesitas resolver todo este instante. Un respiro a la vez, un paso a la vez, estás navegando por esta tormenta con una gracia que quizás no puedas ver todavía.",
+        "Este sentimiento de sobrecarga, por difícil que sea, te está mostrando cuánto te importan las cosas, cuán profundamente te comprometes con tu vida. Esta capacidad para sentir intensamente es la misma que te permite experimentar alegría, amor y conexión con la misma profundidad.",
+        "Entre todos estos pensamientos y emociones que te inundan, hay un centro de calma dentro de ti que permanece intacto. Como el ojo de un huracán, este espacio tranquilo está siempre presente, ofreciéndote un refugio en medio de la tormenta. Está accesible con solo una respiración consciente.",
+        "Al otro lado de esta experiencia, descubrirás recursos internos que no sabías que poseías. El sentirte abrumado no es una señal de fracaso o debilidad – es parte del proceso de expansión, de crecimiento más allá de tus límites anteriores hacia una versión más sabia y resistente de ti mismo."
       ]
     : [
-        "The intensity you're feeling right now contains extraordinary potential – like concentrated fuel that powers the most significant breakthroughs in our lives. When you feel most overwhelmed, remember that this energy can be redirected and transformed into the catalyst for your deepest growth.",
-        "You have every permission in the world to set boundaries, to say no, to pause and breathe. Self-care isn't selfishness; it's the bravest act of self-love you can practice. Prioritizing your wellbeing isn't optional – it's essential for you to continue sharing your unique gifts with the world.",
-        "This overwhelming sensation you're experiencing is temporary – like storm clouds passing in front of the sun. Your inner peace is the permanent constant, always waiting to be rediscovered behind the turbulent thoughts and intense emotions that will eventually fade.",
-        "Your awareness of these feelings reveals extraordinary emotional intelligence – an ability to recognize and name your experiences that many never develop. This very knowledge that now feels so heavy is actually the tool that will help you navigate them with increasing grace.",
-        "Simply by being here now, breathing through this intensity, you're already taking positive steps forward. Every moment you remain present, every conscious breath, every small act of self-care is a significant victory. You move forward not despite what you feel, but through it."
+        "The intensity you're feeling right now contains extraordinary potential – like concentrated fuel powering the most significant breakthroughs in our lives. When you feel most overwhelmed, remember that this energy can be redirected and transformed into creativity, resolution, and growth.",
+        "Consciously breathing through this moment is an act of genuine courage. Each inhale anchors you to the present, reminding you that you don't need to solve everything this instant. One breath at a time, one step at a time, you're navigating this storm with a grace you perhaps can't see yet.",
+        "This feeling of overwhelm, difficult as it is, is showing you how much you care, how deeply you're engaged with your life. This capacity to feel intensely is the same one that allows you to experience joy, love, and connection with equal depth.",
+        "Among all these flooding thoughts and emotions, there is a center of calm within you that remains untouched. Like the eye of a hurricane, this quiet space is always present, offering you sanctuary in the midst of the storm. It's accessible with just one mindful breath.",
+        "On the other side of this experience, you'll discover inner resources you didn't know you possessed. Feeling overwhelmed isn't a sign of failure or weakness – it's part of the process of expansion, of growing beyond your previous boundaries into a wiser, more resilient version of yourself."
       ];
-  
-  // Helper function to get the correct affirmations based on mood
-  const getAffirmations = () => {
-    switch (selectedMood) {
-      case 'happy': return happyAffirmations;
-      case 'ok': return okAffirmations;
-      case 'neutral': return neutralAffirmations;
-      case 'down': return downAffirmations;
-      case 'sad': return sadAffirmations;
-      case 'overwhelmed': return overwhelmedAffirmations;
-      default: return [];
-    }
-  };
-  
-  // Helper function to get the correct title based on mood
-  const getTitle = () => {
-    switch (selectedMood) {
-      case 'happy': return translations.happyTitle;
-      case 'ok': return translations.okTitle;
-      case 'neutral': return translations.neutralTitle;
-      case 'down': return translations.downTitle;
-      case 'sad': return translations.sadTitle;
-      case 'overwhelmed': return translations.overwhelmedTitle;
-      default: return '';
-    }
-  };
-  
-  // Helper function to get the correct icon based on mood
-  const getMoodIcon = () => {
-    switch (selectedMood) {
-      case 'happy': return <Smile className="w-full h-full text-emerald-400" />;
-      case 'ok': return <Brain className="w-full h-full text-sky-400" />;
-      case 'neutral': return <Meh className="w-full h-full text-slate-400" />;
-      case 'down': return <HeartCrack className="w-full h-full text-violet-400" />;
-      case 'sad': return <Frown className="w-full h-full text-indigo-400" />;
-      case 'overwhelmed': return <Angry className="w-full h-full text-rose-400" />;
-      default: return null;
-    }
-  };
-  
-  // Helper function to get background gradient based on mood
-  const getBackgroundGradient = () => {
-    switch (selectedMood) {
-      case 'happy': return 'from-emerald-500/10 via-amber-500/5 to-[#1a1a1f]';
-      case 'ok': return 'from-sky-500/10 via-sky-500/5 to-[#1a1a1f]';
-      case 'neutral': return 'from-slate-500/10 via-slate-500/5 to-[#1a1a1f]';
-      case 'down': return 'from-violet-500/10 via-violet-500/5 to-[#1a1a1f]';
-      case 'sad': return 'from-indigo-500/10 via-indigo-500/5 to-[#1a1a1f]';
-      case 'overwhelmed': return 'from-rose-500/10 via-rose-500/5 to-[#1a1a1f]';
-      default: return 'from-[#1a1a1f] to-[#1a1a1f]';
-    }
-  };
-  
-  // Enhanced scroll indicator function that monitors scroll position
-  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-    
-    // Check if scrolled to top
-    setIsScrolledToTop(scrollTop === 0);
-    
-    // Check if scrolled to bottom
-    setIsScrolledToBottom(Math.abs(scrollHeight - clientHeight - scrollTop) < 10);
-  };
-  
-  // Hide scroll indicator after 8 seconds
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowScrollIndicator(false);
-    }, 8000);
-    
+    }, 3000);
+
     return () => clearTimeout(timer);
   }, []);
-  
-  // Cycle through affirmations every 12 seconds (longer to read the more extensive text)
-  useEffect(() => {
-    const affirmations = getAffirmations();
-    if (affirmations.length === 0) return;
-    
-    const interval = setInterval(() => {
-      setActiveAffirmation(prev => (prev + 1) % affirmations.length);
-    }, 12000);
-    
-    return () => clearInterval(interval);
-  }, [selectedMood, isSpanish]);
 
-  if (!selectedMood) return null;
-  
-  const affirmations = getAffirmations();
-  const currentAffirmation = affirmations[activeAffirmation] || "";
+  const getMoodAffirmations = () => {
+    switch (selectedMood) {
+      case 'happy':
+        return happyAffirmations;
+      case 'ok':
+        return okAffirmations;
+      case 'neutral':
+        return neutralAffirmations;
+      case 'down':
+        return downAffirmations;
+      case 'sad':
+        return sadAffirmations;
+      case 'overwhelmed':
+        return overwhelmedAffirmations;
+      default:
+        return happyAffirmations;
+    }
+  };
+
+  const getMoodTitle = () => {
+    switch (selectedMood) {
+      case 'happy':
+        return translations.happyTitle;
+      case 'ok':
+        return translations.okTitle;
+      case 'neutral':
+        return translations.neutralTitle;
+      case 'down':
+        return translations.downTitle;
+      case 'sad':
+        return translations.sadTitle;
+      case 'overwhelmed':
+        return translations.overwhelmedTitle;
+      default:
+        return translations.happyTitle;
+    }
+  };
+
+  const getMoodIcon = () => {
+    switch (selectedMood) {
+      case 'happy':
+        return <Smile className="w-12 h-12 text-white" />;
+      case 'ok':
+        return <Brain className="w-12 h-12 text-white" />;
+      case 'neutral':
+        return <Meh className="w-12 h-12 text-white" />;
+      case 'down':
+        return <HeartCrack className="w-12 h-12 text-white" />;
+      case 'sad':
+        return <Frown className="w-12 h-12 text-white" />;
+      case 'overwhelmed':
+        return <Angry className="w-12 h-12 text-white" />;
+      default:
+        return <Smile className="w-12 h-12 text-white" />;
+    }
+  };
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const isAtBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 20;
+    const isAtTop = target.scrollTop <= 20;
+    
+    setIsScrolledToBottom(isAtBottom);
+    setIsScrolledToTop(isAtTop);
+  };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center bg-gradient-to-b ${getBackgroundGradient()} animate-fade-in relative`}>
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#B87333]/5 rounded-full blur-3xl transform rotate-12"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[#B87333]/5 rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="z-10 w-full max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden relative">
-          <div className="absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
-          <div className="absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4 w-48 h-48 bg-gradient-to-br from-[#B87333]/30 to-transparent rounded-full blur-xl"></div>
-          
-          <div className="relative z-10">
-            <div className="flex flex-col md:flex-row items-center gap-10 mb-12">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="w-36 h-36 p-4 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-lg"
-              >
-                {getMoodIcon()}
-              </motion.div>
-              
-              <div className="text-center md:text-left">
-                <motion.h2 
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight"
-                >
-                  {getTitle()}
-                </motion.h2>
-                
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="relative min-h-[18rem] md:min-h-[15rem] flex flex-col bg-[#1a1a1f]/40 rounded-xl backdrop-blur-sm"
-                >
-                  {/* Scroll up indicator - only show when not at top */}
-                  <div className={`flex justify-center py-2 ${isScrolledToTop ? 'opacity-0' : 'opacity-80'} transition-opacity duration-300`}>
-                    <div className="flex flex-col items-center text-white/80">
-                      <ChevronUp className="w-5 h-5 animate-bounce" />
-                      <span className="text-xs">{translations.scrollUp}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Scrollable affirmation area */}
-                  <ScrollArea 
-                    className="px-6 py-4 flex-grow"
-                    onScroll={handleScroll}
-                    ref={affirmationScrollRef}
-                  >
-                    <div className="text-xl md:text-2xl text-white/90 font-light leading-relaxed">
-                      {currentAffirmation}
-                    </div>
-                  </ScrollArea>
-                  
-                  {/* Scroll down indicator - only show when not at bottom */}
-                  <div className={`flex justify-center py-2 ${isScrolledToBottom ? 'opacity-0' : 'opacity-80'} transition-opacity duration-300`}>
-                    <div className="flex flex-col items-center text-white/80">
-                      <span className="text-xs">{translations.scrollDown}</span>
-                      <ChevronDown className="w-5 h-5 animate-bounce" />
-                    </div>
-                  </div>
-                </motion.div>
-                
-                {/* Removed cycling affirmations and replaced with static text + scroll */}
+    <div className="min-h-screen bg-gradient-to-br from-[#1a1a2e] to-[#16213e] text-white overflow-hidden flex flex-col">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="max-w-2xl w-full mx-auto bg-gradient-to-br from-[#21213f]/90 to-[#2a294f]/90 backdrop-blur-lg rounded-2xl overflow-hidden shadow-xl border border-white/10"
+        >
+          {/* Header */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/20 via-transparent to-[#B87333]/20 opacity-50"></div>
+            <div className="px-6 py-6 flex flex-col items-center relative z-10">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] p-1 flex items-center justify-center mb-5">
+                <div className="w-full h-full rounded-full bg-[#21213f]/90 flex items-center justify-center">
+                  {getMoodIcon()}
+                </div>
               </div>
+              <h1 className="text-3xl md:text-4xl font-light mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">
+                {getMoodTitle()}
+              </h1>
             </div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="flex flex-col md:flex-row justify-center md:justify-between gap-6"
-            >
-              <Button 
-                className="bg-white/20 hover:bg-white/30 text-white text-lg py-6 px-8"
-                onClick={onPrevious}
-              >
-                <ArrowLeft className="mr-2 h-5 w-5" />
-                {translations.previous}
-              </Button>
-              
-              <Button 
-                className="bg-[#B87333] hover:bg-[#B87333]/90 text-white text-lg py-6 px-10"
-                onClick={onContinue}
-              >
-                {translations.continue}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </motion.div>
           </div>
-        </div>
+          
+          {/* Affirmation card */}
+          <div className="bg-black/20 backdrop-blur-md border-t border-white/10 p-6 relative">
+            <ScrollArea 
+              className="h-[280px] pr-4 overflow-auto" 
+              onScroll={handleScroll}
+              ref={affirmationScrollRef}
+            >
+              <div className="space-y-6">
+                {getMoodAffirmations().map((affirmation, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.2, duration: 0.7 }}
+                    className="bg-gradient-to-br from-[#B87333]/10 to-[#E5C5A1]/5 backdrop-blur-sm p-5 rounded-xl border border-[#B87333]/20"
+                  >
+                    <p className="text-lg text-white/90 leading-relaxed font-light">
+                      "{affirmation}"
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </ScrollArea>
+            
+            {/* Scroll indicators */}
+            {!isScrolledToBottom && (
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-sm rounded-full py-1 px-3 flex items-center gap-1 text-xs text-white/70 shadow-lg border border-white/10 animate-bounce">
+                <ChevronDown className="h-3 w-3" />
+                {translations.scrollDown}
+              </div>
+            )}
+            
+            {!isScrolledToTop && isScrolledToBottom && (
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-sm rounded-full py-1 px-3 flex items-center gap-1 text-xs text-white/70 shadow-lg border border-white/10 animate-bounce">
+                <ChevronUp className="h-3 w-3" />
+                {translations.scrollUp}
+              </div>
+            )}
+          </div>
+          
+          {/* Action buttons */}
+          <div className="bg-[#1a1a2e]/80 backdrop-blur-md border-t border-white/5 px-6 py-4 flex justify-between">
+            <Button
+              variant="outline"
+              className="bg-white/5 hover:bg-white/10 border-white/10 text-white"
+              onClick={onPrevious}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              {translations.previous}
+            </Button>
+            
+            <Button
+              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white group"
+              onClick={onContinue}
+            >
+              {translations.continue}
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

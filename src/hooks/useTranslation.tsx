@@ -49,6 +49,26 @@ export const useTranslation = () => {
       'welcomeMessage': {
         'English': 'Let\'s explore the main features of Thrive MT together to help you start your mental',
         'Español': 'Exploremos juntos las principales características de Thrive MT para ayudarte a comenzar tu salud mental'
+      },
+      'gotIt': {
+        'English': 'Got it',
+        'Español': 'Entendido'
+      },
+      'continue': {
+        'English': 'Continue',
+        'Español': 'Continuar'
+      },
+      'previous': {
+        'English': 'Previous',
+        'Español': 'Anterior'
+      },
+      'skip': {
+        'English': 'Skip',
+        'Español': 'Omitir'
+      },
+      'close': {
+        'English': 'Close',
+        'Español': 'Cerrar'
       }
     };
     

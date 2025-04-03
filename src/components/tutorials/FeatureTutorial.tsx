@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckCircle2, X } from "lucide-react";
+import useTranslation from "@/hooks/useTranslation";
 
 interface TutorialStep {
   title: string;
@@ -21,8 +22,10 @@ interface FeatureTutorialProps {
 }
 
 const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, embedded = false, userName = "" }) => {
+  const { isSpanish } = useTranslation();
+  
   // For dashboard, we'll only show the welcome screen
-  const tutorialSteps = getTutorialSteps(featureId, userName);
+  const tutorialSteps = getTutorialSteps(featureId, userName, isSpanish);
   
   const currentTutorial = tutorialSteps[0]; // Always display first step only
   
@@ -36,7 +39,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
           onClick={onClose}
         >
           <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
         </Button>
         
         {currentTutorial.image && (
@@ -70,7 +73,9 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
               </div>
             </div>
             <p className="text-sm text-white/80">
-              Look for this button in the top right corner for a full tutorial anytime.
+              {isSpanish 
+                ? "Busque este botón en la esquina superior derecha para obtener ayuda en cualquier momento."
+                : "Look for this button in the top right corner for a full tutorial anytime."}
             </p>
           </div>
         </div>
@@ -81,7 +86,7 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
           className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
           onClick={onClose}
         >
-          <CheckCircle2 className="mr-2 h-4 w-4" /> Got it
+          <CheckCircle2 className="mr-2 h-4 w-4" /> {isSpanish ? "Entendido" : "Got it"}
         </Button>
       </CardFooter>
     </Card>
@@ -89,13 +94,15 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({ featureId, onClose, e
 };
 
 // Tutorial steps for different features - showing a personalized welcome for dashboard
-const getTutorialSteps = (featureId: string, userName: string = ""): TutorialStep[] => {
+const getTutorialSteps = (featureId: string, userName: string = "", isSpanish: boolean): TutorialStep[] => {
   switch (featureId) {
     case 'dashboard':
       return [
         {
-          title: "Welcome to Thrive MT",
-          description: "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health, focusing on Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and ensuring Your Journey Matters. Click the Thrive MT button in the top right corner anytime you need help navigating the platform.",
+          title: isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT",
+          description: isSpanish 
+            ? "Tu panel de bienestar mental personalizado está listo. Lo hemos diseñado para apoyar tu viaje hacia una mejor salud mental, centrándote en Horizontes Esperanzadores, Empoderamiento a través de la Educación, Conexiones Nutridas, Resiliencia y Recuperación, y asegurando que Tu Viaje Importa. Haz clic en el botón Thrive MT en la esquina superior derecha en cualquier momento que necesites ayuda para navegar por la plataforma."
+            : "Your personalized mental wellness dashboard is ready. We've designed it to support your journey to better mental health, focusing on Hopeful Horizons, Empowerment through Education, Nurtured Connections, Resilience and Recovery, and ensuring Your Journey Matters. Click the Thrive MT button in the top right corner anytime you need help navigating the platform.",
           image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
           isWelcome: true,
           userName: userName
@@ -104,16 +111,20 @@ const getTutorialSteps = (featureId: string, userName: string = ""): TutorialSte
     case 'workshops':
       return [
         {
-          title: "Explore Wellness Workshops",
-          description: "Discover a variety of workshops designed to support different aspects of your mental health journey.",
+          title: isSpanish ? "Explora Talleres de Bienestar" : "Explore Wellness Workshops",
+          description: isSpanish
+            ? "Descubre una variedad de talleres diseñados para apoyar diferentes aspectos de tu viaje de salud mental."
+            : "Discover a variety of workshops designed to support different aspects of your mental health journey.",
           image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
         }
       ];
     default:
       return [
         {
-          title: "Welcome to Thrive MT",
-          description: "We're here to support your mental wellness journey with personalized resources and tools.",
+          title: isSpanish ? "Bienvenido a Thrive MT" : "Welcome to Thrive MT",
+          description: isSpanish
+            ? "Estamos aquí para apoyar tu viaje de bienestar mental con herramientas y recursos personalizados."
+            : "We're here to support your mental wellness journey with personalized resources and tools.",
           image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png"
         }
       ];

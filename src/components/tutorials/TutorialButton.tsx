@@ -6,6 +6,7 @@ import FeatureTutorial from "./FeatureTutorial";
 import { useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import useTranslation from "@/hooks/useTranslation";
 
 interface TutorialButtonProps {
   featureId: string;
@@ -21,7 +22,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   showAnimatedRings = false
 }) => {
   const [showTutorial, setShowTutorial] = useState(false);
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const { isSpanish } = useTranslation();
   const location = useLocation();
   
   // Check if we should show the tutorial button based on the current route
@@ -38,25 +39,6 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
     // For default variant, show on all screens except emotional check-in
     return !(location.pathname === "/" && screenState !== 'main');
   };
-  
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
 
   const handleOpenTutorial = () => {
     setShowTutorial(true);
@@ -117,22 +99,6 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
                 </div>
                 
                 <p className="text-white/90 text-center mb-4">{welcomeMessage}</p>
-                
-                <div className="bg-black/20 p-3 rounded-lg border border-white/10 w-full mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-full border-2 border-[#B87333] bg-gradient-to-br from-[#181820] to-[#1f1a25] flex items-center justify-center">
-                      <div className="text-[#B87333] font-bold text-lg leading-none tracking-tighter flex flex-col items-center">
-                        <span className="text-[7px] opacity-80 mb-0.5">THRIVE</span>
-                        <span>MT</span>
-                      </div>
-                    </div>
-                    <p className="text-sm text-white/80">
-                      {isSpanish 
-                        ? "Busque este botón en la esquina superior derecha para obtener ayuda en cualquier momento."
-                        : "Look for this button in the top right corner for help anytime."}
-                    </p>
-                  </div>
-                </div>
               </div>
               
               <DialogFooter>

@@ -1,3 +1,4 @@
+
 import React from "react";
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
@@ -6,6 +7,7 @@ import RegistrationScreen from "@/components/home/RegistrationScreen";
 import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import VisionBoard from "@/components/home/VisionBoard";
 import MainDashboard from "@/components/home/MainDashboard";
+import useTranslation from "@/hooks/useTranslation";
 
 interface IndexScreenManagerProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
@@ -52,6 +54,8 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   handleRegister,
   setScreenState
 }) => {
+  const { isSpanish } = useTranslation();
+  
   React.useEffect(() => {
     const prevState = localStorage.getItem('prevScreenState');
     console.log("IndexScreenManager: Screen changing from", prevState, "to", screenState);

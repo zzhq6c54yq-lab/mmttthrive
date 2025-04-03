@@ -5,16 +5,15 @@ import { motion } from "framer-motion";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogDescription, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { PhoneCall, MessageSquare, LifeBuoy, Heart, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import useTranslation from "@/hooks/useTranslation";
 
 interface MoodScreenProps {
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
-  onPrevious: () => void;
 }
 
 const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
-  // Get preferred language
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
+  // Use the translation hook
+  const { isSpanish } = useTranslation();
   
   // State for mood selection and dialogs
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
@@ -234,7 +233,7 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
                   onClick={() => handleMoodClick(mood)}
                   className="w-full h-full flex flex-col items-center justify-center rounded-xl p-6 transition-all duration-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#B87333]/30 backdrop-blur-sm shadow-lg"
                 >
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-lg transform transition-transform duration-300 group-hover:scale-110 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 shadow-lg transform transition-transform duration-300 group-hover:scale-110 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white">
                     {mood.icon}
                   </div>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-lg font-medium">{mood.label}</span>
