@@ -51,37 +51,31 @@ export const usePopupManagement = (screenState: string) => {
     const prevScreenState = localStorage.getItem('prevScreenState');
     console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
-    // Only show the main welcome tutorial when transferring to main menu from onboarding
-    // and only if it hasn't been shown before
+    // We want to show the transition tutorial when coming from onboarding to main
     if (screenState === 'main') {
       const comingFromOnboarding = prevScreenState === 'visionBoard' || 
-                                  prevScreenState === 'subscription' || 
-                                  prevScreenState === 'moodResponse' || 
-                                  prevScreenState === 'mood' || 
-                                  prevScreenState === 'register';
+                                 prevScreenState === 'subscription' || 
+                                 prevScreenState === 'moodResponse' || 
+                                 prevScreenState === 'mood' || 
+                                 prevScreenState === 'register';
       
-      // Only show the dashboard tutorial when coming from onboarding screens
-      // and it hasn't been shown before
-      if (comingFromOnboarding && 
-          localStorage.getItem('dashboardTutorialShown') !== 'true') {
-        console.log("Should show dashboard tutorial - coming from onboarding and tutorial not shown before");
-        setPopupsShown(prev => ({ ...prev, mainTutorial: true }));
-        
-        // Ensure other popups don't show during onboarding transition
-        setShowCoPayCredit(false);
-        setShowHenry(false);
+      // Set the flag to show the dashboard tutorial in MainDashboard
+      if (comingFromOnboarding && localStorage.getItem('dashboardTutorialShown') !== 'true') {
+        console.log("Setting flag to show dashboard tutorial from onboarding");
+        localStorage.setItem('shouldShowDashboardTutorial', 'true');
       }
     }
     
     // Save current screen state as previous for next navigation
     localStorage.setItem('prevScreenState', screenState);
-  }, [screenState, popupsShown]);
+  }, [screenState]);
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
     setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     setShowMainTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');
+    localStorage.removeItem('shouldShowDashboardTutorial');
   };
 
   // Method to reset popup states (useful for testing)
@@ -94,6 +88,7 @@ export const usePopupManagement = (screenState: string) => {
     });
     localStorage.removeItem('popupsShown');
     localStorage.removeItem('dashboardTutorialShown');
+    localStorage.removeItem('shouldShowDashboardTutorial');
     localStorage.removeItem('prevScreenState');
   };
 

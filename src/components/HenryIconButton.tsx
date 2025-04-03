@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import HelpChatDialog from "./HelpChatDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import TutorialButton from "./tutorials/TutorialButton";
 
 interface HenryIconButtonProps {
   className?: string;
@@ -50,9 +49,6 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     }
   };
 
-  // Determine if we should show the THRIVE logo tutorial button - only on main dashboard
-  const shouldShowThriveButton = false; // Remove this button to avoid duplicates with the Header Thrive button
-
   return (
     <>
       <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center gap-4">
@@ -71,8 +67,6 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
             </Avatar>
           </div>
         </Button>
-        
-        {/* Removed the Thrive tutorial button from here to avoid duplicates */}
       </div>
       
       <HelpChatDialog isOpen={isHelpOpen} onOpenChange={setIsHelpOpen} />

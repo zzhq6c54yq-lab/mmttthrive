@@ -37,22 +37,31 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const { handleWorkshopClick } = useWorkshopNavigation();
   const { toast } = useToast();
   
-  // Check if coming from onboarding screens and show tutorial if needed
+  // Check if we should show the dashboard tutorial
   useEffect(() => {
-    // Get the previous screen state from localStorage
-    const prevScreenState = localStorage.getItem('prevScreenState');
+    const shouldShowTutorial = localStorage.getItem('shouldShowDashboardTutorial') === 'true';
     const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
     
-    // Consider coming from onboarding if the previous screen was one of the onboarding screens
+    // Get the previous screen state to determine if coming from onboarding
+    const prevScreenState = localStorage.getItem('prevScreenState');
     const comingFromOnboarding = prevScreenState === 'visionBoard' || 
                               prevScreenState === 'subscription' || 
                               prevScreenState === 'moodResponse' || 
                               prevScreenState === 'mood' || 
                               prevScreenState === 'register';
     
-    // Only show tutorial if coming from onboarding and it hasn't been shown before
-    if (comingFromOnboarding && !dashboardTutorialShown) {
-      console.log("Showing dashboard tutorial for first-time onboarding completion");
+    console.log("MainDashboard checking tutorial visibility:", {
+      shouldShowTutorial, 
+      dashboardTutorialShown, 
+      prevScreenState, 
+      comingFromOnboarding
+    });
+    
+    // Show tutorial if:
+    // 1. We have the explicit flag set, or
+    // 2. We're coming from onboarding and haven't shown it before
+    if ((shouldShowTutorial || comingFromOnboarding) && !dashboardTutorialShown) {
+      console.log("Showing dashboard tutorial from onboarding transition");
       
       // Small delay to ensure it renders after the dashboard is loaded
       setTimeout(() => {
@@ -64,6 +73,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const handleTutorialClose = () => {
     setShowTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');
+    localStorage.removeItem('shouldShowDashboardTutorial');
+    
     if (markTutorialCompleted) {
       markTutorialCompleted();
     }
@@ -94,7 +105,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         onWorkshopClick={handleWorkshopClick}
       />
       
-      {/* This is the only tutorial dialog that should show during onboarding to main transition */}
+      {/* This is the transition tutorial that shows after onboarding */}
       <DashboardTutorial 
         showTutorial={showTutorial}
         userName={userName}
