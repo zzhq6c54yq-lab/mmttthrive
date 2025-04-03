@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { HelpCircle } from "lucide-react";
 import FeatureTutorial from "./FeatureTutorial";
 import { useLocation } from "react-router-dom";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface TutorialButtonProps {
@@ -96,16 +97,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         {showTutorial && (
           <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
             <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
-              <DialogHeader>
-                <DialogTitle className="text-xl text-white">
-                  {isSpanish ? "Tutorial de Thrive" : "Thrive Tutorial"}
-                </DialogTitle>
-                <DialogDescription className="text-gray-300">
-                  {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
-                </DialogDescription>
-              </DialogHeader>
-              
-              <ScrollArea className="max-h-[60vh] pr-4">
+              <ScrollArea className="max-h-[70vh] pr-4">
                 <FeatureTutorial 
                   featureId={featureId} 
                   onClose={() => setShowTutorial(false)} 
@@ -146,16 +138,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
       {showTutorial && (
         <Dialog open={showTutorial} onOpenChange={setShowTutorial}>
           <DialogContent className="bg-[#2a2a3c] border-[#3a3a4c] text-white max-w-lg">
-            <DialogHeader>
-              <DialogTitle className="text-xl text-white">
-                {isSpanish ? "Tutorial de Función" : "Feature Tutorial"}
-              </DialogTitle>
-              <DialogDescription className="text-gray-300">
-                {isSpanish ? "Aprenda a usar esta función" : "Learn how to use this feature"}
-              </DialogDescription>
-            </DialogHeader>
-            
-            <ScrollArea className="max-h-[60vh] pr-4">
+            <ScrollArea className="max-h-[70vh] pr-4">
               <FeatureTutorial 
                 featureId={featureId} 
                 onClose={() => setShowTutorial(false)} 
