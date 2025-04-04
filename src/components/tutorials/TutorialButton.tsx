@@ -25,6 +25,9 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   const { isSpanish, getTranslatedText } = useTranslation();
   const location = useLocation();
   
+  // Determine the current feature based on path if not provided
+  const currentFeatureId = featureId || location.pathname.split('/')[1] || 'dashboard';
+  
   // Check if we should show the tutorial button based on the current route
   const shouldShowTutorialButton = () => {
     // Only show logo variant on main dashboard
@@ -68,8 +71,8 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   // Feature-specific content
   const featureTitle = isSpanish ? "Tutorial de Función" : "Feature Tutorial";
   const featureMessage = isSpanish 
-    ? `Esta función le permite ${featureId === 'dashboard' ? 'navegar por su panel principal' : 'acceder a herramientas de bienestar'}.`
-    : `This feature allows you to ${featureId === 'dashboard' ? 'navigate your main dashboard' : 'access wellness tools'}.`;
+    ? `Esta función le permite ${currentFeatureId === 'dashboard' ? 'navegar por su panel principal' : 'acceder a herramientas de bienestar'}.`
+    : `This feature allows you to ${currentFeatureId === 'dashboard' ? 'navigate your main dashboard' : 'access wellness tools'}.`;
 
   // Render the appropriate button based on variant
   if (variant === "logo") {
@@ -103,7 +106,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         {showTutorial && (
           <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
             <FeatureTutorial 
-              featureId={featureId}
+              featureId={currentFeatureId}
               onClose={handleCloseTutorial}
               userName={localStorage.getItem('userName') || ''}
             />
@@ -170,46 +173,14 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
         {isSpanish ? "Cómo usar esta función" : "How to use this feature"}
       </Button>
       
-      {/* Simple Dialog for default variant */}
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a1a1f] border-[#3a3a4c] text-white max-w-md">
-          <DialogHeader className="relative">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="absolute right-0 top-0 rounded-full text-white/70 hover:text-white hover:bg-white/10"
-              onClick={() => setShowDialog(false)}
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">{isSpanish ? "Cerrar" : "Close"}</span>
-            </Button>
-            <DialogTitle className="text-xl text-white">
-              {featureTitle}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="flex flex-col items-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] flex items-center justify-center mb-4">
-              <div className="text-white font-bold text-xl leading-none tracking-tighter flex flex-col items-center">
-                <span className="text-[8px] opacity-90 mb-0.5">THRIVE</span>
-                <span>MT</span>
-              </div>
-            </div>
-            
-            <p className="text-white/90 text-center mb-4">{featureMessage}</p>
-          </div>
-          
-          <DialogFooter>
-            <Button 
-              onClick={() => setShowDialog(false)}
-              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white w-full sm:w-auto"
-            >
-              <ArrowRight className="mr-2 h-4 w-4" />
-              {isSpanish ? "Continuar" : "Continue"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* For feature pages, use the full tutorial with steps */}
+      <div className={showDialog ? "fixed inset-0 bg-black/70 z-50 flex items-center justify-center" : "hidden"}>
+        <FeatureTutorial 
+          featureId={currentFeatureId}
+          onClose={() => setShowDialog(false)}
+          userName={localStorage.getItem('userName') || ''}
+        />
+      </div>
     </>
   );
 };

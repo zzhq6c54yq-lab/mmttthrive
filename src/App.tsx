@@ -59,6 +59,7 @@ import VideoDiary from './pages/VideoDiary';
 import WellnessChallenges from './pages/WellnessChallenges';
 import NavigationHelpButton from './components/navigation/NavigationHelpButton';
 import ScrollToTop from './components/ScrollToTop';
+import TutorialButton from './components/tutorials/TutorialButton';
 
 function App() {
   return (
@@ -133,6 +134,15 @@ function App() {
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
+      
+      <div className="fixed top-4 left-4 z-40">
+        {window.location.pathname !== "/" && (
+          <TutorialButton 
+            featureId={window.location.pathname.split('/')[1] || 'dashboard'} 
+            className="shadow-lg"
+          />
+        )}
+      </div>
       
       <NavigationHelpButton />
       <Toaster />
