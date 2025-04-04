@@ -1,12 +1,14 @@
 
-import React, { useState } from "react";
-import { Video, Plus, Calendar, ArrowRight } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Video, Plus, Calendar, ArrowRight, Play, Pause } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const VideoDiary: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   
   const recentVideos = [
     {
@@ -14,14 +16,18 @@ const VideoDiary: React.FC = () => {
       title: "Weekly Reflection",
       date: "April 1, 2025",
       duration: "2:45",
-      thumbnail: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80"
+      description: "Reflecting on my progress this week and setting goals for next week.",
+      thumbnail: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-under-multicolored-lights-32715-large.mp4"
     },
     {
       id: "v2",
       title: "Message for Future Self",
       date: "March 28, 2025",
       duration: "4:12",
-      thumbnail: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&w=300&q=80"
+      description: "A reminder of my goals and aspirations to watch in six months.",
+      thumbnail: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&w=300&q=80",
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-young-woman-sitting-on-the-floor-and-meditating-42424-large.mp4"
     }
   ];
   
@@ -40,7 +46,40 @@ const VideoDiary: React.FC = () => {
   };
   
   const handleVideoClick = (id: string) => {
-    navigate(`/video-diary/${id}`);
+    if (activeVideoId === id) {
+      // Toggle play/pause
+      const videoElement = videoRefs.current[id];
+      if (videoElement) {
+        if (videoElement.paused) {
+          videoElement.play();
+        } else {
+          videoElement.pause();
+        }
+      }
+    } else {
+      // Stop previous video if any
+      if (activeVideoId && videoRefs.current[activeVideoId]) {
+        videoRefs.current[activeVideoId]?.pause();
+      }
+      
+      // Set new active video
+      setActiveVideoId(id);
+      
+      // Play new video after a short delay
+      setTimeout(() => {
+        if (videoRefs.current[id]) {
+          videoRefs.current[id]?.play().catch(e => console.error("Video play failed:", e));
+        }
+      }, 100);
+    }
+  };
+  
+  const handleVideoEnd = (id: string) => {
+    setActiveVideoId(null);
+  };
+
+  const isPlaying = (id: string) => {
+    return activeVideoId === id && videoRefs.current[id] && !videoRefs.current[id]?.paused;
   };
   
   return (
@@ -76,20 +115,44 @@ const VideoDiary: React.FC = () => {
               {recentVideos.map((video) => (
                 <div 
                   key={video.id}
-                  onClick={() => handleVideoClick(video.id)}
-                  className="group cursor-pointer"
+                  className="group cursor-pointer relative"
                 >
                   <div className="relative rounded-lg overflow-hidden mb-2">
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title}
-                      className="w-full h-24 object-cover transform transition-transform group-hover:scale-105" 
-                    />
+                    {activeVideoId === video.id ? (
+                      <video 
+                        ref={el => videoRefs.current[video.id] = el}
+                        src={video.videoUrl} 
+                        className="w-full h-24 object-cover" 
+                        onEnded={() => handleVideoEnd(video.id)}
+                      />
+                    ) : (
+                      <img 
+                        src={video.thumbnail} 
+                        alt={video.title}
+                        className="w-full h-24 object-cover transform transition-transform group-hover:scale-105" 
+                      />
+                    )}
+                    
                     <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
                       {video.duration}
                     </div>
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Video className="h-8 w-8 text-white" />
+                    
+                    <div 
+                      className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity hover:opacity-100"
+                      onClick={() => handleVideoClick(video.id)}
+                      style={{
+                        opacity: activeVideoId === video.id ? 1 : 0
+                      }}
+                    >
+                      {isPlaying(video.id) ? (
+                        <div className="bg-orange-500/90 rounded-full p-1.5">
+                          <Pause className="h-6 w-6 text-white" />
+                        </div>
+                      ) : (
+                        <div className="bg-orange-500/90 rounded-full p-1.5">
+                          <Play className="h-6 w-6 text-white" />
+                        </div>
+                      )}
                     </div>
                   </div>
                   <h4 className="text-white text-sm font-medium truncate">{video.title}</h4>

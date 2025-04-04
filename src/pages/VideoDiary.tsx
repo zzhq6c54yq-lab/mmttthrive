@@ -1,9 +1,9 @@
-
 import React, { useState, useRef, useEffect } from "react";
-import { Video, ArrowLeft, Calendar, Clock, Upload, Trash2, Heart, Users, BookOpen } from "lucide-react";
+import { Video, ArrowLeft, Calendar, Clock, Upload, Trash2, Heart, Users, BookOpen, X, Camera, Pause, Play, Save, Mic, MicOff } from "lucide-react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Page from "@/components/Page";
+import { Button } from "@/components/ui/button";
 
 const VideoDiary: React.FC = () => {
   const navigate = useNavigate();
@@ -13,6 +13,28 @@ const VideoDiary: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'personal' | 'loved-ones'>('personal');
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+  
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [recordedVideoURL, setRecordedVideoURL] = useState<string | null>(null);
+  const [showPrompt, setShowPrompt] = useState(true);
+  const [currentPrompt, setCurrentPrompt] = useState(0);
+  const [audioEnabled, setAudioEnabled] = useState(true);
+  
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const recordingTimerRef = useRef<number | null>(null);
+  const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
+  
+  const recordingPrompts = [
+    "Share your thoughts on how you're feeling today",
+    "Reflect on a recent challenge you overcame",
+    "Express gratitude for something or someone in your life",
+    "Talk about a goal you're working towards",
+    "Share a message for your future self",
+    "Record a meaningful memory you want to preserve"
+  ];
   
   const personalVideoEntries = [
     {
@@ -82,8 +104,144 @@ const VideoDiary: React.FC = () => {
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-partying-happily-4640-large.mp4"
     }
   ];
+
+  const startRecording = async () => {
+    try {
+      const constraints = { 
+        audio: audioEnabled, 
+        video: { 
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: "user" 
+        } 
+      };
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      
+      if (videoPreviewRef.current) {
+        videoPreviewRef.current.srcObject = stream;
+        videoPreviewRef.current.muted = true;
+      }
+      
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+      mediaRecorderRef.current = mediaRecorder;
+      
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          setRecordedChunks((prev) => [...prev, e.data]);
+        }
+      };
+      
+      mediaRecorder.onstart = () => {
+        setIsRecording(true);
+        setRecordingTime(0);
+        recordingTimerRef.current = window.setInterval(() => {
+          setRecordingTime((prevTime) => prevTime + 1);
+        }, 1000);
+      };
+      
+      mediaRecorder.onstop = () => {
+        if (recordingTimerRef.current) {
+          clearInterval(recordingTimerRef.current);
+          recordingTimerRef.current = null;
+        }
+        
+        setIsRecording(false);
+        
+        const blob = new Blob(recordedChunks, {
+          type: 'video/webm'
+        });
+        
+        const url = URL.createObjectURL(blob);
+        setRecordedVideoURL(url);
+        
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+        }
+      };
+      
+      mediaRecorder.start(1000);
+    } catch (error) {
+      console.error("Error starting recording:", error);
+      toast({
+        title: "Recording Error",
+        description: "Could not access camera or microphone. Please check permissions.",
+        variant: "destructive"
+      });
+    }
+  };
   
-  // Handle video playback
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+    }
+  };
+  
+  const discardRecording = () => {
+    if (isRecording && mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+    }
+    
+    setRecordedChunks([]);
+    if (recordedVideoURL) {
+      URL.revokeObjectURL(recordedVideoURL);
+    }
+    setRecordedVideoURL(null);
+    
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    
+    if (recordingTimerRef.current) {
+      clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = null;
+    }
+    setRecordingTime(0);
+    
+    setShowPrompt(true);
+  };
+  
+  const saveRecording = () => {
+    if (recordedChunks.length === 0) {
+      toast({
+        title: "No Recording",
+        description: "There is no recording to save.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    toast({
+      title: "Video Saved",
+      description: "Your video diary entry has been saved successfully.",
+    });
+    
+    navigate("/video-diary");
+  };
+  
+  const changePrompt = () => {
+    setCurrentPrompt((prev) => (prev + 1) % recordingPrompts.length);
+  };
+  
+  const toggleAudio = () => {
+    setAudioEnabled(!audioEnabled);
+    
+    if (isRecording && streamRef.current) {
+      const audioTracks = streamRef.current.getAudioTracks();
+      audioTracks.forEach(track => {
+        track.enabled = !audioEnabled;
+      });
+    }
+  };
+  
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+  
   useEffect(() => {
     if (id) {
       const allVideos = [...personalVideoEntries, ...lovedOnesVideoEntries];
@@ -94,7 +252,6 @@ const VideoDiary: React.FC = () => {
         if (videoElement) {
           videoElement.load();
           
-          // Set event listener for when video metadata is loaded
           const handleMetadataLoaded = () => {
             setIsVideoLoaded(true);
           };
@@ -108,6 +265,192 @@ const VideoDiary: React.FC = () => {
       }
     }
   }, [id]);
+  
+  useEffect(() => {
+    return () => {
+      if (recordingTimerRef.current) {
+        clearInterval(recordingTimerRef.current);
+      }
+      
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      
+      if (recordedVideoURL) {
+        URL.revokeObjectURL(recordedVideoURL);
+      }
+    };
+  }, []);
+  
+  const renderVideoRecorder = () => {
+    return (
+      <div className="container mx-auto max-w-3xl px-4 py-8">
+        <div className="flex justify-between items-center mb-6">
+          <button
+            onClick={() => navigate("/video-diary")}
+            className="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors"
+          >
+            <ArrowLeft className="mr-2 h-5 w-5" />
+            Back to Video Diary
+          </button>
+        </div>
+        
+        <div className="bg-gradient-to-b from-[#2a2a3c]/80 to-[#1f1f2c]/80 rounded-xl overflow-hidden shadow-xl">
+          <div className="p-5 border-b border-white/10 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-white flex items-center">
+              <Camera className="mr-2 h-5 w-5 text-orange-400" />
+              Record Video Diary Entry
+            </h2>
+            {isRecording && (
+              <div className="flex items-center">
+                <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse mr-2"></div>
+                <span className="text-red-400 font-medium">{formatTime(recordingTime)}</span>
+              </div>
+            )}
+          </div>
+          
+          <div className="relative">
+            {showPrompt && !isRecording && !recordedVideoURL ? (
+              <div className="aspect-video bg-black/70 flex flex-col items-center justify-center text-center p-8">
+                <div className="bg-gradient-to-r from-orange-500/20 to-amber-500/20 p-6 rounded-xl backdrop-blur-sm border border-orange-500/30 max-w-md">
+                  <h3 className="text-xl text-orange-300 font-medium mb-3">Prompt Suggestion</h3>
+                  <p className="text-white text-lg mb-4">"{recordingPrompts[currentPrompt]}"</p>
+                  <div className="flex justify-center gap-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={changePrompt}
+                      className="border-orange-500/50 text-orange-300 hover:bg-orange-500/20"
+                    >
+                      Try Another Prompt
+                    </Button>
+                    <Button 
+                      onClick={() => setShowPrompt(false)}
+                      className="bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90"
+                    >
+                      Start Recording
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="aspect-video bg-black relative">
+                {!recordedVideoURL ? (
+                  <video 
+                    ref={videoPreviewRef}
+                    autoPlay 
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <video 
+                    src={recordedVideoURL}
+                    controls
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            )}
+          </div>
+          
+          <div className="p-5">
+            <div className="flex flex-wrap justify-center gap-4">
+              {!isRecording && !recordedVideoURL && (
+                <>
+                  <Button
+                    className="bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 flex-1 sm:flex-none"
+                    onClick={startRecording}
+                  >
+                    <Camera className="mr-2 h-5 w-5" />
+                    Start Recording
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-orange-500/50 text-orange-300 hover:bg-orange-500/20 flex-1 sm:flex-none"
+                    onClick={toggleAudio}
+                  >
+                    {audioEnabled ? <Mic className="mr-2 h-5 w-5" /> : <MicOff className="mr-2 h-5 w-5" />}
+                    {audioEnabled ? "Mute Audio" : "Enable Audio"}
+                  </Button>
+                </>
+              )}
+              
+              {isRecording && (
+                <>
+                  <Button
+                    variant="destructive"
+                    className="flex-1 sm:flex-none"
+                    onClick={stopRecording}
+                  >
+                    <Pause className="mr-2 h-5 w-5" />
+                    Stop Recording
+                  </Button>
+                </>
+              )}
+              
+              {recordedVideoURL && (
+                <>
+                  <Button
+                    className="bg-gradient-to-r from-indigo-500 to-blue-500 hover:opacity-90 flex-1 sm:flex-none"
+                    onClick={saveRecording}
+                  >
+                    <Save className="mr-2 h-5 w-5" />
+                    Save Recording
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-orange-300 text-orange-300 hover:bg-orange-500/20 flex-1 sm:flex-none"
+                    onClick={() => startRecording()}
+                  >
+                    <Camera className="mr-2 h-5 w-5" />
+                    Record Again
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    className="flex-1 sm:flex-none"
+                    onClick={discardRecording}
+                  >
+                    <X className="mr-2 h-5 w-5" />
+                    Discard Recording
+                  </Button>
+                </>
+              )}
+            </div>
+            
+            {!showPrompt && !isRecording && !recordedVideoURL && (
+              <button
+                onClick={() => setShowPrompt(true)} 
+                className="mt-4 text-center w-full text-sm text-orange-300 hover:text-orange-200"
+              >
+                Show Prompt Suggestions
+              </button>
+            )}
+          </div>
+        </div>
+        
+        <div className="mt-8 bg-gradient-to-br from-indigo-900/30 to-purple-900/30 rounded-xl p-5 border border-indigo-500/20">
+          <h3 className="text-lg font-medium text-indigo-300 mb-3">Tips for Creating Effective Video Diary Entries</h3>
+          <ul className="space-y-2 text-gray-300">
+            <li className="flex items-start">
+              <div className="mr-2 mt-1 text-indigo-400">•</div>
+              <span>Find a quiet space with good lighting so you can be seen and heard clearly</span>
+            </li>
+            <li className="flex items-start">
+              <div className="mr-2 mt-1 text-indigo-400">•</div>
+              <span>Speak naturally as if you're having a conversation with a close friend</span>
+            </li>
+            <li className="flex items-start">
+              <div className="mr-2 mt-1 text-indigo-400">•</div>
+              <span>It's okay to pause and gather your thoughts during recording</span>
+            </li>
+            <li className="flex items-start">
+              <div className="mr-2 mt-1 text-indigo-400">•</div>
+              <span>Try to limit videos to 2-5 minutes for more effective reflection</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    );
+  };
   
   const handleBack = () => {
     navigate(-1);
@@ -136,8 +479,11 @@ const VideoDiary: React.FC = () => {
   };
 
   const renderVideoDetail = () => {
+    if (id === "new") {
+      return renderVideoRecorder();
+    }
+    
     if (id) {
-      // Find the video from either personal or loved ones entries
       const allVideos = [...personalVideoEntries, ...lovedOnesVideoEntries];
       const video = allVideos.find(v => v.id === id);
       
