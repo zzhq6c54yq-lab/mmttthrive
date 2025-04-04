@@ -1,62 +1,69 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight } from "lucide-react";
 import HenryButton from "@/components/henry/HenryButton";
+import useTranslation from "@/hooks/useTranslation";
 
 // Welcome screens before the main portal
-const WelcomeScreen: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
+const WelcomeScreen: React.FC<{ onContinue: () => void, isSpanish: boolean }> = ({ onContinue, isSpanish }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
-        College Mental Health Portal
+        {isSpanish ? "Portal de Salud Mental Universitaria" : "College Mental Health Portal"}
       </h1>
       <div className="max-w-2xl">
         <p className="text-xl mb-6 text-white/90 font-medium">
-          Welcome to your dedicated mental health space. College is exciting but can also be 
-          challenging – we're here to support your journey.
+          {isSpanish
+            ? "Bienvenido a tu espacio dedicado de salud mental. La universidad es emocionante pero también puede ser desafiante - estamos aquí para apoyar tu viaje."
+            : "Welcome to your dedicated mental health space. College is exciting but can also be challenging – we're here to support your journey."}
         </p>
         <p className="text-lg mb-6 text-white/90 font-medium">
-          Here, you'll find resources tailored specifically for college students facing 
-          academic pressure, social challenges, and personal growth opportunities.
+          {isSpanish
+            ? "Aquí encontrarás recursos adaptados específicamente para estudiantes universitarios que enfrentan presión académica, desafíos sociales y oportunidades de crecimiento personal."
+            : "Here, you'll find resources tailored specifically for college students facing academic pressure, social challenges, and personal growth opportunities."}
         </p>
         <p className="text-lg mb-8 text-white/90 font-medium">
-          Your mental wellbeing matters as much as your GPA. Let's prioritize both together.
+          {isSpanish
+            ? "Tu bienestar mental importa tanto como tu promedio académico. Vamos a priorizar ambos juntos."
+            : "Your mental wellbeing matters as much as your GPA. Let's prioritize both together."}
         </p>
       </div>
       <Button 
         onClick={onContinue}
         className="bg-[#8B5CF6] hover:bg-[#7c4fe7] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
       >
-        Next <ArrowRight className="ml-1 h-5 w-5" />
+        {isSpanish ? "Siguiente" : "Next"} <ArrowRight className="ml-1 h-5 w-5" />
       </Button>
     </div>
   );
 };
 
-const PortalIntroScreen: React.FC<{ onEnterPortal: () => void }> = ({ onEnterPortal }) => {
+const PortalIntroScreen: React.FC<{ onEnterPortal: () => void, isSpanish: boolean }> = ({ onEnterPortal, isSpanish }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
       <h1 className="text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]">
-        Welcome to Your College Wellness Hub
+        {isSpanish ? "Bienvenido a Tu Centro de Bienestar Universitario" : "Welcome to Your College Wellness Hub"}
       </h1>
       <div className="max-w-2xl mb-8">
         <p className="text-xl mb-6 text-white/90 font-medium">
-          This space is designed specifically for students like you, balancing academics, 
-          social life, and personal wellbeing.
+          {isSpanish
+            ? "Este espacio está diseñado específicamente para estudiantes como tú, equilibrando la vida académica, social y el bienestar personal."
+            : "This space is designed specifically for students like you, balancing academics, social life, and personal wellbeing."}
         </p>
         <p className="text-lg mb-8 text-white/90 font-medium">
-          Click below to access specialized resources, peer support networks, 
-          and tools designed with campus life in mind.
+          {isSpanish
+            ? "Haz clic a continuación para acceder a recursos especializados, redes de apoyo entre compañeros y herramientas diseñadas pensando en la vida universitaria."
+            : "Click below to access specialized resources, peer support networks, and tools designed with campus life in mind."}
         </p>
       </div>
       <Button 
         onClick={onEnterPortal}
         className="bg-[#8B5CF6] hover:bg-[#7c4fe7] text-white text-lg px-8 py-6 h-auto transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
       >
-        Enter Portal
+        {isSpanish ? "Entrar al Portal" : "Enter Portal"}
       </Button>
     </div>
   );
@@ -66,6 +73,20 @@ const CollegePortal: React.FC = () => {
   const [screenState, setScreenState] = useState<'welcome' | 'intro' | 'portal'>('welcome');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isSpanish } = useTranslation();
+
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      // Force re-render when language changes
+      setScreenState(screenState);
+    };
+    
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, [screenState]);
 
   const handleContinueToIntro = () => {
     setScreenState('intro');
@@ -73,8 +94,12 @@ const CollegePortal: React.FC = () => {
 
   const handleEnterPortal = () => {
     toast({
-      title: "Welcome to the College Wellness Hub",
-      description: "Accessing your campus resources...",
+      title: isSpanish 
+        ? "Bienvenido al Centro de Bienestar Universitario" 
+        : "Welcome to the College Wellness Hub",
+      description: isSpanish 
+        ? "Accediendo a tus recursos universitarios..." 
+        : "Accessing your campus resources...",
       duration: 3000
     });
     
@@ -88,9 +113,9 @@ const CollegePortal: React.FC = () => {
   const renderCurrentScreen = () => {
     switch (screenState) {
       case 'welcome':
-        return <WelcomeScreen onContinue={handleContinueToIntro} />;
+        return <WelcomeScreen onContinue={handleContinueToIntro} isSpanish={isSpanish} />;
       case 'intro':
-        return <PortalIntroScreen onEnterPortal={handleEnterPortal} />;
+        return <PortalIntroScreen onEnterPortal={handleEnterPortal} isSpanish={isSpanish} />;
       default:
         return null;
     }
@@ -98,8 +123,12 @@ const CollegePortal: React.FC = () => {
 
   const handleHenryClick = () => {
     toast({
-      title: "Henry is here to help",
-      description: "Your AI wellness companion is ready to assist you with any questions about college mental health.",
+      title: isSpanish 
+        ? "Henry está aquí para ayudar" 
+        : "Henry is here to help",
+      description: isSpanish 
+        ? "Tu asistente de bienestar IA está listo para ayudarte con cualquier pregunta sobre la salud mental universitaria."
+        : "Your AI wellness companion is ready to assist you with any questions about college mental health.",
       duration: 3000
     });
   };

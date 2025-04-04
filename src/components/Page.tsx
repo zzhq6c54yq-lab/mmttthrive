@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Home } from "lucide-react";
 import TutorialButton from "./tutorials/TutorialButton";
+import useTranslation from "@/hooks/useTranslation";
 
 interface PageProps {
   title: string;
@@ -26,18 +27,26 @@ const Page: React.FC<PageProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
-  
-  // Check language preference
-  useEffect(() => {
-    const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-    setIsSpanish(preferredLanguage === 'Español');
-  }, []);
+  const { isSpanish, getTranslatedText } = useTranslation();
   
   useEffect(() => {
     // Scroll to top when the component mounts
     window.scrollTo(0, 0);
+    
+    // Listen for language changes to trigger re-render
+    const handleLanguageChange = () => {
+      // Force component to re-render
+      setForceUpdate(prev => prev + 1);
+    };
+    
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
   }, []);
+  
+  // Force update state to re-render when language changes
+  const [forceUpdate, setForceUpdate] = useState(0);
   
   const handleBackClick = () => {
     if (onBackClick) {

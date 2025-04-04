@@ -4,30 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
 
 const SpecializedPrograms: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
-  
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
+  const { isSpanish } = useTranslation();
 
   // Translations
   const translations = {
@@ -69,6 +51,19 @@ const SpecializedPrograms: React.FC = () => {
       borderColor: "#F97316"
     }
   ];
+  
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      // Force component to re-render when language changes
+      console.log("Language changed, updating specialized programs");
+    };
+    
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
   
   const handleFeatureClick = (path: string) => {
     toast({

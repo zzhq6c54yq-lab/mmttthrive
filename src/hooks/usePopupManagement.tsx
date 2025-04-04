@@ -52,6 +52,7 @@ export const usePopupManagement = (screenState: string) => {
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
+    console.log("Marking tutorial as completed");
     setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     setShowMainTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');

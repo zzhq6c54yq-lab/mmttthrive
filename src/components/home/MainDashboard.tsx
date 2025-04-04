@@ -8,6 +8,7 @@ import DashboardBackground from "@/components/dashboard/DashboardBackground";
 import DashboardContent from "@/components/dashboard/DashboardContent";
 import { useWorkshopNavigation } from "@/components/dashboard/useWorkshopNavigation";
 import useTranslation from "@/hooks/useTranslation";
+import DashboardTutorial from "@/components/dashboard/DashboardTutorial";
 
 interface MainDashboardProps {
   userName: string;
@@ -32,18 +33,33 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const location = useLocation();
   const { isSpanish } = useTranslation();
   const { handleWorkshopClick } = useWorkshopNavigation();
+  const [showTutorial, setShowTutorial] = useState(false);
   
   useEffect(() => {
+    // Check if the dashboard tutorial has been shown before
+    const dashboardTutorialShown = localStorage.getItem('dashboardTutorialShown') === 'true';
+    const shouldShow = localStorage.getItem('shouldShowDashboardTutorial') === 'true';
+    
+    // Only show tutorial if it's explicitly requested and hasn't been shown before
+    setShowTutorial(!dashboardTutorialShown && shouldShow);
+    
     // Mark any tutorial as completed on load
-    // This prevents the automatic tutorial from showing
+    // This prevents the automatic tutorial from showing again
     if (markTutorialCompleted) {
       markTutorialCompleted();
     }
     
-    // Immediately mark dashboard tutorial as shown to prevent duplicates
+    // Always mark dashboard tutorial as shown to prevent duplicates
     localStorage.setItem('dashboardTutorialShown', 'true');
     localStorage.removeItem('shouldShowDashboardTutorial');
   }, [markTutorialCompleted]);
+  
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
+    if (markTutorialCompleted) {
+      markTutorialCompleted();
+    }
+  };
   
   return (
     <DashboardBackground>
@@ -63,6 +79,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         navigateToFeature={navigateToFeature}
         selectedQualities={selectedQualities}
         selectedGoals={selectedGoals}
+      />
+      
+      <DashboardTutorial 
+        showTutorial={showTutorial} 
+        userName={userName}
+        onClose={handleCloseTutorial}
       />
     </DashboardBackground>
   );

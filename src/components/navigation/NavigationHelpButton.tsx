@@ -7,34 +7,16 @@ import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useButtonVisibility } from "../help/RouteVisibility";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import useTranslation from "@/hooks/useTranslation";
 
 const NavigationHelpButton: React.FC = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showIntroDialog, setShowIntroDialog] = useState(false);
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const isButtonVisible = useButtonVisibility();
-  
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
+  const { isSpanish } = useTranslation();
   
   // Handle opening the help dialog
   const openHelp = (e: React.MouseEvent) => {
