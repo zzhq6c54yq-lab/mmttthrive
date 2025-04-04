@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Shield, Book, CalendarCheck, Clipboard, Activity, Home } from "lucide-react";
+import { ArrowLeft, Shield, Book, CalendarCheck, Clipboard, Activity, Home, FileText, MessageSquare, Brain, AlertCircle } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import DoDDashboard from "@/components/military/DoDDashboard";
 import DoDResources from "@/components/military/DoDResources";
