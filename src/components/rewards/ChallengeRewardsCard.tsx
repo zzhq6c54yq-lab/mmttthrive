@@ -25,21 +25,21 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
   const { toast } = useToast();
   const [showPointsDialog, setShowPointsDialog] = useState(false);
   
-  // Calculate points needed for the next credit
-  const pointsNeeded = 1000 - (points % 1000);
+  // Calculate points needed for the next credit - updated to 5000 points = $1
+  const pointsNeeded = 5000 - (points % 5000);
   
-  // Calculate progress percentage
-  const progressPercentage = (points % 1000) / 10;
+  // Calculate progress percentage - updated for 5000 point scale
+  const progressPercentage = (points % 5000) / 50;
   
   const handleViewChallenges = () => {
     navigate("/wellness-challenges");
   };
   
   const handleRedeemPoints = () => {
-    if (points < 1000) {
+    if (points < 5000) {
       toast({
         title: "Not enough points",
-        description: `You need at least 1,000 points to redeem $1 in co-pay credits.`,
+        description: `You need at least 5,000 points to redeem $1 in co-pay credits.`,
         variant: "destructive"
       });
       return;
@@ -49,10 +49,10 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
       onRedeemPoints();
     } else {
       // Default behavior if no callback provided
-      const creditsToRedeem = Math.floor(points / 1000);
+      const creditsToRedeem = Math.floor(points / 5000);
       toast({
         title: "Points Redeemed Successfully!",
-        description: `You've converted ${creditsToRedeem * 1000} points into $${creditsToRedeem} co-pay credits.`,
+        description: `You've converted ${creditsToRedeem * 5000} points into $${creditsToRedeem} co-pay credits.`,
       });
     }
     
@@ -90,7 +90,7 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
           <div className="mb-2">
             <div className="flex justify-between items-center mb-1 text-sm text-gray-600">
               <span>Progress to next credit</span>
-              <span>{points % 1000}/1000 points</span>
+              <span>{points % 5000}/5000 points</span>
             </div>
             <Progress value={progressPercentage} max={100} className="h-3 bg-gray-100">
               <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
@@ -162,7 +162,7 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
             className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-medium"
             onClick={() => setShowPointsDialog(true)}
           >
-            {points >= 1000 ? 'Redeem Points' : `${pointsNeeded} more points needed`}
+            {points >= 5000 ? 'Redeem Points' : `${pointsNeeded} more points needed`}
           </Button>
         </CardFooter>
       </Card>
@@ -186,20 +186,22 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-300">Redeemable Co-Pay Credits</span>
-                  <span className="text-green-400 font-bold text-lg">${Math.floor(points/1000)}</span>
+                  <span className="text-green-400 font-bold text-lg">${Math.floor(points/5000)}</span>
                 </div>
-                <Progress value={(points % 1000) / 10} className="h-2 bg-gray-700">
+                <Progress value={(points % 5000) / 50} className="h-2 bg-gray-700">
                   <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
                 </Progress>
                 <p className="text-xs text-gray-400 mt-2">
-                  {1000 - (points % 1000)} more points until your next co-pay credit
+                  {5000 - (points % 5000)} more points until your next co-pay credit
                 </p>
               </div>
               
               <div className="space-y-2">
                 <h4 className="font-medium text-white mb-2">Points Conversion</h4>
                 <p className="text-gray-300 text-sm">
-                  • Every 1,000 points = $1 in co-pay credits<br />
+                  • Every 5,000 points = $1 in co-pay credits<br />
+                  • 10,000 points = $2 in co-pay credits<br />
+                  • 25,000 points = $5 in co-pay credits<br />
                   • Credits can be used for therapy sessions or at Thrive Apparel<br />
                   • Points are earned by completing daily, weekly, and monthly challenges
                 </p>
@@ -255,7 +257,7 @@ const ChallengeRewardsCard: React.FC<ChallengeRewardsCardProps> = ({
             </Button>
             <Button 
               onClick={handleRedeemPoints}
-              disabled={points < 1000}
+              disabled={points < 5000}
               className="bg-amber-500 hover:bg-amber-600 text-black"
             >
               Redeem Now

@@ -1,62 +1,94 @@
 
 import React from "react";
-import { Wallet, Users } from "lucide-react";
+import { motion } from "framer-motion";
+import { WalletCards, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 interface HeroSectionProps {
   credits: number;
   setActiveTab: (tab: string) => void;
+  onGetStarted?: () => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab, onGetStarted }) => {
+  
+  const handleGetStarted = () => {
+    if (onGetStarted) {
+      onGetStarted();
+    } else {
+      setActiveTab("how-it-works");
+    }
+  };
+  
+  const handleUpgrade = () => {
+    setActiveTab("redeem");
+  };
+
   return (
-    <div className="bg-gradient-to-r from-amber-100 to-amber-200 p-8 rounded-xl w-full shadow-md">
-      <div className="flex flex-col md:flex-row gap-8 items-center">
-        <div className="md:w-2/3">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-amber-800">Welcome to our Co-Pay Credits Program</h2>
-          <p className="text-gray-700 mb-6 text-lg">
-            Designed to reward our community for prioritizing their mental health and well-being. 
-            This innovative rewards system enables you to earn dollar-value credits every time you invest in your 
-            health through therapy sessions, subscriptions, and purchases.
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 to-amber-600 border border-amber-400 shadow-lg">
+      <div className="absolute inset-0">
+        <svg width="100%" height="100%" className="absolute inset-0 opacity-10">
+          <pattern id="hero-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="1" fill="#fff" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#hero-pattern)" />
+        </svg>
+      </div>
+
+      <motion.div 
+        className="relative z-10 flex flex-col md:flex-row items-center justify-between p-8 md:p-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="mb-6 md:mb-0">
+          <h1 className="text-2xl md:text-4xl font-bold text-white mb-3">
+            Co-Pay Credits Program
+          </h1>
+          <p className="text-amber-100 text-sm md:text-base max-w-md">
+            Earn credits from co-payments, wellness challenges, and more. Use them to reduce costs for future sessions or shop our exclusive merch.
           </p>
-          <div className="flex flex-wrap gap-4">
+          
+          <div className="flex flex-col sm:flex-row gap-4 mt-6">
             <Button 
-              className="bg-amber-500 hover:bg-amber-600 text-black font-medium px-6 py-6 h-auto text-lg shadow-md transition-transform hover:scale-105"
-              onClick={() => setActiveTab("earn")}
+              onClick={handleGetStarted}
+              className="bg-white hover:bg-gray-100 text-amber-600 font-semibold shadow-md"
             >
-              Start Earning Credits
+              Get Started
+              <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
             <Button 
-              variant="outline" 
-              className="border-amber-800 text-amber-800 hover:bg-amber-100 font-medium px-6 py-6 h-auto text-lg shadow-sm"
-              onClick={() => setActiveTab("how-it-works")}
+              variant="outline"
+              onClick={handleUpgrade}
+              className="border-white border-2 text-white hover:bg-amber-600/30"
             >
-              How It Works
+              Upgrade Plan
             </Button>
-            <Link to="/family-support">
-              <Button
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-6 h-auto text-lg shadow-md transition-transform hover:scale-105"
-              >
-                <Users className="mr-2 h-5 w-5" />
-                Family Support
-              </Button>
-            </Link>
           </div>
         </div>
-        <div className="md:w-1/3 flex justify-center">
-          <div className="relative w-64 h-64">
-            <div className="absolute inset-0 rounded-full bg-amber-300/30 animate-pulse blur-xl"></div>
-            <div className="absolute inset-4 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
-              <div className="text-center text-white">
-                <Wallet className="w-16 h-16 mx-auto mb-4 drop-shadow-lg" />
-                <span className="text-4xl font-bold block">${credits}</span>
-                <span className="text-sm font-medium opacity-80">Credits Available</span>
+        
+        <motion.div 
+          className="flex flex-col items-center"
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <div className="bg-white/20 backdrop-blur-md p-6 rounded-3xl border border-amber-300/50 shadow-xl">
+            <div className="flex items-center gap-4">
+              <div className="p-4 rounded-full bg-white/30">
+                <WalletCards className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h2 className="text-white font-semibold">Your Credits</h2>
+                <div className="flex items-baseline">
+                  <span className="text-3xl md:text-4xl font-bold text-white">${credits}</span>
+                  <span className="text-amber-100 ml-2">available</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

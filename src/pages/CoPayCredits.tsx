@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
@@ -11,14 +12,17 @@ import ActivityHistoryCard from "@/components/credits/ActivityHistoryCard";
 import HowItWorksTab from "@/components/credits/HowItWorksTab";
 import EarnCreditsTab from "@/components/credits/EarnCreditsTab";
 import RedeemCreditsTab from "@/components/credits/RedeemCreditsTab";
+import CoPayCreditPopup from "@/components/CoPayCreditPopup";
 
 const CoPayCredits = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [credits, setCredits] = useState(75);
   const [activeTab, setActiveTab] = useState("how-it-works");
   const [currentPlan, setCurrentPlan] = useState("basic");
   const [challengePoints, setChallengePoints] = useState(75);
   const [challengeCredits, setChallengeCredits] = useState(0);
+  const [showCoPayPopup, setShowCoPayPopup] = useState(false);
 
   const handleEarnCredits = (amount: number, source: string) => {
     setCredits(prev => prev + amount);
@@ -46,26 +50,21 @@ const CoPayCredits = () => {
       return;
     }
     
-    setCredits(prev => prev - upgradeCost);
-    setCurrentPlan(plan);
-    toast({
-      title: `Upgraded to ${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan!`,
-      description: `You've successfully upgraded to the ${plan} membership plan for $${upgradeCost}.`,
-    });
+    navigate("/subscription-plans", { state: { plan, credits } });
   };
 
   const handleRedeemPoints = () => {
-    if (challengePoints < 1000) {
+    if (challengePoints < 5000) {
       toast({
         title: "Not enough points",
-        description: "You need at least 1,000 points to redeem for $1 in co-pay credits.",
+        description: "You need at least 5,000 points to redeem for $1 in co-pay credits.",
         variant: "destructive"
       });
       return;
     }
     
-    const creditsToRedeem = Math.floor(challengePoints / 1000);
-    const pointsToDeduct = creditsToRedeem * 1000;
+    const creditsToRedeem = Math.floor(challengePoints / 5000);
+    const pointsToDeduct = creditsToRedeem * 5000;
     
     setChallengePoints(prev => prev - pointsToDeduct);
     setChallengeCredits(prev => prev + creditsToRedeem);
@@ -94,12 +93,21 @@ const CoPayCredits = () => {
       description: `You've successfully cashed out $${amount} in Thrive credits.`,
     });
   };
+  
+  // Handle the "Get Started" button click
+  const handleGetStarted = () => {
+    setShowCoPayPopup(true);
+  };
 
   return (
     <Page title="Co-Pay Credits Program" fullWidth={true}>
       <div className="space-y-8 w-full">
         {/* Hero Section */}
-        <HeroSection credits={credits} setActiveTab={setActiveTab} />
+        <HeroSection 
+          credits={credits} 
+          setActiveTab={setActiveTab}
+          onGetStarted={handleGetStarted}
+        />
 
         {/* Challenge Rewards Section */}
         <ChallengeRewardsCard 
@@ -173,6 +181,12 @@ const CoPayCredits = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Co-Pay Credit Welcome Popup */}
+      <CoPayCreditPopup 
+        open={showCoPayPopup}
+        onOpenChange={setShowCoPayPopup}
+      />
     </Page>
   );
 };

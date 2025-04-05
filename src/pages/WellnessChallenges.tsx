@@ -203,18 +203,18 @@ const WellnessChallenges: React.FC = () => {
   };
 
   const handleRedeemPoints = () => {
-    const creditsToRedeem = Math.floor(points / 1000);
+    const creditsToRedeem = Math.floor(points / 5000);
 
     if (creditsToRedeem < 1) {
       toast({
         title: "Not enough points",
-        description: `You need at least 1,000 points to redeem $1 in co-pay credits.`,
+        description: `You need at least 5,000 points to redeem $1 in co-pay credits.`,
         variant: "destructive"
       });
       return;
     }
 
-    const pointsToDeduct = creditsToRedeem * 1000;
+    const pointsToDeduct = creditsToRedeem * 5000;
     const remainingPoints = points - pointsToDeduct;
 
     setPoints(remainingPoints);
@@ -362,22 +362,26 @@ const WellnessChallenges: React.FC = () => {
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-300">Redeemable Co-Pay Credits</span>
-                    <span className="text-green-400 font-bold text-lg">${Math.floor(points/1000)}</span>
+                    <span className="text-green-400 font-bold text-lg">${Math.floor(points/5000)}</span>
                   </div>
-                  <Progress value={(points % 1000) / 10} className="h-2 bg-gray-700">
+                  <Progress value={(points % 5000) / 50} className="h-2 bg-gray-700">
                     <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
                   </Progress>
                   <p className="text-xs text-gray-400 mt-2">
-                    {1000 - (points % 1000)} more points until your next co-pay credit
+                    {5000 - (points % 5000)} more points until your next co-pay credit
                   </p>
                 </div>
                 
                 <div className="space-y-2">
                   <h4 className="font-medium text-white mb-2">Points Conversion</h4>
                   <p className="text-gray-300 text-sm">
-                    • Every 1,000 points = $1 in co-pay credits<br />
+                    • Every 5,000 points = $1 in co-pay credits<br />
+                    • 10,000 points = $2 in co-pay credits<br />
+                    • 25,000 points = $5 in co-pay credits<br />
                     • Credits can be used for therapy sessions or at Thrive Apparel<br />
-                    • Points are earned by completing daily, weekly, and monthly challenges
+                    • Daily Challenges = 10 points each<br />
+                    • Weekly Bonus = 25 points<br />
+                    • Monthly Completion = 100 points
                   </p>
                 </div>
               </div>
@@ -393,7 +397,7 @@ const WellnessChallenges: React.FC = () => {
               </Button>
               <Button 
                 onClick={handleRedeemPoints}
-                disabled={points < 1000}
+                disabled={points < 5000}
                 className="bg-amber-500 hover:bg-amber-600 text-black"
               >
                 Redeem Now
@@ -560,7 +564,7 @@ const WellnessChallenges: React.FC = () => {
                     <Award className="h-5 w-5 text-amber-400" />
                     Rewards Progress
                   </h3>
-                  <p className="text-gray-300 text-sm mb-3">Every 1,000 points = $1 co-pay credit</p>
+                  <p className="text-gray-300 text-sm mb-3">Every 5,000 points = $1 co-pay credit</p>
                 </div>
                 
                 <div className="flex flex-col md:flex-row items-end md:items-center gap-4">
@@ -584,13 +588,13 @@ const WellnessChallenges: React.FC = () => {
               <div className="mt-4">
                 <div className="flex justify-between items-center mb-1.5 text-xs text-gray-300">
                   <span>Current: {points} points</span>
-                  <span>Next Reward: 1,000 points</span>
+                  <span>Next Reward: 5,000 points</span>
                 </div>
-                <Progress value={(points % 1000) / 10} max={100} className="h-2.5 bg-gray-700/50">
+                <Progress value={(points % 5000) / 50} max={100} className="h-2.5 bg-gray-700/50">
                   <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
                 </Progress>
                 <p className="text-amber-300/80 text-xs mt-1.5 text-right">
-                  {1000 - (points % 1000)} more points until your next co-pay credit
+                  {5000 - (points % 5000)} more points until your next co-pay credit
                 </p>
               </div>
             </div>
@@ -720,20 +724,22 @@ const WellnessChallenges: React.FC = () => {
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-300">Redeemable Co-Pay Credits</span>
-                  <span className="text-green-400 font-bold text-lg">${Math.floor(points/1000)}</span>
+                  <span className="text-green-400 font-bold text-lg">${Math.floor(points/5000)}</span>
                 </div>
-                <Progress value={(points % 1000) / 10} className="h-2 bg-gray-700">
+                <Progress value={(points % 5000) / 50} className="h-2 bg-gray-700">
                   <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
                 </Progress>
                 <p className="text-xs text-gray-400 mt-2">
-                  {1000 - (points % 1000)} more points until your next co-pay credit
+                  {5000 - (points % 5000)} more points until your next co-pay credit
                 </p>
               </div>
               
               <div className="space-y-2">
                 <h4 className="font-medium text-white mb-2">Points Conversion</h4>
                 <p className="text-gray-300 text-sm">
-                  • Every 1,000 points = $1 in co-pay credits<br />
+                  • Every 5,000 points = $1 in co-pay credits<br />
+                  • 10,000 points = $2 in co-pay credits<br />
+                  • 25,000 points = $5 in co-pay credits<br />
                   • Credits can be used for therapy sessions or at Thrive Apparel<br />
                   • Daily Challenges = 10 points each<br />
                   • Weekly Bonus = 25 points<br />
@@ -760,7 +766,7 @@ const WellnessChallenges: React.FC = () => {
             </Button>
             <Button 
               onClick={handleRedeemPoints}
-              disabled={points < 1000}
+              disabled={points < 5000}
               className="bg-amber-500 hover:bg-amber-600 text-black"
             >
               Redeem Now

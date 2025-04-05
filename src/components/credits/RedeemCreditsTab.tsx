@@ -101,7 +101,21 @@ const RedeemCreditsTab: React.FC<RedeemCreditsTabProps> = ({
               <p className="text-gray-600 mb-4">Use your credits to upgrade your membership and earn even more rewards.</p>
               <Button 
                 className="w-full bg-amber-500 hover:bg-amber-600 text-black"
-                onClick={() => handleUpgradePlan("gold")}
+                onClick={() => {
+                  if (credits >= 5) {
+                    handleUpgradePlan("gold");
+                    toast({
+                      title: "Redirecting to Upgrade Page",
+                      description: "You'll be able to use your credits to upgrade your membership."
+                    });
+                  } else {
+                    toast({
+                      title: "Not enough credits",
+                      description: "You need at least $5 in credits to upgrade your membership.",
+                      variant: "destructive"
+                    });
+                  }
+                }}
               >
                 Upgrade Membership
               </Button>
