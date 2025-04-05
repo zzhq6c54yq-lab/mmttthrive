@@ -58,7 +58,7 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
               <div>
                 <h3 className="font-semibold text-gray-900 text-2xs md:text-xs">Challenge Rewards</h3>
                 <p className="text-gray-600 text-[10px] md:text-2xs mt-0.5">
-                  Complete daily wellness challenges to earn points: 5,000 points = $1 credit
+                  Complete daily wellness challenges to earn points: 5,000 points = $5 credit
                 </p>
               </div>
             </div>
@@ -107,7 +107,7 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
               </div>
             </div>
             
-            {/* New section with point conversion details */}
+            {/* Updated point conversion details */}
             <div className="flex items-start gap-2 bg-amber-50/80 p-2 rounded-lg border border-amber-100">
               <div className="bg-amber-600 p-1.5 rounded-full flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white md:w-3 md:h-3">
@@ -119,9 +119,9 @@ const CoPayCreditPopup = ({ open, onOpenChange }: CoPayCreditPopupProps) => {
               <div>
                 <h3 className="font-semibold text-gray-900 text-2xs md:text-xs">Point Conversion</h3>
                 <p className="text-gray-600 text-[10px] md:text-2xs mt-0.5">
-                  • 5,000 points = $1 credit<br />
-                  • 10,000 points = $2 credit<br />
-                  • 25,000 points = $5 credit
+                  • 5,000 points = $5 credit<br />
+                  • 10,000 points = $10 credit<br />
+                  • 25,000 points = $25 credit
                 </p>
               </div>
             </div>

@@ -54,17 +54,19 @@ const CoPayCredits = () => {
   };
 
   const handleRedeemPoints = () => {
+    // Updated point conversion: 5,000 points = $5
     if (challengePoints < 5000) {
       toast({
         title: "Not enough points",
-        description: "You need at least 5,000 points to redeem for $1 in co-pay credits.",
+        description: "You need at least 5,000 points to redeem for $5 in co-pay credits.",
         variant: "destructive"
       });
       return;
     }
     
-    const creditsToRedeem = Math.floor(challengePoints / 5000);
-    const pointsToDeduct = creditsToRedeem * 5000;
+    // Convert in $5 increments per 5,000 points
+    const creditsToRedeem = Math.floor(challengePoints / 5000) * 5;
+    const pointsToDeduct = Math.floor(challengePoints / 5000) * 5000;
     
     setChallengePoints(prev => prev - pointsToDeduct);
     setChallengeCredits(prev => prev + creditsToRedeem);
