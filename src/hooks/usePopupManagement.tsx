@@ -39,7 +39,8 @@ export const usePopupManagement = (screenState: string) => {
     console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
     // Check if tutorials should be prevented
-    const preventTutorial = sessionStorage.getItem('preventTutorial') === 'true';
+    const preventTutorial = sessionStorage.getItem('preventTutorial') === 'true' || 
+                           (localStorage.getItem('location.state.preventTutorial') === 'true');
     
     // To prevent duplicate tutorials, always mark the dashboard tutorial as shown
     // The user can access it via the button in the header
@@ -64,6 +65,7 @@ export const usePopupManagement = (screenState: string) => {
     setShowMainTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');
     localStorage.removeItem('shouldShowDashboardTutorial');
+    sessionStorage.setItem('preventTutorial', 'true');
   };
 
   // Method to reset popup states (useful for testing)
@@ -79,6 +81,7 @@ export const usePopupManagement = (screenState: string) => {
     localStorage.removeItem('shouldShowDashboardTutorial');
     localStorage.removeItem('prevScreenState');
     sessionStorage.removeItem('preventTutorial');
+    localStorage.removeItem('location.state.preventTutorial');
   };
 
   return {
