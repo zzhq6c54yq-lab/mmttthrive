@@ -76,7 +76,7 @@ const GamesAndQuizzes = () => {
         id: "stress-check",
         title: "Stress Check",
         description: "Quickly assess your current stress levels and identify your main stressors.",
-        image: "https://images.unsplash.com/photo-1683734550513-fbcfa87e1380?auto=format&fit=crop&w=500&q=80",
+        image: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?auto=format&fit=crop&w=500&q=80",
         category: "wellbeing",
         questionsCount: 8,
         timeToComplete: "3-5 min",
@@ -145,13 +145,12 @@ const GamesAndQuizzes = () => {
       duration: 1500,
     });
     
+    // Navigate to a placeholder page for now
     setTimeout(() => {
-      toast({
-        title: "Assessment Feature",
-        description: "This feature is coming soon!",
-        duration: 3000,
+      navigate("/mental-wellness-tools", { 
+        state: { activeTab: "assessments", quizId: quiz.id } 
       });
-    }, 1500);
+    }, 500);
   };
   
   const handlePlayGame = () => {
@@ -172,12 +171,70 @@ const GamesAndQuizzes = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#fcfdfe] relative">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg width=\"400\" height=\"400\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"%239b87f5\" fill-opacity=\"0.03\" cx=\"50\" cy=\"50\" r=\"40\"/></svg>')] bg-[length:400px_400px]"></div>
+        <motion.div 
+          className="absolute top-10 -right-20 w-80 h-80 rounded-full bg-gradient-to-br from-purple-300/10 to-transparent"
+          animate={{ 
+            y: [0, 30, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ 
+            duration: 18,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        ></motion.div>
+        <motion.div 
+          className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-gradient-to-tr from-blue-300/10 to-transparent"
+          animate={{ 
+            y: [0, -40, 0],
+            scale: [1, 1.15, 1]
+          }}
+          transition={{ 
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 2
+          }}
+        ></motion.div>
+        <motion.div 
+          className="absolute top-[30%] left-[20%] w-60 h-60 rounded-full bg-gradient-to-r from-pink-300/5 to-transparent"
+          animate={{ 
+            x: [0, 40, 0],
+            y: [0, -20, 0]
+          }}
+          transition={{ 
+            duration: 22,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 1
+          }}
+        ></motion.div>
+      </div>
+
+      {/* Header section */}
+      <div className="relative z-10 bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2230%22 height=%2230%22 viewBox=%220 0 30 30%22><circle cx=%223%22 cy=%223%22 r=%221%22 fill=%22%23ffffff%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
-          <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"></div>
-          <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-[#D946EF]/20 to-transparent blur-3xl"></div>
+          <motion.div 
+            className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"
+            animate={{ 
+              rotate: [0, 180],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ duration: 30, repeat: Infinity, repeatType: "reverse" }}
+          ></motion.div>
+          <motion.div 
+            className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-[#D946EF]/20 to-transparent blur-3xl"
+            animate={{ 
+              rotate: [0, -180],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ duration: 25, repeat: Infinity, repeatType: "reverse", delay: 2 }}
+          ></motion.div>
         </div>
         
         <div className="max-w-6xl mx-auto relative z-10">
@@ -197,45 +254,115 @@ const GamesAndQuizzes = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <Tabs defaultValue="games" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <TabsList className="h-12">
-              <TabsTrigger 
-                value="games" 
-                className="flex items-center gap-2 px-6 data-[state=active]:bg-[#9b87f5]"
-              >
-                <Gamepad2 className="h-5 w-5" />
-                Games
-              </TabsTrigger>
-              <TabsTrigger 
-                value="quizzes" 
-                className="flex items-center gap-2 px-6 data-[state=active]:bg-[#9b87f5]"
-              >
-                <Brain className="h-5 w-5" />
-                Quizzes
-              </TabsTrigger>
-            </TabsList>
-          </div>
+      {/* Content section with interactive elements */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Tabs defaultValue="games" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+              <TabsList className="h-12 p-1 bg-white/80 backdrop-blur shadow-md border border-purple-100">
+                <TabsTrigger 
+                  value="games" 
+                  className="flex items-center gap-2 px-6 data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white transition-all duration-300"
+                >
+                  <Gamepad2 className="h-5 w-5" />
+                  Games
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="quizzes" 
+                  className="flex items-center gap-2 px-6 data-[state=active]:bg-[#D946EF] data-[state=active]:text-white transition-all duration-300"
+                >
+                  <Brain className="h-5 w-5" />
+                  Quizzes
+                </TabsTrigger>
+              </TabsList>
+              
+              <div className="flex items-center space-x-2">
+                <motion.div 
+                  className="p-2 rounded-full bg-white shadow-sm border border-purple-100 flex items-center justify-center"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Trophy className="h-5 w-5 text-amber-500" />
+                </motion.div>
+                <motion.div 
+                  className="p-2 rounded-full bg-white shadow-sm border border-purple-100 flex items-center justify-center"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Timer className="h-5 w-5 text-blue-500" />
+                </motion.div>
+                <motion.div 
+                  className="p-2 rounded-full bg-white shadow-sm border border-purple-100 flex items-center justify-center"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <BarChart4 className="h-5 w-5 text-purple-500" />
+                </motion.div>
+              </div>
+            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <TabsContent value="games" className="mt-0">
+                <GamesSection 
+                  filteredGames={filteredGames}
+                  difficultyFilter={difficultyFilter}
+                  typeFilter={typeFilter}
+                  setDifficultyFilter={setDifficultyFilter}
+                  setTypeFilter={setTypeFilter}
+                  onStartGame={handleStartGame}
+                />
+              </TabsContent>
+              
+              <TabsContent value="quizzes" className="mt-0">
+                <QuizzesSection 
+                  quizzes={quizzes} 
+                  onStartQuiz={handleStartQuiz}
+                />
+              </TabsContent>
+            </motion.div>
+          </Tabs>
+        </motion.div>
+        
+        {/* Interactive floating elements */}
+        <div className="hidden lg:block">
+          <motion.div 
+            className="fixed bottom-20 right-10 p-3 rounded-full bg-white shadow-lg border border-purple-200 text-purple-600 cursor-pointer z-20"
+            whileHover={{ scale: 1.1, rotate: 10 }}
+            whileTap={{ scale: 0.9 }}
+            drag
+            dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
+            onClick={() => toast({
+              title: "Wellness Tip!",
+              description: "Taking short breaks between games improves cognitive function.",
+              duration: 3000,
+            })}
+          >
+            <Sparkles className="h-6 w-6" />
+          </motion.div>
           
-          <TabsContent value="games" className="mt-0">
-            <GamesSection 
-              filteredGames={filteredGames}
-              difficultyFilter={difficultyFilter}
-              typeFilter={typeFilter}
-              setDifficultyFilter={setDifficultyFilter}
-              setTypeFilter={setTypeFilter}
-              onStartGame={handleStartGame}
-            />
-          </TabsContent>
-          
-          <TabsContent value="quizzes" className="mt-0">
-            <QuizzesSection 
-              quizzes={quizzes} 
-              onStartQuiz={handleStartQuiz}
-            />
-          </TabsContent>
-        </Tabs>
+          <motion.div
+            className="fixed bottom-40 right-20 p-3 rounded-full bg-white shadow-lg border border-pink-200 text-pink-600 cursor-pointer z-20"
+            whileHover={{ scale: 1.1, rotate: -10 }}
+            whileTap={{ scale: 0.9 }}
+            drag
+            dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
+            onClick={() => toast({
+              title: "Mental Health Fact",
+              description: "Playing cognitive games for just 15 minutes daily can improve memory.",
+              duration: 3000,
+            })}
+          >
+            <Heart className="h-6 w-6" />
+          </motion.div>
+        </div>
       </div>
       
       {/* Game Instructions Dialog */}

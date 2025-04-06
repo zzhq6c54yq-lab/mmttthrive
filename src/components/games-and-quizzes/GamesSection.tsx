@@ -1,12 +1,13 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Filter, Gamepad, Sparkles } from "lucide-react";
+import { Filter, Gamepad, Sparkles, Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import GameCard from "./GameCard";
 import { Game } from "@/data/gamesData";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface GamesSectionProps {
   filteredGames: Game[];
@@ -26,6 +27,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
   onStartGame
 }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const container = {
     hidden: { opacity: 0 },
@@ -38,12 +40,25 @@ const GamesSection: React.FC<GamesSectionProps> = ({
   };
 
   const handleViewMoreGames = () => {
-    navigate("/mental-health-games");
+    toast({
+      title: "Loading Games Library",
+      description: "Taking you to our full collection of mental wellness games",
+      duration: 2000,
+    });
+    
+    setTimeout(() => {
+      navigate("/mental-health-games");
+    }, 500);
   };
 
   return (
     <>
-      <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/50 p-4 rounded-xl backdrop-blur shadow-sm">
+      <motion.div 
+        className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/70 p-4 rounded-xl backdrop-blur shadow-md border border-purple-100"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
           <div className="p-2 rounded-full bg-gradient-to-r from-[#9b87f5]/20 to-[#D946EF]/20">
             <Gamepad className="h-5 w-5 text-[#9b87f5]" />
@@ -53,7 +68,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
         
         <div className="flex flex-wrap gap-2">
           <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-            <SelectTrigger className="w-[130px] h-9 bg-white border-[#9b87f5]/20">
+            <SelectTrigger className="w-[130px] h-9 bg-white border-[#9b87f5]/20 hover:border-[#9b87f5] transition-all shadow-sm">
               <SelectValue placeholder="Difficulty" />
             </SelectTrigger>
             <SelectContent>
@@ -65,7 +80,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
           </Select>
           
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-[130px] h-9 bg-white border-[#9b87f5]/20">
+            <SelectTrigger className="w-[130px] h-9 bg-white border-[#9b87f5]/20 hover:border-[#9b87f5] transition-all shadow-sm">
               <SelectValue placeholder="Game Type" />
             </SelectTrigger>
             <SelectContent>
@@ -82,7 +97,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
           
           <Button 
             variant="outline" 
-            className="h-9 px-3 border-[#9b87f5]/20 text-[#9b87f5] hover:bg-[#9b87f5]/10" 
+            className="h-9 px-3 border-[#9b87f5]/20 text-[#9b87f5] hover:bg-[#9b87f5]/10 hover:border-[#9b87f5] transition-all" 
             onClick={() => {
               setDifficultyFilter("all");
               setTypeFilter("all");
@@ -92,16 +107,21 @@ const GamesSection: React.FC<GamesSectionProps> = ({
             Reset
           </Button>
         </div>
-      </div>
+      </motion.div>
       
       {filteredGames.length === 0 ? (
-        <div className="text-center py-10">
+        <motion.div
+          className="text-center py-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
           <div className="mx-auto bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
-            <Gamepad className="h-8 w-8 text-gray-400" />
+            <Search className="h-8 w-8 text-gray-400" />
           </div>
           <h3 className="text-lg font-medium text-gray-800">No games found</h3>
           <p className="text-gray-500 mt-1">Try adjusting your search or filters</p>
-        </div>
+        </motion.div>
       ) : (
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -119,18 +139,23 @@ const GamesSection: React.FC<GamesSectionProps> = ({
         </motion.div>
       )}
 
-      <div className="mt-12 text-center">
+      <motion.div 
+        className="mt-12 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         <div className="relative inline-block">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#9b87f5] to-[#D946EF] rounded-full blur"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#9b87f5] to-[#D946EF] rounded-full blur opacity-70"></div>
           <Button 
-            className="relative bg-white text-[#9b87f5] hover:bg-[#9b87f5]/10 border border-[#9b87f5]/20 shadow-sm px-6"
+            className="relative bg-white text-[#9b87f5] hover:bg-[#9b87f5]/10 border border-[#9b87f5]/20 shadow-sm px-6 transition-all duration-300"
             onClick={handleViewMoreGames}
           >
             <Sparkles className="h-4 w-4 mr-2" />
             View more games
           </Button>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

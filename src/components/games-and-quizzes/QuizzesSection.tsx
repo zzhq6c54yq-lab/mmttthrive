@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Filter, Brain, Star, ArrowRight, BookOpen } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Quiz {
   id: string;
@@ -28,6 +29,7 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
   onStartQuiz
 }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const container = {
     hidden: { opacity: 0 },
@@ -48,17 +50,41 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
     }
   };
 
+  // Fixed quiz images that were causing issues
+  const getDefaultImage = (category: string) => {
+    switch(category) {
+      case 'mental-health':
+        return 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80';
+      case 'wellbeing':
+        return 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?auto=format&fit=crop&w=800&q=80';
+      case 'coping-strategies':
+        return 'https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=800&q=80';
+      case 'self-awareness':
+        return 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=800&q=80';
+      case 'relationships':
+        return 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80';
+      default:
+        return 'https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=800&q=80';
+    }
+  };
+
   const handleViewMoreAssessments = () => {
     toast({
-      title: "Coming Soon",
-      description: "More assessments will be available in the near future!",
-      duration: 3000,
+      title: "Loading More Assessments",
+      description: "Taking you to the full assessment library",
+      duration: 2000,
     });
+    
+    setTimeout(() => {
+      navigate("/mental-wellness-tools", { 
+        state: { activeTab: "assessments" } 
+      });
+    }, 500);
   };
 
   return (
     <>
-      <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/50 p-4 rounded-xl backdrop-blur shadow-sm">
+      <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center bg-white/70 p-4 rounded-xl backdrop-blur shadow-md">
         <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
           <div className="p-2 rounded-full bg-gradient-to-r from-[#D946EF]/20 to-[#9b87f5]/20">
             <Brain className="h-5 w-5 text-[#D946EF]" />
@@ -98,7 +124,7 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
                 
                 <div className="relative h-44 overflow-hidden">
                   <img 
-                    src={quiz.image} 
+                    src={quiz.image || getDefaultImage(quiz.category)} 
                     alt={quiz.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
