@@ -218,7 +218,7 @@ const GamesAndQuizzes = () => {
       {/* Header section */}
       <div className="relative z-10 bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2230%22 height=%2230%22 viewBox=%220 0 30 30%22><circle cx=%223%22 cy=%223%22 r=%221%22 fill=%22%23ffffff%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+          <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"30\" height=\"30\" viewBox=\"0 0 30 30\"><circle cx=\"3\" cy=\"3\" r=\"1\" fill=\"%23ffffff\" fill-opacity=\"0.05\"/></svg>')] opacity-30"></div>
           <motion.div 
             className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"
             animate={{ 
