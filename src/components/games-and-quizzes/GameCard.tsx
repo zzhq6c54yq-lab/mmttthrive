@@ -44,21 +44,43 @@ const GameCard: React.FC<GameCardProps> = ({ game, onStartGame }) => {
     <motion.div variants={item}>
       <Card className="group h-full flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300 border border-white bg-white/90 backdrop-blur">
         <div className="h-1.5" style={{ backgroundColor: game.color }}></div>
-        <CardHeader 
-          className="pb-2 relative"
-          style={{ backgroundColor: `${game.color}10` }}
-        >
-          <div className="absolute right-4 top-4">
+        
+        {/* Cover image section */}
+        <div className="relative h-40 overflow-hidden">
+          <img 
+            src={game.coverImage} 
+            alt={game.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div className="absolute top-2 right-2">
             <div 
               className={`px-2 py-0.5 rounded-full text-xs font-medium ${getDifficultyColor(game.difficulty)}`}
             >
               {game.difficulty.charAt(0).toUpperCase() + game.difficulty.slice(1)}
             </div>
           </div>
-          
-          <div className="flex items-center gap-3">
+          <div className="absolute bottom-0 left-0 right-0 p-3">
+            <div className="flex justify-between text-white">
+              <div className="flex items-center">
+                <game.icon className="h-4 w-4 mr-1" style={{ color: game.color }} />
+                <span className="text-sm font-medium">{game.type.charAt(0).toUpperCase() + game.type.slice(1)}</span>
+              </div>
+              <div className="text-xs flex items-center bg-black/40 backdrop-blur-sm rounded-full px-2 py-1">
+                <Clock className="h-3 w-3 mr-1" />
+                {game.timeToComplete}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <CardHeader 
+          className="pb-2"
+          style={{ backgroundColor: `${game.color}10` }}
+        >
+          <div className="flex items-start gap-3">
             <div 
-              className="rounded-md p-2.5"
+              className="rounded-md p-2.5 mt-1"
               style={{ backgroundColor: `${game.color}30` }}
             >
               <game.icon className="h-5 w-5" style={{ color: game.color }} />
@@ -78,10 +100,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, onStartGame }) => {
                   className={`h-4 w-4 ${star <= rating ? 'text-amber-400 fill-amber-400' : 'text-gray-200'}`} 
                 />
               ))}
-            </div>
-            <div className="text-sm text-gray-500 flex items-center">
-              <Clock className="h-3 w-3 mr-1" />
-              {game.timeToComplete}
             </div>
           </div>
           

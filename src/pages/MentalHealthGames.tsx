@@ -1,435 +1,279 @@
 
-import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, ArrowRight, Target, Puzzle, Activity, Dices, FlameKindling, Brain as BrainIcon } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import Page from "@/components/Page";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { 
+  Gamepad2, Filter, Search, Clock, Brain, 
+  Award, Sparkles, CheckCircle
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import GameCard from "@/components/games-and-quizzes/GameCard";
+import { gamesData, Game } from "@/data/gamesData";
 import { useToast } from "@/hooks/use-toast";
-
-interface MemoryCard {
-  id: number;
-  content: string;
-  flipped: boolean;
-  matched: boolean;
-}
+import GameInstructionsDialog from "@/components/games-and-quizzes/GameInstructionsDialog";
+import GamePlayDialog from "@/components/games-and-quizzes/GamePlayDialog";
+import GameComponentSelector from "@/components/games-and-quizzes/GameComponentSelector";
 
 const MentalHealthGames = () => {
+  const [games, setGames] = useState<Game[]>(gamesData);
+  const [filteredGames, setFilteredGames] = useState<Game[]>(gamesData);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [gameInstructionsOpen, setGameInstructionsOpen] = useState(false);
+  const [gamePlayOpen, setGamePlayOpen] = useState(false);
+  const [activeGame, setActiveGame] = useState<Game | null>(null);
+  
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeGame, setActiveGame] = useState<string | null>(null);
   
-  // State for Memory Match game
-  const [memoryCards, setMemoryCards] = useState<MemoryCard[]>([]);
-  const [flippedCards, setFlippedCards] = useState<number[]>([]);
-  const [matchedPairs, setMatchedPairs] = useState<number>(0);
-  const [memoryMoves, setMemoryMoves] = useState<number>(0);
-  
-  // State for Emotion Sorting game
-  const [score, setScore] = useState<number>(0);
-  const [currentEmotion, setCurrentEmotion] = useState<string | null>(null);
-  const [currentCategory, setCurrentCategory] = useState<"positive" | "negative" | "neutral" | null>(null);
-  
-  // State for Focus Training game
-  const [focusLevel, setFocusLevel] = useState<number>(1);
-  const [focusScore, setFocusScore] = useState<number>(0);
-  const [targetPosition, setTargetPosition] = useState<{x: number, y: number}>({ x: 0, y: 0 });
-  const [distractions, setDistractions] = useState<{x: number, y: number, color: string}[]>([]);
-  
-  const emotionCategories = {
-    positive: ["Joy", "Excitement", "Gratitude", "Love", "Relief", "Contentment", "Hope", "Pride"],
-    negative: ["Anger", "Frustration", "Sadness", "Fear", "Disgust", "Guilt", "Shame", "Envy"],
-    neutral: ["Surprise", "Curiosity", "Anticipation", "Confusion", "Boredom", "Calm", "Interest", "Thought"]
-  };
-  
-  const handleBackClick = () => {
-    navigate("/");
-  };
-  
-  // Initialize Memory Match game
-  const startMemoryGame = () => {
-    setActiveGame("memory");
-    const emojiList = ["🌟", "🌈", "🌻", "🌞", "🦋", "🐢", "🐬", "🦁"];
-    const shuffledCards = [...emojiList, ...emojiList]
-      .map((content, id) => ({ id, content, flipped: false, matched: false }))
-      .sort(() => Math.random() - 0.5);
+  // Apply filters
+  useEffect(() => {
+    let results = [...games];
     
-    setMemoryCards(shuffledCards);
-    setFlippedCards([]);
-    setMatchedPairs(0);
-    setMemoryMoves(0);
-  };
-  
-  // Memory Match - handle card click
-  const handleCardClick = (id: number) => {
-    // Don't allow flipping if already flipped or matched
-    if (memoryCards[id].flipped || memoryCards[id].matched) return;
-    // Don't allow more than 2 cards flipped at a time
-    if (flippedCards.length === 2) return;
-    
-    // Update the flipped status of the clicked card
-    const updatedCards = [...memoryCards];
-    updatedCards[id].flipped = true;
-    setMemoryCards(updatedCards);
-    
-    // Add card to flipped cards
-    const newFlippedCards = [...flippedCards, id];
-    setFlippedCards(newFlippedCards);
-    
-    // If we have two flipped cards, check for a match
-    if (newFlippedCards.length === 2) {
-      setMemoryMoves(prev => prev + 1);
-      const [firstId, secondId] = newFlippedCards;
-      
-      // Check if the contents match
-      if (memoryCards[firstId].content === memoryCards[secondId].content) {
-        // Mark the cards as matched
-        const matchedCards = [...memoryCards];
-        matchedCards[firstId].matched = true;
-        matchedCards[secondId].matched = true;
-        setMemoryCards(matchedCards);
-        setMatchedPairs(prev => prev + 1);
-        setFlippedCards([]);
-        
-        // Check if all pairs are matched
-        if (matchedPairs + 1 === emojiList.length) {
-          toast({
-            title: "Congratulations!",
-            description: `You completed the Memory Match game in ${memoryMoves + 1} moves!`,
-          });
-        }
-      } else {
-        // If no match, flip the cards back after a delay
-        setTimeout(() => {
-          const resetCards = [...memoryCards];
-          resetCards[firstId].flipped = false;
-          resetCards[secondId].flipped = false;
-          setMemoryCards(resetCards);
-          setFlippedCards([]);
-        }, 1000);
-      }
+    // Text search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      results = results.filter(
+        game => 
+          game.title.toLowerCase().includes(query) || 
+          game.description.toLowerCase().includes(query) ||
+          game.type.toLowerCase().includes(query)
+      );
     }
-  };
-  
-  // Initialize Emotion Sorting game
-  const startEmotionGame = () => {
-    setActiveGame("emotions");
-    setScore(0);
-    nextEmotionQuestion();
-  };
-  
-  // Emotion Sorting - generate next question
-  const nextEmotionQuestion = () => {
-    const categories = ["positive", "negative", "neutral"] as const;
-    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    const emotions = emotionCategories[randomCategory];
-    const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
     
-    setCurrentEmotion(randomEmotion);
-    setCurrentCategory(randomCategory);
+    // Difficulty filter
+    if (difficultyFilter !== "all") {
+      results = results.filter(game => game.difficulty === difficultyFilter);
+    }
+    
+    // Type filter
+    if (typeFilter !== "all") {
+      results = results.filter(game => game.type === typeFilter);
+    }
+    
+    setFilteredGames(results);
+  }, [searchQuery, difficultyFilter, typeFilter, games]);
+  
+  const handleReset = () => {
+    setSearchQuery("");
+    setDifficultyFilter("all");
+    setTypeFilter("all");
   };
   
-  // Emotion Sorting - handle answer
-  const handleEmotionAnswer = (selectedCategory: "positive" | "negative" | "neutral") => {
-    if (selectedCategory === currentCategory) {
-      setScore(prev => prev + 1);
+  const handleStartGame = (game: Game) => {
+    setActiveGame(game);
+    setGameInstructionsOpen(true);
+  };
+  
+  const handlePlayGame = () => {
+    setGameInstructionsOpen(false);
+    setGamePlayOpen(true);
+  };
+  
+  const handleGameComplete = (score: number) => {
+    setGamePlayOpen(false);
+    
+    if (activeGame) {
       toast({
-        title: "Correct!",
-        description: `${currentEmotion} is a ${currentCategory} emotion.`,
-      });
-    } else {
-      toast({
-        title: "Not quite right",
-        description: `${currentEmotion} is actually a ${currentCategory} emotion.`,
-        variant: "destructive"
+        title: "Game Completed!",
+        description: `You scored ${score} points in ${activeGame.title}`,
+        duration: 3000,
       });
     }
-    
-    // Move to next question
-    nextEmotionQuestion();
   };
-  
-  // Initialize Focus Training game
-  const startFocusGame = () => {
-    setActiveGame("focus");
-    setFocusLevel(1);
-    setFocusScore(0);
-    generateTarget();
-  };
-  
-  // Focus Training - generate new target
-  const generateTarget = () => {
-    const x = Math.floor(Math.random() * 80) + 10; // 10-90%
-    const y = Math.floor(Math.random() * 80) + 10; // 10-90%
-    setTargetPosition({ x, y });
-    
-    // Generate distractions based on level
-    const newDistractions = [];
-    for (let i = 0; i < focusLevel * 3; i++) {
-      const distX = Math.floor(Math.random() * 90) + 5;
-      const distY = Math.floor(Math.random() * 90) + 5;
-      const colors = ["#9b87f5", "#F97316", "#0EA5E9", "#ea384c"];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      newDistractions.push({ x: distX, y: distY, color });
-    }
-    setDistractions(newDistractions);
-  };
-  
-  // Focus Training - handle target click
-  const handleTargetClick = () => {
-    setFocusScore(prev => prev + focusLevel);
-    
-    if (focusScore + focusLevel >= focusLevel * 5) {
-      // Level up
-      setFocusLevel(prev => prev + 1);
-      toast({
-        title: "Level Up!",
-        description: `You've reached level ${focusLevel + 1}. The challenge increases!`,
-      });
-    }
-    
-    generateTarget();
-  };
-  
-  // Focus Training - handle distraction click
-  const handleDistractionClick = () => {
-    setFocusScore(prev => Math.max(0, prev - 1));
-    toast({
-      title: "Distracted!",
-      description: "Try to focus only on the target.",
-      variant: "destructive"
-    });
-  };
-  
-  const emojiList = ["🌟", "🌈", "🌻", "🌞", "🦋", "🐢", "🐬", "🦁"];
-  
-  const games = [
-    {
-      title: "Memory Match",
-      description: "Improve your memory by matching pairs of cards. This activity enhances working memory and concentration.",
-      icon: BrainIcon,
-      color: "bg-[#E5DEFF] text-[#7152E5] border-[#9b87f5]/60",
-      startFunction: startMemoryGame,
-      benefits: ["Improves working memory", "Enhances concentration", "Reduces stress through focused attention", "Builds cognitive flexibility"]
-    },
-    {
-      title: "Emotion Sorting",
-      description: "Sort different emotions into categories to improve emotional intelligence and recognition skills.",
-      icon: Brain,
-      color: "bg-[#FDE1D3] text-[#E05D00] border-[#F97316]/60",
-      startFunction: startEmotionGame,
-      benefits: ["Builds emotional vocabulary", "Improves emotion recognition", "Enhances self-awareness", "Supports emotional regulation"]
-    },
-    {
-      title: "Focus Training",
-      description: "Click on the target while ignoring distractions to improve concentration and attention control.",
-      icon: Target,
-      color: "bg-[#D3E4FD] text-[#0A71C5] border-[#0EA5E9]/60",
-      startFunction: startFocusGame,
-      benefits: ["Enhances selective attention", "Improves response inhibition", "Builds mental endurance", "Reduces distractibility"]
-    }
-  ];
   
   return (
-    <Page title="Mental Health Games" showBackButton={true} onBackClick={handleBackClick}>
-      {!activeGame ? (
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2">Interactive Mental Wellness Games</h2>
-            <p className="text-lg text-gray-800 dark:text-gray-200">
-              Exercise your mind with games designed to boost cognitive skills and emotional intelligence.
+    <Page title="Mental Health Games" showBackButton={true}>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-3xl font-bold mb-3 flex items-center">
+              <Gamepad2 className="mr-2 text-[#9b87f5]" />
+              Mental Wellness Games
+            </h1>
+            <p className="text-gray-600 mb-6">
+              Explore our collection of scientifically-designed games that promote cognitive health and mental wellbeing.
             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {games.map((game, index) => (
-              <Card 
-                key={index}
-                className={`hover:shadow-lg transition-all duration-300 cursor-pointer border ${game.color}`}
-              >
-                <CardHeader>
-                  <game.icon className="h-10 w-10 mb-2" />
-                  <CardTitle className="text-gray-900 dark:text-white">{game.title}</CardTitle>
-                  <CardDescription className="text-gray-800 dark:text-gray-200 font-medium">{game.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <h3 className="font-medium mb-2 text-gray-900 dark:text-white">Benefits:</h3>
-                  <ul className="list-disc pl-5 space-y-1">
-                    {game.benefits.map((benefit, i) => (
-                      <li key={i} className="text-sm text-gray-800 dark:text-gray-200 font-medium">{benefit}</li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
+            
+            <div className="bg-white shadow-sm rounded-xl p-5 mb-8">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-grow relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  <Input
+                    placeholder="Search games..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                
+                <div className="flex flex-wrap gap-2">
+                  <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
+                    <SelectTrigger className="w-[130px] bg-white">
+                      <SelectValue placeholder="Difficulty" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Difficulties</SelectItem>
+                      <SelectItem value="easy">Easy</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="hard">Hard</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={typeFilter} onValueChange={setTypeFilter}>
+                    <SelectTrigger className="w-[130px] bg-white">
+                      <SelectValue placeholder="Game Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="memory">Memory</SelectItem>
+                      <SelectItem value="puzzle">Puzzle</SelectItem>
+                      <SelectItem value="reaction">Reaction</SelectItem>
+                      <SelectItem value="cognitive">Cognitive</SelectItem>
+                      <SelectItem value="word">Word</SelectItem>
+                      <SelectItem value="math">Math</SelectItem>
+                      <SelectItem value="visual">Visual</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
                   <Button 
-                    className={`w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-white border hover:bg-gray-50 dark:hover:bg-gray-700`}
-                    onClick={game.startFunction}
+                    variant="outline" 
+                    onClick={handleReset}
+                    className="border-gray-200"
                   >
-                    Play Now
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <Filter className="h-4 w-4 mr-1" />
+                    Reset
                   </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-          
-          <div className="p-6 bg-[#F1F0FB] dark:bg-[#2D2A3E] rounded-lg">
-            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Why Mental Health Games Matter</h3>
-            <p className="mb-4 text-gray-800 dark:text-gray-200">
-              Mental stimulation through targeted games can help improve cognitive functions and emotional regulation skills. 
-              Regular engagement with cognitive exercises has been shown to:
-            </p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <li className="flex items-start gap-2">
-                <FlameKindling className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span className="text-gray-800 dark:text-gray-200 font-medium">Reduce symptoms of anxiety and depression</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Activity className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span className="text-gray-800 dark:text-gray-200 font-medium">Improve overall mental well-being</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Puzzle className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span className="text-gray-800 dark:text-gray-200 font-medium">Enhance problem-solving abilities</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Dices className="h-5 w-5 text-[#B87333] shrink-0 mt-0.5" />
-                <span className="text-gray-800 dark:text-gray-200 font-medium">Boost brain plasticity and cognitive flexibility</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      ) : activeGame === "memory" ? (
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2">Memory Match</h2>
-            <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">Find all matching pairs of cards</p>
-            <div className="flex justify-center items-center gap-4 mb-4">
-              <span className="font-medium text-gray-800 dark:text-gray-200">Moves: {memoryMoves}</span>
-              <span className="font-medium text-gray-800 dark:text-gray-200">Matches: {matchedPairs}/8</span>
+                </div>
+              </div>
             </div>
-            <Button 
-              onClick={() => setActiveGame(null)}
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 mb-4"
-            >
-              Back to Games
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-4 gap-4 mb-10">
-            {memoryCards.map((card) => (
-              <div 
-                key={card.id}
-                onClick={() => handleCardClick(card.id)}
-                className={`aspect-square flex items-center justify-center text-4xl rounded-lg cursor-pointer transition-all duration-300 ${
-                  card.flipped || card.matched 
-                    ? "bg-[#9b87f5]/20 border-2 border-[#9b87f5]/50 rotate-0" 
-                    : "bg-[#7152E5] text-[#7152E5] rotate-y-180"
-                }`}
-              >
-                {(card.flipped || card.matched) && card.content}
-              </div>
-            ))}
-          </div>
+          </motion.div>
         </div>
-      ) : activeGame === "emotions" ? (
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2">Emotion Sorting</h2>
-            <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">Categorize emotions to build emotional intelligence</p>
-            <div className="font-medium mb-4 text-gray-800 dark:text-gray-200">Score: {score}</div>
+        
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">
+              {filteredGames.length} {filteredGames.length === 1 ? 'Game' : 'Games'} {difficultyFilter !== 'all' || typeFilter !== 'all' || searchQuery ? 'Found' : ''}
+            </h2>
             <Button 
-              onClick={() => setActiveGame(null)}
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 mb-4"
+              variant="ghost" 
+              onClick={() => navigate('/games-and-quizzes')}
+              className="text-[#9b87f5] hover:text-[#9b87f5]/80 hover:bg-[#9b87f5]/10"
             >
-              Back to Games
+              Back to Games Hub
             </Button>
           </div>
           
-          {currentEmotion && (
-            <div className="mb-10">
-              <Card className="text-center p-10 mb-8 border-[#F97316]/50 bg-[#FDE1D3]/50">
-                <h3 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">{currentEmotion}</h3>
-                <p className="text-xl text-gray-800 dark:text-gray-200">What type of emotion is this?</p>
-              </Card>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button 
-                  onClick={() => handleEmotionAnswer("positive")}
-                  className="p-6 bg-green-100 hover:bg-green-200 text-green-800 border border-green-300 font-medium"
-                >
-                  Positive Emotion
-                </Button>
-                <Button 
-                  onClick={() => handleEmotionAnswer("neutral")}
-                  className="p-6 bg-blue-100 hover:bg-blue-200 text-blue-800 border border-blue-300 font-medium"
-                >
-                  Neutral Emotion
-                </Button>
-                <Button 
-                  onClick={() => handleEmotionAnswer("negative")}
-                  className="p-6 bg-red-100 hover:bg-red-200 text-red-800 border border-red-300 font-medium"
-                >
-                  Negative Emotion
-                </Button>
+          {filteredGames.length === 0 ? (
+            <div className="text-center py-10 bg-gray-50 rounded-xl">
+              <div className="mx-auto bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                <Gamepad2 className="h-8 w-8 text-gray-400" />
               </div>
+              <h3 className="text-lg font-medium text-gray-800">No games found</h3>
+              <p className="text-gray-500 mt-1 mb-4">Try adjusting your search or filters</p>
+              <Button onClick={handleReset} variant="outline">Clear Filters</Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredGames.map((game) => (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  onStartGame={handleStartGame}
+                />
+              ))}
             </div>
           )}
         </div>
-      ) : activeGame === "focus" && (
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold mb-2">Focus Training</h2>
-            <p className="text-gray-800 dark:text-gray-200 font-medium mb-2">Click on the target and ignore distractions</p>
-            <div className="flex justify-center items-center gap-4 mb-4">
-              <span className="font-medium text-gray-800 dark:text-gray-200">Level: {focusLevel}</span>
-              <span className="font-medium text-gray-800 dark:text-gray-200">Score: {focusScore}</span>
+        
+        <div className="bg-gradient-to-r from-[#f8f9fa] to-[#eef1f5] rounded-xl p-6 mt-10">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <Award className="text-amber-500" />
+            Benefits of Cognitive Games
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className="bg-white shadow-sm rounded-lg p-4">
+              <div className="flex items-center mb-2">
+                <div className="p-2 rounded-full bg-blue-100 mr-2">
+                  <Brain className="h-5 w-5 text-blue-600" />
+                </div>
+                <h4 className="font-medium">Cognitive Function</h4>
+              </div>
+              <p className="text-sm text-gray-600">
+                Enhances memory, attention, and problem-solving abilities through regular mental exercise.
+              </p>
             </div>
-            <Button 
-              onClick={() => setActiveGame(null)}
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 mb-4"
-            >
-              Back to Games
-            </Button>
+            <div className="bg-white shadow-sm rounded-lg p-4">
+              <div className="flex items-center mb-2">
+                <div className="p-2 rounded-full bg-purple-100 mr-2">
+                  <Sparkles className="h-5 w-5 text-purple-600" />
+                </div>
+                <h4 className="font-medium">Mental Wellbeing</h4>
+              </div>
+              <p className="text-sm text-gray-600">
+                Reduces stress and anxiety while promoting a sense of accomplishment and relaxation.
+              </p>
+            </div>
+            <div className="bg-white shadow-sm rounded-lg p-4">
+              <div className="flex items-center mb-2">
+                <div className="p-2 rounded-full bg-green-100 mr-2">
+                  <Clock className="h-5 w-5 text-green-600" />
+                </div>
+                <h4 className="font-medium">Long-term Health</h4>
+              </div>
+              <p className="text-sm text-gray-600">
+                Regular mental exercises may help maintain cognitive function as you age and promote brain health.
+              </p>
+            </div>
           </div>
           
-          <div 
-            className="relative w-full bg-gray-100 dark:bg-gray-800 rounded-lg mb-10"
-            style={{ height: "500px" }}
+          <Button 
+            onClick={() => navigate('/games-and-quizzes')} 
+            className="bg-[#9b87f5] hover:bg-[#9b87f5]/90"
           >
-            {/* Distractions */}
-            {distractions.map((distraction, index) => (
-              <div
-                key={index}
-                className="absolute w-8 h-8 rounded-full cursor-pointer transition-all hover:scale-110"
-                style={{
-                  left: `${distraction.x}%`,
-                  top: `${distraction.y}%`,
-                  backgroundColor: distraction.color,
-                  transform: "translate(-50%, -50%)"
-                }}
-                onClick={handleDistractionClick}
-              />
-            ))}
-            
-            {/* Target */}
-            <div
-              className="absolute w-12 h-12 bg-[#0EA5E9] rounded-full cursor-pointer animate-pulse transition-all hover:scale-110"
-              style={{
-                left: `${targetPosition.x}%`,
-                top: `${targetPosition.y}%`,
-                transform: "translate(-50%, -50%)"
-              }}
-              onClick={handleTargetClick}
-            >
-              <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center">
-                <div className="w-2 h-2 bg-[#0EA5E9] rounded-full"></div>
-              </div>
-            </div>
-          </div>
+            <CheckCircle className="mr-2 h-4 w-4" />
+            Try Our Featured Games
+          </Button>
         </div>
-      )}
+      </div>
+      
+      {/* Game Instructions Dialog */}
+      <GameInstructionsDialog
+        open={gameInstructionsOpen}
+        onOpenChange={setGameInstructionsOpen}
+        activeGame={activeGame}
+        onPlayGame={handlePlayGame}
+      />
+      
+      {/* Game Play Dialog */}
+      <GamePlayDialog
+        open={gamePlayOpen}
+        onOpenChange={setGamePlayOpen}
+        activeGame={activeGame}
+        onClose={() => setGamePlayOpen(false)}
+        gameComponent={
+          activeGame ? (
+            <GameComponentSelector 
+              activeGame={activeGame} 
+              onComplete={handleGameComplete} 
+            />
+          ) : null
+        }
+      />
     </Page>
   );
 };

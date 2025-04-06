@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,9 @@ import WelcomeHeader from "@/components/games-and-quizzes/WelcomeHeader";
 import { Game, gamesData } from "@/data/gamesData";
 import GamesSection from "@/components/games-and-quizzes/GamesSection";
 import QuizzesSection from "@/components/games-and-quizzes/QuizzesSection";
+import GameInstructionsDialog from "@/components/games-and-quizzes/GameInstructionsDialog";
+import GamePlayDialog from "@/components/games-and-quizzes/GamePlayDialog";
+import GameComponentSelector from "@/components/games-and-quizzes/GameComponentSelector";
 
 interface Quiz {
   id: string;
@@ -34,6 +38,9 @@ const GamesAndQuizzes = () => {
   const [typeFilter, setTypeFilter] = useState("all");
   const [filteredGames, setFilteredGames] = useState<Game[]>([]);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [gameInstructionsOpen, setGameInstructionsOpen] = useState(false);
+  const [gamePlayOpen, setGamePlayOpen] = useState(false);
+  const [activeGame, setActiveGame] = useState<Game | null>(null);
   
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -127,13 +134,8 @@ const GamesAndQuizzes = () => {
   }, []);
 
   const handleStartGame = (game: Game) => {
-    toast({
-      title: `Starting ${game.title}`,
-      description: "Loading your game experience...",
-      duration: 1500,
-    });
-    
-    navigate(`/games/${game.id}`);
+    setActiveGame(game);
+    setGameInstructionsOpen(true);
   };
 
   const handleStartQuiz = (quiz: Quiz) => {
@@ -145,10 +147,28 @@ const GamesAndQuizzes = () => {
     
     setTimeout(() => {
       toast({
-        title: "Quiz Feature",
+        title: "Assessment Feature",
         description: "This feature is coming soon!",
+        duration: 3000,
       });
     }, 1500);
+  };
+  
+  const handlePlayGame = () => {
+    setGameInstructionsOpen(false);
+    setGamePlayOpen(true);
+  };
+  
+  const handleGameComplete = (score: number) => {
+    setGamePlayOpen(false);
+    
+    if (activeGame) {
+      toast({
+        title: "Game Completed!",
+        description: `You scored ${score} points in ${activeGame.title}`,
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -217,6 +237,30 @@ const GamesAndQuizzes = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Game Instructions Dialog */}
+      <GameInstructionsDialog
+        open={gameInstructionsOpen}
+        onOpenChange={setGameInstructionsOpen}
+        activeGame={activeGame}
+        onPlayGame={handlePlayGame}
+      />
+      
+      {/* Game Play Dialog */}
+      <GamePlayDialog
+        open={gamePlayOpen}
+        onOpenChange={setGamePlayOpen}
+        activeGame={activeGame}
+        onClose={() => setGamePlayOpen(false)}
+        gameComponent={
+          activeGame ? (
+            <GameComponentSelector 
+              activeGame={activeGame} 
+              onComplete={handleGameComplete} 
+            />
+          ) : null
+        }
+      />
     </div>
   );
 };

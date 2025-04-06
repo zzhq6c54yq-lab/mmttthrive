@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Filter, Brain, Star, ArrowRight, BookOpen } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 interface Quiz {
   id: string;
@@ -26,6 +27,8 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
   quizzes,
   onStartQuiz
 }) => {
+  const { toast } = useToast();
+  
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -43,6 +46,14 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
       y: 0,
       transition: { duration: 0.3 }
     }
+  };
+
+  const handleViewMoreAssessments = () => {
+    toast({
+      title: "Coming Soon",
+      description: "More assessments will be available in the near future!",
+      duration: 3000,
+    });
   };
 
   return (
@@ -144,6 +155,7 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[#D946EF] to-[#9b87f5] rounded-full blur"></div>
           <Button 
             className="relative bg-white text-[#D946EF] hover:bg-[#D946EF]/10 border border-[#D946EF]/20 shadow-sm px-6"
+            onClick={handleViewMoreAssessments}
           >
             <Star className="h-4 w-4 mr-2" />
             View more assessments

@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import GameCard from "./GameCard";
 import { Game } from "@/data/gamesData";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface GamesSectionProps {
   filteredGames: Game[];
@@ -24,6 +25,8 @@ const GamesSection: React.FC<GamesSectionProps> = ({
   setTypeFilter,
   onStartGame
 }) => {
+  const navigate = useNavigate();
+  
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -32,6 +35,10 @@ const GamesSection: React.FC<GamesSectionProps> = ({
         staggerChildren: 0.1
       }
     }
+  };
+
+  const handleViewMoreGames = () => {
+    navigate("/mental-health-games");
   };
 
   return (
@@ -117,6 +124,7 @@ const GamesSection: React.FC<GamesSectionProps> = ({
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[#9b87f5] to-[#D946EF] rounded-full blur"></div>
           <Button 
             className="relative bg-white text-[#9b87f5] hover:bg-[#9b87f5]/10 border border-[#9b87f5]/20 shadow-sm px-6"
+            onClick={handleViewMoreGames}
           >
             <Sparkles className="h-4 w-4 mr-2" />
             View more games
