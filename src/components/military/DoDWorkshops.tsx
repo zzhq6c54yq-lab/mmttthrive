@@ -1,8 +1,9 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Calendar, Users, Video, Filter, Search, Clock, MapPin, CalendarDays } from "lucide-react";
+import { Calendar, Users, Video, Filter, Search, Clock, MapPin, CalendarDays, Play } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
