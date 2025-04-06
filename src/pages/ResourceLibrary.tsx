@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -753,3 +754,13 @@ const ResourceLibrary: React.FC = () => {
                   <FileText className="h-5 w-5 text-blue-500" />
                   Articles
                 </h2>
+              </motion.div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default ResourceLibrary;
