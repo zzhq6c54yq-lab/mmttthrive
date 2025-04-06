@@ -76,8 +76,8 @@ const QuizzesSection: React.FC<QuizzesSectionProps> = ({
     });
     
     setTimeout(() => {
-      navigate("/mental-wellness-tools", { 
-        state: { activeTab: "assessments" } 
+      navigate("/mental-wellness/assessments", { 
+        state: { activeTab: "assessments", preventTutorial: true } 
       });
     }, 500);
   };

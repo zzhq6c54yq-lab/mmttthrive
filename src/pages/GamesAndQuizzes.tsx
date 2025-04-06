@@ -145,10 +145,14 @@ const GamesAndQuizzes = () => {
       duration: 1500,
     });
     
-    // Navigate to a placeholder page for now
+    // Navigate to the quiz assessment page
     setTimeout(() => {
-      navigate("/mental-wellness-tools", { 
-        state: { activeTab: "assessments", quizId: quiz.id } 
+      navigate(`/mental-wellness/assessments/${quiz.id}`, { 
+        state: { 
+          quizId: quiz.id, 
+          quizTitle: quiz.title,
+          preventTutorial: true 
+        } 
       });
     }, 500);
   };

@@ -30,6 +30,8 @@ import LearnMoreAboutThrive from "@/pages/LearnMoreAboutThrive";
 import CoPay from "@/pages/CoPay";
 import DoDPortal from "@/pages/DoDPortal";
 import CollegePortal from "@/pages/CollegePortal";
+import MentalHealthGames from "@/pages/MentalHealthGames";
+import CosmicGames from "@/pages/CosmicGames";
 
 function App() {
   return (
@@ -40,9 +42,15 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="/mental-wellness" element={<MentalWellnessTools />} />
+        <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
+        <Route path="/mental-wellness/assessments" element={<MentalWellnessTools />} />
+        <Route path="/mental-wellness/assessments/:quizId" element={<MentalWellnessTools />} />
         <Route path="/family-resources" element={<FamilyResources />} />
         <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
+        <Route path="/mental-health-games" element={<MentalHealthGames />} />
+        <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/game-play/:gameId" element={<GamePage />} />
+        <Route path="/games/:gameId" element={<GamePage />} />
         <Route path="/small-business-portal" element={<SmallBusinessExperience />} />
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
