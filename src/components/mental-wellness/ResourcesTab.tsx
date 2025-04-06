@@ -1,8 +1,10 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import {
   BookOpen, Video, FileText, Headphones, Download,
-  ExternalLink, Search, Clock, GraduationCap, BarChart3
+  ExternalLink, Search, Clock, GraduationCap, BarChart3,
+  Users, MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

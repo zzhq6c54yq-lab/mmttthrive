@@ -731,7 +731,7 @@ const MySponsor: React.FC = () => {
                         <CardHeader className="pb-2">
                           <div className="flex justify-between items-start">
                             <CardTitle className="text-lg">{entry.date}</CardTitle>
-                            <Badge className={`${getMoodColor(entry.mood)} ${getStatusColor(entry.status)}`}>
+                            <Badge className={`${getMoodColor(entry.mood)}`}>
                               {getMoodEmoji(entry.mood)}
                             </Badge>
                           </div>

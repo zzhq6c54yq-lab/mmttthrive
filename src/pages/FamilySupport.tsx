@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   ArrowLeft, Heart, Users, BookOpen, Calendar, MessageSquare, 
   PhoneCall, Video, HandHeart, Share2, ChevronRight, Star,
-  GraduationCap, FileText
+  GraduationCap, FileText, Clock, MapPin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";

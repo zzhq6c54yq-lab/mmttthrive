@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   LineChart, Line, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  Cell
 } from "recharts";
 import { 
   ArrowLeft, TrendingUp, Calendar, Award, Target, 
