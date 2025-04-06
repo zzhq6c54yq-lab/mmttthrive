@@ -26,7 +26,7 @@ const SpecializedPrograms: React.FC = () => {
         ? "Recursos y apoyo para personal militar y veteranos" 
         : "Resources and support for military personnel and veterans",
       icon: Shield,
-      path: "/department-of-defense",
+      path: "/dod-welcome",
       gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
       borderColor: "#0EA5E9"
     },
@@ -36,7 +36,7 @@ const SpecializedPrograms: React.FC = () => {
         ? "Apoyo de salud mental para estudiantes en la vida universitaria" 
         : "Mental health support for students navigating campus life",
       icon: GraduationCap,
-      path: "/college-portal",
+      path: "/college-welcome",
       gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
       borderColor: "#8B5CF6"
     },
@@ -46,7 +46,7 @@ const SpecializedPrograms: React.FC = () => {
         ? "Recursos de salud mental para emprendedores y dueños de pequeñas empresas" 
         : "Mental health resources for entrepreneurs and small business owners",
       icon: Briefcase,
-      path: "/small-business-portal",
+      path: "/small-business-welcome",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316"
     }

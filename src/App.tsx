@@ -32,6 +32,10 @@ import DoDPortal from "@/pages/DoDPortal";
 import CollegePortal from "@/pages/CollegePortal";
 import MentalHealthGames from "@/pages/MentalHealthGames";
 import CosmicGames from "@/pages/CosmicGames";
+import DoDWelcome from "@/pages/DoDWelcome";
+import CollegeWelcome from "@/pages/CollegeWelcome";
+import SmallBusinessWelcome from "@/pages/SmallBusinessWelcome";
+import SmallBusinessPortal from "@/pages/SmallBusinessPortal";
 
 function App() {
   return (
@@ -51,7 +55,8 @@ function App() {
         <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/game-play/:gameId" element={<GamePage />} />
         <Route path="/games/:gameId" element={<GamePage />} />
-        <Route path="/small-business-portal" element={<SmallBusinessExperience />} />
+        <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
+        <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
         <Route path="/crisis-support" element={<CrisisSupport />} />
@@ -59,8 +64,10 @@ function App() {
         <Route path="/co-pay" element={<CoPay />} />
         
         {/* Specialized Programs Routes */}
-        <Route path="/department-of-defense" element={<DoDPortal />} />
+        <Route path="/department-of-defense" element={<DoDWelcome />} />
+        <Route path="/dod-welcome" element={<DoDWelcome />} />
         <Route path="/dod-portal" element={<DoDPortal />} />
+        <Route path="/college-welcome" element={<CollegeWelcome />} />
         <Route path="/college-portal" element={<CollegePortal />} />
         
         {/* Workshop Routes */}

@@ -60,7 +60,8 @@ const QuizzesSection = () => {
       state: { 
         quizId, 
         quizTitle,
-        preventTutorial: true 
+        preventTutorial: true,
+        fromQuizCard: true
       } 
     });
   };
@@ -72,7 +73,7 @@ const QuizzesSection = () => {
       duration: 1500,
     });
     
-    navigate("/mental-wellness/assessments", { 
+    navigate("/mental-wellness", { 
       state: { 
         activeTab: "assessments",
         preventTutorial: true 
@@ -86,7 +87,7 @@ const QuizzesSection = () => {
         {quizzes.map((quiz) => (
           <Card 
             key={quiz.id}
-            className="bg-white overflow-hidden hover:shadow-md transition-all cursor-pointer group"
+            className="bg-white overflow-hidden hover:shadow-md transition-all cursor-pointer group border border-gray-200"
             onClick={() => handleQuizClick(quiz.id, quiz.title)}
           >
             <div className="h-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]"></div>
@@ -125,6 +126,10 @@ const QuizzesSection = () => {
                 variant="ghost" 
                 size="sm"
                 className="w-full justify-between border border-gray-200 hover:bg-[#8B5CF6]/5 hover:text-[#8B5CF6] group-hover:border-[#8B5CF6]/30 transition-all"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleQuizClick(quiz.id, quiz.title);
+                }}
               >
                 <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
