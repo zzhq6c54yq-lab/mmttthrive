@@ -37,7 +37,7 @@ const DoDWorkshops = () => {
       time: "10:00 AM - 12:00 PM ET",
       facilitator: "Sarah Johnson, LMFT, Military Family Specialist",
       spots: 20,
-      image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
+      image: "/lovable-uploads/photo-1498050108023-c5249f4df085.jpeg",
       tags: ["family", "communication", "resilience"],
       videoId: "HDZs6JY8zms"
     },
@@ -50,7 +50,7 @@ const DoDWorkshops = () => {
       time: "6:00 PM - 8:00 PM ET",
       facilitator: "Col. James Peterson (Ret.), PhD, Trauma Specialist",
       spots: 12,
-      image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
+      image: "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpeg",
       tags: ["ptsd", "trauma", "recovery"],
       videoId: "F2hc2FLOdhI"
     },
@@ -64,7 +64,7 @@ const DoDWorkshops = () => {
       time: "1:00 PM - 5:00 PM PT",
       facilitator: "Veteran Transition Team & Career Counselors",
       spots: 30,
-      image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
+      image: "/lovable-uploads/photo-1531297484001-80022131f5a1.jpeg",
       tags: ["transition", "career", "civilian"],
       videoId: "uaq9Ysi2T1g"
     },
@@ -78,7 +78,7 @@ const DoDWorkshops = () => {
       time: "5:00 PM - 6:30 PM",
       facilitator: "Dr. Elena Martinez, MST Program Coordinator",
       spots: 8,
-      image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
+      image: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpeg",
       tags: ["mst", "support", "trauma"],
       videoId: "Nee-XT5Yerg"
     },
@@ -91,7 +91,7 @@ const DoDWorkshops = () => {
       time: "11:00 AM - 1:00 PM ET",
       facilitator: "Master Sgt. Robert Williams (Ret.), Mindfulness Instructor",
       spots: 25,
-      image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
+      image: "/lovable-uploads/photo-1577191097894-9b0c21c11d12.jpeg",
       tags: ["mindfulness", "meditation", "coping"],
       videoId: "aseNAGQBxNc"
     }

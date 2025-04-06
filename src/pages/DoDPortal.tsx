@@ -3,16 +3,20 @@ import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Sparkles, Briefcase, Globe, BookOpen, HeartPulse, Calendar, Zap, AlertCircle, Video, FileText, Award } from "lucide-react";
+import { Shield, Sparkles, Briefcase, Globe, BookOpen, HeartPulse, Calendar, Zap, AlertCircle, Video, FileText, Award, Star, Flag, MapPin, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
+import DoDDashboard from "@/components/military/DoDDashboard";
+import DoDResources from "@/components/military/DoDResources";
+import DoDWorkshops from "@/components/military/DoDWorkshops";
+import DoDAssessments from "@/components/military/DoDAssessments";
 
 const DoDPortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'resources' | 'community' | 'assessments' | 'workshops'>('resources');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops'>('dashboard');
   
   const handleFeatureClick = (feature: string) => {
     toast({
@@ -21,359 +25,264 @@ const DoDPortal: React.FC = () => {
       duration: 2000
     });
     
-    navigate(`/${feature}`, { 
-      state: { 
-        fromSpecializedProgram: true, 
-        preventTutorial: true 
-      }
-    });
-  };
-
-  const handleTabChange = (tab: 'resources' | 'community' | 'assessments' | 'workshops') => {
-    setActiveTab(tab);
-  };
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'resources':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <FeatureCard 
-              title={isSpanish ? "Apoyo para PTSD" : "PTSD Support"}
-              description={isSpanish 
-                ? "Recursos especializados para el manejo del trastorno de estrés postraumático" 
-                : "Specialized resources for managing post-traumatic stress disorder"}
-              icon={Shield}
-              color="bg-blue-600"
-              onClick={() => handleFeatureClick("mental-wellness")}
-            />
-            <FeatureCard
-              title={isSpanish ? "Transición a la Vida Civil" : "Transition to Civilian Life"}
-              description={isSpanish 
-                ? "Apoyo para una transición exitosa a la vida después del servicio militar" 
-                : "Support for a successful transition to life after military service"}
-              icon={Briefcase}
-              color="bg-purple-600"
-              onClick={() => handleFeatureClick("resource-library")}
-            />
-            <FeatureCard
-              title={isSpanish ? "Apoyo Familiar" : "Family Support"}
-              description={isSpanish 
-                ? "Recursos para las familias de personal militar durante el despliegue y después" 
-                : "Resources for military families during deployment and beyond"}
-              icon={HeartPulse}
-              color="bg-emerald-600"
-              onClick={() => handleFeatureClick("family-resources")}
-            />
-            <FeatureCard
-              title={isSpanish ? "Manejo del Estrés en Combate" : "Combat Stress Management"}
-              description={isSpanish 
-                ? "Técnicas y herramientas específicas para el manejo del estrés en situaciones de combate" 
-                : "Specific techniques and tools for managing stress in combat situations"}
-              icon={Sparkles}
-              color="bg-rose-600"
-              onClick={() => handleFeatureClick("workshops")}
-            />
-            <FeatureCard
-              title={isSpanish ? "Educación y Entrenamiento" : "Education & Training"}
-              description={isSpanish 
-                ? "Oportunidades educativas y de entrenamiento para personal militar y veteranos" 
-                : "Educational and training opportunities for military personnel and veterans"}
-              icon={BookOpen}
-              color="bg-cyan-600"
-              onClick={() => handleFeatureClick("resource-library")}
-            />
-            <FeatureCard
-              title={isSpanish ? "Crisis y Emergencias" : "Crisis & Emergency"}
-              description={isSpanish 
-                ? "Recursos de apoyo inmediato para situaciones de crisis emocional" 
-                : "Immediate support resources for emotional crisis situations"}
-              icon={AlertCircle}
-              color="bg-red-600"
-              onClick={() => handleFeatureClick("crisis-support")}
-            />
-          </div>
-        );
-      case 'community':
-        return (
-          <div className="space-y-6 mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-                <CardContent className="p-0">
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 bg-blue-900/30 rounded-full">
-                        <Globe className="h-5 w-5 text-blue-400" />
-                      </div>
-                      <h3 className="text-xl font-bold text-white">Veteran Community Forums</h3>
-                    </div>
-                    <p className="text-white/70 mb-4">
-                      Connect with other veterans to share experiences, advice, and support in a safe, moderated environment.
-                    </p>
-                    <Button 
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleFeatureClick("community-support")}
-                    >
-                      Join Community
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-                <CardContent className="p-0">
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 bg-blue-900/30 rounded-full">
-                        <Video className="h-5 w-5 text-blue-400" />
-                      </div>
-                      <h3 className="text-xl font-bold text-white">Virtual Peer Support</h3>
-                    </div>
-                    <p className="text-white/70 mb-4">
-                      Join virtual meetups with fellow service members and veterans for mutual support and shared understanding.
-                    </p>
-                    <Button 
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleFeatureClick("community-support")}
-                    >
-                      Find Support Groups
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <Calendar className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Upcoming Community Events</h3>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center bg-blue-900/20 p-4 rounded-lg">
-                    <div className="bg-blue-900/20 text-blue-400 p-2 rounded-lg mr-4 text-center min-w-[60px]">
-                      <span className="block text-sm">APR</span>
-                      <span className="block text-xl font-bold">15</span>
-                    </div>
-                    <div className="flex-grow">
-                      <h4 className="font-medium text-white">Resilience Workshop</h4>
-                      <p className="text-sm text-white/70">Virtual | 2:00 PM ET</p>
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                      onClick={() => handleFeatureClick("workshops")}
-                    >
-                      Register
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center bg-blue-900/20 p-4 rounded-lg">
-                    <div className="bg-blue-900/20 text-blue-400 p-2 rounded-lg mr-4 text-center min-w-[60px]">
-                      <span className="block text-sm">APR</span>
-                      <span className="block text-xl font-bold">22</span>
-                    </div>
-                    <div className="flex-grow">
-                      <h4 className="font-medium text-white">PTSD Support Group</h4>
-                      <p className="text-sm text-white/70">Online | 7:00 PM ET</p>
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
-                      onClick={() => handleFeatureClick("community-support")}
-                    >
-                      Register
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      case 'assessments':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <Shield className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">PTSD Screening</h3>
-                </div>
-                <p className="text-white/70 mb-4">
-                  A validated screening tool specifically designed for military personnel to assess symptoms of PTSD.
-                </p>
-                <div className="flex justify-between text-white/50 text-sm mb-4">
-                  <span>5 minutes</span>
-                  <span>17 questions</span>
-                </div>
-                <Button 
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                  onClick={() => handleFeatureClick("mental-wellness/assessments")}
-                >
-                  Begin Assessment
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <Zap className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Stress Management</h3>
-                </div>
-                <p className="text-white/70 mb-4">
-                  Evaluate your current stress levels and identify triggers specific to military service.
-                </p>
-                <div className="flex justify-between text-white/50 text-sm mb-4">
-                  <span>3 minutes</span>
-                  <span>12 questions</span>
-                </div>
-                <Button 
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                  onClick={() => handleFeatureClick("mental-wellness/assessments")}
-                >
-                  Begin Assessment
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg col-span-1 md:col-span-2">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <FileText className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">All Assessments</h3>
-                </div>
-                <p className="text-white/70 mb-4">
-                  View our complete library of mental health assessments tailored for military personnel and veterans.
-                </p>
-                <Button 
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                  onClick={() => handleFeatureClick("mental-wellness/assessments")}
-                >
-                  View All Assessments
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      case 'workshops':
-        return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <Shield className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Combat Stress Workshop</h3>
-                </div>
-                <p className="text-white/70 mb-4">
-                  Learn practical techniques for managing stress reactions specific to combat situations.
-                </p>
-                <div className="mb-4 p-2 bg-blue-900/20 rounded-lg text-sm text-white/70">
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-2 text-blue-400" />
-                    <span>April 15, 2025 - 2:00 PM ET</span>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                  onClick={() => handleFeatureClick("workshops")}
-                >
-                  Register Now
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <Award className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">Military to Civilian Transition</h3>
-                </div>
-                <p className="text-white/70 mb-4">
-                  Practical guidance for transitioning from military service to civilian life.
-                </p>
-                <div className="mb-4 p-2 bg-blue-900/20 rounded-lg text-sm text-white/70">
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-2 text-blue-400" />
-                    <span>April 22, 2025 - 6:00 PM ET</span>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                  onClick={() => handleFeatureClick("workshops")}
-                >
-                  Register Now
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg col-span-1 md:col-span-2">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-900/30 rounded-full">
-                    <FileText className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white">All Military Workshops</h3>
-                </div>
-                <p className="text-white/70 mb-4">
-                  Browse our full catalog of workshops specifically designed for military personnel, veterans, and their families.
-                </p>
-                <Button 
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                  onClick={() => handleFeatureClick("workshops")}
-                >
-                  View All Workshops
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        );
-      default:
-        return null;
+    // For specialized DoD content, we'll show the appropriate tab
+    if (feature === "resources") {
+      setActiveTab("resources");
+    } else if (feature === "workshops") {
+      setActiveTab("workshops");
+    } else if (feature === "community-support") {
+      setActiveTab("community");
+    } else if (feature === "mental-wellness/assessments") {
+      setActiveTab("assessments");
+    } else {
+      // For other features, navigate as before
+      navigate(`/${feature}`, { 
+        state: { 
+          fromSpecializedProgram: true, 
+          preventTutorial: true 
+        }
+      });
     }
   };
 
-  const FeatureCard = ({ title, description, icon: Icon, color, onClick }) => (
-    <Card 
-      onClick={onClick}
-      className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors shadow-lg cursor-pointer hover:shadow-xl"
-    >
-      <CardContent className="p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className={`p-2 rounded-full ${color} bg-opacity-20`}>
-            <Icon className="h-5 w-5 text-white" />
-          </div>
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
+  const handleTabChange = (tab: 'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops') => {
+    setActiveTab(tab);
+  };
+
+  // Military community support content
+  const CommunitySupport = () => (
+    <div className="space-y-8">
+      {/* Header section */}
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-2">Military Community Support</h2>
+        <p className="text-blue-200/80 mb-6">
+          Connect with fellow service members, veterans, and military families who understand your unique experiences.
+        </p>
+      </div>
+      
+      {/* Featured Community Groups */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+          <CardContent className="p-6">
+            <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
+              <Users className="h-10 w-10 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Combat Veterans Group</h3>
+            <p className="text-white/70 mb-4">
+              A peer support group for veterans who have experienced combat, focusing on shared understanding and mutual support.
+            </p>
+            <div className="flex justify-between items-center text-sm text-blue-300/70 mb-4">
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                <span>427 members</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <span>Weekly meetings</span>
+              </div>
+            </div>
+            <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              Join Group
+            </Button>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+          <CardContent className="p-6">
+            <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
+              <HeartPulse className="h-10 w-10 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Military Families Connect</h3>
+            <p className="text-white/70 mb-4">
+              Support network for spouses, children, and family members of active duty personnel and veterans.
+            </p>
+            <div className="flex justify-between items-center text-sm text-blue-300/70 mb-4">
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                <span>618 members</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <span>Daily discussions</span>
+              </div>
+            </div>
+            <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              Join Group
+            </Button>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+          <CardContent className="p-6">
+            <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
+              <Briefcase className="h-10 w-10 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Transition Warriors</h3>
+            <p className="text-white/70 mb-4">
+              For service members and veterans navigating the transition to civilian life, careers, and community.
+            </p>
+            <div className="flex justify-between items-center text-sm text-blue-300/70 mb-4">
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                <span>352 members</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <span>Bi-weekly meetings</span>
+              </div>
+            </div>
+            <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              Join Group
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* Upcoming Community Events */}
+      <div>
+        <h3 className="text-2xl font-bold text-white mb-4">Upcoming Events</h3>
+        <div className="space-y-3">
+          <Card className="bg-[#141921] border-blue-900/30">
+            <CardContent className="p-4 flex items-center">
+              <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
+                <span className="block text-sm">APR</span>
+                <span className="block text-xl font-bold">15</span>
+              </div>
+              <div className="flex-grow">
+                <h3 className="font-medium text-white">Virtual Coffee Meetup</h3>
+                <div className="flex items-center text-sm text-white/70 mb-1">
+                  <Video className="h-3 w-3 mr-1 text-blue-400" />
+                  <span>Online | 10:00 AM ET</span>
+                </div>
+                <p className="text-xs text-white/60">Casual conversation with fellow veterans</p>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+              >
+                Join
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-[#141921] border-blue-900/30">
+            <CardContent className="p-4 flex items-center">
+              <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
+                <span className="block text-sm">APR</span>
+                <span className="block text-xl font-bold">20</span>
+              </div>
+              <div className="flex-grow">
+                <h3 className="font-medium text-white">Family Day Picnic</h3>
+                <div className="flex items-center text-sm text-white/70 mb-1">
+                  <MapPin className="h-3 w-3 mr-1 text-blue-400" />
+                  <span>Veterans Memorial Park | 11:00 AM - 3:00 PM</span>
+                </div>
+                <p className="text-xs text-white/60">Family-friendly event with activities and resources</p>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+              >
+                RSVP
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-[#141921] border-blue-900/30">
+            <CardContent className="p-4 flex items-center">
+              <div className="bg-blue-900/20 text-blue-400 p-3 rounded-lg mr-4 text-center min-w-[60px]">
+                <span className="block text-sm">APR</span>
+                <span className="block text-xl font-bold">27</span>
+              </div>
+              <div className="flex-grow">
+                <h3 className="font-medium text-white">PTSD Support Circle</h3>
+                <div className="flex items-center text-sm text-white/70 mb-1">
+                  <Video className="h-3 w-3 mr-1 text-blue-400" />
+                  <span>Online | 7:00 PM ET</span>
+                </div>
+                <p className="text-xs text-white/60">Confidential group discussion led by veteran counselors</p>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+              >
+                Register
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-        <p className="text-white/70 text-sm">{description}</p>
-      </CardContent>
-    </Card>
+      </div>
+      
+      {/* Find Local Support */}
+      <Card className="bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-blue-700/30">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-blue-900/40 rounded-full">
+              <MapPin className="h-6 w-6 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-bold text-white">Find Local Support</h3>
+          </div>
+          <p className="text-blue-200/80 mb-4">
+            Connect with in-person support groups and resources in your area. Enter your location to find military-friendly resources near you.
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Enter ZIP code or city"
+              className="flex-grow py-2 px-4 bg-[#0c1016] border border-blue-900/30 rounded-md text-white placeholder-blue-400/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            />
+            <Button className="bg-blue-700 hover:bg-blue-800 text-white whitespace-nowrap">
+              Find Support
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 
   return (
     <Page title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} returnToMain>
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-[#0EA5E9]/30 to-[#2563EB]/30 p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg">
-          <div className="flex flex-col md:flex-row items-center gap-6">
+        <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
+          {/* Patriotic flag background element */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-0 right-0 w-full h-full opacity-5">
+              {/* Red and white stripes */}
+              <div className="absolute bottom-0 left-0 right-0 h-full">
+                {[...Array(7)].map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-[14.28%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                  />
+                ))}
+              </div>
+              
+              {/* Blue field with stars */}
+              <div className="absolute top-0 left-0 w-1/3 h-1/2 bg-blue-900">
+                <div className="grid grid-cols-5 gap-2 p-2">
+                  {[...Array(20)].map((_, i) => (
+                    <div key={i} className="flex items-center justify-center">
+                      <Star className="h-2 w-2 text-white" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
             <div className="p-4 bg-white/10 rounded-full">
               <Shield className="h-10 w-10 text-[#0EA5E9]" />
             </div>
             <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Star className="h-4 w-4 text-red-400" />
+                <Star className="h-4 w-4 text-white" />
+                <Star className="h-4 w-4 text-blue-400" />
+              </div>
               <h2 className="text-2xl font-bold text-white mb-2">
                 {isSpanish ? "Recursos para el Personal Militar y Veteranos" : "Resources for Military Personnel & Veterans"}
               </h2>
@@ -388,6 +297,16 @@ const DoDPortal: React.FC = () => {
 
         <div className="bg-[#0F1319] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg">
           <div className="flex overflow-x-auto scrollbar-hide">
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'dashboard' 
+                  ? 'border-blue-500 text-blue-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('dashboard')}
+            >
+              Dashboard
+            </button>
             <button
               className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
                 activeTab === 'resources' 
@@ -431,7 +350,11 @@ const DoDPortal: React.FC = () => {
           </div>
           
           <div className="p-6">
-            {renderTabContent()}
+            {activeTab === 'dashboard' && <DoDDashboard />}
+            {activeTab === 'resources' && <DoDResources />}
+            {activeTab === 'community' && <CommunitySupport />}
+            {activeTab === 'assessments' && <DoDAssessments />}
+            {activeTab === 'workshops' && <DoDWorkshops />}
           </div>
         </div>
       </div>
