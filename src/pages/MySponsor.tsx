@@ -1,275 +1,1212 @@
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Book, Calendar, HeartHandshake, Users, MessageCircle } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import {
+  Heart, Phone, MessageSquare, Video, Calendar, Clock, 
+  Info, ArrowLeft, PenSquare, FileText, CheckSquare, ChevronDown,
+  Upload, Download, AlertTriangle, Share2, Sparkles
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { toast } from "@/hooks/use-toast";
-import SponsorChatbot from "@/components/SponsorChatbot";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import HomeButton from "@/components/HomeButton";
 
-const twelveSteps = [
-  "We admitted we were powerless over our addiction, that our lives had become unmanageable.",
-  "Came to believe that a Power greater than ourselves could restore us to sanity.",
-  "Made a decision to turn our will and our lives over to the care of God as we understood Him.",
-  "Made a searching and fearless moral inventory of ourselves.",
-  "Admitted to God, to ourselves, and to another human being the exact nature of our wrongs.",
-  "Were entirely ready to have God remove all these defects of character.",
-  "Humbly asked Him to remove our shortcomings.",
-  "Made a list of all persons we had harmed, and became willing to make amends to them all.",
-  "Made direct amends to such people wherever possible, except when to do so would injure them or others.",
-  "Continued to take personal inventory and when we were wrong promptly admitted it.",
-  "Sought through prayer and meditation to improve our conscious contact with God as we understood Him, praying only for knowledge of His will for us and the power to carry that out.",
-  "Having had a spiritual awakening as a result of these steps, we tried to carry this message to addicts, and to practice these principles in all our affairs."
-];
+interface SponsorshipStep {
+  id: number;
+  title: string;
+  description: string;
+  status: "completed" | "in-progress" | "upcoming";
+  tips: string[];
+}
 
-const traditions = [
-  "Our common welfare should come first; personal recovery depends on NA unity.",
-  "For our group purpose there is but one ultimate authority—a loving God as He may express Himself in our group conscience. Our leaders are but trusted servants; they do not govern.",
-  "The only requirement for membership is a desire to stop using.",
-  "Each group should be autonomous except in matters affecting other groups or NA as a whole.",
-  "Each group has but one primary purpose—to carry the message to the addict who still suffers.",
-  "An NA group ought never endorse, finance, or lend the NA name to any related facility or outside enterprise, lest problems of money, property, or prestige divert us from our primary purpose.",
-  "Every NA group ought to be fully self-supporting, declining outside contributions.",
-  "Narcotics Anonymous should remain forever nonprofessional, but our service centers may employ special workers.",
-  "NA, as such, ought never be organized, but we may create service boards or committees directly responsible to those they serve.",
-  "Narcotics Anonymous has no opinion on outside issues; hence the NA name ought never be drawn into public controversy.",
-  "Our public relations policy is based on attraction rather than promotion; we need always maintain personal anonymity at the level of press, radio, and films.",
-  "Anonymity is the spiritual foundation of all our Traditions, ever reminding us to place principles before personalities."
-];
+interface JournalEntry {
+  id: number;
+  date: string;
+  content: string;
+  mood: "great" | "good" | "okay" | "challenging" | "difficult";
+  isShared: boolean;
+}
 
-const MySponsor = () => {
-  const [traditionsOpen, setTraditionsOpen] = useState(false);
-  const [meetingsOpen, setMeetingsOpen] = useState(false);
+interface Meeting {
+  id: number;
+  title: string;
+  type: "in-person" | "virtual" | "phone";
+  date: string;
+  time: string;
+  address?: string;
+  link?: string;
+  notes?: string;
+}
 
-  const showTraditions = () => {
-    setTraditionsOpen(true);
+interface Resource {
+  id: number;
+  title: string;
+  type: "pdf" | "video" | "audio" | "link";
+  description: string;
+  url: string;
+  icon: React.ReactNode;
+}
+
+const MySponsor: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [newJournalEntry, setNewJournalEntry] = useState("");
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [isSharing, setIsSharing] = useState(false);
+  const [expandedStep, setExpandedStep] = useState<number | null>(null);
+  const [sponsorInfo, setSponsorInfo] = useState({
+    name: "Michael R.",
+    yearsOfSobriety: 12,
+    phone: "555-123-4567",
+    email: "michael.r@example.com",
+    preferredContactMethod: "text",
+    availableHours: "8:00 AM - 7:00 PM",
+    sponseeCount: 3,
+    nextMeeting: "Tomorrow at 6:00 PM"
+  });
+  
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([
+    {
+      id: 1,
+      date: "July 12, 2023",
+      content: "Had a really difficult day at work today. Was tempted to use but called my sponsor instead. Feeling proud of making the right choice.",
+      mood: "challenging",
+      isShared: true
+    },
+    {
+      id: 2,
+      date: "July 10, 2023",
+      content: "Attended my first NA meeting in the new location. Everyone was welcoming and I feel like I've found a good group.",
+      mood: "good",
+      isShared: true
+    },
+    {
+      id: 3,
+      date: "July 7, 2023",
+      content: "Made it to 30 days clean! This is a huge milestone for me. Grateful for my sponsor's support through this journey.",
+      mood: "great",
+      isShared: false
+    }
+  ]);
+  
+  const [upcomingMeetings, setUpcomingMeetings] = useState<Meeting[]>([
+    {
+      id: 1,
+      title: "Weekly Check-in",
+      type: "virtual",
+      date: "July 15, 2023",
+      time: "6:00 PM - 7:00 PM",
+      link: "https://zoom.us/j/123456789",
+      notes: "Discuss progress on Step 4 and review journal entries from the week."
+    },
+    {
+      id: 2,
+      title: "Group NA Meeting",
+      type: "in-person",
+      date: "July 16, 2023",
+      time: "7:30 PM - 9:00 PM",
+      address: "Community Center, 123 Recovery St",
+      notes: "Weekly group meeting. Michael will also be attending."
+    },
+    {
+      id: 3,
+      title: "Phone Check-in",
+      type: "phone",
+      date: "July 18, 2023",
+      time: "12:30 PM - 1:00 PM",
+      notes: "Quick midweek check-in call."
+    }
+  ]);
+  
+  const [sponsorshipSteps, setSponsorshipSteps] = useState<SponsorshipStep[]>([
+    {
+      id: 1,
+      title: "Step 1: Powerlessness & Unmanageability",
+      description: "We admitted we were powerless over our addiction—that our lives had become unmanageable.",
+      status: "completed",
+      tips: [
+        "Reflect on the ways addiction has affected your life",
+        "Identify patterns of unmanageable behavior",
+        "Share honest reflections with your sponsor",
+        "Accept support from the recovery community"
+      ]
+    },
+    {
+      id: 2,
+      title: "Step 2: Hope & Belief",
+      description: "We came to believe that a Power greater than ourselves could restore us to sanity.",
+      status: "completed",
+      tips: [
+        "Define what a 'higher power' might mean to you personally",
+        "Be open to spiritual concepts without requiring religious beliefs",
+        "Look for examples of positive change in recovery communities",
+        "Consider what 'restoration to sanity' would look like in your life"
+      ]
+    },
+    {
+      id: 3,
+      title: "Step 3: Surrender & Decision",
+      description: "We made a decision to turn our will and our lives over to the care of God as we understood Him.",
+      status: "in-progress",
+      tips: [
+        "Practice daily surrender through meditation or reflection",
+        "Start each day with an intention to follow your recovery path",
+        "Discuss your concept of surrender with your sponsor",
+        "Identify areas where you struggle to let go of control"
+      ]
+    },
+    {
+      id: 4,
+      title: "Step 4: Moral Inventory",
+      description: "We made a searching and fearless moral inventory of ourselves.",
+      status: "upcoming",
+      tips: [
+        "Set aside regular time for self-reflection and writing",
+        "Be honest about both positive and negative aspects of your character",
+        "Focus on patterns rather than isolated incidents",
+        "Use the worksheets provided by your sponsor"
+      ]
+    }
+  ]);
+  
+  const [resources, setResources] = useState<Resource[]>([
+    {
+      id: 1,
+      title: "The NA Basic Text (PDF)",
+      type: "pdf",
+      description: "The primary text for Narcotics Anonymous fellowship.",
+      url: "#",
+      icon: <FileText className="h-5 w-5 text-blue-500" />
+    },
+    {
+      id: 2,
+      title: "Step 3 Worksheet",
+      type: "pdf",
+      description: "Guided questions and exercises for working through Step 3.",
+      url: "#",
+      icon: <CheckSquare className="h-5 w-5 text-green-500" />
+    },
+    {
+      id: 3,
+      title: "Recovery Meditation Series",
+      type: "audio",
+      description: "Guided meditations focused on recovery principles.",
+      url: "#",
+      icon: <Download className="h-5 w-5 text-purple-500" />
+    },
+    {
+      id: 4,
+      title: "Understanding Triggers Video",
+      type: "video",
+      description: "Educational video about identifying and managing triggers.",
+      url: "#",
+      icon: <Video className="h-5 w-5 text-red-500" />
+    }
+  ]);
+  
+  const [showCallOptions, setShowCallOptions] = useState(false);
+  
+  // Simulated time since last contact
+  const [lastContactTime, setLastContactTime] = useState("2 days ago");
+  
+  const handleSubmitJournal = () => {
+    if (!newJournalEntry.trim() || !selectedMood) {
+      toast({
+        title: "Cannot Submit Entry",
+        description: "Please write an entry and select a mood.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const newEntry: JournalEntry = {
+      id: journalEntries.length + 1,
+      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+      content: newJournalEntry,
+      mood: selectedMood as any,
+      isShared: isSharing
+    };
+    
+    setJournalEntries([newEntry, ...journalEntries]);
+    setNewJournalEntry("");
+    setSelectedMood(null);
+    setIsSharing(false);
+    
+    toast({
+      title: "Journal Entry Added",
+      description: isSharing ? "Your sponsor will be able to view this entry." : "This entry is private and only visible to you.",
+    });
+  };
+  
+  const handleContactSponsor = (method: string) => {
+    let message = "";
+    switch(method) {
+      case "call":
+        message = "Initiating call to your sponsor...";
+        break;
+      case "text":
+        message = "Opening text message to your sponsor...";
+        break;
+      case "email":
+        message = "Opening email to your sponsor...";
+        break;
+      case "video":
+        message = "Setting up video call with your sponsor...";
+        break;
+    }
+    
+    toast({
+      title: "Contacting Sponsor",
+      description: message
+    });
+    
+    setShowCallOptions(false);
+    // In a real app, this would initiate actual contact functionality
+  };
+  
+  const toggleExpandStep = (stepId: number) => {
+    if (expandedStep === stepId) {
+      setExpandedStep(null);
+    } else {
+      setExpandedStep(stepId);
+    }
   };
 
-  const showMeetings = () => {
-    setMeetingsOpen(true);
+  const getMoodEmoji = (mood: string) => {
+    switch(mood) {
+      case "great": return "😃";
+      case "good": return "🙂";
+      case "okay": return "😐";
+      case "challenging": return "😕";
+      case "difficult": return "😞";
+      default: return "";
+    }
+  };
+  
+  const getMoodColor = (mood: string) => {
+    switch(mood) {
+      case "great": return "bg-green-100 text-green-800 border-green-200";
+      case "good": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "okay": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "challenging": return "bg-orange-100 text-orange-800 border-orange-200";
+      case "difficult": return "bg-red-100 text-red-800 border-red-200";
+      default: return "bg-gray-100 text-gray-800 border-gray-200";
+    }
   };
 
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case "completed": return "bg-green-100 text-green-800 border-green-200";
+      case "in-progress": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "upcoming": return "bg-gray-100 text-gray-800 border-gray-200";
+      default: return "bg-gray-100 text-gray-800";
+    }
+  };
+  
+  const getMeetingTypeIcon = (type: string) => {
+    switch(type) {
+      case "virtual": return <Video className="h-5 w-5 text-purple-500" />;
+      case "in-person": return <Users className="h-5 w-5 text-blue-500" />;
+      case "phone": return <Phone className="h-5 w-5 text-green-500" />;
+      default: return <Calendar className="h-5 w-5 text-gray-500" />;
+    }
+  };
+  
   return (
-    <div className="min-h-screen bg-[#1a1a1f] text-white p-6">
-      <HomeButton />
+    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#edf2f7]">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-gradient-to-br from-[#9b87f5]/5 to-transparent blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-gradient-to-tr from-[#D946EF]/5 to-transparent blur-3xl"></div>
+      </div>
       
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-light mb-4">
-            My <span className="gradient-heading">Sponsor</span>
-          </h1>
-          <p className="text-gray-300">Your digital support system for recovery</p>
+      {/* Header */}
+      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-8 px-4 relative overflow-hidden">
+        <motion.div 
+          className="absolute top-[-20%] right-[-10%] w-[40%] h-[70%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"
+          animate={{ 
+            rotate: [0, 180],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, repeatType: "reverse" }}
+        />
+      
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <Button 
+              variant="link" 
+              className="text-white hover:text-[#9b87f5] p-0 flex items-center"
+              onClick={() => navigate("/home")}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+            <HomeButton />
+          </div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="md:flex items-start justify-between"
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Heart className="h-7 w-7 text-[#9b87f5]" />
+                <h1 className="text-3xl font-bold">My N.A./A.A. Sponsor</h1>
+              </div>
+              <p className="text-gray-300 max-w-xl mb-4">
+                Your direct connection to personalized support, guidance, and accountability in your recovery journey.
+              </p>
+            </div>
+            
+            <div className="mt-4 md:mt-0">
+              <div className="relative">
+                <Button 
+                  className="bg-[#9b87f5] hover:bg-[#8b77e5] text-white flex items-center gap-2"
+                  onClick={() => setShowCallOptions(!showCallOptions)}
+                >
+                  <Phone className="h-4 w-4" />
+                  Contact My Sponsor
+                  <ChevronDown className={`h-4 w-4 transition-transform ${showCallOptions ? "rotate-180" : ""}`} />
+                </Button>
+                
+                <AnimatePresence>
+                  {showCallOptions && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                    >
+                      <div className="py-1">
+                        <button
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                          onClick={() => handleContactSponsor("call")}
+                        >
+                          <Phone className="h-4 w-4" /> Call Now
+                        </button>
+                        <button
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                          onClick={() => handleContactSponsor("text")}
+                        >
+                          <MessageSquare className="h-4 w-4" /> Send Text
+                        </button>
+                        <button
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                          onClick={() => handleContactSponsor("email")}
+                        >
+                          <Mail className="h-4 w-4" /> Send Email
+                        </button>
+                        <button
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                          onClick={() => handleContactSponsor("video")}
+                        >
+                          <Video className="h-4 w-4" /> Video Call
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </motion.div>
         </div>
-
-        <Tabs defaultValue="sponsor" className="space-y-6">
-          <TabsList className="bg-white/5 border border-[#B87333]/20">
-            <TabsTrigger value="sponsor" className="data-[state=active]:bg-[#B87333]">
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Digital Sponsor
+      </div>
+      
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
+        <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="mb-8 grid grid-cols-4 bg-white/80">
+            <TabsTrigger value="dashboard" className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white">
+              Dashboard
             </TabsTrigger>
-            <TabsTrigger value="steps" className="data-[state=active]:bg-[#B87333]">
-              <Book className="h-4 w-4 mr-2" />
-              12 Steps
+            <TabsTrigger value="journal" className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white">
+              Recovery Journal
+            </TabsTrigger>
+            <TabsTrigger value="twelve-steps" className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white">
+              12 Steps Progress
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white">
+              Resources & Tools
             </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="sponsor" className="space-y-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <SponsorChatbot />
-              </div>
-              <div className="space-y-4">
-                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h3 className="text-lg font-medium mb-2">Digital Sponsor Features</h3>
-                  <ul className="space-y-2 text-sm text-gray-300">
-                    <li className="flex items-center">
-                      <HeartHandshake className="h-4 w-4 mr-2 text-[#B87333]" />
-                      24/7 Support and Guidance
-                    </li>
-                    <li className="flex items-center">
-                      <MessageCircle className="h-4 w-4 mr-2 text-[#B87333]" />
-                      Recovery-focused Conversations
-                    </li>
-                    <li className="flex items-center">
-                      <Book className="h-4 w-4 mr-2 text-[#B87333]" />
-                      Step Work Support
-                    </li>
-                    <li className="flex items-center">
-                      <Users className="h-4 w-4 mr-2 text-[#B87333]" />
-                      Community Connection
-                    </li>
-                  </ul>
-                </Card>
+          
+          {/* Dashboard Tab */}
+          <TabsContent value="dashboard">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Sponsor Info Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="md:col-span-1"
+                >
+                  <Card className="bg-white h-full border-[#9b87f5]/30">
+                    <CardHeader className="pb-2 bg-gradient-to-r from-[#9b87f5]/10 to-transparent">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <User className="h-5 w-5 text-[#9b87f5]" />
+                        My Sponsor
+                      </CardTitle>
+                      <CardDescription>Your recovery support partner</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col gap-4">
+                        <div className="text-center mb-4">
+                          <div className="w-24 h-24 mx-auto bg-gradient-to-br from-[#9b87f5] to-[#7E69AB] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                            {sponsorInfo.name.split(' ')[0][0]}{sponsorInfo.name.split(' ')[1][0]}
+                          </div>
+                          <h3 className="text-xl font-semibold mt-2">{sponsorInfo.name}</h3>
+                          <Badge className="mt-1 bg-green-100 text-green-800 hover:bg-green-200">
+                            {sponsorInfo.yearsOfSobriety} Years Sober
+                          </Badge>
+                        </div>
+                        
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Phone:</span>
+                            <span className="font-medium">{sponsorInfo.phone}</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Email:</span>
+                            <span className="font-medium">{sponsorInfo.email}</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Preferred Contact:</span>
+                            <Badge variant="outline">Text Message</Badge>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600">Available Hours:</span>
+                            <span className="font-medium">{sponsorInfo.availableHours}</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2">
+                            <span className="text-gray-600">Last Contact:</span>
+                            <Badge variant="secondary">{lastContactTime}</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex flex-col">
+                      <p className="text-sm text-purple-700 mb-2 flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        Next Meeting: {sponsorInfo.nextMeeting}
+                      </p>
+                      <Button variant="outline" className="w-full text-[#9b87f5] border-[#9b87f5]/30 hover:bg-[#9b87f5]/5">
+                        Schedule Meeting
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
                 
-                {/* 12 Traditions Card */}
-                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h3 className="text-lg font-medium mb-2">12 Traditions</h3>
-                  <p className="text-sm text-gray-300 mb-2">
-                    Explore the guiding principles that keep our fellowship united.
-                  </p>
-                  <div className="flex">
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                      onClick={showTraditions}
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      View Traditions
-                    </Button>
-                  </div>
-                </Card>
+                {/* Upcoming Meetings Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="md:col-span-2"
+                >
+                  <Card className="bg-white h-full">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <Calendar className="h-5 w-5 text-[#9b87f5]" />
+                        Upcoming Meetings
+                      </CardTitle>
+                      <CardDescription>Scheduled sessions with your sponsor</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="space-y-4">
+                        {upcomingMeetings.map((meeting) => (
+                          <motion.div
+                            key={meeting.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                            className="p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-all"
+                          >
+                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
+                              <div className="flex items-start gap-3">
+                                <div className="p-2 bg-[#9b87f5]/10 rounded-full">
+                                  {getMeetingTypeIcon(meeting.type)}
+                                </div>
+                                <div>
+                                  <div className="flex items-center gap-2">
+                                    <h4 className="font-semibold">{meeting.title}</h4>
+                                    <Badge variant="outline" className="capitalize">
+                                      {meeting.type}
+                                    </Badge>
+                                  </div>
+                                  <div className="text-gray-600 text-sm mt-1 flex items-center gap-2">
+                                    <Calendar className="h-3.5 w-3.5" />
+                                    {meeting.date} • {meeting.time}
+                                  </div>
+                                  {meeting.address && (
+                                    <div className="text-gray-600 text-sm mt-1 flex items-center gap-2">
+                                      <MapPin className="h-3.5 w-3.5" />
+                                      {meeting.address}
+                                    </div>
+                                  )}
+                                  {meeting.notes && (
+                                    <div className="text-gray-600 text-sm mt-2">
+                                      {meeting.notes}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex gap-2 md:flex-col">
+                                {meeting.type === "virtual" && meeting.link && (
+                                  <Button size="sm" className="bg-[#9b87f5] hover:bg-[#8b77e5] text-white">
+                                    Join Meeting
+                                  </Button>
+                                )}
+                                <Button size="sm" variant="outline">
+                                  Reschedule
+                                </Button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className="w-full bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8b77e5] hover:to-[#6E59A5]">
+                        Schedule New Meeting
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
                 
-                {/* Find Meetings Card */}
-                <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h3 className="text-lg font-medium mb-2">Find Meetings</h3>
-                  <p className="text-sm text-gray-300 mb-2">
-                    Connect with local and online NA meetings.
-                  </p>
-                  <div className="flex">
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                      onClick={showMeetings}
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Find Meetings
-                    </Button>
-                  </div>
-                </Card>
+                {/* Current Step Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="md:col-span-3"
+                >
+                  <Card className="bg-white border-[#9b87f5]/30">
+                    <CardHeader className="pb-2 bg-gradient-to-r from-[#9b87f5]/10 to-transparent">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <CheckSquare className="h-5 w-5 text-[#9b87f5]" />
+                        Current Step Work
+                      </CardTitle>
+                      <CardDescription>Your progress in the 12-step journey</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div>
+                            <h3 className="font-semibold text-lg text-blue-800">Step 3: Surrender & Decision</h3>
+                            <p className="text-blue-600 max-w-2xl">
+                              "We made a decision to turn our will and our lives over to the care of God as we understood Him."
+                            </p>
+                          </div>
+                          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200">
+                            In Progress
+                          </Badge>
+                        </div>
+                        
+                        <div className="mt-4">
+                          <h4 className="text-sm font-semibold text-blue-800 mb-2">This Week's Focus:</h4>
+                          <ul className="text-sm text-blue-700 space-y-1">
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-green-600" />
+                              Complete the Step 3 worksheet by Thursday
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Journal about your concept of surrender daily
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckSquare className="h-4 w-4 mt-0.5 text-blue-600" />
+                              Practice the Step 3 prayer each morning and evening
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center border-t border-gray-100 pt-4">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-600">Next step review meeting: July 15, 2023</span>
+                        </div>
+                        <Button variant="link" className="text-[#9b87f5]" onClick={() => setActiveTab("twelve-steps")}>
+                          View All Steps
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </TabsContent>
-
-          <TabsContent value="steps">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {twelveSteps.map((step, index) => (
-                <Card key={index} className="p-4 border border-[#B87333]/20 bg-white/5">
-                  <h3 className="text-lg font-medium mb-2 text-[#B87333]">Step {index + 1}</h3>
-                  <p className="text-sm text-gray-300">{step}</p>
+          
+          {/* Recovery Journal Tab */}
+          <TabsContent value="journal">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              {/* New Journal Entry Section */}
+              <Card className="bg-white">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <PenSquare className="h-5 w-5 text-[#9b87f5]" />
+                    Write New Journal Entry
+                  </CardTitle>
+                  <CardDescription>
+                    Document your recovery journey, thoughts, and experiences
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={newJournalEntry}
+                    onChange={(e) => setNewJournalEntry(e.target.value)}
+                    placeholder="How are you feeling today? What challenges or victories did you experience?"
+                    className="min-h-[120px] focus-visible:ring-[#9b87f5]"
+                  />
+                  
+                  <div className="mt-4">
+                    <h4 className="text-sm font-medium mb-2">How are you feeling today?</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["great", "good", "okay", "challenging", "difficult"].map((mood) => (
+                        <button
+                          key={mood}
+                          type="button"
+                          onClick={() => setSelectedMood(mood)}
+                          className={`inline-flex items-center gap-1 px-3 py-1 rounded-full border transition-colors ${
+                            selectedMood === mood
+                              ? getMoodColor(mood)
+                              : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                          }`}
+                        >
+                          {getMoodEmoji(mood)} {mood.charAt(0).toUpperCase() + mood.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="shareWithSponsor"
+                      checked={isSharing}
+                      onChange={() => setIsSharing(!isSharing)}
+                      className="mr-2"
+                    />
+                    <label htmlFor="shareWithSponsor" className="text-sm text-gray-700">
+                      Share this entry with my sponsor
+                    </label>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-end">
+                  <Button 
+                    onClick={handleSubmitJournal}
+                    className="bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8b77e5] hover:to-[#6E59A5]"
+                    disabled={!newJournalEntry.trim() || !selectedMood}
+                  >
+                    Save Journal Entry
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              {/* Journal Entries List */}
+              <div>
+                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-[#9b87f5]" />
+                  Your Journal Entries
+                </h2>
+                
+                <div className="space-y-4">
+                  {journalEntries.map((entry) => (
+                    <motion.div
+                      key={entry.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                    >
+                      <Card className="bg-white hover:shadow-md transition-all">
+                        <CardHeader className="pb-2">
+                          <div className="flex justify-between items-start">
+                            <CardTitle className="text-lg">{entry.date}</CardTitle>
+                            <Badge className={`${getMoodColor(entry.mood)}`}>
+                              {getMoodEmoji(entry.mood)} {entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-700 whitespace-pre-line">{entry.content}</p>
+                        </CardContent>
+                        <CardFooter className="flex justify-between items-center pt-2 border-t border-gray-100">
+                          <div className="text-sm text-gray-500 flex items-center gap-1">
+                            {entry.isShared ? (
+                              <>
+                                <Eye className="h-3.5 w-3.5 text-blue-500" />
+                                <span className="text-blue-600">Shared with sponsor</span>
+                              </>
+                            ) : (
+                              <>
+                                <EyeOff className="h-3.5 w-3.5 text-gray-500" />
+                                <span>Private entry</span>
+                              </>
+                            )}
+                          </div>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm" className="text-gray-600">
+                              <PenSquare className="h-3.5 w-3.5 mr-1" />
+                              Edit
+                            </Button>
+                            {!entry.isShared && (
+                              <Button variant="outline" size="sm" className="text-blue-600 border-blue-200">
+                                <Share2 className="h-3.5 w-3.5 mr-1" />
+                                Share
+                              </Button>
+                            )}
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </TabsContent>
+          
+          {/* 12 Steps Progress Tab */}
+          <TabsContent value="twelve-steps">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-[#9b87f5]" />
+                  Your 12 Steps Journey
+                </h2>
+                <p className="text-gray-600 mb-6">
+                  Track your progress through each of the 12 steps with guidance from your sponsor.
+                </p>
+                
+                <div className="space-y-4">
+                  {sponsorshipSteps.map((step) => (
+                    <motion.div
+                      key={step.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Card className={step.status === "in-progress" ? "border-[#9b87f5]/30" : ""}>
+                        <CardHeader 
+                          className={`pb-4 ${step.status === "in-progress" ? "bg-[#9b87f5]/5" : ""} cursor-pointer`}
+                          onClick={() => toggleExpandStep(step.id)}
+                        >
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              {step.status === "completed" ? (
+                                <div className="p-1 rounded-full bg-green-100">
+                                  <CheckSquare className="h-5 w-5 text-green-600" />
+                                </div>
+                              ) : step.status === "in-progress" ? (
+                                <div className="p-1 rounded-full bg-blue-100">
+                                  <Clock className="h-5 w-5 text-blue-600" />
+                                </div>
+                              ) : (
+                                <div className="p-1 rounded-full bg-gray-100">
+                                  <Lock className="h-5 w-5 text-gray-400" />
+                                </div>
+                              )}
+                              <CardTitle className="text-base">{step.title}</CardTitle>
+                            </div>
+                            <div className="flex items-center">
+                              <Badge className={getStatusColor(step.status)}>
+                                {step.status === "completed"
+                                  ? "Completed"
+                                  : step.status === "in-progress"
+                                  ? "In Progress"
+                                  : "Upcoming"}
+                              </Badge>
+                              <ChevronDown
+                                className={`ml-2 h-5 w-5 transition-transform ${
+                                  expandedStep === step.id ? "rotate-180" : ""
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        </CardHeader>
+                        
+                        <AnimatePresence>
+                          {expandedStep === step.id && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <CardContent className="pt-0">
+                                <p className="text-gray-700 mb-4">{step.description}</p>
+                                
+                                <div className="mb-4">
+                                  <h4 className="font-medium mb-2 text-sm">Working this step:</h4>
+                                  <ul className="space-y-2">
+                                    {step.tips.map((tip, idx) => (
+                                      <li key={idx} className="flex items-start gap-2 text-sm">
+                                        <div className="mt-1 text-[#9b87f5]">•</div>
+                                        <span className="text-gray-700">{tip}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                
+                                {step.status === "in-progress" && (
+                                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                                    <Button className="bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8b77e5] hover:to-[#6E59A5]">
+                                      <Download className="h-4 w-4 mr-2" />
+                                      Download Step Worksheet
+                                    </Button>
+                                    <Button variant="outline">
+                                      <Upload className="h-4 w-4 mr-2" />
+                                      Upload Completed Work
+                                    </Button>
+                                  </div>
+                                )}
+                                
+                                {step.status === "completed" && (
+                                  <div className="flex items-center gap-2 text-green-700 bg-green-50 p-3 rounded-md border border-green-100">
+                                    <CheckSquare className="h-5 w-5 text-green-600" />
+                                    <span>You completed this step on June 15, 2023</span>
+                                  </div>
+                                )}
+                                
+                                {step.status === "upcoming" && (
+                                  <div className="flex items-center gap-2 text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-100">
+                                    <AlertTriangle className="h-5 w-5 text-amber-500" />
+                                    <span>Complete the previous steps before starting this one</span>
+                                  </div>
+                                )}
+                              </CardContent>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </TabsContent>
+          
+          {/* Resources & Tools Tab */}
+          <TabsContent value="resources">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-8"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {/* Resources shared by your sponsor */}
+                <Card className="bg-white h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-[#9b87f5]" />
+                      From Your Sponsor
+                    </CardTitle>
+                    <CardDescription>Resources shared specifically for your recovery</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pb-6">
+                    <div className="space-y-4">
+                      {resources.map((resource) => (
+                        <motion.a
+                          key={resource.id}
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                          whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                        >
+                          <div className="p-4 border border-gray-100 rounded-lg hover:shadow-sm hover:border-[#9b87f5]/20 transition-all">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-[#9b87f5]/10 rounded-full flex-shrink-0">
+                                {resource.icon}
+                              </div>
+                              <div>
+                                <h4 className="font-medium text-gray-900">{resource.title}</h4>
+                                <p className="text-gray-600 text-sm mt-1">{resource.description}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.a>
+                      ))}
+                    </div>
+                  </CardContent>
                 </Card>
-              ))}
-            </div>
-            
-            {/* 12 Traditions Card */}
-            <div className="mt-6">
-              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                <h3 className="text-lg font-medium mb-2">12 Traditions</h3>
-                <p className="text-sm text-gray-300 mb-2">
-                  Explore the guiding principles that keep our fellowship united.
-                </p>
-                <div className="flex">
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                    onClick={showTraditions}
-                  >
-                    <Users className="h-4 w-4 mr-2" />
-                    View Traditions
+                
+                {/* Step-specific resources */}
+                <Card className="bg-white h-full">
+                  <CardHeader className="bg-blue-50">
+                    <CardTitle className="flex items-center gap-2">
+                      <CheckSquare className="h-5 w-5 text-blue-600" />
+                      Step 3 Resources
+                    </CardTitle>
+                    <CardDescription className="text-blue-700">Specialized materials for your current step</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pb-6 pt-6">
+                    <div className="space-y-4">
+                      <div className="p-4 border border-blue-100 rounded-lg bg-blue-50">
+                        <h4 className="font-medium text-blue-800 mb-2">The Step 3 Prayer</h4>
+                        <blockquote className="italic text-blue-700 border-l-2 border-blue-300 pl-3">
+                          "God, I offer myself to Thee – to build with me and to do with me as Thou wilt. Relieve me of the bondage of self, that I may better do Thy will. Take away my difficulties, that victory over them may bear witness to those I would help of Thy Power, Thy Love, and Thy Way of life. May I do Thy will always!"
+                        </blockquote>
+                      </div>
+                      
+                      <div className="p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 rounded-full">
+                            <FileText className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900">Step 3 Worksheet</h4>
+                            <p className="text-gray-600 text-sm mt-1">Complete this worksheet before your next meeting</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 rounded-full">
+                            <Video className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900">Understanding Higher Power</h4>
+                            <p className="text-gray-600 text-sm mt-1">Video discussing different concepts of a higher power</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 rounded-full">
+                            <Download className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900">Daily Surrender Meditation</h4>
+                            <p className="text-gray-600 text-sm mt-1">10-minute audio guide for practicing surrender</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Community Resources */}
+              <div>
+                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <Users className="h-5 w-5 text-[#9b87f5]" />
+                  Recovery Community Resources
+                </h2>
+                
+                <div className="bg-gradient-to-r from-[#9b87f5]/10 to-transparent p-6 rounded-lg border border-[#9b87f5]/30 mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <Button className="h-auto py-6 px-4 flex flex-col items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200">
+                      <MapPin className="h-6 w-6 text-[#9b87f5]" />
+                      <div>
+                        <h3 className="text-base font-medium">Find Local Meetings</h3>
+                        <p className="text-xs text-gray-600 mt-1">NA/AA meetings near you</p>
+                      </div>
+                    </Button>
+                    <Button className="h-auto py-6 px-4 flex flex-col items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200">
+                      <Users className="h-6 w-6 text-[#9b87f5]" />
+                      <div>
+                        <h3 className="text-base font-medium">Online Forums</h3>
+                        <p className="text-xs text-gray-600 mt-1">Connect with the recovery community</p>
+                      </div>
+                    </Button>
+                    <Button className="h-auto py-6 px-4 flex flex-col items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200">
+                      <Book className="h-6 w-6 text-[#9b87f5]" />
+                      <div>
+                        <h3 className="text-base font-medium">Recovery Literature</h3>
+                        <p className="text-xs text-gray-600 mt-1">Books, pamphlets and guides</p>
+                      </div>
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-center">
+                  <Button variant="link" className="text-[#9b87f5]">
+                    View All Resources
+                    <ArrowRight className="ml-1 h-4 w-4" />
                   </Button>
                 </div>
-              </Card>
-            </div>
-            
-            {/* Find Meetings Card */}
-            <div className="mt-4">
-              <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-                <h3 className="text-lg font-medium mb-2">Find Meetings</h3>
-                <p className="text-sm text-gray-300 mb-2">
-                  Connect with local and online NA meetings.
-                </p>
-                <div className="flex">
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-[#B87333]/50 text-[#B87333] hover:bg-[#B87333]/10 hover:text-white"
-                    onClick={showMeetings}
-                  >
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Find Meetings
-                  </Button>
-                </div>
-              </Card>
-            </div>
+              </div>
+            </motion.div>
           </TabsContent>
         </Tabs>
       </div>
-
-      {/* Traditions Dialog */}
-      <Dialog open={traditionsOpen} onOpenChange={setTraditionsOpen}>
-        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-light">
-              The <span className="text-[#B87333]">12 Traditions</span> of NA
-            </DialogTitle>
-            <DialogDescription className="text-gray-300">
-              Guiding principles that help NA groups function effectively
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
-            {traditions.map((tradition, index) => (
-              <Card key={index} className="p-4 border border-[#B87333]/20 bg-white/5">
-                <h3 className="text-lg font-medium mb-2 text-[#B87333]">Tradition {index + 1}</h3>
-                <p className="text-sm text-gray-300">{tradition}</p>
-              </Card>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Meetings Dialog */}
-      <Dialog open={meetingsOpen} onOpenChange={setMeetingsOpen}>
-        <DialogContent className="bg-[#1a1a1f] border border-[#B87333]/20 text-white max-w-4xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-light">
-              Find NA <span className="text-[#B87333]">Meetings</span>
-            </DialogTitle>
-            <DialogDescription className="text-gray-300">
-              Connect with your local NA community or join virtual meetings worldwide
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 md:grid-cols-2 mt-4">
-            <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-              <h4 className="text-lg font-medium mb-2">Local Meetings</h4>
-              <p className="text-sm text-gray-300 mb-4">
-                Find in-person meetings in your area.
-              </p>
-              <Button 
-                className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
-                onClick={() => {
-                  window.open("https://www.na.org/meetingsearch/", "_blank");
-                  toast({
-                    title: "Opening NA Meeting Search",
-                    description: "Redirecting you to the official NA meeting search page",
-                  });
-                }}
-              >
-                Search Local Meetings
-              </Button>
-            </Card>
-            <Card className="p-4 border border-[#B87333]/20 bg-white/5">
-              <h4 className="text-lg font-medium mb-2">Virtual Meetings</h4>
-              <p className="text-sm text-gray-300 mb-4">
-                Join online meetings from anywhere.
-              </p>
-              <Button 
-                className="w-full bg-[#B87333] hover:bg-[#B87333]/80"
-                onClick={() => {
-                  window.open("https://virtual-na.org/", "_blank");
-                  toast({
-                    title: "Opening Virtual NA Meetings",
-                    description: "Redirecting you to the virtual NA meetings page",
-                  });
-                }}
-              >
-                Join Virtual Meetings
-              </Button>
-            </Card>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
+  );
+};
+
+// Missing components for the imports
+const Users = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+};
+
+const User = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+};
+
+const Mail = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+};
+
+const MapPin = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+};
+
+const Eye = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+};
+
+const EyeOff = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+      <line x1="2" x2="22" y1="2" y2="22" />
+    </svg>
+  );
+};
+
+const Lock = ({ className }: { className?: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
   );
 };
 
