@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Heart, Image, X, RefreshCw, Sparkles, Stars, Flower } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -145,7 +144,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
               <Sparkles className="h-full w-full text-[#FECFEF] animate-pulse" style={{animationDuration: '3s', animationDelay: '0.5s'}} />
             </div>
           </div>
-          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#FF9A9E] via-[#F6416C] to-[#FECFEF] tracking-tight">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF9A9E] via-[#ffffff] to-[#ffffff] tracking-tight">
             {translations.title}
           </span>
         </h2>

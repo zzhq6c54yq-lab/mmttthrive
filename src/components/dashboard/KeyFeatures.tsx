@@ -78,11 +78,11 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
 
   return (
     <div className="mt-8">
-      <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2 text-white">
+      <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
         <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
           <Heart className="h-5 w-5 text-[#9b87f5]" />
         </div>
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] to-[#ffffff] border-b-2 border-[#9b87f5]/30 pb-1">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#ffffff] to-[#ffffff] border-b-2 border-[#9b87f5]/30 pb-1">
           Key Features
         </span>
       </h2>

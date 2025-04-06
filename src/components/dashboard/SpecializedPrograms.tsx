@@ -78,9 +78,9 @@ const SpecializedPrograms: React.FC = () => {
   return (
     <div className="mb-10">
       <div className="mb-6 relative">
-        <h2 className="text-3xl font-bold text-gray-800 inline-flex items-center gap-3 relative">
+        <h2 className="text-3xl font-bold inline-flex items-center gap-3 relative">
           <Sparkles className="h-6 w-6 text-[#B87333]" />
-          <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] tracking-tight">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#ffffff] tracking-tight">
             {translations.title}
           </span>
         </h2>

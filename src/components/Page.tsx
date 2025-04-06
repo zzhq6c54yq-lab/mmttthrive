@@ -110,7 +110,7 @@ const Page: React.FC<PageProps> = ({
             )}
             
             <h1 className="text-lg md:text-xl font-light tracking-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#e5c5a1] drop-shadow-sm">{title}</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#ffffff] drop-shadow-sm">{title}</span>
             </h1>
           </div>
           
