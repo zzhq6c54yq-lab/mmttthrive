@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown, ChevronUp } from "lucide-react";
@@ -20,7 +19,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
   const affirmationScrollRef = React.useRef<HTMLDivElement>(null);
   const { isSpanish } = useTranslation();
   
-  // Translations
   const translations = {
     continue: isSpanish ? "Continuar" : "Continue",
     previous: isSpanish ? "Anterior" : "Previous",
@@ -33,8 +31,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     scrollDown: isSpanish ? "Desplázate para más" : "Scroll down for more",
     scrollUp: isSpanish ? "Desplázate hacia arriba" : "Scroll up for more"
   };
-  
-  // Enhanced Happy affirmations - longer and more heartfelt
+
   const happyAffirmations = isSpanish 
     ? [
         "Tu alegría es un faro que ilumina a todos los que te rodean. Esta energía positiva que llevas dentro es un regalo precioso – aprovéchala hoy para sembrar semillas de esperanza y optimismo en tu camino y en el de los demás.",
@@ -50,8 +47,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         "The bright outlook you have today is like a blank canvas full of infinite possibilities. Each moment of joy opens doors to amazing experiences and profound connections waiting just around the corner.",
         "In this moment of happiness, give yourself the gift of being fully present. Feel the warmth of this emotion, let it permeate every cell in your body. You've created this feeling, and you can return to it anytime – it's your anchor, your safe harbor."
       ];
-  
-  // Enhanced OK affirmations - longer and more heartfelt
+
   const okAffirmations = isSpanish 
     ? [
         "Estar 'más o menos' es un estado de auténtica sabiduría – un lugar de equilibrio donde puedes observar tus experiencias con mayor claridad. En este espacio, estás construyendo una base sólida para decisiones conscientes que honran quién eres verdaderamente.",
@@ -67,8 +63,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         "This balanced state gives you a unique clarity that others might overlook. From here, you can see hidden opportunities and subtle pathways that lead to genuine growth and deeper connections.",
         "You're exactly where you need to be right now – not higher, not lower, but precisely here. In this simplicity lies profound perfection, an acknowledgment that every part of your journey, even the 'ordinary' moments, is essential and valuable."
       ];
-  
-  // Enhanced Neutral affirmations - longer and more heartfelt
+
   const neutralAffirmations = isSpanish
     ? [
         "Este espacio neutral que habitas ahora es como tierra fértil esperando semillas – un lienzo en blanco rebosante de potencial creativo. En esta quietud, tus pensamientos más auténticos e intuiciones más profundas tienen espacio para emerger y ser escuchados.",
@@ -84,8 +79,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         "From this centered place, every step you take can be deliberate and meaningful. Don't underestimate the transformative power of this neutrality – it's from calmness that the clearest decisions and most lasting changes are born.",
         "Your steady presence creates peaceful ripples extending far beyond what you can see. Like a stone gently dropped into a still lake, your serenity subtly influences everyone around you, offering a sanctuary of calm in an often chaotic world."
       ];
-  
-  // Enhanced Down affirmations - longer and more heartfelt
+
   const downAffirmations = isSpanish
     ? [
         "Incluso en estos momentos difíciles, sigues presentándote – esa es una forma de valentía que pocos reconocen pero que merece ser celebrada. Tu disposición a sentir plenamente, a no apartarte de las emociones complicadas, revela una fortaleza interior extraordinaria.",
@@ -101,8 +95,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         "Every emotion flowing through you, even the difficult ones, adds a dimension of depth to your life experience. Like layers in a beautiful painting, these darker tones create contrast, texture, and unexpected beauty on the canvas of your existence.",
         "You have successfully made it through absolutely every difficult day in your life so far – that's a perfect 100% success rate. In each of those moments you likely doubted, just as you might now, but look back and see the path you've walked, a testament to your amazing ability to keep going."
       ];
-  
-  // Enhanced Sad affirmations - longer and more heartfelt
+
   const sadAffirmations = isSpanish
     ? [
         "Tu tristeza es un testimonio de la profundidad con la que puedes amar, conectar y sentir. Como un océano profundo, contiene mundos enteros de comprensión, empatía y sabiduría que solo pueden ser explorados por aquellos con corazones lo suficientemente valientes para sumergirse por completo.",
@@ -118,8 +111,7 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
         "This moment is teaching you something invaluable about yourself, revealing facets of your heart and soul that might remain hidden in easier times. These revelations, though painful now, are precious gems that will illuminate your path forward.",
         "Tomorrow brings new light – a fresh dawn that won't erase what you've felt, but will integrate it into the larger tapestry of who you are. And remember: you are far stronger than you give yourself credit for, more resilient than you believe, and more loved than you can imagine right now."
       ];
-  
-  // Enhanced Overwhelmed affirmations - longer and more heartfelt
+
   const overwhelmedAffirmations = isSpanish
     ? [
         "La intensidad que estás sintiendo ahora contiene un potencial extraordinario – como el combustible concentrado que impulsa los avances más significativos de nuestras vidas. Cuando te sientas más abrumado, recuerda que esta energía puede ser redirigida y transformada en creatividad, resolución y crecimiento.",
@@ -219,7 +211,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
           transition={{ duration: 0.7 }}
           className="max-w-2xl w-full mx-auto bg-gradient-to-br from-[#21213f]/90 to-[#2a294f]/90 backdrop-blur-lg rounded-2xl overflow-hidden shadow-xl border border-white/10"
         >
-          {/* Header */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/20 via-transparent to-[#B87333]/20 opacity-50"></div>
             <div className="px-6 py-6 flex flex-col items-center relative z-10">
@@ -234,7 +225,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             </div>
           </div>
           
-          {/* Affirmation card */}
           <div className="bg-black/20 backdrop-blur-md border-t border-white/10 p-6 relative">
             <ScrollArea 
               className="h-[280px] pr-4 overflow-auto" 
@@ -248,17 +238,18 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.2, duration: 0.7 }}
-                    className="bg-gradient-to-br from-[#B87333]/10 to-[#E5C5A1]/5 backdrop-blur-sm p-5 rounded-xl border border-[#B87333]/20"
+                    className="bg-gradient-to-br from-[#21213f]/80 to-[#2a294f]/80 backdrop-blur-sm p-5 rounded-xl border border-[#B87333]/30"
                   >
-                    <p className="text-lg text-white/90 leading-relaxed font-light">
-                      "{affirmation}"
+                    <p className="text-lg text-white/95 leading-relaxed font-light">
+                      <span className="text-[#E5C5A1]">"</span>
+                      <span className="text-white">{affirmation}</span>
+                      <span className="text-[#E5C5A1]">"</span>
                     </p>
                   </motion.div>
                 ))}
               </div>
             </ScrollArea>
             
-            {/* Scroll indicators */}
             {!isScrolledToBottom && (
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-sm rounded-full py-1 px-3 flex items-center gap-1 text-xs text-white/70 shadow-lg border border-white/10 animate-bounce">
                 <ChevronDown className="h-3 w-3" />
@@ -274,7 +265,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             )}
           </div>
           
-          {/* Action buttons */}
           <div className="bg-[#1a1a2e]/80 backdrop-blur-md border-t border-white/5 px-6 py-4 flex justify-between">
             <Button
               variant="outline"
