@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -64,7 +65,7 @@ const MentalWellnessTools: React.FC = () => {
     },
     {
       title: "Positive Affirmation",
-      description: "Repeat to yourself: "I am capable of handling whatever comes my way today."",
+      description: 'Repeat to yourself: "I am capable of handling whatever comes my way today."',
       icon: <MessageSquare className="h-5 w-5 text-purple-500" />,
       category: "Positive Thinking"
     },
