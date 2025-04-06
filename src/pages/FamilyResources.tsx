@@ -6,7 +6,8 @@ import {
   ArrowLeft, Heart, Users, BookOpen, Calendar, MessageSquare, 
   PhoneCall, Video, HandHeart, Share2, ChevronRight, Star,
   GraduationCap, FileText, Clock, MapPin, Search, Filter, 
-  ThumbsUp, Sparkles, RefreshCw, Link, ExternalLink
+  ThumbsUp, Sparkles, RefreshCw, Link, ExternalLink, 
+  Headphones // Added missing import
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
