@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, BookOpen, List, Calendar, Clock, Save, Download, Star, Sparkles, PenLine, History, ChevronRight, Quote, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
-import HomeButton from "@/components/HomeButton";
+import Page from "@/components/Page";
 
 interface JournalEntry {
   id: string;
@@ -23,6 +23,7 @@ interface JournalEntry {
 }
 
 const Journaling = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [journalEntry, setJournalEntry] = useState("");
   const [journalTitle, setJournalTitle] = useState("");
@@ -252,430 +253,445 @@ const Journaling = () => {
       .map(([tag]) => tag);
   };
 
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M2,2 L5,2 L5,5 L2,5 Z%22 fill=%22%23ffffff%22 fill-opacity=%220.03%22/></svg>')] opacity-20"></div>
-          <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-amber-500/10 to-transparent blur-3xl"></div>
-          <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-amber-500/10 to-transparent blur-3xl"></div>
-        </div>
-        
-        <div className="container px-4 max-w-6xl mx-auto relative z-10">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-            <HomeButton />
+    <Page 
+      title="Therapeutic Journaling" 
+      showBackButton={true} 
+      onBackClick={handleBackClick}
+      fullWidth={true}
+    >
+      <div className="min-h-screen bg-gradient-to-b from-[rgba(91,33,182,0.1)] to-[rgba(124,58,237,0.05)]">
+        <div className="bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white py-12 relative overflow-hidden rounded-xl shadow-lg mb-8">
+          <div className="absolute inset-0 z-0">
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-purple-400/20 to-transparent blur-3xl"></div>
+            <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-purple-500/20 to-transparent blur-3xl"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M2,2 L5,2 L5,5 L2,5 Z%22 fill=%22%23ffffff%22 fill-opacity=%220.03%22/></svg>')] opacity-20"></div>
           </div>
           
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-full bg-amber-500/20">
-              <BookOpen className="h-6 w-6 text-amber-400" />
+          <div className="container px-4 max-w-6xl mx-auto relative z-10">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 rounded-full bg-white/20 shadow-lg">
+                <BookOpen className="h-8 w-8 text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent drop-shadow-sm">Therapeutic Journaling</h1>
             </div>
-            <h1 className="text-4xl md:text-5xl font-light">Therapeutic Journaling</h1>
-          </div>
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <p className="text-xl text-gray-300 max-w-3xl">Express yourself, gain clarity, and track your personal growth journey.</p>
             
-            <div className="flex items-center gap-2 bg-amber-500/10 rounded-lg px-3 py-2">
-              <Star className="h-5 w-5 text-amber-400" />
-              <span className="text-amber-300 font-medium">{streakCount} day streak</span>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <p className="text-xl text-purple-100 max-w-3xl font-light">Express yourself, gain clarity, and track your personal growth journey.</p>
+              
+              <div className="flex items-center gap-2 bg-white/20 rounded-lg px-4 py-2 shadow-md backdrop-blur-sm">
+                <Star className="h-5 w-5 text-yellow-300 drop-shadow-md" />
+                <span className="text-white font-medium text-lg">{streakCount} day streak</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container px-4 py-8 max-w-6xl mx-auto">
-        <div className="bg-amber-100/50 rounded-xl p-5 mb-8 border border-amber-200/50 flex flex-col md:flex-row items-center justify-between">
-          <div className="flex items-center gap-3 mb-4 md:mb-0">
-            <Quote className="h-10 w-10 text-amber-500/70" />
-            <p className="text-gray-700 italic font-light text-lg">{randomQuote}</p>
-          </div>
-          <Button 
-            className="bg-amber-500 hover:bg-amber-600"
-            onClick={() => setActiveTab("write")}
-          >
-            <PenLine className="mr-2 h-4 w-4" />
-            Start Writing
-          </Button>
-        </div>
-        
-        <Tabs defaultValue="write" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="write" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
+        <div className="container px-4 py-8 max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-xl p-5 mb-8 border border-purple-200/30 flex flex-col md:flex-row items-center justify-between backdrop-blur-sm shadow-md">
+            <div className="flex items-center gap-3 mb-4 md:mb-0">
+              <Quote className="h-10 w-10 text-purple-500" />
+              <p className="text-gray-700 italic font-light text-lg">{randomQuote}</p>
+            </div>
+            <Button 
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-md transition-all duration-300 font-medium px-6"
+              onClick={() => setActiveTab("write")}
+            >
               <PenLine className="mr-2 h-4 w-4" />
-              Write
-            </TabsTrigger>
-            <TabsTrigger value="prompts" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
-              <Sparkles className="mr-2 h-4 w-4" />
-              Prompts
-            </TabsTrigger>
-            <TabsTrigger value="history" className="data-[state=active]:bg-amber-500 data-[state=active]:text-white">
-              <History className="mr-2 h-4 w-4" />
-              History
-            </TabsTrigger>
-          </TabsList>
+              Start Writing
+            </Button>
+          </div>
           
-          <TabsContent value="write" className="space-y-6">
-            <Card className="border-amber-200/50 shadow-lg overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100/50 border-b border-amber-200/30">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-amber-500" />
-                    Today's Journal
-                  </CardTitle>
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-1 text-amber-600" />
-                      <span>{new Date().toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-1 text-amber-600" />
-                      <span>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+          <Tabs defaultValue="write" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-8 bg-purple-100/50 p-1">
+              <TabsTrigger 
+                value="write" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-indigo-600 data-[state=active]:text-white transition-all duration-300"
+              >
+                <PenLine className="mr-2 h-4 w-4" />
+                Write
+              </TabsTrigger>
+              <TabsTrigger 
+                value="prompts" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-indigo-600 data-[state=active]:text-white transition-all duration-300"
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                Prompts
+              </TabsTrigger>
+              <TabsTrigger 
+                value="history" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-indigo-600 data-[state=active]:text-white transition-all duration-300"
+              >
+                <History className="mr-2 h-4 w-4" />
+                History
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="write" className="space-y-6">
+              <Card className="border-purple-200/50 shadow-lg overflow-hidden bg-white/80 backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-purple-200/30">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <CardTitle className="flex items-center gap-2 text-purple-800">
+                      <BookOpen className="h-5 w-5 text-purple-500" />
+                      Today's Journal
+                    </CardTitle>
+                    <div className="flex items-center gap-3 text-sm text-gray-500">
+                      <div className="flex items-center">
+                        <Calendar className="h-4 w-4 mr-1 text-purple-600" />
+                        <span>{new Date().toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="h-4 w-4 mr-1 text-purple-600" />
+                        <span>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="pt-6">
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Entry Title (optional)"
-                    className="w-full px-4 py-2 rounded-md border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                    value={journalTitle}
-                    onChange={(e) => setJournalTitle(e.target.value)}
+                </CardHeader>
+                
+                <CardContent className="pt-6">
+                  <div className="mb-4">
+                    <input
+                      type="text"
+                      placeholder="Entry Title (optional)"
+                      className="w-full px-4 py-2 rounded-md border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white/80"
+                      value={journalTitle}
+                      onChange={(e) => setJournalTitle(e.target.value)}
+                    />
+                  </div>
+                  
+                  <Textarea
+                    placeholder="What's on your mind today?"
+                    className="min-h-[300px] mb-4 border-purple-200 focus:ring-purple-500 bg-white/80 text-gray-800"
+                    value={journalEntry}
+                    onChange={(e) => setJournalEntry(e.target.value)}
                   />
-                </div>
-                
-                <Textarea
-                  placeholder="What's on your mind today?"
-                  className="min-h-[300px] mb-4 border-amber-200 focus:ring-amber-500"
-                  value={journalEntry}
-                  onChange={(e) => setJournalEntry(e.target.value)}
-                />
-                
-                <div className="mb-6">
-                  <p className="text-sm font-medium text-gray-700 mb-2">How are you feeling?</p>
-                  <div className="flex flex-wrap gap-2">
-                    {moods.map((mood) => (
-                      <Button
-                        key={mood.name}
-                        type="button"
-                        variant={selectedMood === mood.name ? "default" : "outline"}
-                        className={`${
-                          selectedMood === mood.name 
-                            ? "bg-amber-500 text-white border-amber-500" 
-                            : "border-amber-200 text-gray-700 hover:bg-amber-100/50"
-                        }`}
-                        onClick={() => setSelectedMood(selectedMood === mood.name ? null : mood.name)}
-                      >
-                        <span className="mr-1">{mood.emoji}</span> {mood.name}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="mb-6">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Add tags (optional)</p>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant={selectedTags.includes(tag) ? "default" : "outline"}
-                        className={`
-                          cursor-pointer px-3 py-1 text-xs
-                          ${selectedTags.includes(tag) 
-                            ? "bg-amber-500 hover:bg-amber-600" 
-                            : "bg-transparent text-gray-700 hover:bg-amber-100"}
-                        `}
-                        onClick={() => handleTagToggle(tag)}
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-                  <Button 
-                    className="flex-1 bg-amber-500 hover:bg-amber-600"
-                    onClick={handleSaveEntry}
-                  >
-                    <Save className="mr-2 h-4 w-4" />
-                    Save Entry
-                  </Button>
-                  {downloadUrl && (
-                    <Button 
-                      variant="outline"
-                      className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-100"
-                      asChild
-                    >
-                      <a href={downloadUrl} download={`journal-entry-${new Date().toISOString().split('T')[0]}.txt`} onClick={handleDownload}>
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Entry
-                      </a>
-                    </Button>
-                  )}
-                  <Button 
-                    variant="outline" 
-                    className="flex-1 border-amber-300 text-amber-700 hover:bg-amber-100"
-                    onClick={() => setActiveTab("prompts")}
-                  >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Get Prompt
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-amber-200/50">
-              <CardHeader>
-                <CardTitle className="text-amber-800">Benefits of Journaling</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                    <h3 className="font-medium text-amber-700 mb-2 flex items-center">
-                      <Star className="h-4 w-4 mr-2 text-amber-500" />
-                      Stress Reduction
-                    </h3>
-                    <p className="text-gray-700 text-sm">Reduces stress and anxiety by externalizing thoughts and processing emotions.</p>
-                  </div>
-                  <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                    <h3 className="font-medium text-amber-700 mb-2 flex items-center">
-                      <Star className="h-4 w-4 mr-2 text-amber-500" />
-                      Emotional Processing
-                    </h3>
-                    <p className="text-gray-700 text-sm">Helps identify and process complex emotions in a safe, private space.</p>
-                  </div>
-                  <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                    <h3 className="font-medium text-amber-700 mb-2 flex items-center">
-                      <Star className="h-4 w-4 mr-2 text-amber-500" />
-                      Mental Clarity
-                    </h3>
-                    <p className="text-gray-700 text-sm">Provides clarity and perspective on problems and challenges.</p>
-                  </div>
-                  <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                    <h3 className="font-medium text-amber-700 mb-2 flex items-center">
-                      <Star className="h-4 w-4 mr-2 text-amber-500" />
-                      Self-Discovery
-                    </h3>
-                    <p className="text-gray-700 text-sm">Reveals patterns in your thinking, behavior, and emotional responses.</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="prompts" className="space-y-6">
-            <Card className="border-amber-200/50 mb-6">
-              <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100/50 border-b border-amber-200/30">
-                <CardTitle className="text-amber-800">Need Inspiration?</CardTitle>
-                <CardDescription>
-                  Select a prompt below to jump-start your journal entry
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <motion.div 
-                  className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-center"
-                  animate={{
-                    opacity: animatePrompt ? 0 : 1,
-                    y: animatePrompt ? 10 : 0
-                  }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <p className="text-lg text-amber-800 italic">{prompts[promptIndex]}</p>
-                  <Button 
-                    variant="ghost"
-                    size="sm"
-                    className="mt-2 text-amber-600 hover:text-amber-700 hover:bg-amber-100"
-                    onClick={() => handlePromptSelect(prompts[promptIndex])}
-                  >
-                    Use This Prompt
-                  </Button>
-                </motion.div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {prompts.map((prompt, index) => (
-                    <Card key={index} className="hover:shadow-md transition-all border-amber-200/30">
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          <List className="h-5 w-5 text-amber-500" />
-                          Prompt {index + 1}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-2">
-                        <p className="text-gray-700 mb-4">{prompt}</p>
-                        <Button 
-                          variant="outline" 
-                          className="w-full border-amber-300 text-amber-700 hover:bg-amber-100"
-                          onClick={() => handlePromptSelect(prompt)}
+                  
+                  <div className="mb-6">
+                    <p className="text-sm font-medium text-gray-700 mb-2">How are you feeling?</p>
+                    <div className="flex flex-wrap gap-2">
+                      {moods.map((mood) => (
+                        <Button
+                          key={mood.name}
+                          type="button"
+                          variant={selectedMood === mood.name ? "default" : "outline"}
+                          className={`${
+                            selectedMood === mood.name 
+                              ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white border-purple-500" 
+                              : "border-purple-200 text-gray-700 hover:bg-purple-100/50"
+                          } transition-all duration-300`}
+                          onClick={() => setSelectedMood(selectedMood === mood.name ? null : mood.name)}
                         >
-                          Use This Prompt
+                          <span className="mr-1">{mood.emoji}</span> {mood.name}
                         </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="history" className="space-y-6">
-            <Card className="border-amber-200/50">
-              <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100/50 border-b border-amber-200/30">
-                <div className="flex justify-between items-center">
-                  <CardTitle className="text-amber-800">Journal History</CardTitle>
-                  {journalHistory.length > 0 && (
-                    <Badge className="bg-amber-500">
-                      {journalHistory.length} {journalHistory.length === 1 ? 'entry' : 'entries'}
-                    </Badge>
-                  )}
-                </div>
-                <CardDescription>
-                  Your journey of self-reflection and personal growth
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6">
-                {journalHistory.length > 0 ? (
-                  <div className="space-y-4">
-                    {journalHistory.map((entry) => (
-                      <Card key={entry.id} className="overflow-hidden border-amber-200/30 hover:shadow-md transition-all">
-                        <CardHeader className="pb-2 bg-gradient-to-r from-amber-50/50 to-transparent">
-                          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                            <CardTitle className="text-lg text-amber-800">{entry.title}</CardTitle>
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
-                              <span>{entry.date}</span>
-                              <span>•</span>
-                              <span>{entry.time}</span>
-                            </div>
-                          </div>
-                          {(entry.mood || entry.tags) && (
-                            <div className="flex flex-wrap gap-2 mt-2">
-                              {entry.mood && (
-                                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
-                                  Mood: {entry.mood}
-                                </Badge>
-                              )}
-                              
-                              {entry.tags?.map((tag) => (
-                                <Badge key={tag} variant="outline" className="bg-white text-amber-600 border-amber-200">
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
-                        </CardHeader>
-                        <CardContent className="pt-4">
-                          <p className="text-gray-700 whitespace-pre-line line-clamp-3">
-                            {entry.content}
-                          </p>
-                        </CardContent>
-                        <CardFooter className="border-t border-amber-100 flex justify-between pt-3">
-                          <Button 
-                            variant="ghost" 
-                            className="text-amber-600 hover:text-amber-700 hover:bg-amber-100"
-                            onClick={() => {
-                              setJournalTitle(entry.title);
-                              setJournalEntry(entry.content);
-                              setSelectedMood(entry.mood || null);
-                              setSelectedTags(entry.tags || []);
-                              setActiveTab("write");
-                            }}
-                          >
-                            <MessageSquare className="h-4 w-4 mr-2" />
-                            Continue this entry
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            className="text-red-500 hover:text-red-600 hover:bg-red-50"
-                            onClick={() => deleteEntry(entry.id)}
-                          >
-                            Delete
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="bg-amber-100/70 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-4">
-                      <BookOpen className="h-8 w-8 text-amber-500" />
+                      ))}
                     </div>
-                    <h3 className="text-lg font-medium text-amber-800 mb-2">Your Journal is Empty</h3>
-                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                      Start writing today to build your collection of reflections and insights.
-                    </p>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Add tags (optional)</p>
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant={selectedTags.includes(tag) ? "default" : "outline"}
+                          className={`
+                            cursor-pointer px-3 py-1 text-xs
+                            ${selectedTags.includes(tag) 
+                              ? "bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-700 hover:to-indigo-600" 
+                              : "bg-transparent text-gray-700 hover:bg-purple-100 border-purple-300"}
+                            transition-all duration-300
+                          `}
+                          onClick={() => handleTagToggle(tag)}
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-3">
                     <Button 
-                      className="bg-amber-500 hover:bg-amber-600"
-                      onClick={() => setActiveTab("write")}
+                      className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-md transition-all duration-300"
+                      onClick={handleSaveEntry}
                     >
-                      <PenLine className="mr-2 h-4 w-4" />
-                      Create Your First Entry
+                      <Save className="mr-2 h-4 w-4" />
+                      Save Entry
+                    </Button>
+                    {downloadUrl && (
+                      <Button 
+                        variant="outline"
+                        className="flex-1 border-purple-300 text-purple-700 hover:bg-purple-100"
+                        asChild
+                      >
+                        <a href={downloadUrl} download={`journal-entry-${new Date().toISOString().split('T')[0]}.txt`} onClick={handleDownload}>
+                          <Download className="mr-2 h-4 w-4" />
+                          Download Entry
+                        </a>
+                      </Button>
+                    )}
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 border-purple-300 text-purple-700 hover:bg-purple-100"
+                      onClick={() => setActiveTab("prompts")}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      Get Prompt
                     </Button>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {journalHistory.length > 0 && (
-              <Card className="border-amber-200/50">
+              <Card className="border-purple-200/50 shadow-md bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-amber-800">Journaling Insights</CardTitle>
+                  <CardTitle className="text-purple-800">Benefits of Journaling</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-700 mb-2">Journaling Streak</h3>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-600">Current streak</span>
-                        <span className="text-amber-700 font-medium">{streakCount} days</span>
-                      </div>
-                      <Progress value={Math.min(streakCount * 10, 100)} className="h-2 bg-amber-100">
-                        <div className="h-full bg-amber-500 rounded-full" />
-                      </Progress>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {streakCount < 10 
-                          ? `${10 - streakCount} more days to reach your next milestone!` 
-                          : "You've reached a milestone! Keep going!"}
-                      </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm hover:shadow-md transition-all">
+                      <h3 className="font-medium text-purple-700 mb-2 flex items-center">
+                        <Star className="h-4 w-4 mr-2 text-purple-500" />
+                        Stress Reduction
+                      </h3>
+                      <p className="text-gray-700 text-sm">Reduces stress and anxiety by externalizing thoughts and processing emotions.</p>
                     </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                        <h3 className="text-sm font-medium text-gray-700 mb-1">Total Entries</h3>
-                        <p className="text-2xl font-bold text-amber-600">{journalHistory.length}</p>
-                      </div>
-                      <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                        <h3 className="text-sm font-medium text-gray-700 mb-1">Most Common Mood</h3>
-                        <p className="text-2xl font-bold text-amber-600">
-                          {getMostCommonMood()}
-                        </p>
-                      </div>
-                      <div className="bg-white/70 rounded-lg p-4 border border-amber-100">
-                        <h3 className="text-sm font-medium text-gray-700 mb-1">Frequent Tags</h3>
-                        <div className="flex flex-wrap gap-1">
-                          {getFrequentTags().map(tag => (
-                            <Badge key={tag} variant="outline" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm hover:shadow-md transition-all">
+                      <h3 className="font-medium text-purple-700 mb-2 flex items-center">
+                        <Star className="h-4 w-4 mr-2 text-purple-500" />
+                        Emotional Processing
+                      </h3>
+                      <p className="text-gray-700 text-sm">Helps identify and process complex emotions in a safe, private space.</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm hover:shadow-md transition-all">
+                      <h3 className="font-medium text-purple-700 mb-2 flex items-center">
+                        <Star className="h-4 w-4 mr-2 text-purple-500" />
+                        Mental Clarity
+                      </h3>
+                      <p className="text-gray-700 text-sm">Provides clarity and perspective on problems and challenges.</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm hover:shadow-md transition-all">
+                      <h3 className="font-medium text-purple-700 mb-2 flex items-center">
+                        <Star className="h-4 w-4 mr-2 text-purple-500" />
+                        Self-Discovery
+                      </h3>
+                      <p className="text-gray-700 text-sm">Reveals patterns in your thinking, behavior, and emotional responses.</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            )}
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+            
+            <TabsContent value="prompts" className="space-y-6">
+              <Card className="border-purple-200/50 mb-6 shadow-lg bg-white/80 backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-purple-200/30">
+                  <CardTitle className="text-purple-800">Need Inspiration?</CardTitle>
+                  <CardDescription className="text-gray-600">
+                    Select a prompt below to jump-start your journal entry
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <motion.div 
+                    className="bg-gradient-to-r from-purple-100/80 to-indigo-100/80 border border-purple-200 rounded-lg p-6 mb-8 text-center shadow-md"
+                    animate={{
+                      opacity: animatePrompt ? 0 : 1,
+                      y: animatePrompt ? 10 : 0
+                    }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <p className="text-lg text-purple-800 italic font-medium">{prompts[promptIndex]}</p>
+                    <Button 
+                      variant="ghost"
+                      size="sm"
+                      className="mt-2 text-purple-600 hover:text-purple-700 hover:bg-purple-100"
+                      onClick={() => handlePromptSelect(prompts[promptIndex])}
+                    >
+                      Use This Prompt
+                    </Button>
+                  </motion.div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {prompts.map((prompt, index) => (
+                      <Card key={index} className="hover:shadow-lg transition-all duration-300 border-purple-200/30 bg-white/70">
+                        <CardHeader className="pb-2 bg-gradient-to-r from-purple-50/80 to-transparent border-b border-purple-100/50">
+                          <CardTitle className="text-lg flex items-center gap-2 text-purple-700">
+                            <List className="h-5 w-5 text-purple-500" />
+                            Prompt {index + 1}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="pt-3">
+                          <p className="text-gray-700 mb-4">{prompt}</p>
+                          <Button 
+                            variant="outline" 
+                            className="w-full border-purple-300 text-purple-700 hover:bg-purple-100 transition-all duration-300"
+                            onClick={() => handlePromptSelect(prompt)}
+                          >
+                            <Sparkles className="mr-2 h-4 w-4" />
+                            Use This Prompt
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="history" className="space-y-6">
+              <Card className="border-purple-200/50 bg-white/80 backdrop-blur-sm shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-purple-200/30">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-purple-800">Journal History</CardTitle>
+                    {journalHistory.length > 0 && (
+                      <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600">
+                        {journalHistory.length} {journalHistory.length === 1 ? 'entry' : 'entries'}
+                      </Badge>
+                    )}
+                  </div>
+                  <CardDescription className="text-gray-600">
+                    Your journey of self-reflection and personal growth
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  {journalHistory.length > 0 ? (
+                    <div className="space-y-4">
+                      {journalHistory.map((entry) => (
+                        <Card key={entry.id} className="overflow-hidden border-purple-200/30 hover:shadow-md transition-all bg-white/90">
+                          <CardHeader className="pb-2 bg-gradient-to-r from-purple-50/50 to-transparent">
+                            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                              <CardTitle className="text-lg text-purple-800">{entry.title}</CardTitle>
+                              <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <span>{entry.date}</span>
+                                <span>•</span>
+                                <span>{entry.time}</span>
+                              </div>
+                            </div>
+                            {(entry.mood || entry.tags) && (
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {entry.mood && (
+                                  <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                                    Mood: {entry.mood}
+                                  </Badge>
+                                )}
+                                
+                                {entry.tags?.map((tag) => (
+                                  <Badge key={tag} variant="outline" className="bg-white text-indigo-600 border-indigo-200">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <p className="text-gray-700 whitespace-pre-line line-clamp-3">
+                              {entry.content}
+                            </p>
+                          </CardContent>
+                          <CardFooter className="border-t border-purple-100 flex justify-between pt-3">
+                            <Button 
+                              variant="ghost" 
+                              className="text-purple-600 hover:text-purple-700 hover:bg-purple-100"
+                              onClick={() => {
+                                setJournalTitle(entry.title);
+                                setJournalEntry(entry.content);
+                                setSelectedMood(entry.mood || null);
+                                setSelectedTags(entry.tags || []);
+                                setActiveTab("write");
+                              }}
+                            >
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Continue this entry
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                              onClick={() => deleteEntry(entry.id)}
+                            >
+                              Delete
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-4 shadow-inner">
+                        <BookOpen className="h-8 w-8 text-purple-500" />
+                      </div>
+                      <h3 className="text-lg font-medium text-purple-800 mb-2">Your Journal is Empty</h3>
+                      <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                        Start writing today to build your collection of reflections and insights.
+                      </p>
+                      <Button 
+                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-colors duration-300 shadow-md"
+                        onClick={() => setActiveTab("write")}
+                      >
+                        <PenLine className="mr-2 h-4 w-4" />
+                        Create Your First Entry
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {journalHistory.length > 0 && (
+                <Card className="border-purple-200/50 bg-white/80 backdrop-blur-sm shadow-md">
+                  <CardHeader className="border-b border-purple-100/50">
+                    <CardTitle className="text-purple-800">Journaling Insights</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-700 mb-2">Journaling Streak</h3>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-gray-600">Current streak</span>
+                          <span className="text-purple-700 font-medium">{streakCount} days</span>
+                        </div>
+                        <Progress value={Math.min(streakCount * 10, 100)} className="h-3 bg-purple-100 rounded-full">
+                          <div className="h-full bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full" />
+                        </Progress>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {streakCount < 10 
+                            ? `${10 - streakCount} more days to reach your next milestone!` 
+                            : "You've reached a milestone! Keep going!"}
+                        </p>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm">
+                          <h3 className="text-sm font-medium text-gray-700 mb-1">Total Entries</h3>
+                          <p className="text-2xl font-bold text-purple-600">{journalHistory.length}</p>
+                        </div>
+                        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm">
+                          <h3 className="text-sm font-medium text-gray-700 mb-1">Most Common Mood</h3>
+                          <p className="text-2xl font-bold text-purple-600">
+                            {getMostCommonMood()}
+                          </p>
+                        </div>
+                        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 border border-purple-100 shadow-sm">
+                          <h3 className="text-sm font-medium text-gray-700 mb-1">Frequent Tags</h3>
+                          <div className="flex flex-wrap gap-1">
+                            {getFrequentTags().map(tag => (
+                              <Badge key={tag} variant="outline" className="text-xs border-purple-300 text-purple-700">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </div>
+    </Page>
   );
 };
 
 export default Journaling;
+

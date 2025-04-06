@@ -66,7 +66,6 @@ function App() {
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
         <Route path="/my-sponsor" element={<MySponsor />} />
-        <Route path="/workshops" element={<Workshops />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

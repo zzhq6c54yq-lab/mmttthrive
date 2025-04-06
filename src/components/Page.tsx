@@ -53,7 +53,7 @@ const Page: React.FC<PageProps> = ({
     if (onBackClick) {
       onBackClick();
     } else {
-      // Default behavior: go back to previous page
+      // Default behavior: go back to previous page using the browser history
       navigate(-1);
     }
   };
