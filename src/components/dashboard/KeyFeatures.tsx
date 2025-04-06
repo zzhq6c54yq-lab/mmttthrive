@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   Brain, Library, Users, Heart, GraduationCap, CalendarRange, LeafyGreen,
   Moon, HandHeart, ListChecks, FlameKindling, Footprints, ArrowRight,
-  Sparkles, Video, Headphones, HeartHandshake
+  Sparkles, Video, Headphones, HeartHandshake, MessageSquare
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -76,6 +76,11 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/resource-library"
     },
     {
+      title: isSpanish ? "Contacto Personalizado" : "Personalized Contact",
+      icon: MessageSquare,
+      path: "/personalized-contact"
+    },
+    {
       title: isSpanish ? "Apoyo Comunitario" : "Community Support",
       icon: Users,
       path: "/community-support"
@@ -124,11 +129,6 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       title: isSpanish ? "Talleres" : "Workshops",
       icon: CalendarRange,
       path: "/workshops"
-    },
-    {
-      title: isSpanish ? "Escritura de Diario" : "Journaling",
-      icon: Heart,
-      path: "/journaling"
     }
   ];
 
