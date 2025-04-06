@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Users, Video, Filter, Search, Clock, MapPin, CalendarDays } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 const DoDWorkshops = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
   
@@ -122,6 +124,32 @@ const DoDWorkshops = () => {
       case 'hybrid': return 'Hybrid Event';
       default: return 'Workshop';
     }
+  };
+
+  const handleViewWorkshop = (workshop) => {
+    toast({
+      title: "Opening Workshop",
+      description: "Loading workshop details",
+      duration: 1500,
+    });
+    
+    // Map military workshop IDs to standard workshop IDs for navigation
+    const workshopMapping = {
+      "w1": "stress-management",
+      "w2": "social-connection",
+      "w3": "emotional-regulation",
+      "w4": "values-alignment",
+      "w5": "self-compassion",
+      "w6": "mindful-communication"
+    };
+    
+    // Navigate to the workshop detail page
+    navigate(`/workshop/${workshopMapping[workshop.id] || workshop.id}`, { 
+      state: { 
+        workshopTitle: workshop.title,
+        activeTab: "content"
+      }
+    });
   };
 
   return (
@@ -239,13 +267,14 @@ const DoDWorkshops = () => {
               <CardFooter className="flex flex-col gap-2">
                 <Button 
                   className="w-full bg-blue-700 hover:bg-blue-800 text-white" 
-                  onClick={() => navigate(`/workshop/${workshop.id}`)}
+                  onClick={() => handleViewWorkshop(workshop)}
                 >
                   View Details
                 </Button>
                 <Button 
                   variant="outline" 
                   className="w-full border-blue-500/50 text-blue-300 hover:bg-blue-900/30"
+                  onClick={() => handleViewWorkshop(workshop)}
                 >
                   Register Now
                 </Button>

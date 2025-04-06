@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { workshopData } from "@/data/workshopData";
 import Page from "@/components/Page";
 import { 
@@ -24,7 +24,7 @@ const Workshops = () => {
     navigate("/");
   };
 
-  const handleJoinWorkshop = (workshopId: string) => {
+  const handleJoinWorkshop = (workshopId: string, workshopTitle: string) => {
     toast({
       title: "Joining Workshop",
       description: "Taking you to the workshop content",
@@ -32,22 +32,22 @@ const Workshops = () => {
     });
     
     // Navigate directly to the workshop content tab
-    navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop" } });
+    navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
   };
 
   return (
     <Page title="Thrive MT Mental Health Workshops" showBackButton={true} onBackClick={handleBack}>
       <div className="space-y-6">
-        <Card className="border border-gray-200 shadow-sm">
+        <Card className="border border-gray-200/10 bg-white/5 backdrop-blur-sm">
           <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
             <div className="flex justify-between items-center">
               <div>
-                <CardTitle className="text-xl text-gray-800">Current Workshops Available</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-xl text-gray-100">Current Workshops Available</CardTitle>
+                <CardDescription className="text-gray-300">
                   Guided 45-minute sessions with Henry to improve your mental wellbeing
                 </CardDescription>
               </div>
-              <Button variant="ghost" size="sm" className="text-gray-500">
+              <Button variant="ghost" size="sm" className="text-gray-400">
                 {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
               </Button>
             </div>
@@ -68,30 +68,45 @@ const Workshops = () => {
                       key={workshop.id}
                       className="relative rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl transform hover:scale-[1.01] group cursor-pointer"
                       style={{
-                        background: `linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%)`,
+                        background: `linear-gradient(135deg, #252535 0%, #1e1e2a 100%)`,
                         borderLeft: `4px solid ${accentColor}`
                       }}
-                      onClick={() => handleJoinWorkshop(workshop.id)}
+                      onClick={() => handleJoinWorkshop(workshop.id, workshop.title)}
                     >
-                      <div className="p-6">
+                      <div className="aspect-video overflow-hidden">
+                        <img 
+                          src={`https://images.unsplash.com/photo-${workshop.id === 'mindful-communication' 
+                            ? '1581091226825-a6a2a5aee158' 
+                            : workshop.id === 'emotional-regulation' 
+                            ? '1649972904349-6e44c42644a7' 
+                            : workshop.id === 'stress-management'
+                            ? '1488590528505-98d2b5aba04b'
+                            : '1486312338219-ce68d2c6f44d'}`} 
+                          alt={workshop.title} 
+                          className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e2a] to-transparent"></div>
+                      </div>
+                      
+                      <div className="p-6 relative z-10">
                         <div className="flex justify-between items-start mb-3">
                           <div 
                             className="p-3 rounded-full"
-                            style={{ background: `${accentColor}15` }}
+                            style={{ background: `${accentColor}25` }}
                           >
                             <workshop.icon className="h-6 w-6" style={{ color: accentColor }} />
                           </div>
-                          <div className="flex items-center text-gray-500 text-sm">
+                          <div className="flex items-center text-gray-400 text-sm">
                             <Clock className="h-4 w-4 mr-1" />
                             <span>{workshop.duration}</span>
                           </div>
                         </div>
                         
-                        <h3 className="text-xl font-semibold mb-2" style={{ color: accentColor }}>
+                        <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#E5C5A1] transition-colors">
                           {workshop.title}
                         </h3>
                         
-                        <p className="text-gray-600 mb-6 text-sm">
+                        <p className="text-gray-300 mb-6 text-sm line-clamp-2">
                           {workshop.description}
                         </p>
                         
@@ -103,19 +118,13 @@ const Workshops = () => {
                           }}
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent triggering the parent onClick
-                            handleJoinWorkshop(workshop.id);
+                            handleJoinWorkshop(workshop.id, workshop.title);
                           }}
                         >
                           Join Now
                           <Play className="h-4 w-4 ml-1" />
                         </Button>
                       </div>
-                      
-                      {/* Highlight effect on hover */}
-                      <div 
-                        className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
-                        style={{ background: accentColor }}
-                      ></div>
                     </div>
                   );
                 })}

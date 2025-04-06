@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import Page from "@/components/Page";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowLeft,
@@ -22,8 +23,6 @@ import {
   Volume2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import Header from "@/components/layout/Header";
-import HomeButton from "@/components/HomeButton";
 
 const WorkshopDetail = () => {
   const { workshopId } = useParams<{ workshopId: string }>();
@@ -32,7 +31,7 @@ const WorkshopDetail = () => {
   const { toast } = useToast();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(location?.state?.activeTab || "overview");
   const [progress, setProgress] = useState(0);
   const [completedSections, setCompletedSections] = useState<string[]>([]);
   
@@ -310,31 +309,21 @@ const WorkshopDetail = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f4f8] via-[#e6eef5] to-[#dde8f3]">
-      <Header />
-      
-      <div className="container mx-auto max-w-6xl px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mr-4"
-              onClick={() => navigate("/")}
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">{workshopDetails.title}</h1>
-              <p className="text-gray-600">{workshopDetails.description}</p>
-            </div>
+    <Page 
+      title={workshopDetails.title} 
+      showBackButton={true}
+      onBackClick={() => navigate("/workshops")}
+    >
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <p className="text-gray-400">{workshopDetails.description}</p>
           </div>
           <div className="flex items-center">
-            <Badge className="mr-2 bg-indigo-100 text-indigo-800">{workshopDetails.category}</Badge>
+            <Badge className="mr-2 bg-[#242432] text-[#E5C5A1] border border-[#B87333]/30">{workshopDetails.category}</Badge>
             <div className="flex flex-col items-end">
               <div className="flex items-center mb-1">
-                <span className="text-sm text-gray-600 mr-2">{progress}% Complete</span>
+                <span className="text-sm text-gray-400 mr-2">{progress}% Complete</span>
                 <Progress value={progress} className="w-24 h-2" />
               </div>
             </div>
@@ -342,85 +331,85 @@ const WorkshopDetail = () => {
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="w-full justify-start bg-white border overflow-x-auto">
-            <TabsTrigger value="overview" className="text-base">Overview</TabsTrigger>
-            <TabsTrigger value="content" className="text-base">Workshop Content</TabsTrigger>
-            <TabsTrigger value="resources" className="text-base">Resources</TabsTrigger>
-            <TabsTrigger value="exercises" className="text-base">Exercises</TabsTrigger>
+          <TabsList className="w-full justify-start bg-[#1a1a1f]/50 border border-white/10 overflow-x-auto">
+            <TabsTrigger value="overview" className="text-base data-[state=active]:bg-[#B87333] data-[state=active]:text-white">Overview</TabsTrigger>
+            <TabsTrigger value="content" className="text-base data-[state=active]:bg-[#B87333] data-[state=active]:text-white">Workshop Content</TabsTrigger>
+            <TabsTrigger value="resources" className="text-base data-[state=active]:bg-[#B87333] data-[state=active]:text-white">Resources</TabsTrigger>
+            <TabsTrigger value="exercises" className="text-base data-[state=active]:bg-[#B87333] data-[state=active]:text-white">Exercises</TabsTrigger>
           </TabsList>
           
           {/* Overview Tab */}
           <TabsContent value="overview" className="animate-fade-in">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
-                <Card>
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle>About This Workshop</CardTitle>
+                    <CardTitle className="text-white">About This Workshop</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-gray-600">
+                    <p className="text-gray-300">
                       {workshopDetails.description} This workshop combines evidence-based techniques with practical applications, giving you tools you can immediately incorporate into your daily life. Through interactive exercises, discussion, and personalized planning, you'll develop skills that support long-term mental wellbeing.
                     </p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                       <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <User className="h-4 w-4 text-indigo-600" />
+                        <div className="h-8 w-8 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                          <User className="h-4 w-4 text-[#E5C5A1]" />
                         </div>
                         <div>
-                          <h3 className="font-medium">Instructor</h3>
-                          <p className="text-sm text-gray-600">{workshopDetails.instructor}</p>
+                          <h3 className="font-medium text-white">Instructor</h3>
+                          <p className="text-sm text-gray-300">{workshopDetails.instructor}</p>
                         </div>
                       </div>
                       
                       <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <Calendar className="h-4 w-4 text-indigo-600" />
+                        <div className="h-8 w-8 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                          <Calendar className="h-4 w-4 text-[#E5C5A1]" />
                         </div>
                         <div>
-                          <h3 className="font-medium">Schedule</h3>
-                          <p className="text-sm text-gray-600">{workshopDetails.date}</p>
+                          <h3 className="font-medium text-white">Schedule</h3>
+                          <p className="text-sm text-gray-300">{workshopDetails.date}</p>
                         </div>
                       </div>
                       
                       <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <Clock className="h-4 w-4 text-indigo-600" />
+                        <div className="h-8 w-8 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                          <Clock className="h-4 w-4 text-[#E5C5A1]" />
                         </div>
                         <div>
-                          <h3 className="font-medium">Duration</h3>
-                          <p className="text-sm text-gray-600">4 Weeks, 90 Minutes/Session</p>
+                          <h3 className="font-medium text-white">Duration</h3>
+                          <p className="text-sm text-gray-300">4 Weeks, 90 Minutes/Session</p>
                         </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle>What You'll Learn</CardTitle>
+                    <CardTitle className="text-white">What You'll Learn</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       {workshopDetails.sections.map((section, index) => (
                         <div 
                           key={section.id} 
-                          className={`p-4 border rounded-lg ${
+                          className={`p-4 rounded-lg ${
                             completedSections.includes(section.id) 
-                              ? 'border-indigo-200 bg-indigo-50' 
-                              : 'border-gray-200'
+                              ? 'border border-[#E5C5A1]/30 bg-[#B87333]/10' 
+                              : 'border border-white/10 bg-white/5'
                           }`}
                         >
                           <div className="flex items-center">
-                            <div className="bg-indigo-100 text-indigo-800 h-8 w-8 rounded-full flex items-center justify-center mr-3">
+                            <div className="bg-[#B87333]/20 text-[#E5C5A1] h-8 w-8 rounded-full flex items-center justify-center mr-3">
                               {index + 1}
                             </div>
-                            <h3 className="font-medium text-lg">{section.title}</h3>
+                            <h3 className="font-medium text-lg text-white">{section.title}</h3>
                             {completedSections.includes(section.id) && (
                               <CheckCircle className="h-5 w-5 text-green-500 ml-2" />
                             )}
                           </div>
-                          <p className="text-gray-600 mt-2 ml-11">{section.description}</p>
+                          <p className="text-gray-300 mt-2 ml-11">{section.description}</p>
                         </div>
                       ))}
                     </div>
@@ -429,23 +418,23 @@ const WorkshopDetail = () => {
               </div>
               
               <div className="space-y-6">
-                <Card>
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle>Workshop Materials</CardTitle>
+                    <CardTitle className="text-white">Workshop Materials</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="p-3 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <div className="p-3 bg-white/5 rounded-lg flex items-center justify-between">
                       <div className="flex items-center">
-                        <FileText className="h-5 w-5 text-indigo-600 mr-3" />
+                        <FileText className="h-5 w-5 text-[#E5C5A1] mr-3" />
                         <div>
-                          <div className="font-medium">Workshop Handbook</div>
-                          <div className="text-sm text-gray-500">PDF, 3.2MB</div>
+                          <div className="font-medium text-white">Workshop Handbook</div>
+                          <div className="text-sm text-gray-400">PDF, 3.2MB</div>
                         </div>
                       </div>
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="text-indigo-600 border-indigo-600"
+                        className="text-[#E5C5A1] border-[#B87333]/50 hover:bg-[#B87333]/20"
                         onClick={() => handleDownload("Workshop Handbook")}
                       >
                         <Download className="h-4 w-4 mr-1" />
@@ -453,18 +442,18 @@ const WorkshopDetail = () => {
                       </Button>
                     </div>
                     
-                    <div className="p-3 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <div className="p-3 bg-white/5 rounded-lg flex items-center justify-between">
                       <div className="flex items-center">
-                        <FileText className="h-5 w-5 text-indigo-600 mr-3" />
+                        <FileText className="h-5 w-5 text-[#E5C5A1] mr-3" />
                         <div>
-                          <div className="font-medium">Practice Worksheets</div>
-                          <div className="text-sm text-gray-500">PDF, 1.8MB</div>
+                          <div className="font-medium text-white">Practice Worksheets</div>
+                          <div className="text-sm text-gray-400">PDF, 1.8MB</div>
                         </div>
                       </div>
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="text-indigo-600 border-indigo-600"
+                        className="text-[#E5C5A1] border-[#B87333]/50 hover:bg-[#B87333]/20"
                         onClick={() => handleDownload("Practice Worksheets")}
                       >
                         <Download className="h-4 w-4 mr-1" />
@@ -474,18 +463,18 @@ const WorkshopDetail = () => {
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle>About Your Instructor</CardTitle>
+                    <CardTitle className="text-white">About Your Instructor</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-start gap-4">
-                      <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
+                      <div className="w-16 h-16 rounded-full bg-[#B87333]/20 flex items-center justify-center text-[#E5C5A1] font-bold text-xl">
                         {workshopDetails.instructor.split(' ').map(name => name[0]).join('')}
                       </div>
                       <div>
-                        <h3 className="font-bold">{workshopDetails.instructor}</h3>
-                        <p className="text-gray-600 text-sm mt-1">
+                        <h3 className="font-bold text-white">{workshopDetails.instructor}</h3>
+                        <p className="text-gray-300 text-sm mt-1">
                           {workshopDetails.instructor} is a certified mental health professional with over 15 years of experience in clinical and educational settings. They specialize in evidence-based approaches to mental wellness and have helped thousands of individuals develop practical skills for improved wellbeing.
                         </p>
                       </div>
@@ -494,7 +483,7 @@ const WorkshopDetail = () => {
                 </Card>
                 
                 <Button
-                  className="w-full bg-indigo-600 hover:bg-indigo-700"
+                  className="w-full bg-[#B87333] hover:bg-[#a66a2e] text-white"
                   onClick={() => setActiveTab("content")}
                 >
                   Start Workshop
@@ -510,7 +499,7 @@ const WorkshopDetail = () => {
                 <div className="relative aspect-video bg-black rounded-lg overflow-hidden mb-6">
                   <video 
                     className="w-full h-full object-cover"
-                    poster={`https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80`}
+                    poster="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
                     muted={isMuted}
                     autoPlay={isPlaying}
                     loop
@@ -541,157 +530,127 @@ const WorkshopDetail = () => {
                   </div>
                 </div>
                 
-                <Card>
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle>Workshop Content</CardTitle>
+                    <CardTitle className="text-white">Workshop Content</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {workshopDetails.sections.map((section) => (
+                      <div key={section.id} className="space-y-4">
+                        <h3 className="text-xl font-semibold text-[#E5C5A1]">{section.title}</h3>
+                        <p className="text-gray-300">{section.content}</p>
+                        
+                        <div className="flex justify-end">
+                          <Button
+                            variant={completedSections.includes(section.id) ? "default" : "outline"}
+                            size="sm"
+                            className={completedSections.includes(section.id) 
+                              ? "bg-green-600 hover:bg-green-700"
+                              : "border-[#B87333]/50 text-[#E5C5A1] hover:bg-[#B87333]/20"
+                            }
+                            onClick={() => handleSectionComplete(section.id)}
+                          >
+                            {completedSections.includes(section.id) ? (
+                              <>
+                                <CheckCircle className="h-4 w-4 mr-2" />
+                                Completed
+                              </>
+                            ) : (
+                              "Mark as Complete"
+                            )}
+                          </Button>
+                        </div>
+                        
+                        {section.id !== workshopDetails.sections[workshopDetails.sections.length - 1].id && (
+                          <hr className="border-white/10 my-4" />
+                        )}
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <div className="space-y-6">
+                <Card className="bg-white/5 border-white/10">
+                  <CardHeader>
+                    <CardTitle className="text-white">Your Progress</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-8">
+                    <div className="mb-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-300">{progress}% Complete</span>
+                        <span className="text-sm text-gray-400">
+                          {completedSections.length}/{workshopDetails.sections.length} sections
+                        </span>
+                      </div>
+                      <Progress value={progress} className="h-2" />
+                    </div>
+                    
+                    <div className="space-y-2">
                       {workshopDetails.sections.map((section, index) => (
-                        <div key={section.id}>
-                          <div className="flex items-center mb-3">
-                            <div className="bg-indigo-100 text-indigo-800 h-8 w-8 rounded-full flex items-center justify-center mr-3">
+                        <div 
+                          key={section.id} 
+                          className={`p-2 rounded-lg flex items-center justify-between ${
+                            completedSections.includes(section.id)
+                              ? 'bg-[#B87333]/10' 
+                              : 'bg-white/5'
+                          }`}
+                        >
+                          <div className="flex items-center">
+                            <div className={`h-6 w-6 rounded-full flex items-center justify-center mr-2 text-xs ${
+                              completedSections.includes(section.id)
+                                ? 'bg-green-500/20 text-green-500' 
+                                : 'bg-white/10 text-gray-400'
+                            }`}>
                               {index + 1}
                             </div>
-                            <h3 className="font-medium text-xl">{section.title}</h3>
-                            {completedSections.includes(section.id) && (
-                              <CheckCircle className="h-5 w-5 text-green-500 ml-2" />
-                            )}
+                            <span className={`text-sm ${
+                              completedSections.includes(section.id) 
+                                ? 'text-white' 
+                                : 'text-gray-400'
+                            }`}>
+                              {section.title}
+                            </span>
                           </div>
-                          
-                          <div className="ml-11 space-y-4">
-                            <p className="text-gray-600">{section.content}</p>
-                            
-                            {section.videoUrl && (
-                              <div className="relative aspect-video bg-black rounded-lg overflow-hidden my-4">
-                                <video 
-                                  className="w-full h-full object-cover"
-                                  controls
-                                  poster={`https://picsum.photos/seed/${section.id}/640/360`}
-                                >
-                                  <source src={section.videoUrl} type="video/mp4" />
-                                  Your browser does not support the video tag.
-                                </video>
-                              </div>
-                            )}
-                            
-                            <Button
-                              variant={completedSections.includes(section.id) ? "outline" : "default"}
-                              className={completedSections.includes(section.id) ? "text-indigo-600 border-indigo-600" : "bg-indigo-600 hover:bg-indigo-700"}
-                              onClick={() => handleSectionComplete(section.id)}
-                            >
-                              {completedSections.includes(section.id) ? "Completed" : "Mark as Complete"}
-                            </Button>
-                          </div>
-                          
-                          {index < workshopDetails.sections.length - 1 && (
-                            <div className="border-b border-gray-200 my-8"></div>
+                          {completedSections.includes(section.id) && (
+                            <CheckCircle className="h-4 w-4 text-green-500" />
                           )}
                         </div>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
-              </div>
               
-              <div className="space-y-6">
-                <Card>
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle>Your Progress</CardTitle>
+                    <CardTitle className="text-white">Resources</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <div className="mb-4">
-                      <div className="flex justify-between mb-2">
-                        <span className="text-gray-600">Workshop Completion</span>
-                        <span className="text-indigo-600">{progress}%</span>
-                      </div>
-                      <Progress value={progress} className="h-2" />
-                    </div>
-                    
-                    <div className="space-y-3">
-                      {workshopDetails.sections.map((section, index) => (
-                        <div 
-                          key={section.id} 
-                          className="flex items-center"
-                        >
-                          <div className={`h-5 w-5 rounded-full mr-3 flex items-center justify-center ${
-                            completedSections.includes(section.id) 
-                              ? 'bg-green-500 text-white' 
-                              : 'bg-gray-200 text-gray-500'
-                          }`}>
-                            {completedSections.includes(section.id) ? (
-                              <CheckCircle className="h-3 w-3" />
-                            ) : (
-                              index + 1
-                            )}
-                          </div>
-                          <span className={`text-sm ${
-                            completedSections.includes(section.id) 
-                              ? 'text-green-600' 
-                              : 'text-gray-600'
-                          }`}>
-                            {section.title}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Related Resources</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Recommended Reading</div>
-                      <div className="text-sm text-gray-500 mb-2">Books and articles that complement this workshop</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload("Reading List")}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download List
-                      </Button>
-                    </div>
-                    
-                    <div className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Practice Audio Tracks</div>
-                      <div className="text-sm text-gray-500 mb-2">Guided exercises for home practice</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload("Audio Tracks")}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download Tracks
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-gradient-to-r from-indigo-50 to-white">
-                  <CardHeader>
-                    <CardTitle>Need Support?</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Our mental health specialists are available to answer questions about workshop content.
-                    </p>
+                  <CardContent className="space-y-3">
                     <Button 
                       variant="outline" 
-                      className="w-full text-indigo-600 border-indigo-600"
-                      onClick={() => {
-                        toast({
-                          title: "Support Request Sent",
-                          description: "A specialist will contact you shortly.",
-                        });
-                      }}
+                      className="w-full justify-start text-left border-white/10 text-gray-300 hover:bg-white/10"
+                      onClick={() => setActiveTab("resources")}
                     >
-                      Request Support
+                      <FileText className="h-4 w-4 mr-2 text-[#E5C5A1]" />
+                      Workshop Handbook
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start text-left border-white/10 text-gray-300 hover:bg-white/10"
+                      onClick={() => setActiveTab("resources")}
+                    >
+                      <FileText className="h-4 w-4 mr-2 text-[#E5C5A1]" />
+                      Practice Worksheets
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start text-left border-white/10 text-gray-300 hover:bg-white/10"
+                      onClick={() => setActiveTab("exercises")}
+                    >
+                      <BookOpen className="h-4 w-4 mr-2 text-[#E5C5A1]" />
+                      Exercises & Activities
                     </Button>
                   </CardContent>
                 </Card>
@@ -701,131 +660,119 @@ const WorkshopDetail = () => {
           
           {/* Resources Tab */}
           <TabsContent value="resources" className="animate-fade-in">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-white/5 border-white/10">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <BookOpen className="mr-2 h-5 w-5 text-indigo-600" />
-                    Reading Materials
-                  </CardTitle>
+                  <CardTitle className="text-white">Workshop Materials</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Download and access all materials needed for this workshop
+                  </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    <li className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Workshop Handbook</div>
-                      <div className="text-sm text-gray-500 mb-2">Complete guide with all workshop content</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload("Workshop Handbook")}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download PDF
-                      </Button>
-                    </li>
-                    <li className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Research Summary</div>
-                      <div className="text-sm text-gray-500 mb-2">Scientific evidence supporting workshop techniques</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload("Research Summary")}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download PDF
-                      </Button>
-                    </li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div className="p-3 bg-white/5 rounded-lg flex items-center justify-between">
+                    <div className="flex items-center">
+                      <FileText className="h-5 w-5 text-[#E5C5A1] mr-3" />
+                      <div>
+                        <div className="font-medium text-white">Workshop Handbook</div>
+                        <div className="text-sm text-gray-400">PDF, 3.2MB</div>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-[#E5C5A1] border-[#B87333]/50 hover:bg-[#B87333]/20"
+                      onClick={() => handleDownload("Workshop Handbook")}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                  
+                  <div className="p-3 bg-white/5 rounded-lg flex items-center justify-between">
+                    <div className="flex items-center">
+                      <FileText className="h-5 w-5 text-[#E5C5A1] mr-3" />
+                      <div>
+                        <div className="font-medium text-white">Practice Worksheets</div>
+                        <div className="text-sm text-gray-400">PDF, 1.8MB</div>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-[#E5C5A1] border-[#B87333]/50 hover:bg-[#B87333]/20"
+                      onClick={() => handleDownload("Practice Worksheets")}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                  
+                  <div className="p-3 bg-white/5 rounded-lg flex items-center justify-between">
+                    <div className="flex items-center">
+                      <FileText className="h-5 w-5 text-[#E5C5A1] mr-3" />
+                      <div>
+                        <div className="font-medium text-white">Recommended Reading List</div>
+                        <div className="text-sm text-gray-400">PDF, 0.5MB</div>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-[#E5C5A1] border-[#B87333]/50 hover:bg-[#B87333]/20"
+                      onClick={() => handleDownload("Recommended Reading List")}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Download
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="bg-white/5 border-white/10">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Video className="mr-2 h-5 w-5 text-indigo-600" />
-                    Video Resources
-                  </CardTitle>
+                  <CardTitle className="text-white">Additional Resources</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Further reading and materials to supplement your learning
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3">
-                    <li className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Guided Practice Videos</div>
-                      <div className="text-sm text-gray-500 mb-2">Step-by-step visual guides for key techniques</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => {
-                          toast({
-                            title: "Video Loading",
-                            description: "Opening guided practice video series",
-                          });
-                        }}
-                      >
-                        <Play className="h-4 w-4 mr-1" />
-                        Watch Videos
-                      </Button>
-                    </li>
-                    <li className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Expert Interviews</div>
-                      <div className="text-sm text-gray-500 mb-2">Conversations with field specialists</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => {
-                          toast({
-                            title: "Video Loading",
-                            description: "Opening expert interview series",
-                          });
-                        }}
-                      >
-                        <Play className="h-4 w-4 mr-1" />
-                        Watch Videos
-                      </Button>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <FileText className="mr-2 h-5 w-5 text-indigo-600" />
-                    Worksheets
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    <li className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Practice Worksheets</div>
-                      <div className="text-sm text-gray-500 mb-2">Structured exercises for skill development</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload("Practice Worksheets")}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download Worksheets
-                      </Button>
-                    </li>
-                    <li className="p-3 bg-gray-50 rounded-lg">
-                      <div className="font-medium mb-1">Self-Assessment Tools</div>
-                      <div className="text-sm text-gray-500 mb-2">Evaluate your progress and identify areas for growth</div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload("Self-Assessment Tools")}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download Tools
-                      </Button>
-                    </li>
-                  </ul>
+                  <div className="space-y-4">
+                    <div className="p-3 bg-white/5 rounded-lg">
+                      <h3 className="font-medium text-white mb-1">Books & Articles</h3>
+                      <ul className="space-y-3 text-sm text-gray-300">
+                        <li className="flex items-start">
+                          <div className="h-5 w-5 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0 text-xs text-[#E5C5A1]">1</div>
+                          <span>"The Science of Well-Being" by Dr. Laurie Santos (Yale University Press, 2023)</span>
+                        </li>
+                        <li className="flex items-start">
+                          <div className="h-5 w-5 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0 text-xs text-[#E5C5A1]">2</div>
+                          <span>"Resilience: The Science of Mastering Life's Greatest Challenges" by Steven M. Southwick and Dennis S. Charney</span>
+                        </li>
+                        <li className="flex items-start">
+                          <div className="h-5 w-5 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0 text-xs text-[#E5C5A1]">3</div>
+                          <span>"The Body Keeps the Score" by Bessel van der Kolk, M.D.</span>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-3 bg-white/5 rounded-lg">
+                      <h3 className="font-medium text-white mb-1">Online Resources</h3>
+                      <ul className="space-y-3 text-sm text-gray-300">
+                        <li className="flex items-start">
+                          <div className="h-5 w-5 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0 text-xs text-[#E5C5A1]">•</div>
+                          <span>Greater Good Science Center (Berkeley) - Research-based practices for a meaningful life</span>
+                        </li>
+                        <li className="flex items-start">
+                          <div className="h-5 w-5 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0 text-xs text-[#E5C5A1]">•</div>
+                          <span>Mental Health Foundation - Evidence-based mental health resources</span>
+                        </li>
+                        <li className="flex items-start">
+                          <div className="h-5 w-5 rounded-full bg-[#B87333]/20 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0 text-xs text-[#E5C5A1]">•</div>
+                          <span>Ten Percent Happier - Guided meditations and practical teachings</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -833,57 +780,65 @@ const WorkshopDetail = () => {
           
           {/* Exercises Tab */}
           <TabsContent value="exercises" className="animate-fade-in">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {workshopDetails.sections.map((section, index) => (
-                <Card key={section.id}>
+            <div className="space-y-6">
+              {workshopDetails.sections.map((section) => (
+                <Card key={section.id} className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <div className="flex items-center">
-                      <div className="bg-indigo-100 text-indigo-800 h-8 w-8 rounded-full flex items-center justify-center mr-3">
-                        {index + 1}
-                      </div>
-                      <CardTitle>{section.title} Exercise</CardTitle>
-                    </div>
+                    <CardTitle className="text-white">{section.exercise}</CardTitle>
+                    <CardDescription className="text-gray-400">
+                      {section.exerciseDescription}
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-medium mb-2">Exercise: {section.exercise}</h4>
-                      <p className="text-gray-600 text-sm mb-3">
-                        {section.exerciseDescription}
+                  <CardContent>
+                    <div className="bg-white/5 p-4 rounded-lg">
+                      <p className="text-gray-300 mb-6">
+                        This exercise is designed to reinforce the concepts covered in the "{section.title}" section of this workshop. Take your time to complete it thoughtfully, and remember that practice is essential for developing these skills.
                       </p>
-                      <Button 
-                        variant="outline" 
-                        className="text-indigo-600 border-indigo-600 w-full"
-                        onClick={() => handleDownload(`${section.exercise} Worksheet`)}
-                      >
-                        <Download className="h-4 w-4 mr-1" />
-                        Download Exercise
-                      </Button>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-[#E5C5A1] font-medium mb-2">Instructions</h4>
+                          <p className="text-gray-300 text-sm">
+                            1. Find a quiet space where you can focus without interruptions.<br />
+                            2. Set aside 15-20 minutes to complete this exercise.<br />
+                            3. Follow the steps outlined below, taking time to reflect on each part.<br />
+                            4. When finished, take a few minutes to note what you learned.
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-[#E5C5A1] font-medium mb-2">Exercise Steps</h4>
+                          <div className="bg-[#B87333]/10 p-4 rounded-lg border border-[#B87333]/20">
+                            <p className="text-gray-300 text-sm">
+                              The detailed steps for this exercise are included in your workshop handbook. Refer to pages 12-15 for complete instructions, worksheets, and reflection questions.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-medium mb-2">Reflection Questions</h4>
-                      <ul className="list-disc list-inside text-gray-600 text-sm space-y-2">
-                        <li>How does this exercise relate to challenges in your life?</li>
-                        <li>What insights did you gain from practicing this technique?</li>
-                        <li>How might you adapt this practice to fit your specific needs?</li>
-                      </ul>
-                    </div>
-                    
-                    <Button
-                      variant={completedSections.includes(section.id) ? "outline" : "default"}
-                      className={completedSections.includes(section.id) ? "text-indigo-600 border-indigo-600 w-full" : "bg-indigo-600 hover:bg-indigo-700 w-full"}
+                  </CardContent>
+                  <CardFooter className="flex justify-end border-t border-white/10 pt-4">
+                    <Button 
+                      className="bg-[#B87333] hover:bg-[#a66a2e] text-white"
                       onClick={() => handleSectionComplete(section.id)}
                     >
-                      {completedSections.includes(section.id) ? "Exercise Completed" : "Mark Exercise as Complete"}
+                      {completedSections.includes(section.id) ? (
+                        <>
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Exercise Completed
+                        </>
+                      ) : (
+                        "Mark Exercise as Complete"
+                      )}
                     </Button>
-                  </CardContent>
+                  </CardFooter>
                 </Card>
               ))}
             </div>
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </Page>
   );
 };
 

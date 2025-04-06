@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, List, Calendar, Clock, Save, Download, Star, Sparkles, PenLine, History, ChevronRight, Quote, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
+import HomeButton from "@/components/HomeButton";
 
 interface JournalEntry {
   id: string;

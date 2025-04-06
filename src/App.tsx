@@ -23,6 +23,7 @@ import ResourceLibrary from "@/pages/ResourceLibrary";
 import WellnessChallenges from "@/pages/WellnessChallenges";
 import MySponsor from "@/pages/MySponsor";
 import Workshops from "@/pages/Workshops";
+import WorkshopDetail from "@/pages/WorkshopDetail"; // New import
 import HelpNavButton from "@/components/help/HelpNavButton";
 import CrisisSupport from "@/pages/CrisisSupport";
 import LearnMoreAboutThrive from "@/pages/LearnMoreAboutThrive";
@@ -48,6 +49,10 @@ function App() {
         <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
         <Route path="/co-pay" element={<CoPay />} />
         <Route path="/dod-portal" element={<DoDPortal />} />
+        
+        {/* Workshop Routes */}
+        <Route path="/workshops" element={<Workshops />} />
+        <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
         
         {/* Restored Routes */}
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
