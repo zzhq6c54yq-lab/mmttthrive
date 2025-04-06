@@ -33,6 +33,8 @@ import BinauralBeats from "./pages/BinauralBeats";
 import FamilySupport from "./pages/FamilySupport";
 import TherapistQuestionnaire from "./pages/TherapistQuestionnaire";
 import Journaling from "./pages/Journaling";
+import GamePage from "./pages/GamePage";
+import MentalHealthGames from "./pages/MentalHealthGames";
 
 function App() {
   const location = useLocation();
@@ -55,6 +57,8 @@ function App() {
         <Route path="/copay-credits" element={<CoPay />} />
         <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/games-and-quizzes" element={<GamesAndQuizzes />} />
+        <Route path="/games/:gameId" element={<GamePage />} />
+        <Route path="/mental-health-games" element={<MentalHealthGames />} />
         <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
         <Route path="/learn-more-about-thrive" element={<LearnMoreAboutThrive />} />
         <Route path="/mindfulness" element={<Mindfulness />} />
