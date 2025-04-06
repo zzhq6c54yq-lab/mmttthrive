@@ -23,12 +23,16 @@ import ResourceLibrary from "@/pages/ResourceLibrary";
 import WellnessChallenges from "@/pages/WellnessChallenges";
 import MySponsor from "@/pages/MySponsor";
 import Workshops from "@/pages/Workshops";
-import HenryIconButton from "@/components/HenryIconButton";
+import HelpNavButton from "@/components/help/HelpNavButton";
+import CrisisSupport from "@/pages/CrisisSupport";
+import LearnMoreAboutThrive from "@/pages/LearnMoreAboutThrive";
+import CoPay from "@/pages/CoPay";
+import DoDPortal from "@/pages/DoDPortal";
 
 function App() {
   return (
     <>
-      <HenryIconButton />
+      <HelpNavButton />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
@@ -40,6 +44,10 @@ function App() {
         <Route path="/small-business-portal" element={<SmallBusinessExperience />} />
         <Route path="/employee-welcome" element={<EmployeeWelcome />} />
         <Route path="/employee-readiness" element={<EmployeeReadiness />} />
+        <Route path="/crisis-support" element={<CrisisSupport />} />
+        <Route path="/learn-more" element={<LearnMoreAboutThrive />} />
+        <Route path="/co-pay" element={<CoPay />} />
+        <Route path="/dod-portal" element={<DoDPortal />} />
         
         {/* Restored Routes */}
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
