@@ -145,7 +145,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     },
     {
       id: "sponsor-alternative",
-      title: "My N.A./A.A. Sponsor",
+      title: "My Sponsor",
       icon: <Users />,
       path: "/my-sponsor",
       color: "from-rose-600 to-pink-600",

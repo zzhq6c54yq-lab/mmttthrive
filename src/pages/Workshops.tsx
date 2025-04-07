@@ -35,10 +35,30 @@ const Workshops = () => {
     navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
   };
 
+  // Workshop cover images mapped to topics
+  const getWorkshopImage = (workshopId: string) => {
+    const imageMap: {[key: string]: string} = {
+      'mindful-communication': '1581091226825-a6a2a5aee158',
+      'emotional-regulation': '1649972904349-6e44c42644a7',
+      'stress-management': '1488590528505-98d2b5aba04b',
+      'better-sleep': '1465146344425-f00d5f5c8f07',
+      'cognitive-reframing': '1506744038136-46273834b3fb',
+      'gratitude-practice': '1509316975850-ff9c5deb0cd9',
+      'self-compassion': '1500673922987-e212871fec22',
+      'social-connection': '1523712999610-f77fbcfc3843',
+      'anxiety-management': '1501854140801-50d01698950b',
+      'boundary-setting': '1615729947596-a598e5de0ab3',
+      'values-alignment': '1543618903355-efbc3e8e9284',
+      'habit-formation': '1517048676732-deae7c329e7f'
+    };
+    
+    return imageMap[workshopId] || '1486312338219-ce68d2c6f44d';
+  };
+
   return (
     <Page title="Thrive MT Mental Health Workshops" showBackButton={true} onBackClick={handleBack}>
       <div className="space-y-6">
-        <Card className="border border-gray-200/10 bg-white/5 backdrop-blur-sm">
+        <Card className="border border-gray-200/20 bg-gray-800/50 backdrop-blur-sm">
           <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
             <div className="flex justify-between items-center">
               <div>
@@ -75,13 +95,7 @@ const Workshops = () => {
                     >
                       <div className="aspect-video overflow-hidden">
                         <img 
-                          src={`https://images.unsplash.com/photo-${workshop.id === 'mindful-communication' 
-                            ? '1581091226825-a6a2a5aee158' 
-                            : workshop.id === 'emotional-regulation' 
-                            ? '1649972904349-6e44c42644a7' 
-                            : workshop.id === 'stress-management'
-                            ? '1488590528505-98d2b5aba04b'
-                            : '1486312338219-ce68d2c6f44d'}`} 
+                          src={`https://images.unsplash.com/photo-${getWorkshopImage(workshop.id)}`} 
                           alt={workshop.title} 
                           className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity"
                         />
