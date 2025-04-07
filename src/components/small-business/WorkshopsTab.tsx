@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,6 +30,7 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
     
     return imageMap[workshopId] || 'https://images.unsplash.com/photo-1552581234-26160f608093';
   };
+  
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">

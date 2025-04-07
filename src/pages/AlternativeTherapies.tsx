@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -11,7 +12,7 @@ import {
   Moon,
   GanttChart,
   Sparkles,
-  Lotus,
+  Flower2,
   Music,
   Palette,
   Flame,
@@ -66,7 +67,7 @@ const AlternativeTherapies = () => {
     {
       id: "mindfulness",
       name: "Mindfulness Meditation",
-      icon: <Lotus />,
+      icon: <Flower2 />,
       shortDescription: "Cultivate present moment awareness.",
       description: "Mindfulness meditation involves focusing on the present moment without judgment. It can help reduce stress, improve focus, and enhance overall well-being.",
       benefits: ["Stress reduction", "Improved focus", "Emotional regulation"],
