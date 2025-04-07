@@ -9,7 +9,6 @@ import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import { Brain, Sparkles } from "lucide-react";
-import NewFeatures from "@/components/dashboard/NewFeatures";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -28,19 +27,14 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 }) => {
   return (
     <div className="container mx-auto px-4 pb-24">
-      {/* New Features Banner with brighter colors */}
-      <div className="mb-6">
-        <NewFeatures />
-      </div>
-
       <div className="space-y-6">
-        {/* Specialized Programs - Now with brighter styling */}
-        <div className="mt-2">
+        {/* Specialized Programs - Now first under New Features banner */}
+        <div className="mt-8">
           <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
-            <div className="p-1.5 rounded-full bg-gradient-to-r from-indigo-400/30 to-purple-500/30">
-              <Sparkles className="h-5 w-5 text-indigo-500" />
+            <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
+              <Sparkles className="h-5 w-5 text-[#9b87f5]" />
             </div>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 pb-1">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#ffffff] to-[#ffffff] border-b-2 border-[#9b87f5]/30 pb-1">
               Specialized Programs
             </span>
           </h2>
@@ -65,10 +59,10 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         {/* Brain Games & Quizzes */}
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <div className="p-1.5 rounded-full bg-gradient-to-r from-indigo-400/30 to-purple-500/30">
-              <Brain className="h-5 w-5 text-indigo-500" />
+            <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
+              <Brain className="h-5 w-5 text-[#9b87f5]" />
             </div>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#8B5CF6] to-[#7C3AED]">
               Brain Games & Assessments
             </span>
           </h2>
