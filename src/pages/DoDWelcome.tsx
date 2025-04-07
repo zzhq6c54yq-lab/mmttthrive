@@ -15,10 +15,10 @@ const DoDWelcome: React.FC = () => {
 
   return (
     <div className="min-h-screen text-white py-8 px-4 relative">
-      {/* Patriotic background with subtle flag elements */}
+      {/* Patriotic background with American flag elements */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0c1b44] via-[#101d36] to-[#1a1e2c]">
-        {/* Red and white stripes - subtle background element */}
-        <div className="absolute bottom-0 left-0 right-0 h-60 opacity-5">
+        {/* Red and white stripes - patriotic background element */}
+        <div className="absolute bottom-0 left-0 right-0 h-80 opacity-10">
           {[...Array(13)].map((_, i) => (
             <div 
               key={i} 
@@ -27,8 +27,8 @@ const DoDWelcome: React.FC = () => {
           ))}
         </div>
         
-        {/* Stars field in the upper left - subtle background element */}
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-5">
+        {/* Stars field in the upper left - patriotic background element */}
+        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-10">
           <div className="grid grid-cols-6 gap-4 p-4">
             {[...Array(30)].map((_, i) => (
               <div key={i} className="text-white">
@@ -49,6 +49,9 @@ const DoDWelcome: React.FC = () => {
         borderColor="#3B82F6"
         portalPath="/dod-portal"
         icon={<Shield className="h-12 w-12 text-blue-300" />}
+        textColor="text-white"
+        descriptionTextColor="text-white"
+        backgroundColor="bg-gradient-to-b from-[#0c1b44] via-[#101d36] to-[#1a1e2c]"
       />
     </div>
   );

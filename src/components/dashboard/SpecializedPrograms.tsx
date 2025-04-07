@@ -13,55 +13,72 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
     {
       id: "veterans",
       title: "Veterans Program",
-      description: "Specialized mental health support tailored specifically for veterans. Navigate post-service challenges with our expert resources.",
       path: "/dod-welcome",
       coverImage: "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-      color: "from-blue-700 to-blue-900",
-      icon: <Shield className="h-5 w-5 text-white" />
+      color: "blue",
+      icon: <Shield className="h-6 w-6 text-white" />
     },
     {
       id: "college",
       title: "College Students",
-      description: "Resources designed for campus mental wellness, helping you balance academics, social life, and personal growth.",
       path: "/college-welcome",
       coverImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-      color: "from-purple-700 to-indigo-900",
-      icon: <GraduationCap className="h-5 w-5 text-white" />
+      color: "purple",
+      icon: <GraduationCap className="h-6 w-6 text-white" />
     },
     {
       id: "business",
       title: "Small Business",
-      description: "Comprehensive support for entrepreneurs and small teams managing workplace wellness and stress.",
       path: "/small-business-welcome",
       coverImage: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-      color: "from-emerald-700 to-green-900",
-      icon: <Briefcase className="h-5 w-5 text-white" />
+      color: "emerald",
+      icon: <Briefcase className="h-6 w-6 text-white" />
     }
   ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {programs.map(program => (
-        <Card 
-          key={program.id} 
-          className="overflow-hidden border-purple-500/20 h-full hover:shadow-xl transition-all duration-500 group cursor-pointer"
-          onClick={() => navigateToFeature(program.path)}
-        >
-          <CardContent className="p-0 h-full flex flex-col">
-            {/* Cover Image with Enhanced Overlay */}
-            <div className="relative h-48 overflow-hidden">
-              {/* Background gradients and animations */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-              <div className={`absolute inset-0 bg-gradient-to-br ${program.color} opacity-70 mix-blend-multiply z-5`}></div>
-              
-              {/* Animated particles */}
-              <div className="absolute inset-0 z-20">
-                <div className="absolute top-5 left-5 w-2 h-2 bg-white rounded-full animate-ping opacity-60" style={{animationDuration: '3s'}}></div>
-                <div className="absolute top-20 right-10 w-1.5 h-1.5 bg-white rounded-full animate-ping opacity-40" style={{animationDuration: '4s', animationDelay: '1s'}}></div>
-                <div className="absolute bottom-10 left-1/4 w-1 h-1 bg-white rounded-full animate-ping opacity-50" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}></div>
-              </div>
-              
-              {/* Program image */}
+      {programs.map(program => {
+        // Define program-specific styles
+        const getStyles = () => {
+          switch(program.id) {
+            case "veterans":
+              return {
+                overlayGradient: "from-blue-900/80 to-blue-700/40",
+                iconBg: "bg-blue-600",
+                starColor: "text-blue-200"
+              };
+            case "college":
+              return {
+                overlayGradient: "from-purple-900/80 to-purple-700/40",
+                iconBg: "bg-purple-600",
+                starColor: "text-purple-200"
+              };
+            case "business":
+              return {
+                overlayGradient: "from-emerald-900/80 to-emerald-700/40",
+                iconBg: "bg-emerald-600",
+                starColor: "text-emerald-200"
+              };
+            default:
+              return {
+                overlayGradient: "from-blue-900/80 to-blue-700/40",
+                iconBg: "bg-blue-600",
+                starColor: "text-blue-200"
+              };
+          }
+        };
+        
+        const styles = getStyles();
+        
+        return (
+          <Card 
+            key={program.id} 
+            className="overflow-hidden border-0 h-48 rounded-xl hover:shadow-xl transition-all duration-500 group cursor-pointer relative"
+            onClick={() => navigateToFeature(program.path)}
+          >
+            {/* Image with overlay */}
+            <div className="absolute inset-0">
               <img 
                 src={program.coverImage} 
                 alt={program.title} 
@@ -71,44 +88,71 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                 }}
               />
               
-              {/* Icon with glowing effect */}
-              <div className="absolute top-4 right-4 p-2 rounded-full bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm z-20 group-hover:animate-pulse">
+              {/* Gradient overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-t ${styles.overlayGradient}`}></div>
+              
+              {/* Special effects for Veterans card */}
+              {program.id === "veterans" && (
+                <div className="absolute inset-0">
+                  {/* Red and white stripes at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-12 opacity-20">
+                    {[...Array(6)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className={`h-[4px] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Stars in top left */}
+                  <div className="absolute top-2 left-2 opacity-40">
+                    <div className="grid grid-cols-3 gap-1">
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i}>
+                          <Sparkles className="h-2 w-2 text-white" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Content */}
+              <div className="absolute inset-x-0 bottom-0 p-4 z-30">
+                {/* Title */}
+                <h3 className="font-bold text-2xl text-white drop-shadow-md mb-2 flex items-center gap-2">
+                  {program.title}
+                </h3>
+                
+                {/* Explore button */}
+                <Button 
+                  size="sm"
+                  className={`bg-white text-gray-800 hover:bg-opacity-90 shadow-md hover:shadow-lg`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigateToFeature(program.path);
+                  }}
+                >
+                  <span>Explore</span>
+                  <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr;</span>
+                </Button>
+              </div>
+              
+              {/* Icon */}
+              <div className={`absolute top-4 right-4 p-2 rounded-full ${styles.iconBg} backdrop-blur-sm z-20`}>
                 {program.icon}
               </div>
               
-              {/* Title with special styling */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-30 transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-                <h3 className="font-bold text-xl text-white drop-shadow-md flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-white/70" />
-                  {program.title}
-                </h3>
+              {/* Animated stars/sparkles */}
+              <div className="absolute inset-0 z-10 overflow-hidden opacity-60">
+                <Sparkles className={`absolute top-[15%] left-[20%] h-3 w-3 ${styles.starColor} animate-pulse`} style={{animationDuration: '3s'}} />
+                <Sparkles className={`absolute top-[45%] left-[75%] h-2 w-2 ${styles.starColor} animate-pulse`} style={{animationDuration: '4s'}} />
+                <Sparkles className={`absolute top-[75%] left-[30%] h-2.5 w-2.5 ${styles.starColor} animate-pulse`} style={{animationDuration: '5s'}} />
               </div>
             </div>
-            
-            {/* Content area with subtle animations */}
-            <div className="p-5 bg-gradient-to-b from-purple-50/80 to-white dark:from-purple-900/30 dark:to-transparent flex-grow flex flex-col relative overflow-hidden">
-              {/* Animated background elements */}
-              <div className="absolute -right-6 -top-6 w-12 h-12 rounded-full bg-gradient-to-br from-purple-200/20 to-transparent blur-xl group-hover:animate-pulse" style={{animationDuration: '4s'}}></div>
-              <div className="absolute -left-6 -bottom-6 w-16 h-16 rounded-full bg-gradient-to-tr from-purple-200/20 to-transparent blur-xl group-hover:animate-pulse" style={{animationDuration: '5s', animationDelay: '0.5s'}}></div>
-              
-              {/* Description text */}
-              <p className="text-sm text-purple-700 dark:text-purple-300 mb-5 flex-grow relative z-10">
-                {program.description}
-              </p>
-              
-              {/* Explore button with hover effects */}
-              <Button 
-                size="sm"
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-md hover:shadow-lg transform transition-all duration-300 group-hover:scale-[1.03]"
-                onClick={() => navigateToFeature(program.path)}
-              >
-                <span>Explore</span>
-                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr;</span>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+          </Card>
+        );
+      })}
     </div>
   );
 };

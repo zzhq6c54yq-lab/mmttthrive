@@ -14,17 +14,44 @@ const CollegeWelcome: React.FC = () => {
   ];
 
   return (
-    <SpecializedProgramWelcome
-      title="College Student Wellness"
-      description="Welcome to specialized mental wellness resources designed for college and university students. Navigate the unique challenges of academic life while prioritizing your mental health."
-      whatToExpect={whatToExpect}
-      color="purple-600"
-      gradientFrom="purple-700"
-      gradientTo="indigo-500"
-      borderColor="#8B5CF6"
-      portalPath="/college-portal"
-      icon={<GraduationCap className="h-12 w-12 text-purple-300" />}
-    />
+    <div className="min-h-screen text-white py-8 px-4 relative">
+      {/* College-themed background */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#2d1b44] via-[#342456] to-[#2b2136]">
+        {/* Subtle patterns */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 right-0 h-full">
+            {[...Array(20)].map((_, i) => (
+              <div 
+                key={i} 
+                className="h-4 w-4 absolute rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  background: 'radial-gradient(circle, rgba(139,92,246,1) 0%, rgba(139,92,246,0) 70%)',
+                  animation: 'pulse 4s infinite',
+                  animationDelay: `${Math.random() * 5}s`
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <SpecializedProgramWelcome
+        title="College Student Wellness"
+        description="Welcome to specialized mental wellness resources designed for college and university students. Navigate the unique challenges of academic life while prioritizing your mental health."
+        whatToExpect={whatToExpect}
+        color="purple-600"
+        gradientFrom="purple-700"
+        gradientTo="indigo-500"
+        borderColor="#8B5CF6"
+        portalPath="/college-portal"
+        icon={<GraduationCap className="h-12 w-12 text-purple-300" />}
+        textColor="text-white"
+        descriptionTextColor="text-white/90"
+        backgroundColor="bg-gradient-to-b from-[#2d1b44] via-[#342456] to-[#2b2136]"
+      />
+    </div>
   );
 };
 

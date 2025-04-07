@@ -16,6 +16,9 @@ interface WelcomeScreenProps {
   borderColor: string;
   portalPath: string;
   icon: React.ReactNode;
+  textColor?: string;
+  descriptionTextColor?: string;
+  backgroundColor?: string;
 }
 
 const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
@@ -27,7 +30,10 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
   gradientTo,
   borderColor,
   portalPath,
-  icon
+  icon,
+  textColor = "text-white",
+  descriptionTextColor = "text-white/90",
+  backgroundColor = "bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730]"
 }) => {
   const [screenState, setScreenState] = useState<'welcome' | 'what-to-expect'>('welcome');
   const navigate = useNavigate();
@@ -55,7 +61,7 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
+    <div className={`min-h-screen ${backgroundColor} text-white py-8 px-4 relative`}>
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
       <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden">
@@ -73,12 +79,12 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
                 {icon}
               </div>
               
-              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-[${gradientTo}]`}>
+              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-white`}>
                 {title}
               </h1>
               
               <div className="max-w-2xl mb-10">
-                <p className="text-xl mb-6 text-white/90 font-medium">
+                <p className={`text-xl mb-6 ${descriptionTextColor} font-medium`}>
                   {description}
                 </p>
               </div>
@@ -92,11 +98,11 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
             </>
           ) : (
             <>
-              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-[${gradientTo}]`}>
+              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-white`}>
                 What to Expect
               </h1>
               
-              <div className="max-w-3xl mb-10">
+              <div className="max-w-3xl mb-10 w-full">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
                   <ul className="space-y-4 text-left">
                     {whatToExpect.map((item, index) => (
@@ -104,7 +110,7 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
                         <div className={`p-1 rounded-full bg-${color}/20 mr-3 mt-1`}>
                           <div className={`w-3 h-3 rounded-full bg-${color}`}></div>
                         </div>
-                        <span className="text-lg text-white/90">{item}</span>
+                        <span className={`text-lg ${textColor}`}>{item}</span>
                       </li>
                     ))}
                   </ul>
