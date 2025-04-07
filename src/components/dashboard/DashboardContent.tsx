@@ -8,7 +8,7 @@ import KeyFeatures from "@/components/dashboard/KeyFeatures";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
-import { Brain } from "lucide-react";
+import { Brain, Sparkles } from "lucide-react";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -28,18 +28,27 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   return (
     <div className="container mx-auto px-4 pb-24">
       <div className="space-y-6">
-        {/* Key Features */}
-        <KeyFeatures 
-          navigateToFeature={navigateToFeature}
-          selectedQualities={selectedQualities}
-          selectedGoals={selectedGoals}
-        />
-        
         {/* Featured Workshops */}
         <FeaturedWorkshops 
           navigate={navigate}
           onWorkshopClick={onWorkshopClick}
         />
+        
+        {/* Specialized Programs */}
+        <div className="mt-8">
+          <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
+            <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
+              <Sparkles className="h-5 w-5 text-[#9b87f5]" />
+            </div>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#ffffff] to-[#ffffff] border-b-2 border-[#9b87f5]/30 pb-1">
+              Specialized Programs
+            </span>
+          </h2>
+          <SpecializedPrograms navigateToFeature={navigateToFeature} />
+        </div>
+        
+        {/* Gratitude Visualizer */}
+        <GratitudeVisualizer />
         
         {/* Brain Games & Quizzes */}
         <div className="mt-8">
@@ -57,14 +66,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         {/* First Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <DailyWellnessChallenges />
-          <SpecializedPrograms navigateToFeature={navigateToFeature} />
-        </div>
-        
-        {/* Second Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <GratitudeVisualizer />
           <UpcomingAppointments />
         </div>
+        
+        {/* Key Features - moved to the last section */}
+        <KeyFeatures 
+          navigateToFeature={navigateToFeature}
+          selectedQualities={selectedQualities}
+          selectedGoals={selectedGoals}
+        />
       </div>
     </div>
   );
