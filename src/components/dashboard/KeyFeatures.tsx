@@ -63,22 +63,24 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       duration: 1500,
     });
     
-    navigate(path, { 
-      state: { 
-        from: window.location.pathname,
-        qualities: selectedQualities, 
-        goals: selectedGoals 
-      }
-    });
-  };
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08
-      }
+    // Special handling for games section to ensure proper navigation
+    if (path === '/games-and-quizzes' || path === '/mental-health-games' || path === '/cosmic-games') {
+      navigate(path, { 
+        state: { 
+          from: window.location.pathname,
+          qualities: selectedQualities, 
+          goals: selectedGoals,
+          activeTab: "games" // Ensure games tab is active by default
+        }
+      });
+    } else {
+      navigate(path, { 
+        state: { 
+          from: window.location.pathname,
+          qualities: selectedQualities, 
+          goals: selectedGoals 
+        }
+      });
     }
   };
 
@@ -272,6 +274,10 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     src={feature.coverImage} 
                     alt={feature.title} 
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback image if the original fails to load
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80";
+                    }}
                   />
                 </div>
                 

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { 
   Tabs, TabsContent, TabsList, TabsTrigger 
 } from "@/components/ui/tabs";
@@ -33,7 +33,11 @@ interface Quiz {
 }
 
 const GamesAndQuizzes = () => {
-  const [activeTab, setActiveTab] = useState("games");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(() => {
+    // Set active tab based on state passed from navigation
+    return location.state?.activeTab || "games";
+  });
   const [difficultyFilter, setDifficultyFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [filteredGames, setFilteredGames] = useState<Game[]>([]);
@@ -265,7 +269,7 @@ const GamesAndQuizzes = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Tabs defaultValue="games" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
               <TabsList className="h-12 p-1 bg-white/80 backdrop-blur shadow-md border border-purple-100">
                 <TabsTrigger 

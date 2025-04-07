@@ -14,6 +14,7 @@ interface Quiz {
   questions: number;
   timeEstimate: string;
   completionRate?: number;
+  image?: string;
 }
 
 const QuizzesSection = () => {
@@ -27,7 +28,8 @@ const QuizzesSection = () => {
       description: "Understand your anxiety levels and get personalized coping strategies.",
       category: "mental-health",
       questions: 12,
-      timeEstimate: "5-7 min"
+      timeEstimate: "5-7 min",
+      image: "https://images.unsplash.com/photo-1517837314158-c0af6f92b2d3?auto=format&fit=crop&w=500&q=80"
     },
     {
       id: "stress-check",
@@ -36,7 +38,8 @@ const QuizzesSection = () => {
       category: "wellbeing",
       questions: 8,
       timeEstimate: "3-5 min",
-      completionRate: 25
+      completionRate: 25,
+      image: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?auto=format&fit=crop&w=500&q=80"
     },
     {
       id: "sleep-quality",
@@ -44,7 +47,8 @@ const QuizzesSection = () => {
       description: "Evaluate sleep patterns and get recommendations for improvement.",
       category: "wellbeing",
       questions: 10,
-      timeEstimate: "4-6 min"
+      timeEstimate: "4-6 min",
+      image: "https://images.unsplash.com/photo-1585645568795-f2d004bff7e8?auto=format&fit=crop&w=500&q=80"
     }
   ];
 
@@ -90,6 +94,19 @@ const QuizzesSection = () => {
             className="bg-white overflow-hidden hover:shadow-md transition-all cursor-pointer group border border-gray-200"
             onClick={() => handleQuizClick(quiz.id, quiz.title)}
           >
+            {quiz.image && (
+              <div className="h-32 w-full overflow-hidden">
+                <img 
+                  src={quiz.image} 
+                  alt={quiz.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    // Fallback image if the original fails to load
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=80";
+                  }}
+                />
+              </div>
+            )}
             <div className="h-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF]"></div>
             <CardContent className="p-4">
               <div className="flex justify-between items-start mb-2">
