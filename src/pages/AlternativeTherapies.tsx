@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, Heart, BookOpen, Compass, Film, Dumbbell, PenTool, Music, 
-  CloudRain, Moon, Coffee, Brain, Gem, Apple, Award, UserPlus, Snowflake 
+  CloudRain, Moon, Coffee, Brain, Gem, Apple, Award, UserPlus, Snowflake, Play
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +31,11 @@ const AlternativeTherapies = () => {
       description: string;
     }[];
     practitioners?: string[];
+    guidedPractice?: {
+      title: string;
+      duration: string;
+      description: string;
+    };
   };
 
   const therapies: Record<string, Therapy[]> = {
@@ -38,7 +43,7 @@ const AlternativeTherapies = () => {
       {
         id: "art-therapy",
         name: "Art Therapy",
-        icon: <PenTool className="h-5 w-5 text-blue-500" />,
+        icon: <PenTool className="h-5 w-5 text-teal-500" />,
         shortDescription: "Visual expression of emotions and experiences",
         description: "Art therapy uses creative processes like drawing, painting, and sculpting to help people express emotions, reduce stress, and increase self-awareness. It's particularly helpful for those who struggle with verbal expression or have experienced trauma.",
         benefits: ["Emotional expression without words", "Processing trauma", "Reducing anxiety and stress", "Improving self-esteem", "Developing healthy coping skills"],
@@ -63,12 +68,17 @@ const AlternativeTherapies = () => {
             description: "Documentary exploring the healing power of artistic expression"
           }
         ],
-        practitioners: ["Licensed Art Therapists", "Mental Health Counselors with Art Therapy training"]
+        practitioners: ["Licensed Art Therapists", "Mental Health Counselors with Art Therapy training"],
+        guidedPractice: {
+          title: "Emotional Landscape Drawing",
+          duration: "30 minutes",
+          description: "In this guided practice, you'll create a visual representation of your emotional landscape using colors, shapes, and textures that resonate with your current feelings."
+        }
       },
       {
         id: "music-therapy",
         name: "Music Therapy",
-        icon: <Music className="h-5 w-5 text-blue-500" />,
+        icon: <Music className="h-5 w-5 text-indigo-500" />,
         shortDescription: "Sonic exploration of emotional landscapes",
         description: "Music therapy uses musical elements like rhythm, melody, and harmony to address physical, emotional, cognitive, and social needs. It can involve listening to, creating, or moving to music under the guidance of a qualified therapist.",
         benefits: ["Reducing stress and anxiety", "Improving mood", "Enhancing memory and cognitive function", "Facilitating emotional expression", "Building social connections"],
@@ -93,7 +103,12 @@ const AlternativeTherapies = () => {
             description: "Research-based documentary on music therapy effectiveness"
           }
         ],
-        practitioners: ["Board-Certified Music Therapists", "Neurologic Music Therapists"]
+        practitioners: ["Board-Certified Music Therapists", "Neurologic Music Therapists"],
+        guidedPractice: {
+          title: "Rhythmic Resonance Meditation",
+          duration: "15 minutes",
+          description: "Experience a guided rhythmic meditation that uses carefully selected sound patterns to promote relaxation and inner harmony."
+        }
       },
       {
         id: "drama-therapy",
@@ -160,7 +175,7 @@ const AlternativeTherapies = () => {
       {
         id: "yoga-movement",
         name: "Yoga & Movement",
-        icon: <Dumbbell className="h-5 w-5 text-blue-500" />,
+        icon: <Dumbbell className="h-5 w-5 text-purple-500" />,
         shortDescription: "Physical practices with mental benefits",
         description: "Yoga integrates physical postures, breathwork, and meditation to reduce stress, improve flexibility, and enhance mind-body awareness. Different styles range from gentle restorative practices to more vigorous forms.",
         benefits: ["Reducing stress and anxiety", "Improving physical flexibility", "Enhancing mind-body connection", "Promoting better sleep", "Building strength and balance"],
@@ -185,7 +200,12 @@ const AlternativeTherapies = () => {
             description: "Comprehensive resource for yoga practices and philosophy"
           }
         ],
-        practitioners: ["Certified Yoga Instructors", "Yoga Therapists", "Mind-Body Medical Professionals"]
+        practitioners: ["Certified Yoga Instructors", "Yoga Therapists", "Mind-Body Medical Professionals"],
+        guidedPractice: {
+          title: "Gentle Yoga Flow for Anxiety",
+          duration: "20 minutes",
+          description: "A gentle sequence of yoga poses and breathing techniques specifically designed to calm the nervous system and reduce anxiety."
+        }
       },
       {
         id: "mindfulness-meditation",
@@ -215,7 +235,12 @@ const AlternativeTherapies = () => {
             description: "Program developed by Jon Kabat-Zinn for stress management"
           }
         ],
-        practitioners: ["Mindfulness Teachers", "MBSR Instructors", "Meditation Guides"]
+        practitioners: ["Mindfulness Teachers", "MBSR Instructors", "Meditation Guides"],
+        guidedPractice: {
+          title: "Body Scan Meditation",
+          duration: "15 minutes",
+          description: "A guided practice that helps you develop awareness of sensations throughout your body, promoting relaxation and presence."
+        }
       },
       {
         id: "breathwork",
@@ -282,7 +307,7 @@ const AlternativeTherapies = () => {
       {
         id: "nature-therapy",
         name: "Nature Therapy",
-        icon: <Compass className="h-5 w-5 text-blue-500" />,
+        icon: <Compass className="h-5 w-5 text-green-500" />,
         shortDescription: "Healing through connection with nature",
         description: "Nature therapy, also called ecotherapy, involves structured therapeutic experiences in natural settings. Research shows that time in nature can reduce stress hormones, improve mood, and enhance overall wellbeing.",
         benefits: ["Reducing stress and anxiety", "Improving attention and focus", "Enhancing mood", "Promoting physical activity", "Fostering environmental connection"],
@@ -307,7 +332,12 @@ const AlternativeTherapies = () => {
             description: "Natural soundscapes for relaxation and sleep"
           }
         ],
-        practitioners: ["Forest Therapy Guides", "Horticultural Therapists", "Wilderness Therapists"]
+        practitioners: ["Forest Therapy Guides", "Horticultural Therapists", "Wilderness Therapists"],
+        guidedPractice: {
+          title: "Indoor Nature Connection",
+          duration: "10 minutes",
+          description: "A guided visualization practice that helps you connect with nature even when you're indoors, bringing the healing qualities of the natural world to your mind and body."
+        }
       },
       {
         id: "bibliotherapy",
@@ -404,7 +434,7 @@ const AlternativeTherapies = () => {
       {
         id: "virtual-reality-therapy",
         name: "Virtual Reality Therapy",
-        icon: <Gem className="h-5 w-5 text-blue-500" />,
+        icon: <Gem className="h-5 w-5 text-violet-500" />,
         shortDescription: "Immersive therapeutic environments",
         description: "Virtual Reality Therapy uses immersive digital environments to treat various mental health conditions. It's particularly effective for exposure therapy, helping people confront fears in a controlled, safe setting.",
         benefits: ["Safe exposure to phobia triggers", "Distraction from pain", "Skill-building in simulated environments", "Enhanced engagement in therapy", "Access to otherwise impossible therapeutic scenarios"],
@@ -429,7 +459,12 @@ const AlternativeTherapies = () => {
             description: "Documentary on the future of VR in psychological treatment"
           }
         ],
-        practitioners: ["VR Therapy Specialists", "Mental Health Technologists", "Clinical Psychologists with VR training"]
+        practitioners: ["VR Therapy Specialists", "Mental Health Technologists", "Clinical Psychologists with VR training"],
+        guidedPractice: {
+          title: "Mindful VR Breathing",
+          duration: "10 minutes",
+          description: "A guided breathing exercise that uses visualization techniques inspired by VR therapy to create a sense of presence and calm."
+        }
       },
       {
         id: "neurofeedback",
@@ -541,31 +576,65 @@ const AlternativeTherapies = () => {
       duration: 3000
     });
   };
+  
+  const startGuidedPractice = (therapyId: string) => {
+    navigate(`/guided-practice/${therapyId}`);
+  };
 
   const renderTherapyCards = (therapyArray: Therapy[]) => {
     return therapyArray.map((therapy) => (
-      <Card key={therapy.id} className="transition-all duration-300 hover:shadow-lg">
-        <CardHeader className="pb-4">
+      <Card 
+        key={therapy.id} 
+        className="transition-all duration-300 hover:shadow-lg relative overflow-hidden bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 border-none"
+      >
+        <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/20 dark:to-blue-900/20 rounded-full blur-xl -mr-16 -mt-16 opacity-70"></div>
+        <div className="absolute bottom-0 left-0 h-24 w-24 bg-gradient-to-tr from-teal-100 to-green-100 dark:from-teal-900/20 dark:to-green-900/20 rounded-full blur-xl -ml-12 -mb-12 opacity-70"></div>
+        
+        <CardHeader className="pb-2 relative z-10">
           <div className="flex justify-between items-start">
-            <CardTitle className="text-2xl font-medium">{therapy.name}</CardTitle>
-            {therapy.icon}
+            <div>
+              <div className="p-2 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 w-fit mb-2">
+                {React.cloneElement(therapy.icon, { className: "h-5 w-5" })}
+              </div>
+              <CardTitle className="text-2xl font-medium bg-gradient-to-br from-purple-700 to-blue-700 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+                {therapy.name}
+              </CardTitle>
+            </div>
           </div>
           <CardDescription>{therapy.shortDescription}</CardDescription>
         </CardHeader>
-        <CardContent className="pb-4">
-          <p className="text-gray-700 mb-4">{therapy.description.substring(0, 120)}...</p>
-          <div className="flex flex-wrap gap-2 mb-4">
+        
+        <CardContent className="pb-2 relative z-10">
+          <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
+            {therapy.description.substring(0, 120)}...
+          </p>
+          
+          <div className="flex flex-wrap gap-2 mb-2">
             {therapy.tags.map((tag, index) => (
-              <Badge key={index} variant="outline" className="bg-blue-50">{tag}</Badge>
+              <Badge key={index} variant="outline" className="bg-purple-50 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800">
+                {tag}
+              </Badge>
             ))}
           </div>
         </CardContent>
-        <CardFooter>
+        
+        <CardFooter className="flex justify-between items-center gap-2 pt-0 relative z-10">
           <Button 
-            className="w-full"
+            variant="outline"
+            size="sm"
+            className="flex-1 border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900/30"
             onClick={() => handleTherapyClick(therapy)}
           >
-            Explore {therapy.name}
+            Explore
+          </Button>
+          
+          <Button 
+            size="sm"
+            className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
+            onClick={() => startGuidedPractice(therapy.id)}
+          >
+            <Play className="mr-1 h-4 w-4" />
+            Practice
           </Button>
         </CardFooter>
       </Card>
@@ -573,90 +642,150 @@ const AlternativeTherapies = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#eef1f5]">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
-        <div className="container px-4 max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2232%22 fill=%22white%22 opacity=%220.2%22/></svg>')] bg-center"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-48"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-2xl -ml-32"></div>
+        
+        <div className="container px-4 max-w-6xl mx-auto relative z-10">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+            <Link to="/" className="inline-flex items-center text-white/90 hover:text-white transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Link>
             <HomeButton />
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Alternative Therapies</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">Explore complementary approaches to traditional therapy that can enhance your mental health journey.</p>
+          <h1 className="text-5xl md:text-6xl font-light mb-4">
+            <span className="font-normal">Alternative</span> Therapies
+          </h1>
+          <p className="text-xl text-white/80 max-w-3xl leading-relaxed">
+            Explore complementary approaches to traditional therapy that can enhance your mental health journey and provide holistic healing opportunities.
+          </p>
         </div>
       </div>
 
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <div className="mb-10">
-          <h2 className="text-3xl font-light mb-6">Creative Expression Therapies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="container px-4 py-16 max-w-6xl mx-auto">
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <PenTool className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-light">
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Creative Expression</span> Therapies
+            </h2>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
+            Creative therapies use artistic expression to help process emotions, reduce stress, and increase self-awareness.
+            These approaches are particularly helpful for those who struggle with verbal expression.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {renderTherapyCards(therapies.creative)}
           </div>
         </div>
 
-        <div className="mb-10">
-          <h2 className="text-3xl font-light mb-6">Mind-Body Approaches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center">
+              <CloudRain className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-light">
+              <span className="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Mind-Body</span> Approaches
+            </h2>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
+            Mind-body approaches recognize the powerful connection between physical and mental health,
+            using movement, breath, and awareness to create holistic healing experiences.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {renderTherapyCards(therapies["mind-body"])}
           </div>
         </div>
 
-        <div className="mb-10">
-          <h2 className="text-3xl font-light mb-6">Other Therapeutic Approaches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+              <Heart className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-light">
+              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Other Therapeutic</span> Approaches
+            </h2>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
+            These diverse therapeutic approaches draw on connections with nature, literature, animals, and nutrition
+            to support mental health and wellbeing through various complementary methods.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {renderTherapyCards(therapies.other)}
           </div>
         </div>
 
-        <div className="mb-10">
-          <h2 className="text-3xl font-light mb-6">Emerging Therapies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+              <Gem className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-light">
+              <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">Emerging</span> Therapies
+            </h2>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
+            These innovative approaches represent the cutting edge of mental health treatment,
+            incorporating new technologies and evolving research to address psychological challenges.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {renderTherapyCards(therapies.emerging)}
           </div>
         </div>
 
-        <div className="mt-12 bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-3xl font-light mb-6">Finding Your Path</h2>
-          <p className="text-gray-700 mb-6">
-            Alternative therapies can complement traditional approaches to mental health care. 
-            Many people find that a combination of conventional and alternative methods provides 
-            the most comprehensive support for their mental wellbeing. Explore different options 
-            to find what resonates with your unique needs, preferences, and circumstances.
-          </p>
-          <p className="text-gray-700 mb-6">
-            Remember that while these approaches can be powerful tools for wellbeing, they work 
-            best when integrated into a comprehensive mental health plan that may include traditional 
-            therapy, medication when appropriate, lifestyle factors, and social support.
-          </p>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
-            <Button 
-              size="lg" 
-              onClick={() => {
-                toast({
-                  title: "Consultation Request",
-                  description: "Your request for a personalized consultation has been received. A specialist will contact you shortly.",
-                  duration: 3000
-                });
-              }}
-            >
-              Schedule a Consultation
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              onClick={() => {
-                toast({
-                  title: "Resource Guide",
-                  description: "Your comprehensive guide to alternative therapies is being prepared for download.",
-                  duration: 3000
-                });
-              }}
-            >
-              Download Resource Guide
-            </Button>
+        <div className="mt-16 rounded-2xl bg-gradient-to-r from-purple-600/90 to-indigo-600/90 p-8 md:p-12 text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22 width=%2280%22 height=%2280%22><circle cx=%2240%22 cy=%2240%22 r=%2232%22 fill=%22white%22 opacity=%220.05%22/></svg>')] bg-center"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
+          
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-4xl font-light mb-6">Finding Your Path</h2>
+            <p className="text-white/80 mb-6 leading-relaxed max-w-3xl">
+              Alternative therapies can complement traditional approaches to mental health care. 
+              Many people find that a combination of conventional and alternative methods provides 
+              the most comprehensive support for their mental wellbeing. Explore different options 
+              to find what resonates with your unique needs, preferences, and circumstances.
+            </p>
+            <p className="text-white/80 mb-8 leading-relaxed max-w-3xl">
+              Remember that while these approaches can be powerful tools for wellbeing, they work 
+              best when integrated into a comprehensive mental health plan that may include traditional 
+              therapy, medication when appropriate, lifestyle factors, and social support.
+            </p>
+            <div className="flex flex-col md:flex-row gap-4">
+              <Button 
+                size="lg" 
+                className="bg-white text-indigo-700 hover:bg-white/90"
+                onClick={() => {
+                  toast({
+                    title: "Consultation Request",
+                    description: "Your request for a personalized consultation has been received. A specialist will contact you shortly.",
+                    duration: 3000
+                  });
+                }}
+              >
+                Schedule a Consultation
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10"
+                onClick={() => {
+                  toast({
+                    title: "Resource Guide",
+                    description: "Your comprehensive guide to alternative therapies is being prepared for download.",
+                    duration: 3000
+                  });
+                }}
+              >
+                Download Resource Guide
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -667,52 +796,73 @@ const AlternativeTherapies = () => {
             <>
               <SheetHeader className="mb-6">
                 <div className="flex items-center justify-between">
-                  <SheetTitle className="text-2xl">{selectedTherapy.name}</SheetTitle>
-                  <div className="p-2 bg-blue-50 rounded-full">{selectedTherapy.icon}</div>
+                  <SheetTitle className="text-2xl font-medium bg-gradient-to-r from-purple-700 to-indigo-700 bg-clip-text text-transparent">
+                    {selectedTherapy.name}
+                  </SheetTitle>
+                  <div className="p-2 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full">
+                    {selectedTherapy.icon}
+                  </div>
                 </div>
                 <SheetDescription>{selectedTherapy.shortDescription}</SheetDescription>
               </SheetHeader>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium mb-2">About {selectedTherapy.name}</h3>
-                  <p className="text-gray-700">{selectedTherapy.description}</p>
+                  <h3 className="text-lg font-medium mb-2 text-purple-800 dark:text-purple-300">About {selectedTherapy.name}</h3>
+                  <p className="text-gray-700 dark:text-gray-300">{selectedTherapy.description}</p>
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium mb-2">Key Benefits</h3>
+                  <h3 className="text-lg font-medium mb-2 text-purple-800 dark:text-purple-300">Key Benefits</h3>
                   <ul className="list-disc pl-5 space-y-1">
                     {selectedTherapy.benefits.map((benefit, index) => (
-                      <li key={index} className="text-gray-700">{benefit}</li>
+                      <li key={index} className="text-gray-700 dark:text-gray-300">{benefit}</li>
                     ))}
                   </ul>
                 </div>
                 
                 {selectedTherapy.practitioners && (
                   <div>
-                    <h3 className="text-lg font-medium mb-2">Who Provides This Therapy</h3>
+                    <h3 className="text-lg font-medium mb-2 text-purple-800 dark:text-purple-300">Who Provides This Therapy</h3>
                     <ul className="list-disc pl-5 space-y-1">
                       {selectedTherapy.practitioners.map((practitioner, index) => (
-                        <li key={index} className="text-gray-700">{practitioner}</li>
+                        <li key={index} className="text-gray-700 dark:text-gray-300">{practitioner}</li>
                       ))}
                     </ul>
                   </div>
                 )}
                 
+                {selectedTherapy.guidedPractice && (
+                  <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800/30">
+                    <h3 className="text-lg font-medium mb-2 text-purple-800 dark:text-purple-300">Guided Practice</h3>
+                    <h4 className="font-medium text-indigo-700 dark:text-indigo-300">{selectedTherapy.guidedPractice.title}</h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Duration: {selectedTherapy.guidedPractice.duration}</p>
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">{selectedTherapy.guidedPractice.description}</p>
+                    <Button 
+                      className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                      onClick={() => startGuidedPractice(selectedTherapy.id)}
+                    >
+                      <Play className="mr-2 h-4 w-4" /> Start Guided Practice
+                    </Button>
+                  </div>
+                )}
+                
                 <div>
-                  <h3 className="text-lg font-medium mb-4">Resources</h3>
-                  <div className="space-y-4">
+                  <h3 className="text-lg font-medium mb-4 text-purple-800 dark:text-purple-300">Resources</h3>
+                  <div className="space-y-3">
                     {selectedTherapy.resources.map((resource, index) => (
                       <div 
                         key={index} 
-                        className="p-4 border rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+                        className="p-4 border border-purple-100 dark:border-purple-800/30 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors cursor-pointer"
                         onClick={() => handleResourceClick(resource)}
                       >
                         <div className="flex justify-between items-start">
-                          <h4 className="font-medium text-blue-600">{resource.title}</h4>
-                          <Badge variant="outline">{resource.type}</Badge>
+                          <h4 className="font-medium text-indigo-700 dark:text-indigo-300">{resource.title}</h4>
+                          <Badge variant="outline" className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800">
+                            {resource.type}
+                          </Badge>
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">{resource.description}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{resource.description}</p>
                       </div>
                     ))}
                   </div>
@@ -720,7 +870,7 @@ const AlternativeTherapies = () => {
                 
                 <div className="pt-4">
                   <Button 
-                    className="w-full" 
+                    className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
                     onClick={() => {
                       toast({
                         title: `${selectedTherapy.name} Providers`,

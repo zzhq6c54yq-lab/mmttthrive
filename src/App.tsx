@@ -44,6 +44,7 @@ import BarterSystem from "@/pages/BarterSystem";
 import SubscriptionPlansPage from "@/pages/SubscriptionPlansPage";
 import FinancialAssistance from "@/pages/FinancialAssistance";
 import ContactSupport from "@/pages/ContactSupport";
+import GuidedPractice from "@/pages/GuidedPractice";
 
 function App() {
   return (
@@ -79,6 +80,10 @@ function App() {
         <Route path="/financial-assistance" element={<FinancialAssistance />} />
         <Route path="/contact" element={<ContactSupport />} />
         
+        {/* Alternative Therapies */}
+        <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
+        <Route path="/guided-practice/:therapyId" element={<GuidedPractice />} />
+        
         {/* Specialized Programs Routes */}
         <Route path="/department-of-defense" element={<DoDWelcome />} />
         <Route path="/dod-welcome" element={<DoDWelcome />} />
@@ -100,7 +105,6 @@ function App() {
         {/* Mental Wellness Routes */}
         <Route path="/real-time-therapy" element={<RealTimeTherapy />} />
         <Route path="/holistic-wellness" element={<HolisticWellness />} />
-        <Route path="/alternative-therapies" element={<AlternativeTherapies />} />
         <Route path="/community-support" element={<CommunitySupport />} />
         <Route path="/binaural-beats" element={<BinauralBeats />} />
         <Route path="/journaling" element={<Journaling />} />
