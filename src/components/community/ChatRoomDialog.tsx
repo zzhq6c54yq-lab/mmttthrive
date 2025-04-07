@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { 
   Send, X, Users, MessagesSquare, Info, ThumbsUp, Heart, 
   Video, PhoneCall, Paperclip, Smile, Image, Gift, Calendar, 
@@ -357,7 +357,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
         </DialogHeader>
         
         <div className="flex flex-grow overflow-hidden">
-          {/* Main chat area */}
           <div className="flex-grow flex flex-col overflow-hidden">
             <Tabs defaultValue="chat" className="flex flex-col h-full" onValueChange={setActiveTab}>
               <div className="px-4 border-b border-gray-200">
@@ -389,14 +388,12 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
               <TabsContent value="chat" className="flex-grow flex flex-col p-0 m-0 data-[state=active]:flex-grow overflow-hidden">
                 <ScrollArea className="flex-grow p-4">
                   <div className="space-y-4 pb-2">
-                    {/* Day divider */}
                     <div className="flex items-center justify-center my-4">
                       <div className="bg-purple-100 text-purple-800 text-xs rounded-full px-3 py-1 font-medium">
                         Today
                       </div>
                     </div>
                     
-                    {/* Chat messages */}
                     {chatMessages.map((message) => (
                       <motion.div 
                         key={message.id} 
@@ -449,7 +446,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                               </p>
                             </div>
                             
-                            {/* Reactions */}
                             {message.reactions && message.reactions.length > 0 && (
                               <div className={`flex mt-1 gap-1 ${message.userId === "currentUser" ? "justify-end" : "justify-start"}`}>
                                 {message.reactions.map((reaction, index) => (
@@ -469,7 +465,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                               </div>
                             )}
                             
-                            {/* Reaction buttons */}
                             <div className={`mt-1 flex gap-2 ${message.userId === "currentUser" ? "justify-end" : "justify-start"} opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity`}>
                               <button
                                 className="text-gray-400 hover:text-purple-600"
@@ -489,7 +484,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                       </motion.div>
                     ))}
                     
-                    {/* Typing indicator */}
                     {isTyping && (
                       <div className="flex justify-start">
                         <div className="flex gap-3 max-w-[85%]">
@@ -518,7 +512,6 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                       </div>
                     )}
                     
-                    {/* Scroll anchor */}
                     <div ref={chatEndRef} />
                   </div>
                 </ScrollArea>
@@ -666,78 +659,75 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
             </Tabs>
           </div>
           
-          {/* Sidebar (show when info button is clicked) */}
-          {showInfo && (
-            <motion.div 
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: "320px", opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              className="border-l border-gray-200 flex-shrink-0 bg-white overflow-y-auto"
-            >
-              <div className="p-4">
-                <h3 className="font-semibold mb-4 text-gray-800">Group Members ({activeUsers.length})</h3>
-                <div className="space-y-1">
-                  {activeUsers.map((user) => (
-                    <div key={user.id} className="flex items-center p-2 hover:bg-gray-50 rounded-md">
-                      <Avatar className="h-8 w-8 mr-3">
-                        {user.avatar ? (
-                          <AvatarImage src={user.avatar} />
-                        ) : (
-                          <AvatarFallback className="bg-purple-200 text-purple-700">
-                            {user.name[0]}
-                          </AvatarFallback>
-                        )}
-                        <span className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 border border-white"></span>
-                      </Avatar>
-                      <div>
-                        <span className="text-sm font-medium text-gray-800">{user.name}</span>
-                        {user.id === "user1" && (
-                          <Badge className="ml-2 bg-purple-100 text-purple-800 border-none text-[10px] py-0">
-                            Therapist
-                          </Badge>
-                        )}
-                      </div>
+          <motion.div 
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "320px", opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            className="border-l border-gray-200 flex-shrink-0 bg-white overflow-y-auto"
+          >
+            <div className="p-4">
+              <h3 className="font-semibold mb-4 text-gray-800">Group Members ({activeUsers.length})</h3>
+              <div className="space-y-1">
+                {activeUsers.map((user) => (
+                  <div key={user.id} className="flex items-center p-2 hover:bg-gray-50 rounded-md">
+                    <Avatar className="h-8 w-8 mr-3">
+                      {user.avatar ? (
+                        <AvatarImage src={user.avatar} />
+                      ) : (
+                        <AvatarFallback className="bg-purple-200 text-purple-700">
+                          {user.name[0]}
+                        </AvatarFallback>
+                      )}
+                      <span className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 border border-white"></span>
+                    </Avatar>
+                    <div>
+                      <span className="text-sm font-medium text-gray-800">{user.name}</span>
+                      {user.id === "user1" && (
+                        <Badge className="ml-2 bg-purple-100 text-purple-800 border-none text-[10px] py-0">
+                          Therapist
+                        </Badge>
+                      )}
                     </div>
-                  ))}
-                </div>
-                
-                <Separator className="my-6" />
-                
-                <div>
-                  <h3 className="font-semibold mb-4 text-gray-800">About This Group</h3>
-                  <div className="space-y-4 text-sm text-gray-600">
-                    <div className="flex items-start gap-3">
-                      <div className="bg-purple-100 p-1.5 rounded-full mt-0.5">
-                        <Sparkles className="h-4 w-4 text-purple-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-700 mb-1">Purpose</h4>
-                        <p>A safe space to discuss anxiety challenges and share coping strategies.</p>
-                      </div>
+                  </div>
+                ))}
+              </div>
+              
+              <Separator className="my-6" />
+              
+              <div>
+                <h3 className="font-semibold mb-4 text-gray-800">About This Group</h3>
+                <div className="space-y-4 text-sm text-gray-600">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-purple-100 p-1.5 rounded-full mt-0.5">
+                      <Sparkles className="h-4 w-4 text-purple-600" />
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="bg-purple-100 p-1.5 rounded-full mt-0.5">
-                        <Clock className="h-4 w-4 text-purple-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-700 mb-1">Schedule</h4>
-                        <p>Live discussions every Tuesday and Thursday at 7:00 PM ET.</p>
-                      </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-1">Purpose</h4>
+                      <p>A safe space to discuss anxiety challenges and share coping strategies.</p>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="bg-purple-100 p-1.5 rounded-full mt-0.5">
-                        <Shield className="h-4 w-4 text-purple-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-700 mb-1">Guidelines</h4>
-                        <p>Be respectful, maintain confidentiality, and offer support rather than advice.</p>
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-purple-100 p-1.5 rounded-full mt-0.5">
+                      <Clock className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-1">Schedule</h4>
+                      <p>Live discussions every Tuesday and Thursday at 7:00 PM ET.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-purple-100 p-1.5 rounded-full mt-0.5">
+                      <Shield className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-1">Guidelines</h4>
+                      <p>Be respectful, maintain confidentiality, and offer support rather than advice.</p>
                     </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          )}
+            </div>
+          </motion.div>
         </div>
       </DialogContent>
     </Dialog>
