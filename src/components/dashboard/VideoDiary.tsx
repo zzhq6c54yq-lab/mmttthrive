@@ -38,11 +38,15 @@ const VideoDiary: React.FC = () => {
       duration: 1500
     });
     
-    navigate("/video-diary/new");
+    navigate("/video-diary/new", { 
+      state: { from: window.location.pathname } 
+    });
   };
   
   const handleViewAll = () => {
-    navigate("/video-diary");
+    navigate("/video-diary", { 
+      state: { from: window.location.pathname } 
+    });
   };
   
   const handleVideoClick = (id: string) => {
@@ -51,7 +55,7 @@ const VideoDiary: React.FC = () => {
       const videoElement = videoRefs.current[id];
       if (videoElement) {
         if (videoElement.paused) {
-          videoElement.play();
+          videoElement.play().catch(e => console.error("Video play failed:", e));
         } else {
           videoElement.pause();
         }

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Page from "@/components/Page";
 import VideoRecorder from "@/components/video-diary/VideoRecorder";
@@ -12,12 +12,13 @@ import { VideoEntry } from "@/types/video-diary";
 const VideoDiary: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const { toast } = useToast();
   const [isRecording, setIsRecording] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [currentVideo, setCurrentVideo] = useState<VideoEntry | null>(null);
   
-  // Personal video entries (default ones)
+  // Personal video entries with updated images and videos
   const personalVideoEntries: VideoEntry[] = [
     {
       id: "v1",
@@ -88,8 +89,25 @@ const VideoDiary: React.FC = () => {
   ];
 
   const handleSaveRecording = (videoBlob: Blob, title: string) => {
-    // Here we'd typically upload to a server
-    // For now, just simulate saving and show a toast
+    // Create a unique ID for the new video
+    const newVideoId = `v${Date.now()}`;
+    
+    // Create URL for the blob to simulate saved video
+    const videoUrl = URL.createObjectURL(videoBlob);
+    
+    // Create a new video entry
+    const newVideo: VideoEntry = {
+      id: newVideoId,
+      title: title,
+      date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+      duration: "0:30", // Placeholder duration
+      description: "Video diary entry recorded on " + new Date().toLocaleDateString(),
+      thumbnail: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80", // Placeholder thumbnail
+      videoUrl: videoUrl
+    };
+    
+    // In a real app, we would upload this to a server
+    // For now, just show a toast message
     toast({
       title: "Video Saved",
       description: "Your video diary entry has been saved successfully."
@@ -113,7 +131,13 @@ const VideoDiary: React.FC = () => {
   }, [id]);
   
   const handleBack = () => {
-    navigate(-1);
+    // Check if we came from a specific route like the dashboard
+    if (location.state && location.state.from) {
+      navigate(location.state.from);
+    } else {
+      // Default fallback
+      navigate(-1);
+    }
   };
   
   const handleCreateNew = () => {
@@ -163,7 +187,11 @@ const VideoDiary: React.FC = () => {
   };
 
   return (
-    <Page title="Video Diary">
+    <Page 
+      title="Video Diary" 
+      showBackButton={true} 
+      onBackClick={handleBack}
+    >
       <div className="min-h-screen bg-gradient-to-b from-[#1a1a20] via-[#252535] to-[#2d2d3d] text-white pb-16">
         {renderContent()}
 

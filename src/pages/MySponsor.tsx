@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Page from "@/components/Page";
 import SponsorChatbot from "@/components/SponsorChatbot";
 import StepWorksheets from "@/components/sponsor/StepWorksheets";
@@ -19,11 +18,20 @@ import {
 
 const MySponsor = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [zipCode, setZipCode] = useState("");
   const [searchMade, setSearchMade] = useState(false);
   const [currentStep, setCurrentStep] = useState(3);
   const [completedSteps, setCompletedSteps] = useState([1, 2]);
+
+  const handleBackClick = () => {
+    if (location.state && location.state.from) {
+      navigate(location.state.from);
+    } else {
+      navigate("/home");
+    }
+  };
 
   const handleMeetingSearch = () => {
     if (!zipCode || zipCode.length !== 5 || isNaN(Number(zipCode))) {
@@ -101,7 +109,7 @@ const MySponsor = () => {
   ];
 
   return (
-    <Page title="My Sponsor" showBackButton={true} onBackClick={() => navigate("/")}>
+    <Page title="My N.A./A.A. Sponsor" showBackButton={true} onBackClick={handleBackClick}>
       <div className="space-y-6">
         <div className="bg-gradient-to-r from-purple-900 via-purple-800 to-indigo-900 rounded-xl p-6 text-white shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">

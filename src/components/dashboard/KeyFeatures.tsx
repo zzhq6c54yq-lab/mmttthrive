@@ -62,7 +62,13 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       duration: 1500,
     });
     
-    navigateToFeature(path);
+    navigate(path, { 
+      state: { 
+        from: window.location.pathname,
+        qualities: selectedQualities, 
+        goals: selectedGoals 
+      }
+    });
   };
 
   const container = {
@@ -139,7 +145,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     },
     {
       id: "sponsor-alternative",
-      title: "My Sponsor",
+      title: "My N.A./A.A. Sponsor",
       icon: <Users />,
       path: "/my-sponsor",
       color: "from-rose-600 to-pink-600",
