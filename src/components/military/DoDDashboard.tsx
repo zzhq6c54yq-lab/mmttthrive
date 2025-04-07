@@ -2,13 +2,18 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Shield, Award, Calendar, Star, ChevronRight, Zap, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const DoDDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  
+  // Get state from location to maintain context between navigations
+  const returnToPortal = location.state?.returnToPortal || "/dod-portal";
+  const preventTutorial = location.state?.preventTutorial || false;
   
   const handleButtonClick = (path: string, title: string) => {
     toast({
@@ -18,10 +23,12 @@ const DoDDashboard = () => {
     });
     
     // Make sure to use the state to prevent returning to intro screens
+    // and to enable returning to the portal
     navigate(path, {
       state: {
         preventTutorial: true,
-        returnToMain: true
+        returnToMain: false,
+        returnToPortal: "/dod-portal"
       }
     });
   };
@@ -36,7 +43,8 @@ const DoDDashboard = () => {
     navigate("/mental-wellness-tools", {
       state: {
         preventTutorial: true,
-        returnToMain: true,
+        returnToMain: false,
+        returnToPortal: "/dod-portal",
         assessmentType,
         openAssessment: true
       }
@@ -53,7 +61,8 @@ const DoDDashboard = () => {
     navigate("/workshops", {
       state: {
         preventTutorial: true,
-        returnToMain: true,
+        returnToMain: false,
+        returnToPortal: "/dod-portal",
         highlightWorkshop: eventName
       }
     });
@@ -63,7 +72,32 @@ const DoDDashboard = () => {
     <div className="space-y-8">
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-lg border border-blue-900/30 bg-gradient-to-r from-blue-950 to-blue-900 p-6">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full translate-x-1/3 -translate-y-1/2 blur-3xl"></div>
+        {/* Patriotic flag background element */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 right-0 w-full h-full opacity-5">
+            {/* Red and white stripes */}
+            <div className="absolute bottom-0 left-0 right-0 h-full">
+              {[...Array(7)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`h-[14.28%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                />
+              ))}
+            </div>
+            
+            {/* Blue field with stars */}
+            <div className="absolute top-0 left-0 w-1/4 h-1/2 bg-blue-900">
+              <div className="grid grid-cols-3 gap-2 p-2">
+                {[...Array(9)].map((_, i) => (
+                  <div key={i} className="flex items-center justify-center">
+                    <Star className="h-1 w-1 text-white" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <div className="relative z-10">
           <h2 className="text-3xl font-bold text-white mb-2">Welcome, Service Member</h2>
           <p className="text-blue-200 mb-6 max-w-3xl">
@@ -72,7 +106,7 @@ const DoDDashboard = () => {
           <div className="flex flex-wrap gap-3">
             <Button 
               className="bg-blue-700 hover:bg-blue-800 text-white" 
-              onClick={() => handleButtonClick("/resource-library", "Resource Library")}
+              onClick={() => handleButtonClick("/military-resources", "Military Resources")}
             >
               Explore Resources
             </Button>

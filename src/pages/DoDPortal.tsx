@@ -4,7 +4,7 @@ import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Sparkles, Briefcase, Globe, BookOpen, HeartPulse, Calendar, Zap, AlertCircle, Video, FileText, Award, Star, Flag, MapPin, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
 import DoDDashboard from "@/components/military/DoDDashboard";
@@ -14,9 +14,14 @@ import DoDAssessments from "@/components/military/DoDAssessments";
 
 const DoDPortal: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops'>('dashboard');
+  
+  // Get state from location to maintain context between navigations
+  const returnToMain = location.state?.returnToMain || false;
+  const preventTutorial = location.state?.preventTutorial || false;
   
   const handleFeatureClick = (feature: string) => {
     toast({
@@ -35,11 +40,17 @@ const DoDPortal: React.FC = () => {
     } else if (feature === "mental-wellness/assessments") {
       setActiveTab("assessments");
     } else {
-      // For other features, navigate as before
+      // For other features, navigate as before but maintain context
       navigate(`/${feature}`, { 
         state: { 
-          fromSpecializedProgram: true, 
-          preventTutorial: true 
+          fromSpecializedProgram: true,
+          preventTutorial: true,
+          returnToPortal: "/dod-portal", // Add this to enable returning to portal
+          portalState: {
+            activeTab,
+            returnToMain,
+            preventTutorial
+          }
         }
       });
     }
@@ -81,7 +92,16 @@ const DoDPortal: React.FC = () => {
                 <span>Weekly meetings</span>
               </div>
             </div>
-            <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+            <Button 
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={() => {
+                toast({
+                  title: "Group Joined",
+                  description: "You've successfully joined the Combat Veterans Group",
+                  duration: 2000
+                });
+              }}
+            >
               Join Group
             </Button>
           </CardContent>
@@ -106,7 +126,16 @@ const DoDPortal: React.FC = () => {
                 <span>Daily discussions</span>
               </div>
             </div>
-            <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+            <Button 
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={() => {
+                toast({
+                  title: "Group Joined",
+                  description: "You've successfully joined the Military Families Connect group",
+                  duration: 2000
+                });
+              }}
+            >
               Join Group
             </Button>
           </CardContent>
@@ -131,7 +160,16 @@ const DoDPortal: React.FC = () => {
                 <span>Bi-weekly meetings</span>
               </div>
             </div>
-            <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+            <Button 
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={() => {
+                toast({
+                  title: "Group Joined",
+                  description: "You've successfully joined the Transition Warriors group",
+                  duration: 2000
+                });
+              }}
+            >
               Join Group
             </Button>
           </CardContent>
@@ -160,6 +198,13 @@ const DoDPortal: React.FC = () => {
                 variant="outline" 
                 size="sm" 
                 className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => {
+                  toast({
+                    title: "Joined Event",
+                    description: "You've joined the Virtual Coffee Meetup",
+                    duration: 2000
+                  });
+                }}
               >
                 Join
               </Button>
@@ -184,6 +229,13 @@ const DoDPortal: React.FC = () => {
                 variant="outline" 
                 size="sm" 
                 className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => {
+                  toast({
+                    title: "RSVP Confirmed",
+                    description: "You've RSVP'd to the Family Day Picnic",
+                    duration: 2000
+                  });
+                }}
               >
                 RSVP
               </Button>
@@ -208,6 +260,13 @@ const DoDPortal: React.FC = () => {
                 variant="outline" 
                 size="sm" 
                 className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => {
+                  toast({
+                    title: "Registration Complete",
+                    description: "You've registered for the PTSD Support Circle",
+                    duration: 2000
+                  });
+                }}
               >
                 Register
               </Button>
@@ -234,7 +293,16 @@ const DoDPortal: React.FC = () => {
               placeholder="Enter ZIP code or city"
               className="flex-grow py-2 px-4 bg-[#0c1016] border border-blue-900/30 rounded-md text-white placeholder-blue-400/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
             />
-            <Button className="bg-blue-700 hover:bg-blue-800 text-white whitespace-nowrap">
+            <Button 
+              className="bg-blue-700 hover:bg-blue-800 text-white whitespace-nowrap"
+              onClick={() => {
+                toast({
+                  title: "Support Finder",
+                  description: "Searching for local support resources near you",
+                  duration: 2000
+                });
+              }}
+            >
               Find Support
             </Button>
           </div>
@@ -244,7 +312,10 @@ const DoDPortal: React.FC = () => {
   );
 
   return (
-    <Page title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} returnToMain>
+    <Page 
+      title={isSpanish ? "Departamento de Defensa" : "Department of Defense"} 
+      returnToMain={returnToMain}
+    >
       <div className="space-y-6">
         <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
           {/* Patriotic flag background element */}

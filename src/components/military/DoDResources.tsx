@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { Book, FileText, Video, Link, Download, Search } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const DoDResources = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   
   // Resource categories with their content
@@ -132,6 +134,49 @@ const DoDResources = () => {
     return <Icon className="h-5 w-5 text-blue-400" />;
   };
 
+  // Handle resource access button click
+  const handleResourceAccess = (resource) => {
+    let actionText = "";
+    
+    switch(resource.type) {
+      case 'document':
+      case 'guide':
+        actionText = "Downloading";
+        break;
+      case 'video':
+        actionText = "Playing";
+        break;
+      case 'link':
+      case 'group':
+      case 'directory':
+        actionText = "Opening";
+        break;
+      case 'app':
+      case 'toolkit':
+        actionText = "Installing";
+        break;
+      default:
+        actionText = "Accessing";
+    }
+    
+    toast({
+      title: `${actionText} ${resource.title}`,
+      description: `Your resource is being prepared. ${resource.type === 'document' ? 'The download will start shortly.' : ''}`,
+      duration: 2000,
+    });
+
+    // For demo purposes, show a follow-up toast
+    setTimeout(() => {
+      if (resource.type === 'document' || resource.type === 'guide' || resource.type === 'toolkit') {
+        toast({
+          title: "Download Complete",
+          description: `${resource.title} has been downloaded successfully.`,
+          duration: 2000,
+        });
+      }
+    }, 2500);
+  };
+
   return (
     <div className="space-y-8">
       {/* Header section */}
@@ -191,8 +236,33 @@ const DoDResources = () => {
                     <CardDescription>{resource.description}</CardDescription>
                   </CardHeader>
                   <CardFooter>
-                    <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
-                      Access Resource
+                    <Button 
+                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                      onClick={() => handleResourceAccess(resource)}
+                    >
+                      {resource.type === 'document' || resource.type === 'guide' ? (
+                        <>
+                          <Download className="h-4 w-4 mr-2" />
+                          Download Resource
+                        </>
+                      ) : resource.type === 'video' ? (
+                        <>
+                          <Video className="h-4 w-4 mr-2" />
+                          Watch Video
+                        </>
+                      ) : resource.type === 'link' || resource.type === 'group' || resource.type === 'directory' ? (
+                        <>
+                          <Link className="h-4 w-4 mr-2" />
+                          Open Resource
+                        </>
+                      ) : resource.type === 'app' || resource.type === 'toolkit' ? (
+                        <>
+                          <Download className="h-4 w-4 mr-2" />
+                          Install {resource.type === 'app' ? 'App' : 'Toolkit'}
+                        </>
+                      ) : (
+                        'Access Resource'
+                      )}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -200,7 +270,17 @@ const DoDResources = () => {
             </div>
             
             <div className="mt-6 flex justify-center">
-              <Button variant="outline" className="border-blue-500 text-blue-300 hover:bg-blue-900/50">
+              <Button 
+                variant="outline" 
+                className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                onClick={() => {
+                  toast({
+                    title: `More ${category.name} Resources`,
+                    description: "Loading additional resources in this category",
+                    duration: 2000
+                  });
+                }}
+              >
                 View More {category.name} Resources
               </Button>
             </div>
@@ -218,10 +298,31 @@ const DoDResources = () => {
                 Immediate support for veterans in crisis, including the Veterans Crisis Line, which offers confidential support 24/7.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Button className="bg-red-700 hover:bg-red-800 text-white">
+                <Button 
+                  className="bg-red-700 hover:bg-red-800 text-white"
+                  onClick={() => {
+                    navigate("/crisis-support", {
+                      state: {
+                        fromSpecializedProgram: true,
+                        preventTutorial: true,
+                        returnToPortal: "/dod-portal"
+                      }
+                    });
+                  }}
+                >
                   Crisis Resources
                 </Button>
-                <Button variant="outline" className="border-blue-500 text-blue-300 hover:bg-blue-900/50">
+                <Button 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={() => {
+                    toast({
+                      title: "Local Support Finder",
+                      description: "Opening the service locator map for veteran support services",
+                      duration: 2000
+                    });
+                  }}
+                >
                   Find Local Support
                 </Button>
               </div>

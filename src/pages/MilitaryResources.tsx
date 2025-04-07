@@ -1,15 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   ArrowLeft, BookOpen, Download, FileText, 
   ExternalLink, Bookmark, Search, Filter, 
-  Wrench
+  Wrench, Play
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import HomeButton from "@/components/HomeButton";
+import { useToast } from "@/hooks/use-toast";
 
 // Sample resources data
 const resources = [
@@ -143,7 +145,9 @@ const ResourceCard: React.FC<{
   size: string;
   date: string;
   url: string;
-}> = ({ title, description, category, type, size, date, url }) => {
+  onDownload: () => void;
+  onBookmark: () => void;
+}> = ({ title, description, category, type, size, date, url, onDownload, onBookmark }) => {
   return (
     <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border border-white/10 text-white transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px] h-full flex flex-col">
       <CardHeader className="pb-2">
@@ -171,12 +175,22 @@ const ResourceCard: React.FC<{
       
       <CardFooter className="pt-0">
         <div className="w-full flex items-center justify-between">
-          <Button variant="gold" size="sm" className="text-sm">
+          <Button 
+            variant="gold" 
+            size="sm" 
+            className="text-sm"
+            onClick={onDownload}
+          >
             <Download className="h-3 w-3 mr-2" />
             Download
           </Button>
           
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-[#B87333]">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 text-gray-400 hover:text-[#B87333]"
+            onClick={onBookmark}
+          >
             <Bookmark className="h-4 w-4" />
           </Button>
         </div>
@@ -190,7 +204,8 @@ const ExternalResourceCard: React.FC<{
   description: string;
   category: string;
   url: string;
-}> = ({ title, description, category, url }) => {
+  onVisit: () => void;
+}> = ({ title, description, category, url, onVisit }) => {
   return (
     <Card className="bg-gradient-to-b from-[#1c2e4a] to-[#0A1929] border border-white/10 text-white transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]">
       <CardHeader className="pb-2">
@@ -207,7 +222,12 @@ const ExternalResourceCard: React.FC<{
       </CardContent>
       
       <CardFooter className="pt-0">
-        <Button variant="outline" size="sm" className="text-sm border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="text-sm border-[#B87333]/30 text-[#B87333] hover:bg-[#B87333]/10"
+          onClick={onVisit}
+        >
           <ExternalLink className="h-3 w-3 mr-2" />
           Visit Website
         </Button>
@@ -217,16 +237,112 @@ const ExternalResourceCard: React.FC<{
 };
 
 const MilitaryResources: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState("all");
+  
+  // Get the return portal from location state
+  const returnToPortal = location.state?.returnToPortal || "/dod-portal";
+  
+  const handleBackClick = () => {
+    // Navigate back to the portal instead of military support
+    navigate(returnToPortal, { 
+      state: { 
+        preventTutorial: true,
+        returnToMain: location.state?.returnToMain || false
+      } 
+    });
+  };
+  
+  const handleDownload = (resource) => {
+    toast({
+      title: "Downloading Resource",
+      description: `${resource.title} (${resource.size}) will be downloaded shortly`,
+      duration: 2000
+    });
+    
+    // Simulate download completion
+    setTimeout(() => {
+      toast({
+        title: "Download Complete",
+        description: `${resource.title} has been downloaded successfully`,
+        duration: 2000
+      });
+    }, 2500);
+  };
+  
+  const handleBookmark = (resource) => {
+    toast({
+      title: "Resource Bookmarked",
+      description: `${resource.title} has been added to your bookmarks`,
+      duration: 2000
+    });
+  };
+  
+  const handleExternalResourceVisit = (resource) => {
+    toast({
+      title: "Opening External Resource",
+      description: `Redirecting to ${resource.title}`,
+      duration: 2000
+    });
+  };
+  
+  const handleResourceFinderClick = () => {
+    toast({
+      title: "Resource Finder",
+      description: "Opening personalized resource recommendation tool",
+      duration: 2000
+    });
+  };
+  
+  const handleRequestResourceClick = () => {
+    toast({
+      title: "Resource Request",
+      description: "Your resource request form is being prepared",
+      duration: 2000
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#0A1929] text-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0A1929] to-[#1A365D] py-12">
-        <div className="container mx-auto px-4">
+      <div className="bg-gradient-to-r from-[#0A1929] to-[#1A365D] py-12 relative overflow-hidden">
+        {/* Patriotic flag background element */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 right-0 w-full h-full opacity-5">
+            {/* Red and white stripes */}
+            <div className="absolute bottom-0 left-0 right-0 h-full">
+              {[...Array(7)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`h-[14.28%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                />
+              ))}
+            </div>
+            
+            {/* Blue field with stars */}
+            <div className="absolute top-0 left-0 w-1/3 h-1/2 bg-blue-900">
+              <div className="grid grid-cols-5 gap-2 p-2">
+                {[...Array(20)].map((_, i) => (
+                  <div key={i} className="flex items-center justify-center">
+                    <Star className="h-2 w-2 text-white" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/military-support" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
+            <button 
+              onClick={handleBackClick} 
+              className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Military Support
-            </Link>
+              Back to Military Portal
+            </button>
             <HomeButton />
           </div>
           
@@ -248,11 +364,24 @@ const MilitaryResources: React.FC = () => {
                 className="pl-10 bg-white/10 border-white/10 text-white"
               />
             </div>
-            <Button variant="outline" className="border-white/20 text-white">
+            <Button 
+              variant="outline" 
+              className="border-white/20 text-white"
+              onClick={() => {
+                toast({
+                  title: "Filters",
+                  description: "Opening resource filter options",
+                  duration: 1500
+                });
+              }}
+            >
               <Filter className="h-4 w-4 mr-2" />
               Filters
             </Button>
-            <Button variant="gold">
+            <Button 
+              variant="gold"
+              onClick={handleResourceFinderClick}
+            >
               <Wrench className="h-4 w-4 mr-2" />
               Resource Finder
             </Button>
@@ -260,7 +389,12 @@ const MilitaryResources: React.FC = () => {
         </div>
         
         {/* Main Content */}
-        <Tabs defaultValue="all" className="w-full">
+        <Tabs 
+          defaultValue="all" 
+          className="w-full"
+          value={activeTab}
+          onValueChange={setActiveTab}
+        >
           <TabsList className="grid grid-cols-4 gap-2 bg-black/30 mb-8 p-1 rounded-lg">
             <TabsTrigger value="all" className="data-[state=active]:bg-[#B87333]/90">All Resources</TabsTrigger>
             <TabsTrigger value="mental-health" className="data-[state=active]:bg-[#B87333]/90">Mental Health</TabsTrigger>
@@ -284,6 +418,8 @@ const MilitaryResources: React.FC = () => {
                   size={resource.size}
                   date={resource.date}
                   url={resource.url}
+                  onDownload={() => handleDownload(resource)}
+                  onBookmark={() => handleBookmark(resource)}
                 />
               ))}
             </div>
@@ -303,6 +439,8 @@ const MilitaryResources: React.FC = () => {
                   size={resource.size}
                   date={resource.date}
                   url={resource.url}
+                  onDownload={() => handleDownload(resource)}
+                  onBookmark={() => handleBookmark(resource)}
                 />
               ))}
             </div>
@@ -319,6 +457,7 @@ const MilitaryResources: React.FC = () => {
                   description={resource.description}
                   category={resource.category}
                   url={resource.url}
+                  onVisit={() => handleExternalResourceVisit(resource)}
                 />
               ))}
             </div>
@@ -340,6 +479,8 @@ const MilitaryResources: React.FC = () => {
                   size={resource.size}
                   date={resource.date}
                   url={resource.url}
+                  onDownload={() => handleDownload(resource)}
+                  onBookmark={() => handleBookmark(resource)}
                 />
               ))}
             </div>
@@ -361,6 +502,8 @@ const MilitaryResources: React.FC = () => {
                   size={resource.size}
                   date={resource.date}
                   url={resource.url}
+                  onDownload={() => handleDownload(resource)}
+                  onBookmark={() => handleBookmark(resource)}
                 />
               ))}
             </div>
@@ -382,6 +525,8 @@ const MilitaryResources: React.FC = () => {
                   size={resource.size}
                   date={resource.date}
                   url={resource.url}
+                  onDownload={() => handleDownload(resource)}
+                  onBookmark={() => handleBookmark(resource)}
                 />
               ))}
             </div>
@@ -398,7 +543,11 @@ const MilitaryResources: React.FC = () => {
               </p>
             </div>
             
-            <Button variant="gold" size="lg">
+            <Button 
+              variant="gold" 
+              size="lg"
+              onClick={handleRequestResourceClick}
+            >
               Request Resource
             </Button>
           </div>
@@ -413,18 +562,24 @@ const MilitaryResources: React.FC = () => {
           </p>
           
           <div className="flex justify-center gap-4">
-            <Link 
-              to="/military-support" 
+            <button 
+              onClick={handleBackClick}
               className="text-[#B87333] hover:text-[#B87333]/80 transition-colors"
             >
-              Military Support Home
-            </Link>
-            <Link 
-              to="/contact" 
+              Military Portal Home
+            </button>
+            <button 
+              onClick={() => {
+                toast({
+                  title: "Contact Support",
+                  description: "Opening contact support form",
+                  duration: 1500
+                });
+              }} 
               className="text-[#B87333] hover:text-[#B87333]/80 transition-colors"
             >
               Contact Us
-            </Link>
+            </button>
           </div>
         </div>
       </footer>
