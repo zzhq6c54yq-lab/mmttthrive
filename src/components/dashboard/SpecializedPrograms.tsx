@@ -14,7 +14,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       id: "veterans",
       title: "Veterans Program",
       description: "Specialized mental health support tailored specifically for veterans. Navigate post-service challenges with our expert resources.",
-      path: "/military-support",
+      path: "/dod-welcome",
       coverImage: "https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       color: "from-blue-700 to-blue-900",
       icon: <Shield className="h-5 w-5 text-white" />
@@ -23,7 +23,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       id: "college",
       title: "College Students",
       description: "Resources designed for campus mental wellness, helping you balance academics, social life, and personal growth.",
-      path: "/college-portal",
+      path: "/college-welcome",
       coverImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       color: "from-purple-700 to-indigo-900",
       icon: <GraduationCap className="h-5 w-5 text-white" />
@@ -32,7 +32,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       id: "business",
       title: "Small Business",
       description: "Comprehensive support for entrepreneurs and small teams managing workplace wellness and stress.",
-      path: "/small-business-portal",
+      path: "/small-business-welcome",
       coverImage: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       color: "from-emerald-700 to-green-900",
       icon: <Briefcase className="h-5 w-5 text-white" />
