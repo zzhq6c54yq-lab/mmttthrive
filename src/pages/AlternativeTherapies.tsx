@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -45,7 +46,7 @@ const AlternativeTherapies = () => {
   const returnPath = location.state?.from || "/";
   
   const handleBack = () => {
-    navigate(returnPath);
+    navigate(-1); // This will navigate back to the previous screen in history
   };
   
   const handleGuidedPractice = (therapyId: string, therapyName: string) => {

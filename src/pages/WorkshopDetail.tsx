@@ -15,9 +15,9 @@ const WorkshopDetail = () => {
   const location = useLocation();
   const { toast } = useToast();
   
-  // Get the active tab from location state or default to "overview"
+  // Get the active tab from location state or default to "workshop" instead of "overview"
   const [activeTab, setActiveTab] = useState(
-    location.state?.activeTab || "overview"
+    location.state?.activeTab || "workshop"
   );
 
   // Find the workshop data
@@ -67,19 +67,45 @@ const WorkshopDetail = () => {
     );
   }
 
-  // Get video URL based on workshop ID
+  // Get video URL based on workshop ID - Now properly mapped to each workshop
   const getVideoUrl = (workshopId: string) => {
-    // Map workshop IDs to video URLs (these would be replaced with real URLs in production)
+    // Map workshop IDs to video URLs with more specific videos for each workshop
     const videoMap: {[key: string]: string} = {
       'mindful-communication': 'https://player.vimeo.com/video/305501304',
       'emotional-regulation': 'https://player.vimeo.com/video/139195467',
       'stress-management': 'https://player.vimeo.com/video/456646308',
       'better-sleep': 'https://player.vimeo.com/video/347119375',
       'cognitive-reframing': 'https://player.vimeo.com/video/528293631',
-      'gratitude-practice': 'https://player.vimeo.com/video/437194835'
+      'gratitude-practice': 'https://player.vimeo.com/video/437194835',
+      'self-compassion': 'https://player.vimeo.com/video/420252733',
+      'social-connection': 'https://player.vimeo.com/video/522948060',
+      'anxiety-management': 'https://player.vimeo.com/video/248736159',
+      'boundary-setting': 'https://player.vimeo.com/video/231354112',
+      'values-alignment': 'https://player.vimeo.com/video/286898202',
+      'habit-formation': 'https://player.vimeo.com/video/418701977'
     };
     
     return videoMap[workshopId] || 'https://player.vimeo.com/video/76979871';
+  };
+
+  // Get workshop image URL based on workshop ID
+  const getWorkshopImage = (workshopId: string) => {
+    const imageMap: {[key: string]: string} = {
+      'mindful-communication': '1581091226825-a6a2a5aee158',
+      'emotional-regulation': '1649972904349-6e44c42644a7',
+      'stress-management': '1488590528505-98d2b5aba04b',
+      'better-sleep': '1465146344425-f00d5f5c8f07',
+      'cognitive-reframing': '1506744038136-46273834b3fb',
+      'gratitude-practice': '1509316975850-ff9c5deb0cd9',
+      'self-compassion': '1500673922987-e212871fec22',
+      'social-connection': '1523712999610-f77fbcfc3843',
+      'anxiety-management': '1501854140801-50d01698950b',
+      'boundary-setting': '1615729947596-a598e5de0ab3',
+      'values-alignment': '1543618903355-efbc3e8e9284',
+      'habit-formation': '1517048676732-d65bc937f952'
+    };
+    
+    return `https://images.unsplash.com/photo-${imageMap[workshopId] || '1486312338219-ce68d2c6f44d'}`;
   };
 
   return (
@@ -104,15 +130,7 @@ const WorkshopDetail = () => {
                 <TabsContent value="overview" className="space-y-4">
                   <div className="aspect-video relative overflow-hidden rounded-lg bg-black">
                     <img 
-                      src={`https://images.unsplash.com/photo-${
-                        workshopId === 'mindful-communication' 
-                          ? '1581091226825-a6a2a5aee158' 
-                          : workshopId === 'emotional-regulation' 
-                          ? '1649972904349-6e44c42644a7' 
-                          : workshopId === 'stress-management'
-                          ? '1488590528505-98d2b5aba04b'
-                          : '1486312338219-ce68d2c6f44d'
-                      }`}
+                      src={getWorkshopImage(workshopId || '')}
                       alt={workshop.title}
                       className="w-full h-full object-cover opacity-70"
                     />

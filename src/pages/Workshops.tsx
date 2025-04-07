@@ -35,7 +35,7 @@ const Workshops = () => {
     navigate(`/workshop/${workshopId}`, { state: { activeTab: "workshop", workshopTitle } });
   };
 
-  // Workshop cover images mapped to topics
+  // Workshop cover images mapped to topics - now with more variety and topic relevance
   const getWorkshopImage = (workshopId: string) => {
     const imageMap: {[key: string]: string} = {
       'mindful-communication': '1581091226825-a6a2a5aee158',
@@ -49,7 +49,7 @@ const Workshops = () => {
       'anxiety-management': '1501854140801-50d01698950b',
       'boundary-setting': '1615729947596-a598e5de0ab3',
       'values-alignment': '1543618903355-efbc3e8e9284',
-      'habit-formation': '1517048676732-deae7c329e7f'
+      'habit-formation': '1517048676732-d65bc937f952'
     };
     
     return imageMap[workshopId] || '1486312338219-ce68d2c6f44d';
@@ -62,8 +62,8 @@ const Workshops = () => {
           <CardHeader className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
             <div className="flex justify-between items-center">
               <div>
-                <CardTitle className="text-xl text-gray-100">Current Workshops Available</CardTitle>
-                <CardDescription className="text-gray-300">
+                <CardTitle className="text-xl text-white">Current Workshops Available</CardTitle>
+                <CardDescription className="text-blue-200">
                   Guided 45-minute sessions with Henry to improve your mental wellbeing
                 </CardDescription>
               </div>
