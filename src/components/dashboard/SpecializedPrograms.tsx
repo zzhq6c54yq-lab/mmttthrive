@@ -14,7 +14,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
       id: "veterans",
       title: "Veterans Program",
       path: "/dod-welcome",
-      coverImage: "https://images.unsplash.com/photo-1586893079425-527e5052b4b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", // American flag image
+      coverImage: "https://images.unsplash.com/photo-1476370648495-3533f64427a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80", // Better American flag image
       color: "blue",
       icon: <Shield className="h-6 w-6 text-white" />
     },
@@ -44,27 +44,31 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
           switch(program.id) {
             case "veterans":
               return {
-                overlayGradient: "from-blue-900/80 to-blue-700/40",
+                overlayGradient: "from-blue-900/70 to-red-700/30",
                 iconBg: "bg-blue-600",
-                starColor: "text-blue-200"
+                starColor: "text-blue-200",
+                cardBg: "bg-gradient-to-r from-white to-blue-50"
               };
             case "college":
               return {
                 overlayGradient: "from-purple-900/80 to-purple-700/40",
                 iconBg: "bg-purple-600",
-                starColor: "text-purple-200"
+                starColor: "text-purple-200",
+                cardBg: "bg-gradient-to-r from-white to-purple-50"
               };
             case "business":
               return {
                 overlayGradient: "from-emerald-900/80 to-emerald-700/40",
                 iconBg: "bg-emerald-600",
-                starColor: "text-emerald-200"
+                starColor: "text-emerald-200",
+                cardBg: "bg-gradient-to-r from-white to-emerald-50"
               };
             default:
               return {
                 overlayGradient: "from-blue-900/80 to-blue-700/40",
                 iconBg: "bg-blue-600",
-                starColor: "text-blue-200"
+                starColor: "text-blue-200",
+                cardBg: "bg-gradient-to-r from-white to-blue-50"
               };
           }
         };
@@ -77,27 +81,27 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
             className="overflow-hidden border-0 h-48 rounded-xl hover:shadow-xl transition-all duration-500 group cursor-pointer relative"
             onClick={() => navigateToFeature(program.path)}
           >
-            {/* Image with overlay */}
-            <div className="absolute inset-0">
+            {/* Top half: Image with overlay */}
+            <div className="absolute inset-0 h-1/2">
               <img 
                 src={program.coverImage} 
                 alt={program.title} 
-                className={`w-full h-full object-cover transform ${program.id === "veterans" ? "opacity-60" : ""} group-hover:scale-110 transition-transform duration-700`}
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 onError={(e) => {
                   e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80";
                 }}
               />
               
-              {/* Gradient overlay */}
+              {/* Gradient overlay for top half */}
               <div className={`absolute inset-0 bg-gradient-to-t ${styles.overlayGradient}`}></div>
               
               {/* Special effects for Veterans card */}
               {program.id === "veterans" && (
                 <div className="absolute inset-0">
                   {/* Enhanced American flag styling */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-blue-900/30 to-transparent">
-                    {/* Enhanced red and white stripes at bottom with better visibility */}
-                    <div className="absolute bottom-0 left-0 right-0 h-24 opacity-30">
+                  <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 to-transparent">
+                    {/* Enhanced red and white stripes with better visibility */}
+                    <div className="absolute bottom-0 left-0 right-0 h-24 opacity-40">
                       {[...Array(7)].map((_, i) => (
                         <div 
                           key={i} 
@@ -107,7 +111,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                     </div>
                     
                     {/* Stars in top left with better visibility */}
-                    <div className="absolute top-2 left-2 h-16 w-24 bg-blue-900/40 opacity-60">
+                    <div className="absolute top-2 left-2 h-16 w-24 bg-blue-900/40 opacity-70">
                       <div className="grid grid-cols-4 gap-1 p-1">
                         {[...Array(12)].map((_, i) => (
                           <div key={i} className="flex items-center justify-center">
@@ -120,38 +124,40 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                 </div>
               )}
               
-              {/* Content */}
-              <div className="absolute inset-x-0 bottom-0 p-4 z-30">
-                {/* Title */}
-                <h3 className="font-bold text-2xl text-white drop-shadow-md mb-2 flex items-center gap-2">
-                  {program.title}
-                </h3>
-                
-                {/* Explore button */}
-                <Button 
-                  size="sm"
-                  className={`bg-white text-gray-800 hover:bg-opacity-90 shadow-md hover:shadow-lg`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigateToFeature(program.path);
-                  }}
-                >
-                  <span>Explore</span>
-                  <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr;</span>
-                </Button>
-              </div>
-              
               {/* Icon */}
               <div className={`absolute top-4 right-4 p-2 rounded-full ${styles.iconBg} backdrop-blur-sm z-20`}>
                 {program.icon}
               </div>
+            </div>
+            
+            {/* Bottom half: Solid color with gradient and text */}
+            <div className={`absolute bottom-0 left-0 right-0 h-1/2 ${styles.cardBg} p-4 flex flex-col justify-between`}>
+              {/* Title */}
+              <h3 className="font-bold text-xl text-gray-800 drop-shadow-sm mb-1 flex items-center gap-2">
+                {program.title}
+              </h3>
               
-              {/* Animated stars/sparkles */}
-              <div className="absolute inset-0 z-10 overflow-hidden opacity-60">
-                <Sparkles className={`absolute top-[15%] left-[20%] h-3 w-3 ${styles.starColor} animate-pulse`} style={{animationDuration: '3s'}} />
-                <Sparkles className={`absolute top-[45%] left-[75%] h-2 w-2 ${styles.starColor} animate-pulse`} style={{animationDuration: '4s'}} />
-                <Sparkles className={`absolute top-[75%] left-[30%] h-2.5 w-2.5 ${styles.starColor} animate-pulse`} style={{animationDuration: '5s'}} />
-              </div>
+              {/* Description based on program */}
+              <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                {program.id === "veterans" 
+                  ? "Resources for current and former service members and their families" 
+                  : program.id === "college" 
+                    ? "Support for students navigating academic challenges" 
+                    : "Tools for entrepreneurs and small business owners"}
+              </p>
+              
+              {/* Explore button */}
+              <Button 
+                size="sm"
+                className={`bg-white text-gray-800 hover:bg-opacity-90 shadow-md hover:shadow-lg w-fit`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateToFeature(program.path);
+                }}
+              >
+                <span>Explore</span>
+                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr;</span>
+              </Button>
             </div>
           </Card>
         );

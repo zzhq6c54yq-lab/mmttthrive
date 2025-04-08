@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Sparkles, Briefcase, Globe, BookOpen, HeartPulse, Calendar, Zap, AlertCircle, Video, FileText, Award, Star, Flag, MapPin, Users } from "lucide-react";
+import { Shield, Sparkles, Briefcase, Globe, BookOpen, HeartPulse, Calendar, Zap, AlertCircle, Video, FileText, Award, Star, Flag, MapPin, Users, Download } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -18,6 +17,9 @@ const DoDPortal: React.FC = () => {
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops'>('dashboard');
+  const [downloadPercentage, setDownloadPercentage] = useState<number>(0);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [resourceName, setResourceName] = useState<string>("");
   
   // Get state from location to maintain context between navigations
   const returnToMain = location.state?.returnToMain || false;
@@ -59,13 +61,41 @@ const DoDPortal: React.FC = () => {
   const handleTabChange = (tab: 'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops') => {
     setActiveTab(tab);
   };
+  
+  const handleResourceDownload = (name: string) => {
+    setResourceName(name);
+    setIsDownloading(true);
+    setDownloadPercentage(0);
+    
+    // Simulate download progress
+    const interval = setInterval(() => {
+      setDownloadPercentage(prev => {
+        const newValue = prev + Math.floor(Math.random() * 15) + 5;
+        if (newValue >= 100) {
+          clearInterval(interval);
+          
+          setTimeout(() => {
+            toast({
+              title: "Download Complete",
+              description: `"${name}" has been downloaded to your device",
+              duration: 3000,
+            });
+            setIsDownloading(false);
+          }, 500);
+          
+          return 100;
+        }
+        return newValue;
+      });
+    }, 300);
+  };
 
   // Military community support content
   const CommunitySupport = () => (
     <div className="space-y-8">
       {/* Header section */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Military Community Support</h2>
+        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-2">Military Community Support</h2>
         <p className="text-blue-200/80 mb-6">
           Connect with fellow service members, veterans, and military families who understand your unique experiences.
         </p>
@@ -176,6 +206,76 @@ const DoDPortal: React.FC = () => {
         </Card>
       </div>
       
+      {/* Military Resources Section */}
+      <div>
+        <h3 className="text-2xl font-bold text-white mb-4">Military Resources</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-[#141921] border-blue-900/30">
+            <CardContent className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-blue-900/30 rounded-lg">
+                    <FileText className="h-5 w-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-white mb-1">PTSD Recovery Guide</h4>
+                    <p className="text-sm text-white/60">PDF - 4.2 MB</p>
+                  </div>
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={() => handleResourceDownload("PTSD Recovery Guide")}
+                  disabled={isDownloading}
+                >
+                  <Download className="h-4 w-4 mr-1" />
+                  Download
+                </Button>
+              </div>
+              {isDownloading && resourceName === "PTSD Recovery Guide" && (
+                <div className="w-full bg-blue-900/30 rounded-full h-2 mb-1">
+                  <div 
+                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${downloadPercentage}%` }}
+                  ></div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-[#141921] border-blue-900/30">
+            <CardContent className="p-4">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-blue-900/30 rounded-lg">
+                    <Video className="h-5 w-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-white mb-1">Transition Success Stories</h4>
+                    <p className="text-sm text-white/60">Video - 12:34</p>
+                  </div>
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+                  onClick={() => {
+                    toast({
+                      title: "Video Playing",
+                      description: "Opening video player",
+                      duration: 2000
+                    });
+                  }}
+                >
+                  <Play className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      
       {/* Upcoming Community Events */}
       <div>
         <h3 className="text-2xl font-bold text-white mb-4">Upcoming Events</h3>
@@ -279,6 +379,22 @@ const DoDPortal: React.FC = () => {
       </Card>
     </div>
   );
+  
+  // Video player component for the videos
+  const Play = (props) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <polygon points="5 3 19 12 5 21 5 3" />
+    </svg>
+  );
 
   return (
     <Page 
@@ -290,7 +406,7 @@ const DoDPortal: React.FC = () => {
         <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
           {/* Patriotic flag background element */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-0 right-0 w-full h-full opacity-10">
+            <div className="absolute top-0 right-0 w-full h-full opacity-20">
               {/* Red and white stripes */}
               <div className="absolute bottom-0 left-0 right-0 h-full">
                 {[...Array(7)].map((_, i) => (
@@ -324,7 +440,7 @@ const DoDPortal: React.FC = () => {
                 <Star className="h-4 w-4 text-white" />
                 <Star className="h-4 w-4 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-2">
                 {isSpanish ? "Recursos para el Personal Militar y Veteranos" : "Resources for Military Personnel & Veterans"}
               </h2>
               <p className="text-white/80">

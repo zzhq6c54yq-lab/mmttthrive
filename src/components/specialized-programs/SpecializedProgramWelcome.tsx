@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import HomeButton from "@/components/HomeButton";
 
 interface WelcomeScreenProps {
-  title: string;
+  title: React.ReactNode;
   description: string;
   whatToExpect: string[];
   color: string;
@@ -46,7 +46,7 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
     } else {
       toast({
         title: "Entering Portal",
-        description: `Taking you to the ${title} portal`,
+        description: `Taking you to your personalized portal`,
         duration: 2000,
       });
       
@@ -62,24 +62,23 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
 
   return (
     <div className={`min-h-screen ${backgroundColor} text-white py-8 px-4 md:px-8 relative`}>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.03%22/></svg>')] opacity-20"></div>
       
       <div className="max-w-6xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-8 shadow-xl relative overflow-hidden">
         <div className="absolute top-4 right-4 z-20">
           <HomeButton />
         </div>
         
-        <div className={`absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-${gradientFrom}/20 to-transparent rounded-full blur-3xl -z-10`}></div>
-        <div className={`absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-${gradientTo}/20 to-transparent rounded-full blur-3xl -z-10`}></div>
+        {/* Removed animated glimmer light effects */}
         
-        <div className="flex flex-col items-center justify-center min-h-[60vh] md:min-h-[70vh] text-center px-2 md:px-4 animate-fade-in">
+        <div className="flex flex-col items-center justify-center min-h-[60vh] md:min-h-[70vh] text-center px-2 md:px-4">
           {screenState === 'welcome' ? (
             <>
               <div className={`p-5 rounded-full bg-${color}/20 backdrop-blur-sm mb-6`}>
                 {icon}
               </div>
               
-              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-white`}>
+              <h1 className={`text-4xl md:text-5xl font-light mb-8`}>
                 {title}
               </h1>
               
@@ -98,7 +97,7 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
             </>
           ) : (
             <>
-              <h1 className={`text-3xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-white`}>
+              <h1 className={`text-3xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400`}>
                 What to Expect
               </h1>
               

@@ -37,7 +37,7 @@ const DoDDashboard = () => {
       description: "Loading assessment questions...",
       duration: 1500,
     });
-    navigate("/mental-wellness-tools", {
+    navigate("/military-support", {
       state: {
         preventTutorial: true,
         returnToMain: false,
@@ -70,7 +70,7 @@ const DoDDashboard = () => {
       <div className="relative overflow-hidden rounded-lg border border-blue-900/30 bg-gradient-to-r from-blue-950 to-blue-900 p-6">
         {/* Patriotic flag background element */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 right-0 w-full h-full opacity-5">
+          <div className="absolute top-0 right-0 w-full h-full opacity-10">
             {/* Red and white stripes */}
             <div className="absolute bottom-0 left-0 right-0 h-full">
               {[...Array(7)].map((_, i) => (
@@ -95,7 +95,7 @@ const DoDDashboard = () => {
         </div>
         
         <div className="relative z-10">
-          <h2 className="text-3xl font-bold text-white mb-2">Welcome, Service Member</h2>
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-2">Welcome, Service Member</h2>
           <p className="text-blue-200 mb-6 max-w-3xl">
             This dedicated portal provides specialized mental health resources, tools, and support designed for military personnel, veterans, and their families.
           </p>
@@ -108,7 +108,7 @@ const DoDDashboard = () => {
             </Button>
             <Button 
               variant="outline" 
-              className="border-blue-500 text-blue-300 hover:bg-blue-900/50" 
+              className="border-red-500 text-red-300 hover:bg-red-900/20" 
               onClick={() => handleButtonClick("/crisis-support", "Crisis Support")}
             >
               Get Immediate Help
@@ -121,7 +121,7 @@ const DoDDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Column 1: Featured Programs */}
         <div className="space-y-6">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 flex items-center gap-2">
             <Shield className="h-5 w-5 text-blue-400" />
             Featured Programs
           </h2>
@@ -129,7 +129,7 @@ const DoDDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4">
             <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
               <CardHeader className="pb-2">
-                <CardTitle>Combat Stress Recovery</CardTitle>
+                <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-blue-200">Combat Stress Recovery</CardTitle>
                 <CardDescription>Post-deployment adjustment program</CardDescription>
               </CardHeader>
               <CardContent className="text-sm text-white/70">
@@ -147,7 +147,7 @@ const DoDDashboard = () => {
             
             <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
               <CardHeader className="pb-2">
-                <CardTitle>Transition Support</CardTitle>
+                <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-blue-200">Transition Support</CardTitle>
                 <CardDescription>Military to civilian life tools</CardDescription>
               </CardHeader>
               <CardContent className="text-sm text-white/70">
@@ -165,7 +165,7 @@ const DoDDashboard = () => {
             
             <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
               <CardHeader className="pb-2">
-                <CardTitle>Family Resilience</CardTitle>
+                <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-blue-200">Family Resilience</CardTitle>
                 <CardDescription>Support for military families</CardDescription>
               </CardHeader>
               <CardContent className="text-sm text-white/70">
@@ -185,7 +185,7 @@ const DoDDashboard = () => {
         
         {/* Column 2: Self-Assessments and Upcoming Events */}
         <div className="space-y-6">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 flex items-center gap-2">
             <AlertCircle className="h-5 w-5 text-blue-400" />
             Quick Assessments
           </h2>
@@ -204,7 +204,7 @@ const DoDDashboard = () => {
               <Button 
                 size="sm" 
                 className="bg-blue-700 hover:bg-blue-800 text-white"
-                onClick={() => handleAssessmentClick("PTSD")}
+                onClick={() => navigate("/dod-portal", { state: { activeTab: "assessments" } })}
               >
                 Start Assessment
               </Button>
@@ -223,14 +223,14 @@ const DoDDashboard = () => {
               <Button 
                 size="sm" 
                 className="bg-blue-700 hover:bg-blue-800 text-white"
-                onClick={() => handleAssessmentClick("Depression")}
+                onClick={() => navigate("/dod-portal", { state: { activeTab: "assessments" } })}
               >
                 Start Assessment
               </Button>
             </Card>
           </div>
           
-          <h2 className="text-xl font-bold text-white flex items-center gap-2 mt-8">
+          <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 flex items-center gap-2 mt-8">
             <Calendar className="h-5 w-5 text-blue-400" />
             Upcoming Events
           </h2>
@@ -282,7 +282,7 @@ const DoDDashboard = () => {
         
         {/* Column 3: Quick Links and Additional Resources */}
         <div className="space-y-6">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 flex items-center gap-2">
             <Award className="h-5 w-5 text-blue-400" />
             Quick Access Resources
           </h2>
@@ -293,7 +293,7 @@ const DoDDashboard = () => {
               className="w-full justify-start border-blue-700/40 text-blue-100 hover:bg-blue-900/20"
               onClick={() => handleButtonClick("/community-support", "Community Support")}
             >
-              <Star className="h-4 w-4 mr-2 text-blue-400" />
+              <Star className="h-4 w-4 mr-2 text-red-400" />
               Military Community Support
             </Button>
             
@@ -302,7 +302,7 @@ const DoDDashboard = () => {
               className="w-full justify-start border-blue-700/40 text-blue-100 hover:bg-blue-900/20"
               onClick={() => handleButtonClick("/resource-library", "Resource Library")}
             >
-              <Star className="h-4 w-4 mr-2 text-blue-400" />
+              <Star className="h-4 w-4 mr-2 text-white" />
               Military Resource Library
             </Button>
             
@@ -320,7 +320,7 @@ const DoDDashboard = () => {
               className="w-full justify-start border-blue-700/40 text-blue-100 hover:bg-blue-900/20"
               onClick={() => handleButtonClick("/workshops", "Workshops")}
             >
-              <Star className="h-4 w-4 mr-2 text-blue-400" />
+              <Star className="h-4 w-4 mr-2 text-red-400" />
               All Veteran Workshops
             </Button>
             
@@ -329,7 +329,7 @@ const DoDDashboard = () => {
               className="w-full justify-start border-blue-700/40 text-blue-100 hover:bg-blue-900/20"
               onClick={() => handleButtonClick("/mindfulness-sleep", "Sleep Resources")}
             >
-              <Star className="h-4 w-4 mr-2 text-blue-400" />
+              <Star className="h-4 w-4 mr-2 text-white" />
               Sleep & Mindfulness Tools
             </Button>
             
@@ -345,7 +345,7 @@ const DoDDashboard = () => {
           
           <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors overflow-hidden">
             <div className="bg-gradient-to-r from-blue-900/40 to-blue-800/20 p-4">
-              <h3 className="text-lg font-bold text-white mb-1 flex items-center">
+              <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-1 flex items-center">
                 <Shield className="h-4 w-4 mr-2 text-blue-300" />
                 Immediate Help Resources
               </h3>

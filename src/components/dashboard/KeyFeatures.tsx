@@ -1,11 +1,10 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
-  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart, Gamepad
+  BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart, Gamepad, Shield, Star, Flag
 } from "lucide-react";
 
 interface KeyFeaturesProps {
@@ -63,14 +62,13 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       duration: 1500,
     });
     
-    // Special handling for games section to ensure proper navigation
     if (path === '/games-and-quizzes' || path === '/mental-health-games' || path === '/cosmic-games') {
       navigate(path, { 
         state: { 
           from: window.location.pathname,
           qualities: selectedQualities, 
           goals: selectedGoals,
-          activeTab: path === '/games-and-quizzes' ? "games" : "games" // Ensure games tab is active by default
+          activeTab: path === '/games-and-quizzes' ? "games" : "games"
         }
       });
     } else {
@@ -89,7 +87,6 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
   
-  // Define the container animation variant
   const container = {
     hidden: { opacity: 0 },
     show: { 
@@ -100,8 +97,18 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     }
   };
 
-  // Updated feature colors with warmer, more inviting palette
   const features = [
+    {
+      id: "dod-portal",
+      title: "Veterans Program",
+      icon: <Shield />,
+      path: "/dod-welcome",
+      color: "from-blue-400 to-blue-600",
+      textBgColor: "from-white via-blue-50 to-blue-100",
+      description: "Specialized resources for service members",
+      coverImage: "https://images.unsplash.com/photo-1476370648495-3533f64427a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+      isPatriotic: true
+    },
     {
       id: "progress-reports",
       title: "Progress Reports",
@@ -180,7 +187,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       color: "from-pink-400 to-rose-500",
       textBgColor: "from-white via-pink-50 to-pink-100",
       description: "Support for your recovery journey",
-      coverImage: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+      coverImage: "https://images.unsplash.com/photo-1573496181871-9681eacf9764?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
     },
     {
       id: "binaural-beats",
@@ -295,26 +302,39 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
               aria-label={feature.title}
             >
               <div className="relative overflow-hidden rounded-xl h-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col">
-                {/* Cover Image - Top Half */}
                 <div className="relative h-24 overflow-hidden">
                   <img 
                     src={feature.coverImage} 
                     alt={feature.title} 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      // Fallback image if the original fails to load
                       e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80";
                     }}
                   />
                   <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-30`}></div>
                   
-                  {/* Icon on the image */}
+                  {feature.isPatriotic && (
+                    <div className="absolute inset-0">
+                      {[...Array(5)].map((_, i) => (
+                        <div 
+                          key={i} 
+                          className={`h-[20%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                        />
+                      ))}
+                      
+                      <div className="absolute top-1 left-1 flex space-x-1">
+                        {[...Array(3)].map((_, i) => (
+                          <Star key={i} className="h-2 w-2 text-white" />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="absolute top-2 right-2 p-1.5 rounded-full bg-white/50 backdrop-blur-sm">
                     {React.cloneElement(feature.icon, { className: "h-4 w-4 text-white drop-shadow-sm" })}
                   </div>
                 </div>
                 
-                {/* Text Content - Bottom Half */}
                 <div className={`p-3 bg-gradient-to-br ${feature.textBgColor} flex-grow flex flex-col justify-between`}>
                   <div>
                     <h3 className={`font-bold text-sm text-gray-800 mb-1`}>

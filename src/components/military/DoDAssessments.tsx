@@ -1,13 +1,17 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Clock, CheckCircle, Shield, AlertTriangle, Clipboard, Brain, Heart, Activity } from "lucide-react";
+import { Clock, CheckCircle, Shield, AlertTriangle, Clipboard, Brain, Heart, Activity, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 
 const DoDAssessments = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   
   const assessments = [
     {
@@ -71,6 +75,24 @@ const DoDAssessments = () => {
       category: "clinical"
     }
   ];
+  
+  // PTSD Assessment Questions
+  const ptsdQuestions = [
+    "In the past month, how much have you been bothered by repeated, disturbing memories, thoughts, or images of a stressful military experience?",
+    "In the past month, how much have you been bothered by repeated, disturbing dreams of a stressful military experience?",
+    "In the past month, how much have you been bothered by suddenly acting or feeling as if a stressful military experience were happening again (as if you were reliving it)?",
+    "In the past month, how much have you been bothered by feeling very upset when something reminded you of a stressful military experience?",
+    "In the past month, how much have you been bothered by having physical reactions (e.g., heart pounding, trouble breathing, sweating) when something reminded you of a stressful military experience?"
+  ];
+  
+  // Depression Assessment Questions
+  const depressionQuestions = [
+    "Over the last 2 weeks, how often have you been bothered by little interest or pleasure in doing things?",
+    "Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?",
+    "Over the last 2 weeks, how often have you been bothered by trouble falling or staying asleep, or sleeping too much?",
+    "Over the last 2 weeks, how often have you been bothered by feeling tired or having little energy?",
+    "Over the last 2 weeks, how often have you been bothered by poor appetite or overeating?"
+  ];
 
   const getUrgencyLabel = (urgency) => {
     switch(urgency) {
@@ -101,7 +123,7 @@ const DoDAssessments = () => {
   
   const getUserProgress = (assessmentId) => {
     // In a real app, this would come from user data
-    const completedAssessments = ["a2", "a4"];
+    const completedAssessments = ["a4"];
     const partialAssessments = {
       "a1": 75,
       "a3": 30,
@@ -126,12 +148,106 @@ const DoDAssessments = () => {
       progress: 0
     };
   };
+  
+  const handleStartAssessment = (assessmentId: string) => {
+    setActiveAssessment(assessmentId);
+    setCurrentQuestion(0);
+  };
+  
+  const handleNextQuestion = () => {
+    const totalQuestions = activeAssessment === "a2" 
+      ? ptsdQuestions.length 
+      : activeAssessment === "a6" 
+        ? depressionQuestions.length 
+        : 5;
+        
+    if (currentQuestion < totalQuestions - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      // Assessment complete
+      toast({
+        title: "Assessment Complete",
+        description: "Your responses have been saved. Your results are confidential and will help guide your support resources.",
+        duration: 4000,
+      });
+      setActiveAssessment(null);
+    }
+  };
+  
+  const getCurrentQuestion = () => {
+    if (activeAssessment === "a2") {
+      return ptsdQuestions[currentQuestion];
+    } else if (activeAssessment === "a6") {
+      return depressionQuestions[currentQuestion];
+    }
+    return "";
+  };
+
+  // Render active assessment if one is selected
+  if (activeAssessment) {
+    const assessment = assessments.find(a => a.id === activeAssessment);
+    const question = getCurrentQuestion();
+    const totalQuestions = activeAssessment === "a2" 
+      ? ptsdQuestions.length 
+      : activeAssessment === "a6" 
+        ? depressionQuestions.length 
+        : 5;
+    
+    return (
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-white">{assessment?.title}</h2>
+          <Button 
+            variant="outline" 
+            className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
+            onClick={() => setActiveAssessment(null)}
+          >
+            Exit Assessment
+          </Button>
+        </div>
+        
+        <div className="bg-[#141921] border border-blue-900/30 rounded-lg p-6">
+          <div className="mb-6">
+            <div className="flex justify-between text-sm text-white/70 mb-2">
+              <span>Question {currentQuestion + 1} of {totalQuestions}</span>
+              <span>{Math.round(((currentQuestion + 1) / totalQuestions) * 100)}% Complete</span>
+            </div>
+            <Progress value={((currentQuestion + 1) / totalQuestions) * 100} className="h-2" />
+          </div>
+          
+          <h3 className="text-xl font-medium text-white mb-6">{question}</h3>
+          
+          <div className="grid grid-cols-1 gap-3 mb-8">
+            {["Not at all", "A little bit", "Moderately", "Quite a bit", "Extremely"].map((option, index) => (
+              <Button 
+                key={index} 
+                variant="outline" 
+                className="justify-start text-left h-auto py-4 border-blue-900/40 text-white hover:bg-blue-900/20 hover:border-blue-500"
+                onClick={handleNextQuestion}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+          
+          <div className="flex justify-end">
+            <Button 
+              className="bg-blue-700 hover:bg-blue-800 text-white"
+              onClick={handleNextQuestion}
+            >
+              Skip Question <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
       {/* Header section */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Mental Health Assessments</h2>
+        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400 mb-2">Mental Health Assessments</h2>
         <p className="text-blue-200/80 mb-6 max-w-3xl">
           These confidential assessments help identify areas where support may be beneficial. Results are private and used to connect you with appropriate resources.
         </p>
@@ -217,12 +333,14 @@ const DoDAssessments = () => {
                   ) : progress.progress > 0 ? (
                     <Button 
                       className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                      onClick={() => handleStartAssessment(assessment.id)}
                     >
                       Continue Assessment
                     </Button>
                   ) : (
                     <Button 
                       className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                      onClick={() => handleStartAssessment(assessment.id)}
                     >
                       Start Assessment
                     </Button>

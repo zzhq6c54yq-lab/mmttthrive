@@ -18,7 +18,7 @@ const DoDWelcome: React.FC = () => {
       {/* Enhanced patriotic background with improved American flag elements */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0c1b44] via-[#101d36] to-[#1a1e2c]">
         {/* Red and white stripes - more visible */}
-        <div className="absolute bottom-0 left-0 right-0 h-full opacity-20">
+        <div className="absolute bottom-0 left-0 right-0 h-full opacity-30">
           {[...Array(13)].map((_, i) => (
             <div 
               key={i} 
@@ -28,7 +28,7 @@ const DoDWelcome: React.FC = () => {
         </div>
         
         {/* Stars field in the upper left - more prominent */}
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-25">
+        <div className="absolute top-0 left-0 w-1/3 h-1/3 opacity-30">
           <div className="grid grid-cols-6 gap-6 p-6">
             {[...Array(30)].map((_, i) => (
               <div key={i} className="text-white">
@@ -40,7 +40,7 @@ const DoDWelcome: React.FC = () => {
       </div>
       
       <SpecializedProgramWelcome
-        title="Service Member & Veteran Support"
+        title={<span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400">Service Member & Veteran Support</span>}
         description="Welcome to a space designed specifically for those who have bravely served our nation. Your service matters, and so does your wellbeing."
         whatToExpect={whatToExpect}
         color="blue-600"
