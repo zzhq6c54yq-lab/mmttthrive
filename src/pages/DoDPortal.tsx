@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
@@ -77,8 +78,8 @@ const DoDPortal: React.FC = () => {
           setTimeout(() => {
             toast({
               title: "Download Complete",
-              description: `"${name}" has been downloaded to your device",
-              duration: 3000,
+              description: `"${name}" has been downloaded to your device`,
+              duration: 3000
             });
             setIsDownloading(false);
           }, 500);
