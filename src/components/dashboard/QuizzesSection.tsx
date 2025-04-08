@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,7 +14,8 @@ import {
   Award,
   Zap,
   LineChart,
-  Lightbulb
+  Lightbulb,
+  Heart
 } from "lucide-react";
 
 interface Quiz {
@@ -30,6 +30,7 @@ interface Quiz {
   benefits: string[];
   accentColor: string;
   icon: React.ReactNode;
+  popular?: boolean;
 }
 
 const QuizzesSection = () => {
@@ -111,7 +112,6 @@ const QuizzesSection = () => {
       duration: 1500,
     });
     
-    // For better alignment with our military-oriented assessments
     const assessmentTypeMap: Record<string, string> = {
       "anxiety-assessment": "anxiety",
       "stress-check": "stress",
@@ -121,7 +121,6 @@ const QuizzesSection = () => {
     
     const assessmentType = assessmentTypeMap[quizId] || quizId;
     
-    // Navigate to the mental wellness assessments page
     navigate("/mental-wellness", { 
       state: { 
         activeTab: "assessments",
@@ -148,7 +147,6 @@ const QuizzesSection = () => {
     });
   };
 
-  // Get fallback image based on category
   const getDefaultImage = (category: string) => {
     switch(category) {
       case 'mental-health':
@@ -173,20 +171,17 @@ const QuizzesSection = () => {
             onClick={() => handleQuizClick(quiz.id, quiz.title)}
             className={`overflow-hidden hover:shadow-md transition-all cursor-pointer group border-0 rounded-xl transform hover:scale-[1.02] ${quiz.accentColor} border-l-4`}
           >
-            {/* Cover image section */}
             <div className="h-32 w-full overflow-hidden relative">
               <img 
                 src={quiz.image || getDefaultImage(quiz.category)} 
                 alt={quiz.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 onError={(e) => {
-                  // Fallback image if the original fails to load
                   e.currentTarget.src = getDefaultImage(quiz.category);
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
               
-              {/* Info badges */}
               <div className="absolute bottom-3 left-3">
                 <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
                   <Brain className="h-3 w-3 text-white/80" />
@@ -220,7 +215,6 @@ const QuizzesSection = () => {
               
               <p className="text-sm text-gray-600 mb-3 line-clamp-2">{quiz.description}</p>
               
-              {/* Progress bar for in-progress assessments */}
               {quiz.completionRate && (
                 <div className="mb-3">
                   <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
