@@ -112,24 +112,24 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
           switch(program.id) {
             case "college":
               return {
-                overlayGradient: "from-indigo-900/80 to-indigo-700/50",
+                overlayGradient: "from-indigo-900/90 to-indigo-700/70",
                 iconBg: "bg-indigo-500",
                 starColor: "text-indigo-200",
-                buttonClass: "bg-indigo-300 text-indigo-900 hover:bg-indigo-200 font-bold"
+                buttonClass: "bg-indigo-200 text-indigo-900 hover:bg-indigo-100 font-bold"
               };
             case "business":
               return {
-                overlayGradient: "from-emerald-900/80 to-emerald-700/50",
+                overlayGradient: "from-emerald-900/90 to-emerald-700/70",
                 iconBg: "bg-emerald-600",
                 starColor: "text-emerald-200",
-                buttonClass: "bg-emerald-300 text-emerald-900 hover:bg-emerald-200 font-bold"
+                buttonClass: "bg-emerald-200 text-emerald-900 hover:bg-emerald-100 font-bold"
               };
             default:
               return {
-                overlayGradient: "from-blue-900/80 to-blue-700/50",
+                overlayGradient: "from-blue-900/90 to-blue-700/70",
                 iconBg: "bg-blue-600",
                 starColor: "text-blue-200",
-                buttonClass: "bg-blue-300 text-blue-900 hover:bg-blue-200 font-bold"
+                buttonClass: "bg-blue-200 text-blue-900 hover:bg-blue-100 font-bold"
               };
           }
         };

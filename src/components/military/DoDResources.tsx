@@ -3,14 +3,19 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
-import { Book, FileText, Video, Link, Download, Search } from "lucide-react";
+import { Book, FileText, Video, Link as LinkIcon, Download, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const DoDResources = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
+  const [showVideoDialog, setShowVideoDialog] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState<{title: string, src: string}>({title: "", src: ""});
+  const [showDownloadDialog, setShowDownloadDialog] = useState(false);
+  const [currentDownload, setCurrentDownload] = useState<{title: string, type: string}>({title: "", type: ""});
   
   // Resource categories with their content
   const resourceCategories = [
@@ -23,19 +28,22 @@ const DoDResources = () => {
           title: "Combat PTSD Workbook",
           type: "document",
           description: "Step-by-step guide for managing combat-related PTSD symptoms",
-          icon: FileText
+          icon: FileText,
+          src: "/documents/combat-ptsd-workbook.pdf"
         },
         {
           title: "Trauma Processing Techniques",
           type: "video",
           description: "Expert-led video series on trauma processing techniques",
-          icon: Video
+          icon: Video,
+          src: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Placeholder video URL
         },
         {
           title: "Deployment Stress Management",
           type: "guide",
           description: "Comprehensive guide to managing stress during and after deployment",
-          icon: Book
+          icon: Book,
+          src: "/documents/deployment-stress-guide.pdf"
         }
       ]
     },
@@ -48,19 +56,22 @@ const DoDResources = () => {
           title: "Veteran Peer Support Network",
           type: "link",
           description: "Connect with other veterans who understand your experience",
-          icon: Link
+          icon: LinkIcon,
+          url: "/community-support"
         },
         {
           title: "Military Family Support Circles",
           type: "group",
           description: "Support groups specifically for military families and spouses",
-          icon: Link
+          icon: LinkIcon,
+          url: "/family-support"
         },
         {
           title: "Combat Veterans Group Therapy Guide",
           type: "document",
           description: "Information on structured group therapy for combat veterans",
-          icon: FileText
+          icon: FileText,
+          src: "/documents/group-therapy-guide.pdf"
         }
       ]
     },
@@ -73,19 +84,22 @@ const DoDResources = () => {
           title: "Military Mindfulness App",
           type: "app",
           description: "Mindfulness and meditation specifically designed for military personnel",
-          icon: Download
+          icon: Download,
+          src: "/apps/military-mindfulness.zip"
         },
         {
           title: "Deployment Readiness Toolkit",
           type: "toolkit",
           description: "Mental preparation resources for pre-deployment readiness",
-          icon: Download
+          icon: Download,
+          src: "/documents/deployment-toolkit.zip"
         },
         {
           title: "Reintegration Workbook",
           type: "document",
           description: "Exercises and strategies for returning to civilian life",
-          icon: FileText
+          icon: FileText,
+          src: "/documents/reintegration-workbook.pdf"
         }
       ]
     },
@@ -98,19 +112,22 @@ const DoDResources = () => {
           title: "VA Mental Health Benefits Guide",
           type: "document",
           description: "Complete overview of mental health services available through VA",
-          icon: FileText
+          icon: FileText,
+          src: "/documents/va-mental-health-benefits-guide.pdf"
         },
         {
           title: "Navigating Your Benefits",
           type: "video",
           description: "Step-by-step video guide to accessing your mental health benefits",
-          icon: Video
+          icon: Video,
+          src: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Placeholder video URL
         },
         {
           title: "State-by-State Resources Directory",
           type: "directory",
           description: "Comprehensive list of resources available by state",
-          icon: Link
+          icon: LinkIcon,
+          url: "/resource-directory"
         }
       ]
     }
@@ -134,7 +151,7 @@ const DoDResources = () => {
     return <Icon className="h-5 w-5 text-blue-400" />;
   };
 
-  // Handle resource access button click with proper implementation
+  // Handle resource access button click with enhanced functionality
   const handleResourceAccess = (resource) => {
     let actionText = "";
     
@@ -142,18 +159,34 @@ const DoDResources = () => {
       case 'document':
       case 'guide':
         actionText = "Downloading";
+        setCurrentDownload({
+          title: resource.title,
+          type: resource.type
+        });
+        setShowDownloadDialog(true);
         break;
       case 'video':
         actionText = "Playing";
+        setCurrentVideo({
+          title: resource.title,
+          src: resource.src
+        });
+        setShowVideoDialog(true);
         break;
       case 'link':
       case 'group':
       case 'directory':
         actionText = "Opening";
+        navigate(resource.url || "/resource-library");
         break;
       case 'app':
       case 'toolkit':
         actionText = "Installing";
+        setCurrentDownload({
+          title: resource.title,
+          type: resource.type
+        });
+        setShowDownloadDialog(true);
         break;
       default:
         actionText = "Accessing";
@@ -161,20 +194,9 @@ const DoDResources = () => {
     
     toast({
       title: `${actionText} ${resource.title}`,
-      description: `Your resource is being prepared. ${resource.type === 'document' ? 'The download will start shortly.' : ''}`,
+      description: `Your resource is being prepared.`,
       duration: 2000,
     });
-
-    // For demo purposes, show a follow-up toast
-    setTimeout(() => {
-      if (resource.type === 'document' || resource.type === 'guide' || resource.type === 'toolkit') {
-        toast({
-          title: "Download Complete",
-          description: `${resource.title} has been downloaded successfully.`,
-          duration: 2000,
-        });
-      }
-    }, 2500);
   };
 
   // Handle category "View More" button clicks
@@ -205,6 +227,27 @@ const DoDResources = () => {
       duration: 2000
     });
   };
+
+  // Handle download completion
+  const handleDownloadComplete = () => {
+    toast({
+      title: "Download Complete",
+      description: `${currentDownload.title} has been downloaded successfully.`,
+      duration: 2000,
+    });
+    setShowDownloadDialog(false);
+  };
+
+  // Filter resources based on search query
+  const filteredCategories = searchQuery.trim() !== "" 
+    ? resourceCategories.map(category => ({
+        ...category,
+        resources: category.resources.filter(resource => 
+          resource.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          resource.description.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      })).filter(category => category.resources.length > 0)
+    : resourceCategories;
 
   return (
     <div className="space-y-8">
@@ -242,7 +285,7 @@ const DoDResources = () => {
           ))}
         </TabsList>
         
-        {resourceCategories.map((category) => (
+        {filteredCategories.map((category) => (
           <TabsContent key={category.id} value={category.id}>
             <div className="mb-4">
               <h3 className="text-xl font-semibold text-white">{category.name}</h3>
@@ -250,52 +293,58 @@ const DoDResources = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {category.resources.map((resource, index) => (
-                <Card key={index} className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {getResourceIcon(resource.icon)}
-                        <CardTitle className="text-white text-lg">{resource.title}</CardTitle>
+              {category.resources.length > 0 ? (
+                category.resources.map((resource, index) => (
+                  <Card key={index} className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          {getResourceIcon(resource.icon)}
+                          <CardTitle className="text-white text-lg">{resource.title}</CardTitle>
+                        </div>
+                        <span className="text-xs bg-blue-900/30 py-1 px-2 rounded-md text-blue-400">
+                          {getResourceTypeLabel(resource.type)}
+                        </span>
                       </div>
-                      <span className="text-xs bg-blue-900/30 py-1 px-2 rounded-md text-blue-400">
-                        {getResourceTypeLabel(resource.type)}
-                      </span>
-                    </div>
-                    <CardDescription>{resource.description}</CardDescription>
-                  </CardHeader>
-                  <CardFooter>
-                    <Button 
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleResourceAccess(resource)}
-                    >
-                      {resource.type === 'document' || resource.type === 'guide' ? (
-                        <>
-                          <Download className="h-4 w-4 mr-2" />
-                          Download Resource
-                        </>
-                      ) : resource.type === 'video' ? (
-                        <>
-                          <Video className="h-4 w-4 mr-2" />
-                          Watch Video
-                        </>
-                      ) : resource.type === 'link' || resource.type === 'group' || resource.type === 'directory' ? (
-                        <>
-                          <Link className="h-4 w-4 mr-2" />
-                          Open Resource
-                        </>
-                      ) : resource.type === 'app' || resource.type === 'toolkit' ? (
-                        <>
-                          <Download className="h-4 w-4 mr-2" />
-                          Install {resource.type === 'app' ? 'App' : 'Toolkit'}
-                        </>
-                      ) : (
-                        'Access Resource'
-                      )}
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
+                      <CardDescription className="text-white/70">{resource.description}</CardDescription>
+                    </CardHeader>
+                    <CardFooter>
+                      <Button 
+                        className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+                        onClick={() => handleResourceAccess(resource)}
+                      >
+                        {resource.type === 'document' || resource.type === 'guide' ? (
+                          <>
+                            <Download className="h-4 w-4 mr-2" />
+                            Download Resource
+                          </>
+                        ) : resource.type === 'video' ? (
+                          <>
+                            <Video className="h-4 w-4 mr-2" />
+                            Watch Video
+                          </>
+                        ) : resource.type === 'link' || resource.type === 'group' || resource.type === 'directory' ? (
+                          <>
+                            <LinkIcon className="h-4 w-4 mr-2" />
+                            Open Resource
+                          </>
+                        ) : resource.type === 'app' || resource.type === 'toolkit' ? (
+                          <>
+                            <Download className="h-4 w-4 mr-2" />
+                            Install {resource.type === 'app' ? 'App' : 'Toolkit'}
+                          </>
+                        ) : (
+                          'Access Resource'
+                        )}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-8 text-white/60">
+                  No resources match your search query in this category.
+                </div>
+              )}
             </div>
             
             <div className="mt-6 flex justify-center">
@@ -346,6 +395,87 @@ const DoDResources = () => {
           </div>
         </CardContent>
       </Card>
+      
+      {/* Video Dialog */}
+      <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
+        <DialogContent className="max-w-4xl bg-[#0c1016] border border-blue-900/30">
+          <DialogHeader>
+            <DialogTitle className="text-white text-xl">{currentVideo.title}</DialogTitle>
+            <DialogDescription className="text-blue-200/70">
+              Video resource for service members and veterans
+            </DialogDescription>
+          </DialogHeader>
+          <div className="aspect-video w-full bg-black rounded-md overflow-hidden">
+            <iframe 
+              src={currentVideo.src} 
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
+              title={currentVideo.title}
+            ></iframe>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Download Dialog */}
+      <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+        <DialogContent className="bg-[#0c1016] border border-blue-900/30">
+          <DialogHeader>
+            <DialogTitle className="text-white text-xl">Downloading {currentDownload.title}</DialogTitle>
+            <DialogDescription className="text-blue-200/70">
+              Your {currentDownload.type} is being prepared...
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="w-full bg-blue-900/30 rounded-full h-2.5 mb-4">
+              <div className="bg-blue-500 h-2.5 rounded-full w-0 download-progress"></div>
+            </div>
+            <div className="text-right text-sm text-blue-200/70 download-percent">0%</div>
+          </div>
+          
+          {/* This runs a client-side animation for demo purposes */}
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              // Simple animation to simulate download progress
+              const progressBar = document.querySelector('.download-progress');
+              const percentText = document.querySelector('.download-percent');
+              let width = 0;
+              
+              const interval = setInterval(() => {
+                if (width >= 100) {
+                  clearInterval(interval);
+                  setTimeout(() => {
+                    const completeEvent = new CustomEvent('downloadComplete');
+                    document.dispatchEvent(completeEvent);
+                  }, 500);
+                } else {
+                  width += Math.random() * 10;
+                  if (width > 100) width = 100;
+                  progressBar.style.width = width + '%';
+                  percentText.textContent = Math.round(width) + '%';
+                }
+              }, 300);
+
+              document.addEventListener('downloadComplete', () => {
+                try {
+                  window.handleDownloadComplete?.();
+                } catch (e) {
+                  console.log('Download complete event triggered');
+                }
+              });
+            `
+          }} />
+          
+          <div className="flex justify-end">
+            <Button 
+              onClick={handleDownloadComplete} 
+              className="bg-blue-700 hover:bg-blue-800 text-white"
+            >
+              Force Complete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
