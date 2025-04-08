@@ -126,6 +126,14 @@ const DoDPortal: React.FC = () => {
             <Button 
               className="w-full bg-blue-700 hover:bg-blue-800 text-white"
               onClick={() => {
+                navigate("/military-support", { 
+                  state: { 
+                    groupType: "combat",
+                    groupName: "Combat Veterans Group",
+                    preventTutorial: true,
+                    returnToPortal: "/dod-portal"
+                  }
+                });
                 toast({
                   title: "Group Joined",
                   description: "You've successfully joined the Combat Veterans Group",
@@ -160,6 +168,14 @@ const DoDPortal: React.FC = () => {
             <Button 
               className="w-full bg-blue-700 hover:bg-blue-800 text-white"
               onClick={() => {
+                navigate("/military-resources/family", { 
+                  state: { 
+                    groupType: "family",
+                    groupName: "Military Families Connect",
+                    preventTutorial: true,
+                    returnToPortal: "/dod-portal"
+                  }
+                });
                 toast({
                   title: "Group Joined",
                   description: "You've successfully joined the Military Families Connect group",
@@ -194,6 +210,14 @@ const DoDPortal: React.FC = () => {
             <Button 
               className="w-full bg-blue-700 hover:bg-blue-800 text-white"
               onClick={() => {
+                navigate("/military-resources/transition", { 
+                  state: { 
+                    groupType: "transition",
+                    groupName: "Transition Warriors",
+                    preventTutorial: true,
+                    returnToPortal: "/dod-portal"
+                  }
+                });
                 toast({
                   title: "Group Joined",
                   description: "You've successfully joined the Transition Warriors group",
@@ -262,6 +286,15 @@ const DoDPortal: React.FC = () => {
                   variant="outline" 
                   className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
                   onClick={() => {
+                    navigate("/resource-library", {
+                      state: { 
+                        videoId: "transition-success",
+                        videoTitle: "Transition Success Stories",
+                        preventTutorial: true,
+                        returnToPortal: "/dod-portal",
+                        autoPlay: true
+                      }
+                    });
                     toast({
                       title: "Video Playing",
                       description: "Opening video player",
@@ -300,6 +333,15 @@ const DoDPortal: React.FC = () => {
                 size="sm" 
                 className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
                 onClick={() => {
+                  navigate("/virtual-meetings", {
+                    state: { 
+                      meetingId: "coffee-meetup",
+                      meetingTitle: "Virtual Coffee Meetup",
+                      meetingDate: "April 15th, 10:00 AM ET",
+                      preventTutorial: true,
+                      returnToPortal: "/dod-portal"
+                    }
+                  });
                   toast({
                     title: "Joined Event",
                     description: "You've joined the Virtual Coffee Meetup",
@@ -331,6 +373,15 @@ const DoDPortal: React.FC = () => {
                 size="sm" 
                 className="border-blue-500 text-blue-300 hover:bg-blue-900/50"
                 onClick={() => {
+                  navigate("/community-support", {
+                    state: { 
+                      eventId: "family-day",
+                      eventTitle: "Family Day Picnic",
+                      eventDate: "April 20th, 11:00 AM - 3:00 PM",
+                      preventTutorial: true,
+                      returnToPortal: "/dod-portal"
+                    }
+                  });
                   toast({
                     title: "RSVP Confirmed",
                     description: "You've RSVP'd to the Family Day Picnic",
@@ -366,6 +417,13 @@ const DoDPortal: React.FC = () => {
             <Button 
               className="bg-blue-700 hover:bg-blue-800 text-white whitespace-nowrap"
               onClick={() => {
+                navigate("/community-support", {
+                  state: { 
+                    searchType: "local",
+                    preventTutorial: true,
+                    returnToPortal: "/dod-portal"
+                  }
+                });
                 toast({
                   title: "Support Finder",
                   description: "Searching for local support resources near you",
