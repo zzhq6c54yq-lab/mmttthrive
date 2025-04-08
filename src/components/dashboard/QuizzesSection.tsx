@@ -153,22 +153,22 @@ const QuizzesSection = () => {
           <Card 
             key={quiz.id}
             onClick={() => handleQuizClick(quiz.id, quiz.title)}
-            className="overflow-hidden hover:shadow-2xl shadow-lg shadow-black/20 transition-all cursor-pointer group border-0 rounded-xl transform hover:scale-[1.02]"
+            className="overflow-hidden hover:shadow-2xl shadow-lg shadow-black/20 transition-all duration-700 cursor-pointer group border-0 rounded-xl transform hover:scale-[1.03]"
           >
             <div className="relative h-80 flex flex-col">
               {/* Top section with title */}
-              <div className={`bg-gradient-to-r ${quiz.gradientFrom} ${quiz.gradientTo} border-b ${quiz.accentColor} px-4 py-4`}>
+              <div className={`bg-gradient-to-r ${quiz.gradientFrom} ${quiz.gradientTo} border-b-2 ${quiz.accentColor} px-4 py-5`}>
                 <div className="flex justify-between items-center">
                   <h3 className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-lg">
                     {quiz.title}
                   </h3>
-                  <div className="p-1.5 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 backdrop-blur-sm border border-[#B87333]/30">
+                  <div className="p-2 rounded-full bg-gradient-to-br from-[#B87333]/25 to-[#E5C5A1]/15 backdrop-blur-sm border border-[#B87333]/40">
                     {quiz.icon}
                   </div>
                 </div>
                 
                 {quiz.popular && (
-                  <div className="absolute top-3 right-12 z-10 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
+                  <div className="absolute top-3 right-14 z-10 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white text-xs font-medium px-2 py-1 rounded-full flex items-center">
                     <Star className="h-3 w-3 mr-1 fill-white" />
                     Popular
                   </div>
@@ -176,40 +176,41 @@ const QuizzesSection = () => {
               </div>
               
               {/* Middle image section */}
-              <div className="flex-grow relative">
+              <div className="flex-grow relative overflow-hidden">
                 <img 
                   src={quiz.image || getDefaultImage(quiz.id)} 
                   alt={quiz.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                   onError={(e) => {
                     e.currentTarget.src = getDefaultImage(quiz.id);
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent"></div>
                 
                 {/* Quiz metadata badges */}
-                <div className="absolute bottom-2 left-2 flex items-center gap-2">
-                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full border border-[#B87333]/20">
-                    <Brain className="h-3 w-3 text-[#E5C5A1]/80" />
-                    <span className="text-xs text-white/90">{quiz.questions} questions</span>
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-1 px-2 rounded-full border border-[#B87333]/30">
+                    <Brain className="h-3 w-3 text-[#E5C5A1]" />
+                    <span className="text-xs text-white">{quiz.questions} questions</span>
                   </div>
                   
-                  <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full border border-[#E5C5A1]/20">
-                    <Clock className="h-3 w-3 text-[#B87333]/80" />
-                    <span className="text-xs text-white/90">{quiz.timeEstimate}</span>
+                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-1 px-2 rounded-full border border-[#E5C5A1]/30">
+                    <Clock className="h-3 w-3 text-[#B87333]" />
+                    <span className="text-xs text-white">{quiz.timeEstimate}</span>
                   </div>
                 </div>
               </div>
               
               {/* Bottom section with button */}
-              <div className={`bg-gradient-to-r ${quiz.gradientFrom} ${quiz.gradientTo} border-t ${quiz.accentColor} px-4 py-4`}>
+              <div className={`bg-gradient-to-r ${quiz.gradientFrom} ${quiz.gradientTo} border-t-2 ${quiz.accentColor} px-4 py-5`}>
                 <Button
                   variant="ghost" 
                   size="sm"
-                  className="w-full justify-between border border-[#B87333]/30 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:bg-[#B87333]/10 hover:text-white transition-all group"
+                  className="w-full justify-between border border-[#B87333]/40 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:bg-[#B87333]/10 hover:text-white transition-all duration-500 group"
                 >
+                  <span className="opacity-0 group-hover:opacity-100 transition-all duration-500">•</span>
                   <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
-                  <ArrowRight className="h-4 w-4 text-[#E5C5A1] group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4 text-[#E5C5A1] group-hover:translate-x-1 transition-all" />
                 </Button>
               </div>
             </div>
@@ -217,14 +218,15 @@ const QuizzesSection = () => {
         ))}
       </div>
       
-      <div className="flex justify-center pt-2">
+      <div className="flex justify-center pt-4 mt-2">
         <Button 
           variant="outline"
           onClick={handleViewMoreClick}
-          className="border-[#B87333]/30 bg-gradient-to-r from-transparent to-transparent hover:from-[#B87333]/10 hover:to-[#E5C5A1]/10 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]"
+          className="border-[#B87333]/40 bg-gradient-to-r from-transparent to-transparent hover:from-[#B87333]/15 hover:to-[#E5C5A1]/15 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] group transition-all duration-500"
         >
+          <span className="opacity-0 group-hover:opacity-100 transition-all duration-500 mr-1">•</span>
           View More Assessments
-          <ArrowRight className="ml-2 h-4 w-4 text-[#E5C5A1]" />
+          <ArrowRight className="ml-2 h-4 w-4 text-[#E5C5A1] group-hover:translate-x-1 transition-all duration-500" />
         </Button>
       </div>
     </div>

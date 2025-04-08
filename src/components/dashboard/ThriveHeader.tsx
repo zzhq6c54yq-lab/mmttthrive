@@ -45,34 +45,36 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%220.5%22 fill=%22%23ffffff%22 fill-opacity=%220.3%22/></svg>')]"></div>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-r from-[#B87333]/15 via-[#E5C5A1]/20 to-[#B87333]/15 transform -skew-y-2 animate-pulse" style={{animationDuration: '10s'}}></div>
       </div>
-      <div className="container mx-auto max-w-6xl relative z-10">
+      <div className="container mx-auto max-w-7xl relative z-10">
         <div className="flex flex-col items-center justify-center pt-10 pb-10 px-6">
           <div className="flex flex-col items-center gap-6 mb-6">
             <div className="relative group">
-              {/* Enhanced logo with deeper colors and more 3D-like animations */}
-              <div className="absolute inset-[-30px] rounded-full bg-gradient-to-r from-[#B87333]/90 to-[#E5C5A1]/90 blur-lg animate-pulse" style={{animationDuration: '3s'}}></div>
-              <div className="absolute inset-[-45px] rounded-full border-2 border-[#B87333]/80 animate-spin" style={{animationDuration: '15s'}}></div>
-              <div className="absolute inset-[-40px] rounded-full border-2 border-[#E5C5A1]/70 animate-spin" style={{animationDuration: '12s', animationDirection: 'reverse'}}></div>
-              <div className="absolute inset-[-35px] rounded-full border-[3px] border-[#B87333]/60 animate-spin" style={{animationDuration: '20s', animationDelay: '1s'}}></div>
-              <div className="absolute inset-[-20px] rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1]/80 blur-md animate-pulse" style={{animationDuration: '4s'}}></div>
+              {/* Enhanced deeper 3D-like animations with multiple rotating rings */}
+              <div className="absolute inset-[-40px] rounded-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] blur-lg animate-pulse" style={{animationDuration: '3s'}}></div>
+              <div className="absolute inset-[-60px] rounded-full border-2 border-[#B87333] animate-spin" style={{animationDuration: '15s'}}></div>
+              <div className="absolute inset-[-55px] rounded-full border-2 border-[#E5C5A1]/90 animate-spin" style={{animationDuration: '12s', animationDirection: 'reverse'}}></div>
+              <div className="absolute inset-[-50px] rounded-full border-[3px] border-[#B87333]/80 animate-spin" style={{animationDuration: '20s', animationDelay: '1s'}}></div>
+              <div className="absolute inset-[-45px] rounded-full border-[2px] border-[#E5C5A1]/70 animate-spin" style={{animationDuration: '18s', animationDirection: 'reverse', animationDelay: '0.5s'}}></div>
+              <div className="absolute inset-[-30px] rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] blur-md animate-pulse" style={{animationDuration: '4s'}}></div>
               
-              {/* Larger logo with deeper colors and stronger glow */}
+              {/* Larger logo with enhanced 3D effect */}
               <img 
                 src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
                 alt="Thrive MT Logo" 
-                className="relative h-[120px] w-[120px] object-contain filter drop-shadow-[0_0_30px_rgba(184,115,51,1)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_40px_rgba(184,115,51,1)]"
+                className="relative h-[160px] w-[160px] object-contain filter drop-shadow-[0_0_40px_rgba(184,115,51,1)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_50px_rgba(184,115,51,1)]"
               />
               
               {/* Additional 3D-like glow effects */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#B87333]/50 via-transparent to-[#B87333]/50 animate-pulse" style={{animationDuration: '5s'}}></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] bg-[#B87333]/20 rounded-full blur-xl animate-ping" style={{animationDuration: '4s', animationIterationCount: 'infinite'}}></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[170px] h-[170px] bg-[#B87333]/20 rounded-full blur-xl animate-ping" style={{animationDuration: '4s', animationIterationCount: 'infinite'}}></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] border-2 border-[#E5C5A1]/30 rounded-full animate-ping" style={{animationDuration: '6s', animationIterationCount: 'infinite'}}></div>
             </div>
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>
-                  {getTranslatedText('welcome')} {displayName}!
+                  Hey {displayName}!
                 </span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] via-[#B87333] to-[#E5C5A1] animate-gradient-x" style={{backgroundSize: '200% auto', animationDelay: '0.5s'}}>
+                <span className="block mt-1 text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] via-[#B87333] to-[#E5C5A1] animate-gradient-x" style={{backgroundSize: '200% auto', animationDelay: '0.5s'}}>
                   Thrive MT
                 </span>
               </h1>

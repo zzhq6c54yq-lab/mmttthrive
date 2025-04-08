@@ -66,18 +66,18 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       {programs.map(program => (
         <Card 
           key={program.id} 
-          className={`overflow-hidden border-0 hover:shadow-2xl transition-all duration-500 cursor-pointer rounded-xl h-auto transform hover:scale-[1.02] shadow-lg shadow-black/20`}
+          className={`overflow-hidden border-0 hover:shadow-2xl transition-all duration-700 cursor-pointer rounded-xl h-auto transform hover:scale-[1.03] shadow-lg shadow-black/20`}
           onClick={() => navigateToFeature(program.path)}
         >
-          <div className="relative h-96 flex flex-col">
+          <div className="relative h-[460px] flex flex-col">
             {/* Top colored section with title */}
-            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} border-b border-${program.accentColor} px-6 py-6`}>
+            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} border-b-2 ${program.accentColor} px-6 py-8`}>
               <div className="flex items-center gap-3 justify-center">
-                <div className="p-3 rounded-full bg-gradient-to-br from-[#B87333]/20 to-[#E5C5A1]/10 backdrop-blur-sm shadow-inner border border-[#B87333]/30">
+                <div className="p-3 rounded-full bg-gradient-to-br from-[#B87333]/30 to-[#E5C5A1]/15 backdrop-blur-sm shadow-inner border border-[#B87333]/40">
                   {program.primaryIcon}
                 </div>
                 <h3 className="font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] drop-shadow-md">
@@ -91,22 +91,31 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
               <img 
                 src={program.image}
                 alt={program.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-all duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+              
+              {/* Overlay icons */}
+              <div className="absolute top-4 right-4 p-2 rounded-full bg-black/30 backdrop-blur-sm border border-[#B87333]/20">
+                {program.secondaryIcon}
+              </div>
+              <div className="absolute bottom-4 left-4 p-2 rounded-full bg-black/30 backdrop-blur-sm border border-[#E5C5A1]/20">
+                {program.tertiaryIcon}
+              </div>
             </div>
             
             {/* Bottom section with button */}
-            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} border-t border-${program.accentColor} px-6 py-5`}>
+            <div className={`bg-gradient-to-r ${program.gradientFrom} ${program.gradientTo} border-t-2 ${program.accentColor} px-6 py-6`}>
               <Button 
-                className={`w-full text-white ${program.buttonColor} shadow-lg group`}
+                className={`w-full text-white ${program.buttonColor} shadow-lg group transition-all duration-500`}
                 onClick={(e) => {
                   e.stopPropagation();
                   navigateToFeature(program.path);
                 }}
               >
+                <span className="mr-2 opacity-0 group-hover:opacity-100 transition-all duration-500">•</span>
                 <span>Explore Program</span>
-                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">&rarr;</span>
+                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-x-1">&rarr;</span>
               </Button>
             </div>
           </div>
