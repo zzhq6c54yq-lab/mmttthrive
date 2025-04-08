@@ -4,7 +4,26 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Brain, ArrowRight, Sparkles, CheckCircle, Clock } from "lucide-react";
+import { 
+  Brain, 
+  ArrowRight, 
+  Sparkles, 
+  CheckCircle, 
+  Clock,
+  Star,
+  BookOpen,
+  Award,
+  Zap,
+  LineChart,
+  Lightbulb
+} from "lucide-react";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface Quiz {
   id: string;
@@ -16,6 +35,8 @@ interface Quiz {
   completionRate?: number;
   image?: string;
   benefits: string[];
+  accentColor: string;
+  icon: React.ReactNode;
 }
 
 const QuizzesSection = () => {
@@ -35,7 +56,9 @@ const QuizzesSection = () => {
         "Identify anxiety triggers",
         "Get personalized coping techniques",
         "Track progress over time"
-      ]
+      ],
+      accentColor: "border-indigo-500",
+      icon: <Brain className="h-5 w-5 text-indigo-500" />
     },
     {
       id: "stress-check",
@@ -50,7 +73,9 @@ const QuizzesSection = () => {
         "Discover key stressors",
         "Learn stress management techniques",
         "Create a personalized stress plan"
-      ]
+      ],
+      accentColor: "border-emerald-500",
+      icon: <Lightbulb className="h-5 w-5 text-emerald-500" />
     },
     {
       id: "sleep-quality",
@@ -64,7 +89,9 @@ const QuizzesSection = () => {
         "Analyze sleep patterns",
         "Identify sleep disruptors",
         "Get customized sleep improvement tips"
-      ]
+      ],
+      accentColor: "border-blue-500",
+      icon: <LineChart className="h-5 w-5 text-blue-500" />
     }
   ];
 
@@ -111,183 +138,137 @@ const QuizzesSection = () => {
     });
   };
 
-  // Get category-specific colors and styles
-  const getCategoryStyles = (category: string, completionRate?: number) => {
+  // Get fallback image based on category
+  const getDefaultImage = (category: string) => {
     switch(category) {
-      case "mental-health":
-        return {
-          gradientColors: "from-indigo-500 to-purple-600",
-          accentColor: "#8B5CF6",
-          bgGradient: "bg-gradient-to-r from-purple-50 to-indigo-50",
-          iconBg: "bg-indigo-100",
-          iconColor: "text-indigo-500",
-          hoverBg: "hover:bg-indigo-50",
-          hoverBorder: "group-hover:border-indigo-300",
-          progressBg: completionRate ? "bg-gradient-to-r from-indigo-500 to-purple-500" : ""
-        };
-      case "wellbeing":
-        return {
-          gradientColors: "from-emerald-500 to-teal-600",
-          accentColor: "#10B981",
-          bgGradient: "bg-gradient-to-r from-emerald-50 to-teal-50",
-          iconBg: "bg-emerald-100",
-          iconColor: "text-emerald-500",
-          hoverBg: "hover:bg-emerald-50",
-          hoverBorder: "group-hover:border-emerald-300",
-          progressBg: completionRate ? "bg-gradient-to-r from-emerald-500 to-teal-500" : ""
-        };
+      case 'mental-health':
+        return 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80';
+      case 'wellbeing':
+        return 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?auto=format&fit=crop&w=800&q=80';
+      case 'coping-strategies':
+        return 'https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=800&q=80';
       default:
-        return {
-          gradientColors: "from-blue-500 to-cyan-600",
-          accentColor: "#3B82F6",
-          bgGradient: "bg-gradient-to-r from-blue-50 to-cyan-50",
-          iconBg: "bg-blue-100",
-          iconColor: "text-blue-500",
-          hoverBg: "hover:bg-blue-50",
-          hoverBorder: "group-hover:border-blue-300",
-          progressBg: completionRate ? "bg-gradient-to-r from-blue-500 to-cyan-500" : ""
-        };
+        return 'https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=800&q=80';
     }
   };
 
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {quizzes.map((quiz) => {
-          const styles = getCategoryStyles(quiz.category, quiz.completionRate);
-          
-          return (
-            <Card 
-              key={quiz.id}
-              className="bg-white overflow-hidden hover:shadow-md transition-all cursor-pointer group border border-gray-200 hover:border-gray-300 relative rounded-xl"
-            >
-              {quiz.image && (
-                <div className="h-40 w-full overflow-hidden relative">
-                  <img 
-                    src={quiz.image} 
-                    alt={quiz.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    onError={(e) => {
-                      // Fallback image if the original fails to load
-                      e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=80";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                  
-                  {/* Floating brain particles for visual interest */}
-                  <div className="absolute top-2 right-2 opacity-70">
-                    <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-sm">
-                      <Brain className="h-4 w-4 text-white" />
-                    </div>
-                  </div>
-                  {quiz.category === "mental-health" && (
-                    <>
-                      <div className="absolute top-8 left-4 animate-pulse opacity-40" style={{animationDuration: '3s'}}>
-                        <Sparkles className="h-3 w-3 text-purple-200" />
-                      </div>
-                      <div className="absolute bottom-10 right-8 animate-pulse opacity-40" style={{animationDuration: '4s'}}>
-                        <Sparkles className="h-2 w-2 text-purple-200" />
-                      </div>
-                    </>
-                  )}
-                  
-                  {/* Time info overlay */}
-                  <div className="absolute bottom-3 right-3">
-                    <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
-                      <Clock className="h-3 w-3 text-white/80" />
-                      <span className="text-xs text-white/90">{quiz.timeEstimate}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Questions count overlay */}
-                  <div className="absolute bottom-3 left-3">
-                    <div className="bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
-                      <span className="text-xs text-white/90">{quiz.questions} questions</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              <div 
-                className="h-1.5"
-                style={{ background: `linear-gradient(to right, ${styles.accentColor}, ${styles.accentColor}CC)` }}
-              ></div>
-              
-              <CardContent className={`p-4 ${styles.bgGradient}`}>
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-semibold text-gray-800 group-hover:text-[${styles.accentColor}] transition-colors">
-                    {quiz.title}
-                  </h3>
-                  <div className={`p-1.5 rounded-full ${styles.iconBg} group-hover:bg-white transition-colors`}>
-                    <Brain className={`h-4 w-4 ${styles.iconColor}`} />
-                  </div>
-                </div>
-                
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{quiz.description}</p>
-                
-                {/* Benefits */}
-                <div className="mb-3">
-                  <h4 className="text-xs font-medium text-gray-700 mb-1.5">Benefits:</h4>
-                  <ul className="text-xs text-gray-600 space-y-1">
-                    {quiz.benefits.map((benefit, index) => (
-                      <li key={index} className="flex items-start">
-                        <CheckCircle className="h-3 w-3 mr-1 mt-0.5" style={{color: styles.accentColor}} />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {quiz.completionRate ? (
-                  <div className="mb-3">
-                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                      <div 
-                        className={styles.progressBg}
-                        style={{ width: `${quiz.completionRate}%` }}
-                      ></div>
-                    </div>
-                    <div className="flex justify-between mt-1 text-xs">
-                      <span className="text-gray-500">In progress</span>
-                      <span style={{color: styles.accentColor}} className="font-medium">{quiz.completionRate}%</span>
-                    </div>
-                  </div>
-                ) : null}
-                
-                <Button
-                  variant="ghost" 
-                  size="sm"
-                  className={`w-full justify-between border border-gray-200 ${styles.hoverBg} hover:text-[${styles.accentColor}] ${styles.hoverBorder} transition-all`}
+    <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+      <AccordionItem value="item-1" className="border-none">
+        <AccordionTrigger className="py-2 hover:no-underline">
+          <span className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-[#D946EF] font-semibold flex items-center gap-2">
+            <Brain className="h-5 w-5 text-[#D946EF]" /> 
+            Brain Games & Assessments
+          </span>
+        </AccordionTrigger>
+        <AccordionContent className="animate-accordion-down">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {quizzes.map((quiz) => (
+                <Card 
+                  key={quiz.id}
                   onClick={() => handleQuizClick(quiz.id, quiz.title)}
+                  className={`overflow-hidden hover:shadow-md transition-all cursor-pointer group border-0 rounded-xl transform hover:scale-[1.02] ${quiz.accentColor} border-l-4`}
                 >
-                  <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </CardContent>
-              
-              {/* Add an overlay that makes the entire card clickable */}
-              <div 
-                className="absolute inset-0 cursor-pointer z-10"
-                onClick={() => handleQuizClick(quiz.id, quiz.title)}
-                aria-label={`Start ${quiz.title} assessment`}
+                  {/* Cover image section */}
+                  <div className="h-40 w-full overflow-hidden relative">
+                    <img 
+                      src={quiz.image || getDefaultImage(quiz.category)} 
+                      alt={quiz.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        // Fallback image if the original fails to load
+                        e.currentTarget.src = getDefaultImage(quiz.category);
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                    
+                    {/* Decorative particles */}
+                    {quiz.category === "mental-health" && (
+                      <>
+                        <div className="absolute top-8 left-4 animate-pulse opacity-40" style={{animationDuration: '3s'}}>
+                          <Sparkles className="h-3 w-3 text-purple-200" />
+                        </div>
+                        <div className="absolute bottom-10 right-8 animate-pulse opacity-40" style={{animationDuration: '4s'}}>
+                          <Sparkles className="h-2 w-2 text-purple-200" />
+                        </div>
+                      </>
+                    )}
+                    
+                    {/* Info badges */}
+                    <div className="absolute bottom-3 left-3">
+                      <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
+                        <Brain className="h-3 w-3 text-white/80" />
+                        <span className="text-xs text-white/90">{quiz.questions} questions</span>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-3 right-3">
+                      <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm py-1 px-2 rounded-full">
+                        <Clock className="h-3 w-3 text-white/80" />
+                        <span className="text-xs text-white/90">{quiz.timeEstimate}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <CardContent className="p-4 bg-gradient-to-b from-white to-gray-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
+                        {quiz.title}
+                      </h3>
+                      <div className="p-1.5 rounded-full bg-purple-100 group-hover:bg-white transition-colors">
+                        {quiz.icon}
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{quiz.description}</p>
+                    
+                    {/* Progress bar for in-progress assessments */}
+                    {quiz.completionRate && (
+                      <div className="mb-3">
+                        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                          <div 
+                            className="bg-gradient-to-r from-purple-500 to-[#D946EF]"
+                            style={{ width: `${quiz.completionRate}%` }}
+                          ></div>
+                        </div>
+                        <div className="flex justify-between mt-1 text-xs">
+                          <span className="text-gray-500">In progress</span>
+                          <span className="text-purple-600 font-medium">{quiz.completionRate}%</span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="mt-auto">
+                      <div className="flex justify-between items-center">
+                        <Button
+                          variant="ghost" 
+                          size="sm"
+                          className="w-full justify-between border border-gray-200 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-300 transition-all"
+                        >
+                          <span>{quiz.completionRate ? "Continue" : "Start"} Assessment</span>
+                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="flex justify-center pt-2">
+              <Button 
+                variant="outline"
+                onClick={handleViewMoreClick}
+                className="border-[#8B5CF6]/30 text-[#8B5CF6] hover:bg-[#8B5CF6]/5"
               >
-                <span className="sr-only">Start {quiz.title}</span>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-      
-      <div className="flex justify-center pt-4">
-        <Button 
-          variant="outline"
-          onClick={handleViewMoreClick}
-          className="border-[#8B5CF6]/30 text-[#8B5CF6] hover:bg-[#8B5CF6]/5"
-        >
-          View More Assessments
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
-    </div>
+                View More Assessments
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 

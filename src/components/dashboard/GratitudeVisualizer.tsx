@@ -15,11 +15,9 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
   const [customBackground, setCustomBackground] = useState<string | null>(null);
   const { toast } = useToast();
   
-  // Get preferred language
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   
-  // Translations
   const translations = {
     title: isSpanish ? "Visualizador de Gratitud" : "Gratitude Visualizer",
     instruction: isSpanish ? "Tómate un momento para reflexionar sobre algo por lo que estás agradecido hoy. Tu nota se mostrará como un hermoso recordatorio visual." : "Take a moment to reflect on something you're grateful for today. Your note will be displayed as a beautiful visual reminder.",
@@ -39,7 +37,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     imageDescription: isSpanish ? "Tu fondo personalizado ha sido establecido." : "Your custom background has been set."
   };
   
-  // Enhanced background gradients
   const backgrounds = [
     "bg-gradient-to-r from-[#FF9A9E] to-[#FECFEF]", // Soft pink gradient
     "bg-gradient-to-r from-[#667EEA] to-[#764BA2]", // Purple-blue gradient
@@ -48,7 +45,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     "bg-gradient-to-r from-[#FF9A9E] via-[#F6416C] to-[#FFA99F]", // Pink-red gradient
   ];
   
-  // Load saved gratitude from localStorage on component mount
   useEffect(() => {
     const savedValue = localStorage.getItem("gratitude");
     const savedBg = localStorage.getItem("gratitudeBg");
@@ -59,7 +55,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     if (savedCustomBg) setCustomBackground(savedCustomBg);
   }, []);
   
-  // Save gratitude to localStorage
   const saveGratitude = () => {
     if (!gratitude.trim()) {
       toast({
@@ -85,7 +80,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     setGratitude("");
   };
   
-  // Reset gratitude
   const handleReset = () => {
     setSavedGratitude(null);
     setSelectedBackground(0);
@@ -102,13 +96,11 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     if (onReset) onReset();
   };
   
-  // Handle background selection
   const selectBackground = (index: number) => {
     setSelectedBackground(index);
     setCustomBackground(null);
   };
   
-  // Handle custom image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -126,7 +118,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
     }
   };
   
-  // Determine current background style
   const currentBackgroundStyle = customBackground
     ? { backgroundImage: `url(${customBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }
     : {};
@@ -153,7 +144,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
       
       {!savedGratitude ? (
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/20 transform transition-all duration-500 hover:shadow-[0_10px_40px_-15px_rgba(255,154,158,0.3)] relative overflow-hidden">
-          {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#FF9A9E]/20 to-transparent rounded-full blur-3xl -z-10"></div>
           <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-[#FECFEF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
           
@@ -240,14 +230,14 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
           )}
           style={currentBackgroundStyle}
         >
-          <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
           
           <div className="relative z-10 text-center max-w-md mx-auto">
             <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-md">
               {translations.todayGratitude}
             </h3>
             
-            <p className="text-white text-xl font-medium leading-relaxed mb-6 drop-shadow-md">
+            <p className="text-white text-xl font-semibold leading-relaxed mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               "{savedGratitude}"
             </p>
             
@@ -256,7 +246,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                 onClick={handleReset}
                 size="sm"
                 variant="outline"
-                className="bg-white/10 border-white/40 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-md"
+                className="bg-white/20 border-white/40 text-white hover:bg-white/30 transition-all duration-300 backdrop-blur-md shadow-md"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
                 {translations.resetGratitude}
@@ -266,7 +256,7 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
                 onClick={() => setSavedGratitude(null)}
                 size="sm"
                 variant="outline"
-                className="bg-white/10 border-white/40 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-md"
+                className="bg-white/20 border-white/40 text-white hover:bg-white/30 transition-all duration-300 backdrop-blur-md shadow-md"
               >
                 <Image className="mr-2 h-4 w-4" />
                 {translations.changeBackground}
@@ -274,7 +264,6 @@ const GratitudeVisualizer: React.FC<GratitudeVisualizerProps> = ({ onReset }) =>
             </div>
           </div>
           
-          {/* Decorative elements */}
           <div className="absolute top-4 right-4 opacity-50">
             <Heart className="h-6 w-6 text-white drop-shadow-lg" />
           </div>
