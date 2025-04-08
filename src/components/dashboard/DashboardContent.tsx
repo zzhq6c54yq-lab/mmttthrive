@@ -8,7 +8,7 @@ import KeyFeatures from "@/components/dashboard/KeyFeatures";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import { NavigateFunction } from "react-router-dom";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
-import { Brain, Sparkles } from "lucide-react";
+import { Brain, Trophy, Sparkles } from "lucide-react";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -48,7 +48,17 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         <UpcomingAppointments />
         
         {/* Daily Wellness Challenges */}
-        <DailyWellnessChallenges />
+        <div className="mt-8">
+          <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
+            <div className="p-1.5 rounded-full bg-amber-100">
+              <Trophy className="h-5 w-5 text-amber-500" />
+            </div>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 pb-1">
+              Daily Wellness Challenges
+            </span>
+          </h2>
+          <DailyWellnessChallenges />
+        </div>
         
         {/* Featured Workshops */}
         <FeaturedWorkshops 

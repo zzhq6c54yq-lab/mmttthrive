@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Shield, GraduationCap, Briefcase } from "lucide-react";
+import { Sparkles, Shield, GraduationCap, Briefcase, Flag, Star } from "lucide-react";
 
 export interface SpecializedProgramsProps {
   navigateToFeature: (path: string) => void;
@@ -39,15 +39,74 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {programs.map(program => {
-        // Define program-specific styles
+        // Special case for veterans program to create American flag design
+        if (program.id === "veterans") {
+          return (
+            <Card 
+              key={program.id} 
+              className="overflow-hidden border-0 h-48 rounded-xl hover:shadow-xl transition-all duration-500 group cursor-pointer relative"
+              onClick={() => navigateToFeature(program.path)}
+            >
+              {/* American Flag Design */}
+              <div className="absolute inset-0 bg-[#041E42]"> {/* Navy blue background for star field */}
+                {/* Red and white stripes */}
+                <div className="absolute bottom-0 left-0 right-0 h-3/5">
+                  {[...Array(7)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`h-[14.28%] w-full ${i % 2 === 0 ? 'bg-[#B31942]' : 'bg-white'}`}
+                    />
+                  ))}
+                </div>
+                
+                {/* Blue field with stars */}
+                <div className="absolute top-0 left-0 w-2/5 h-2/5 bg-[#041E42] flex items-center justify-center">
+                  <div className="grid grid-cols-3 gap-1 p-1">
+                    {[...Array(9)].map((_, i) => (
+                      <Star key={i} className="h-2 w-2 text-white fill-white" />
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Content overlay with semi-transparent gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#041E42]/80 via-[#041E42]/40 to-transparent z-10">
+                  {/* Content */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 z-30">
+                    {/* Title */}
+                    <h3 className="font-bold text-2xl text-white drop-shadow-md mb-2 flex items-center gap-2">
+                      <Shield className="h-6 w-6 text-white" />
+                      {program.title}
+                    </h3>
+                    
+                    {/* Explore button */}
+                    <Button 
+                      size="sm"
+                      className="bg-white text-[#041E42] hover:bg-opacity-90 shadow-md hover:shadow-lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigateToFeature(program.path);
+                      }}
+                    >
+                      <span>Explore</span>
+                      <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">&rarr;</span>
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Subtle animated stars */}
+                <div className="absolute inset-0 z-20 overflow-hidden opacity-40">
+                  <Sparkles className="absolute top-[15%] left-[60%] h-2 w-2 text-white animate-pulse" style={{animationDuration: '3s'}} />
+                  <Sparkles className="absolute top-[45%] left-[75%] h-2 w-2 text-white animate-pulse" style={{animationDuration: '4s'}} />
+                  <Sparkles className="absolute top-[25%] left-[85%] h-2 w-2 text-white animate-pulse" style={{animationDuration: '5s'}} />
+                </div>
+              </div>
+            </Card>
+          );
+        }
+        
+        // Define program-specific styles for other programs
         const getStyles = () => {
           switch(program.id) {
-            case "veterans":
-              return {
-                overlayGradient: "from-blue-900/80 to-blue-700/40",
-                iconBg: "bg-blue-600",
-                starColor: "text-blue-200"
-              };
             case "college":
               return {
                 overlayGradient: "from-purple-900/80 to-purple-700/40",
@@ -90,32 +149,6 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
               
               {/* Gradient overlay */}
               <div className={`absolute inset-0 bg-gradient-to-t ${styles.overlayGradient}`}></div>
-              
-              {/* Special effects for Veterans card */}
-              {program.id === "veterans" && (
-                <div className="absolute inset-0">
-                  {/* Red and white stripes at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 h-12 opacity-20">
-                    {[...Array(6)].map((_, i) => (
-                      <div 
-                        key={i} 
-                        className={`h-[4px] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
-                      />
-                    ))}
-                  </div>
-                  
-                  {/* Stars in top left */}
-                  <div className="absolute top-2 left-2 opacity-40">
-                    <div className="grid grid-cols-3 gap-1">
-                      {[...Array(6)].map((_, i) => (
-                        <div key={i}>
-                          <Sparkles className="h-2 w-2 text-white" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
               
               {/* Content */}
               <div className="absolute inset-x-0 bottom-0 p-4 z-30">
