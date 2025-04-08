@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -104,7 +105,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       icon: <Shield />,
       path: "/dod-welcome",
       color: "from-blue-400 to-blue-600",
-      textBgColor: "from-white via-blue-50 to-blue-100",
+      textBgColor: "from-[#E5C5A1] via-[#B87333] to-[#E5C5A1]",
       description: "Specialized resources for service members",
       coverImage: "https://images.unsplash.com/photo-1476370648495-3533f64427a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
       isPatriotic: true
@@ -274,10 +275,10 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   return (
     <div className="mt-8">
       <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
-        <div className="p-1.5 rounded-full bg-amber-100">
-          <Heart className="h-5 w-5 text-amber-500" />
+        <div className="p-1.5 rounded-full bg-gradient-to-br from-[#E5C5A1] to-[#B87333]">
+          <Heart className="h-5 w-5 text-black" />
         </div>
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 pb-1">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] pb-1 rotate-1">
           Key Features
         </span>
       </h2>
@@ -301,7 +302,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
               className="w-full h-full text-left"
               aria-label={feature.title}
             >
-              <div className="relative overflow-hidden rounded-xl h-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div className="relative overflow-hidden rounded-xl h-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-gradient-to-br from-black/80 to-[#222]/80 border border-white/10">
                 <div className="relative h-24 overflow-hidden">
                   <img 
                     src={feature.coverImage} 
@@ -311,14 +312,14 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                       e.currentTarget.src = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80";
                     }}
                   />
-                  <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-30`}></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 opacity-60"></div>
                   
                   {feature.isPatriotic && (
                     <div className="absolute inset-0">
                       {[...Array(5)].map((_, i) => (
                         <div 
                           key={i} 
-                          className={`h-[20%] w-full ${i % 2 === 0 ? 'bg-red-700' : 'bg-white'}`}
+                          className={`h-[20%] w-full ${i % 2 === 0 ? 'bg-red-700/30' : 'bg-white/30'}`}
                         />
                       ))}
                       
@@ -330,30 +331,30 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     </div>
                   )}
                   
-                  <div className="absolute top-2 right-2 p-1.5 rounded-full bg-white/50 backdrop-blur-sm">
-                    {React.cloneElement(feature.icon, { className: "h-4 w-4 text-white drop-shadow-sm" })}
+                  <div className="absolute top-2 right-2 p-1.5 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] backdrop-blur-sm rotate-12">
+                    {React.cloneElement(feature.icon, { className: "h-4 w-4 text-black drop-shadow-sm" })}
                   </div>
                 </div>
                 
-                <div className={`p-3 bg-gradient-to-br ${feature.textBgColor} flex-grow flex flex-col justify-between`}>
+                <div className="p-3 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className={`font-bold text-sm text-gray-800 mb-1`}>
+                    <h3 className="font-bold text-sm text-transparent bg-clip-text bg-gradient-to-r from-[#E5C5A1] via-[#B87333] to-[#E5C5A1] rotate-1 mb-1">
                       {feature.title}
                     </h3>
                     
-                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                    <p className="text-xs text-gray-300 mb-2 line-clamp-2">
                       {feature.description}
                     </p>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     {isRecommended(feature.id) && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-black font-medium">
                         Recommended
                       </span>
                     )}
                     
-                    <div className="ml-auto text-gray-400">
+                    <div className="ml-auto text-[#E5C5A1]">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
