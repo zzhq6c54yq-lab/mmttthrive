@@ -39,7 +39,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {programs.map(program => {
-        // Special case for veterans program to create American flag design
+        // Enhanced American flag design for veterans program
         if (program.id === "veterans") {
           return (
             <Card 
@@ -49,7 +49,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
             >
               {/* American Flag Design */}
               <div className="absolute inset-0 bg-[#041E42]"> {/* Navy blue background for star field */}
-                {/* Red and white stripes */}
+                {/* Red and white stripes - more pronounced and animated */}
                 <div className="absolute bottom-0 left-0 right-0 h-3/5">
                   {[...Array(7)].map((_, i) => (
                     <div 
@@ -59,29 +59,31 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                   ))}
                 </div>
                 
-                {/* Blue field with stars */}
+                {/* Enhanced blue field with stars */}
                 <div className="absolute top-0 left-0 w-2/5 h-2/5 bg-[#041E42] flex items-center justify-center">
                   <div className="grid grid-cols-3 gap-1 p-1">
                     {[...Array(9)].map((_, i) => (
-                      <Star key={i} className="h-2 w-2 text-white fill-white" />
+                      <Star key={i} className="h-2.5 w-2.5 text-white fill-white animate-pulse" style={{animationDelay: `${i * 0.2}s`}} />
                     ))}
                   </div>
                 </div>
                 
-                {/* Content overlay with semi-transparent gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#041E42]/80 via-[#041E42]/40 to-transparent z-10">
+                {/* Content overlay with semi-transparent gradient - lighter and more golden */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#041E42]/70 via-[#041E42]/30 to-transparent z-10">
                   {/* Content */}
                   <div className="absolute inset-x-0 bottom-0 p-4 z-30">
-                    {/* Title */}
+                    {/* Title - with golden accent */}
                     <h3 className="font-bold text-2xl text-white drop-shadow-md mb-2 flex items-center gap-2">
-                      <Shield className="h-6 w-6 text-white" />
-                      {program.title}
+                      <Shield className="h-6 w-6 text-amber-300" />
+                      <span className="bg-gradient-to-r from-amber-200 to-amber-100 bg-clip-text text-transparent">
+                        {program.title}
+                      </span>
                     </h3>
                     
-                    {/* Explore button */}
+                    {/* Explore button - gold accent */}
                     <Button 
                       size="sm"
-                      className="bg-white text-[#041E42] hover:bg-opacity-90 shadow-md hover:shadow-lg"
+                      className="bg-amber-300 text-[#041E42] hover:bg-amber-200 shadow-md hover:shadow-lg"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigateToFeature(program.path);
@@ -93,11 +95,12 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                   </div>
                 </div>
                 
-                {/* Subtle animated stars */}
-                <div className="absolute inset-0 z-20 overflow-hidden opacity-40">
-                  <Sparkles className="absolute top-[15%] left-[60%] h-2 w-2 text-white animate-pulse" style={{animationDuration: '3s'}} />
-                  <Sparkles className="absolute top-[45%] left-[75%] h-2 w-2 text-white animate-pulse" style={{animationDuration: '4s'}} />
-                  <Sparkles className="absolute top-[25%] left-[85%] h-2 w-2 text-white animate-pulse" style={{animationDuration: '5s'}} />
+                {/* Enhanced animated stars */}
+                <div className="absolute inset-0 z-20 overflow-hidden opacity-60">
+                  <Sparkles className="absolute top-[15%] left-[60%] h-3 w-3 text-amber-300 animate-pulse" style={{animationDuration: '2s'}} />
+                  <Sparkles className="absolute top-[45%] left-[75%] h-2.5 w-2.5 text-amber-300 animate-pulse" style={{animationDuration: '3s'}} />
+                  <Sparkles className="absolute top-[25%] left-[85%] h-2 w-2 text-amber-300 animate-pulse" style={{animationDuration: '4s'}} />
+                  <Flag className="absolute top-[10%] right-[10%] h-5 w-5 text-amber-300 animate-pulse" style={{animationDuration: '5s'}} />
                 </div>
               </div>
             </Card>
@@ -109,21 +112,24 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
           switch(program.id) {
             case "college":
               return {
-                overlayGradient: "from-purple-900/80 to-purple-700/40",
-                iconBg: "bg-purple-600",
-                starColor: "text-purple-200"
+                overlayGradient: "from-indigo-600/80 to-purple-500/50",
+                iconBg: "bg-indigo-500",
+                starColor: "text-indigo-200",
+                buttonClass: "bg-white text-indigo-800 hover:bg-indigo-50"
               };
             case "business":
               return {
-                overlayGradient: "from-emerald-900/80 to-emerald-700/40",
-                iconBg: "bg-emerald-600",
-                starColor: "text-emerald-200"
+                overlayGradient: "from-emerald-700/80 to-emerald-500/40",
+                iconBg: "bg-emerald-500",
+                starColor: "text-emerald-200",
+                buttonClass: "bg-white text-emerald-800 hover:bg-emerald-50"
               };
             default:
               return {
                 overlayGradient: "from-blue-900/80 to-blue-700/40",
                 iconBg: "bg-blue-600",
-                starColor: "text-blue-200"
+                starColor: "text-blue-200",
+                buttonClass: "bg-white text-gray-800 hover:bg-blue-50"
               };
           }
         };
@@ -160,7 +166,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
                 {/* Explore button */}
                 <Button 
                   size="sm"
-                  className={`bg-white text-gray-800 hover:bg-opacity-90 shadow-md hover:shadow-lg`}
+                  className={`${styles.buttonClass} shadow-md hover:shadow-lg`}
                   onClick={(e) => {
                     e.stopPropagation();
                     navigateToFeature(program.path);
@@ -177,7 +183,7 @@ const SpecializedPrograms: React.FC<SpecializedProgramsProps> = ({ navigateToFea
               </div>
               
               {/* Animated stars/sparkles */}
-              <div className="absolute inset-0 z-10 overflow-hidden opacity-60">
+              <div className="absolute inset-0 z-10 overflow-hidden opacity-70">
                 <Sparkles className={`absolute top-[15%] left-[20%] h-3 w-3 ${styles.starColor} animate-pulse`} style={{animationDuration: '3s'}} />
                 <Sparkles className={`absolute top-[45%] left-[75%] h-2 w-2 ${styles.starColor} animate-pulse`} style={{animationDuration: '4s'}} />
                 <Sparkles className={`absolute top-[75%] left-[30%] h-2.5 w-2.5 ${styles.starColor} animate-pulse`} style={{animationDuration: '5s'}} />
