@@ -54,6 +54,7 @@ const Page: React.FC<PageProps> = ({
       onBackClick();
     } else {
       // Simply navigate back to previous page
+      console.log("Navigating back from location:", location.pathname);
       navigate(-1);
     }
   };
