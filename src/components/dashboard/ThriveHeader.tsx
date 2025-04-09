@@ -39,7 +39,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   const affirmations = [
     "I AM ENOUGH", "I AM WORTHY", "I'M ALLOWED TO HEAL", 
     "BE THE LOVE", "NEVER GIVE UP", "I BELIEVE IN ME",
-    "FORGIVE MYSELF", "I MATTER", "I'M WORTH IT"
+    "FORGIVE MYSELF", "I MATTER", "I'M WORTH IT", "LOVE MYSELF", "BE MY BEST ME"
   ];
   
   return (
@@ -47,12 +47,11 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
       <div className="absolute inset-0 bg-gradient-to-r from-black via-[#070707] to-black"></div>
       
       {/* Affirmations pattern background */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-15">
         {affirmations.map((affirmation, index) => {
           const words = affirmation.split(' ');
           const highlightedText = words.map(word => {
-            if (word.includes('HEAL') || word.includes('LOVE') || word.includes('NEVER') || 
-                word.includes('ENOUGH') || word.includes('WORTHY') || word.includes('FORGIVE')) {
+            if (word.includes('FORGIVE') || word.includes('LOVE') || word.includes('HEAL')) {
               return `<span class="text-[#E5C5A1]">${word}</span>`;
             }
             return word;
@@ -119,54 +118,74 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 {/* Diagonal gold accent bar */}
                 <div className="absolute w-[200%] h-[40px] bg-gradient-to-r from-[#B87333]/20 via-[#E5C5A1]/40 to-[#B87333]/20 rotate-45 transform translate-y-[-10px] animate-pulse" style={{animationDuration: '5s'}}></div>
                 
-                {/* Head outline logo with metallic gold gradient */}
+                {/* Updated metallic head outline logo based on provided reference */}
                 <div className="relative z-10 flex items-center justify-center">
                   <div className="h-24 w-24 relative">
-                    {/* Head outline with metallic gold gradient */}
+                    {/* Head outline with enhanced metallic gold gradient */}
                     <svg viewBox="0 0 100 100" className="w-full h-full">
-                      {/* Define the metallic gold gradient */}
+                      {/* Define the metallic gold gradient with more realistic metal effect */}
                       <defs>
-                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="metallicGold" x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#E5C5A1" />
-                          <stop offset="50%" stopColor="#FFF1C9" />
+                          <stop offset="25%" stopColor="#FFF1C9" />
+                          <stop offset="50%" stopColor="#B87333" />
+                          <stop offset="75%" stopColor="#E5C5A1" />
                           <stop offset="100%" stopColor="#B87333" />
+                        </linearGradient>
+                        
+                        {/* Shine effect gradient */}
+                        <linearGradient id="shineEffect" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+                          <stop offset="50%" stopColor="rgba(255,255,255,0.8)" />
+                          <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                          <animate attributeName="x1" from="-100%" to="100%" dur="3s" repeatCount="indefinite" />
+                          <animate attributeName="x2" from="0%" to="200%" dur="3s" repeatCount="indefinite" />
                         </linearGradient>
                       </defs>
                       
-                      {/* Head outline shape */}
+                      {/* Head outline shape - refined to match the reference */}
                       <path 
                         d="M50,15 C30,15 20,30 20,50 C20,65 30,85 50,85 C70,85 80,65 80,50 C80,30 70,15 50,15 Z" 
                         fill="none" 
-                        stroke="url(#goldGradient)" 
-                        strokeWidth="3" 
+                        stroke="url(#metallicGold)" 
+                        strokeWidth="2.5" 
                         strokeLinecap="round"
                       />
                       
-                      {/* Brain element */}
+                      {/* Brain element - more anatomically styled */}
                       <path 
-                        d="M35,40 C35,30 45,25 50,30 C55,25 65,30 65,40 C65,50 55,55 50,50 C45,55 35,50 35,40 Z" 
+                        d="M38,40 C38,30 45,28 50,33 C55,28 62,30 62,40 C62,48 55,52 50,47 C45,52 38,48 38,40 Z" 
                         fill="none" 
-                        stroke="url(#goldGradient)" 
+                        stroke="url(#metallicGold)" 
                         strokeWidth="2" 
                         strokeLinecap="round"
                       />
                       
-                      {/* Heart element */}
+                      {/* Heart element - more detailed, placed lower */}
                       <path 
-                        d="M40,60 C40,55 45,55 50,60 C55,55 60,55 60,60 C60,65 55,70 50,65 C45,70 40,65 40,60 Z" 
+                        d="M42,65 C42,60 45,60 50,65 C55,60 58,60 58,65 C58,70 53,75 50,70 C47,75 42,70 42,65 Z" 
                         fill="none" 
-                        stroke="url(#goldGradient)" 
+                        stroke="url(#metallicGold)" 
                         strokeWidth="2" 
                         strokeLinecap="round"
+                      />
+                      
+                      {/* Connection lines between brain and heart */}
+                      <path 
+                        d="M50,47 L50,65" 
+                        fill="none" 
+                        stroke="url(#metallicGold)" 
+                        strokeWidth="1.5" 
+                        strokeDasharray="3,3"
                       />
                       
                       {/* Circular arrows */}
                       <path 
-                        d="M25,50 A25,25 0 0,1 75,50" 
+                        d="M28,50 A22,22 0 0,1 72,50" 
                         fill="none" 
-                        stroke="url(#goldGradient)" 
+                        stroke="url(#metallicGold)" 
                         strokeWidth="1.5" 
-                        strokeDasharray="5,3"
+                        strokeDasharray="4,3"
                       >
                         <animateTransform 
                           attributeName="transform"
@@ -179,11 +198,11 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                         />
                       </path>
                       <path 
-                        d="M75,50 A25,25 0 0,1 25,50" 
+                        d="M72,50 A22,22 0 0,1 28,50" 
                         fill="none" 
-                        stroke="url(#goldGradient)" 
+                        stroke="url(#metallicGold)" 
                         strokeWidth="1.5" 
-                        strokeDasharray="5,3"
+                        strokeDasharray="4,3"
                       >
                         <animateTransform 
                           attributeName="transform"
@@ -195,13 +214,18 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                           repeatCount="indefinite"
                         />
                       </path>
+                      
+                      {/* Shine effect overlay */}
+                      <rect x="20" y="15" width="60" height="70" fill="url(#shineEffect)" fillOpacity="0.5" mask="url(#headMask)">
+                        <animate attributeName="opacity" values="0;0.3;0" dur="5s" repeatCount="indefinite" />
+                      </rect>
                     </svg>
                   </div>
                 </div>
                 
                 {/* Elegant accent lines */}
-                <div className="absolute left-0 right-0 bottom-[25%] h-[1px] bg-gradient-to-r from-transparent via-[#ffffff]/40 to-transparent"></div>
-                <div className="absolute left-0 right-0 top-[25%] h-[1px] bg-gradient-to-r from-transparent via-[#E5C5A1]/40 to-transparent"></div>
+                <div className="absolute left-0 right-0 bottom-[25%] h-[1px] bg-gradient-to-r from-transparent via-[#E5C5A1]/40 to-transparent"></div>
+                <div className="absolute left-0 right-0 top-[25%] h-[1px] bg-gradient-to-r from-transparent via-[#ffffff]/40 to-transparent"></div>
               </div>
 
               {/* Subtle shine effects */}

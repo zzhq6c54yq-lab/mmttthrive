@@ -7,12 +7,12 @@ const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children
     { text: "I AM ENOUGH", highlight: "ENOUGH" },
     { text: "I AM WORTHY", highlight: "WORTHY" },
     { text: "I'M ALLOWED TO HEAL", highlight: "HEAL" },
-    { text: "BE THE LOVE", highlight: "LOVE" },
-    { text: "NEVER GIVE UP", highlight: "NEVER" },
+    { text: "LOVE MYSELF", highlight: "LOVE" },
     { text: "I MATTER", highlight: "" },
     { text: "I'M WORTH IT", highlight: "" },
     { text: "FORGIVE MYSELF", highlight: "FORGIVE" },
-    { text: "LOVE MYSELF", highlight: "LOVE" },
+    { text: "BE THE LOVE", highlight: "LOVE" },
+    { text: "NEVER GIVE UP", highlight: "NEVER" },
     { text: "BE MY BEST ME", highlight: "" }
   ];
   
@@ -29,26 +29,25 @@ const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children
             const words = affirmation.text.split(' ');
             const highlightedText = words.map(word => {
               // Check if this word contains any of our highlight keywords
-              if (word.includes(affirmation.highlight) || 
-                  word.includes("HEAL") || 
+              if (word.includes("FORGIVE") || 
                   word.includes("LOVE") || 
-                  word.includes("FORGIVE")) {
-                return `<span class="text-[#E5C5A1]/60">${word}</span>`;
+                  word.includes("HEAL")) {
+                return `<span class="text-[#E5C5A1]/70">${word}</span>`;
               }
               return word;
             }).join(' ');
             
-            // Create 10 copies of each affirmation at different positions and angles for better coverage
-            return Array.from({ length: 10 }).map((_, copyIndex) => (
+            // Create many more copies of each affirmation to cover the entire background
+            return Array.from({ length: 25 }).map((_, copyIndex) => (
               <div 
                 key={`${index}-${copyIndex}`}
-                className={`absolute text-white/10 whitespace-nowrap ${fontStyles[copyIndex % fontStyles.length]}`}
+                className={`absolute text-white/15 whitespace-nowrap ${fontStyles[copyIndex % fontStyles.length]}`}
                 style={{
-                  top: `${(Math.random() * 100)}%`,
-                  left: `${(Math.random() * 100)}%`,
+                  top: `${(Math.random() * 130) - 15}%`,
+                  left: `${(Math.random() * 130) - 15}%`,
                   transform: `rotate(${(Math.random() * 360)}deg)`,
                   fontSize: `${Math.max(0.6, Math.random() * 0.9)}rem`,
-                  opacity: Math.max(0.05, Math.random() * 0.15)
+                  opacity: Math.max(0.07, Math.random() * 0.18)
                 }}
                 dangerouslySetInnerHTML={{ __html: highlightedText }}
               />
