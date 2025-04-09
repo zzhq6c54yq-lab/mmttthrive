@@ -100,49 +100,38 @@ const SpecializedPrograms: React.FC = () => {
           <div 
             key={index}
             onClick={() => handleFeatureClick(program.path)}
-            className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-64"
+            className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-28"
           >
-            {/* Background image */}
-            <div className="absolute inset-0 z-0">
+            {/* Background image - covers 3/4 of card height */}
+            <div className="absolute inset-0 h-3/4 z-0">
               <img 
                 src={program.imagePath} 
                 alt={program.title} 
                 className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-black/30"></div>
             </div>
             
-            {/* Dark overlay */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-80`}></div>
-            <div className="absolute inset-0 bg-black/30"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            {/* Bottom color section - 1/4 of card height */}
+            <div className={`absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-br ${program.gradient}`}></div>
             
-            <div className="relative z-10 p-5 flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2.5 rounded-full bg-white/20 backdrop-blur-sm">
-                  <program.icon className="h-6 w-6 text-white" />
+            <div className="relative z-10 p-3 flex flex-col h-full">
+              <div className="mb-auto">
+                <div className="p-1.5 rounded-full bg-white/20 backdrop-blur-sm inline-flex">
+                  <program.icon className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white">{program.title}</h3>
               </div>
               
-              <p className="text-white/90 mb-4 flex-grow">{program.description}</p>
-              
-              <Button 
-                className="mt-auto self-start bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30 transition-all duration-300"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFeatureClick(program.path);
-                }}
-              >
-                {translations.exploreProgram}
-              </Button>
+              <div className="mt-auto">
+                <h3 className="text-lg font-semibold text-white truncate">{program.title}</h3>
+              </div>
             </div>
             
+            {/* Subtle highlight effect on hover */}
             <div 
-              className="absolute inset-0 border-2 opacity-50 group-hover:opacity-100 transition-opacity"
+              className="absolute inset-0 border-2 opacity-0 group-hover:opacity-100 transition-opacity"
               style={{ borderColor: program.borderColor }}  
             ></div>
-            
-            <div className="absolute top-0 right-0 h-20 w-20 bg-white/10 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-500"></div>
           </div>
         ))}
       </div>
