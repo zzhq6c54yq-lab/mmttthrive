@@ -2,9 +2,52 @@
 import React from "react";
 
 const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Array of affirmations to display in the background pattern
+  const affirmations = [
+    { text: "I AM ENOUGH", highlight: "ENOUGH" },
+    { text: "I AM WORTHY", highlight: "WORTHY" },
+    { text: "I'M ALLOWED TO HEAL", highlight: "HEAL" },
+    { text: "BE THE LOVE", highlight: "LOVE" },
+    { text: "NEVER GIVE UP", highlight: "NEVER" }
+  ];
+  
+  // Font styles to alternate between
+  const fontStyles = ["font-serif italic", "font-sans"];
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-[#0a071a] to-[#0d0915] text-white pt-6 pb-20 px-0 relative overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Affirmations pattern background - diagonal repeated pattern with rotating styles */}
+        <div className="absolute inset-0">
+          {affirmations.map((affirmation, index) => {
+            // Parse the affirmation text to highlight specific words
+            const words = affirmation.text.split(' ');
+            const highlightedText = words.map(word => {
+              // Check if this word contains any of our highlight keywords
+              if (word.includes(affirmation.highlight)) {
+                return `<span class="text-[#E5C5A1]/60">${word}</span>`;
+              }
+              return word;
+            }).join(' ');
+            
+            // Create 8 copies of each affirmation at different positions and angles
+            return Array.from({ length: 8 }).map((_, copyIndex) => (
+              <div 
+                key={`${index}-${copyIndex}`}
+                className={`absolute text-white/10 whitespace-nowrap ${fontStyles[copyIndex % fontStyles.length]}`}
+                style={{
+                  top: `${(Math.random() * 100)}%`,
+                  left: `${(Math.random() * 100)}%`,
+                  transform: `rotate(${(Math.random() * 360)}deg)`,
+                  fontSize: `${Math.max(0.6, Math.random() * 0.9)}rem`,
+                  opacity: Math.max(0.05, Math.random() * 0.15)
+                }}
+                dangerouslySetInnerHTML={{ __html: highlightedText }}
+              />
+            ));
+          })}
+        </div>
+
         {/* Enhanced deep texture with significantly more prominent silver, gold and white accents */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23ffffff%22 fill-opacity=%220.09%22/></svg>')] opacity-50"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><circle cx=%225%22 cy=%225%22 r=%221.5%22 fill=%22%23c0c0c0%22 fill-opacity=%220.08%22/></svg>')] opacity-40"></div>

@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import HenryIntroDialog from "../henry/HenryIntroDialog";
 import HelpDialog from "../help/HelpDialog";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import useTranslation from "@/hooks/useTranslation";
 
 interface ThriveHeaderProps {
@@ -38,9 +37,9 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   
   // Array of affirmations to display in the background pattern
   const affirmations = [
-    "I MATTER", "I'M WORTH IT", "BE MY BEST ME", 
-    "FORGIVE MYSELF", "LOVE MYSELF", "I HEAL", 
-    "I GROW", "I AM ENOUGH", "I BELIEVE IN ME"
+    "I AM ENOUGH", "I AM WORTHY", "I'M ALLOWED TO HEAL", 
+    "BE THE LOVE", "NEVER GIVE UP", "I BELIEVE IN ME",
+    "FORGIVE MYSELF", "I MATTER", "I'M WORTH IT"
   ];
   
   return (
@@ -52,16 +51,19 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
         {affirmations.map((affirmation, index) => {
           const words = affirmation.split(' ');
           const highlightedText = words.map(word => {
-            if (word.includes('LOVE') || word.includes('FORGIVE') || word.includes('HEAL')) {
+            if (word.includes('HEAL') || word.includes('LOVE') || word.includes('NEVER') || 
+                word.includes('ENOUGH') || word.includes('WORTHY')) {
               return `<span class="text-[#E5C5A1]">${word}</span>`;
             }
             return word;
           }).join(' ');
           
+          const isCursive = index % 2 === 0;
+          
           return (
             <div 
               key={index}
-              className="absolute text-white/20 whitespace-nowrap"
+              className={`absolute text-white/20 whitespace-nowrap ${isCursive ? 'font-serif italic' : 'font-sans'}`}
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
@@ -86,7 +88,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
         <div className="flex flex-col items-center justify-center pt-10 pb-10 px-6">
           <div className="flex flex-col items-center gap-6 mb-6">
             <div className="relative group">
-              {/* New black logo design with Henry's avatar inside */}
+              {/* New black logo design with head outline logo inside */}
               <div className="absolute inset-[-60px] bg-gradient-to-r from-[#000] via-[#111] to-[#000] rounded-full blur-xl opacity-80"></div>
               
               {/* Elegant rotating rings with silver accent */}
@@ -98,7 +100,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
               {/* Inner glow effect */}
               <div className="absolute inset-[-20px] rounded-full bg-gradient-to-br from-[#B87333]/30 to-[#E5C5A1]/15 blur-lg animate-pulse" style={{animationDuration: '4s'}}></div>
               
-              {/* Logo container with deep black interior and Henry avatar */}
+              {/* Logo container with deep black interior and head outline logo */}
               <div className="relative w-[160px] h-[160px] rounded-full bg-black border-2 border-[#E5C5A1]/50 shadow-[0_0_40px_rgba(0,0,0,0.8)] flex items-center justify-center overflow-hidden">
                 {/* Circular text path for "THRIVE MT" */}
                 <div className="absolute w-[140px] h-[140px] rounded-full border-2 border-[#E5C5A1]/30 flex items-center justify-center">
@@ -117,12 +119,84 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
                 {/* Diagonal gold accent bar */}
                 <div className="absolute w-[200%] h-[40px] bg-gradient-to-r from-[#B87333]/20 via-[#E5C5A1]/40 to-[#B87333]/20 rotate-45 transform translate-y-[-10px] animate-pulse" style={{animationDuration: '5s'}}></div>
                 
-                {/* Replace T logo with Henry's avatar */}
+                {/* Replace Henry's avatar with head outline logo in metallic gold gradient */}
                 <div className="relative z-10 flex items-center justify-center">
-                  <Avatar className="h-20 w-20 border-2 border-[#E5C5A1]/50">
-                    <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
-                    <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-4xl font-bold">H</AvatarFallback>
-                  </Avatar>
+                  <div className="h-24 w-24 relative">
+                    {/* Head outline with metallic gold gradient */}
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      {/* Define the metallic gold gradient */}
+                      <defs>
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#E5C5A1" />
+                          <stop offset="50%" stopColor="#FFF1C9" />
+                          <stop offset="100%" stopColor="#B87333" />
+                        </linearGradient>
+                      </defs>
+                      
+                      {/* Head outline shape */}
+                      <path 
+                        d="M50,15 C30,15 20,30 20,50 C20,65 30,85 50,85 C70,85 80,65 80,50 C80,30 70,15 50,15 Z" 
+                        fill="none" 
+                        stroke="url(#goldGradient)" 
+                        strokeWidth="3" 
+                        strokeLinecap="round"
+                      />
+                      
+                      {/* Brain element */}
+                      <path 
+                        d="M35,40 C35,30 45,25 50,30 C55,25 65,30 65,40 C65,50 55,55 50,50 C45,55 35,50 35,40 Z" 
+                        fill="none" 
+                        stroke="url(#goldGradient)" 
+                        strokeWidth="2" 
+                        strokeLinecap="round"
+                      />
+                      
+                      {/* Heart element */}
+                      <path 
+                        d="M40,60 C40,55 45,55 50,60 C55,55 60,55 60,60 C60,65 55,70 50,65 C45,70 40,65 40,60 Z" 
+                        fill="none" 
+                        stroke="url(#goldGradient)" 
+                        strokeWidth="2" 
+                        strokeLinecap="round"
+                      />
+                      
+                      {/* Circular arrows */}
+                      <path 
+                        d="M25,50 A25,25 0 0,1 75,50" 
+                        fill="none" 
+                        stroke="url(#goldGradient)" 
+                        strokeWidth="1.5" 
+                        strokeDasharray="5,3"
+                      >
+                        <animateTransform 
+                          attributeName="transform"
+                          attributeType="XML"
+                          type="rotate"
+                          from="0 50 50"
+                          to="360 50 50"
+                          dur="15s"
+                          repeatCount="indefinite"
+                        />
+                      </path>
+                      <path 
+                        d="M75,50 A25,25 0 0,1 25,50" 
+                        fill="none" 
+                        stroke="url(#goldGradient)" 
+                        strokeWidth="1.5" 
+                        strokeDasharray="5,3"
+                      >
+                        <animateTransform 
+                          attributeName="transform"
+                          attributeType="XML"
+                          type="rotate"
+                          from="0 50 50"
+                          to="-360 50 50"
+                          dur="12s"
+                          repeatCount="indefinite"
+                        />
+                      </path>
+                    </svg>
+                  </div>
                 </div>
                 
                 {/* Elegant accent lines */}
