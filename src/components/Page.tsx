@@ -52,23 +52,22 @@ const Page: React.FC<PageProps> = ({
   const handleBackClick = () => {
     if (onBackClick) {
       onBackClick();
-    } else if (returnToMain) {
-      // Navigate to main dashboard with state to prevent intro screens
-      navigate("/", { state: { screenState: 'main', preventTutorial: true } });
     } else {
-      // Check if we have state indicating where we came from
-      const fromMainMenu = location.state && location.state.fromMainMenu === true;
-      
-      if (fromMainMenu) {
-        // If we came from the main menu, go directly back to it
-        navigate("/", { state: { screenState: 'main', preventTutorial: true } });
-      } else {
-        // Default behavior: go back to previous page using the browser history
-        navigate(-1);
-      }
+      // Simply navigate back to previous page
+      navigate(-1);
     }
   };
   
+  // Determine if this is one of the excluded pages
+  const isExcludedPage = 
+    location.pathname === "/" && 
+    (location.state?.screenState === 'intro' || 
+     location.state?.screenState === 'mood' ||
+     location.state?.screenState === 'register' ||
+     location.state?.screenState === 'subscription' ||
+     location.state?.screenState === 'visionBoard' ||
+     location.state?.screenState === 'main');
+
   // Determine if this is the main dashboard page
   const isMainDashboard = location.pathname === "/" && 
     location.state && location.state.screenState === 'main';
@@ -104,12 +103,12 @@ const Page: React.FC<PageProps> = ({
         {/* Title in Header with navigation controls */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-2 gap-1">
           <div className="flex items-center gap-1">
-            {/* Only show back button when not on main dashboard */}
+            {/* Only show back button when not on main dashboard and not excluded page */}
             {showBackButton && !isMainDashboard && (
               <Button
                 variant="outline"
                 size="sm"
-                className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7"
+                className="mr-2 bg-white/5 hover:bg-white/15 border-white/10 text-white/90 text-xs h-7 p-1"
                 onClick={handleBackClick}
                 title={getTranslation('back')}
               >
@@ -123,8 +122,8 @@ const Page: React.FC<PageProps> = ({
           </div>
           
           <div className="flex items-center gap-2">
-            {/* Add ThriveMT button to navigate to main dashboard */}
-            {!isMainDashboard && <ThriveMTButton />}
+            {/* Add ThriveMT button if not on an excluded page */}
+            {!isExcludedPage && <ThriveMTButton />}
             
             {/* Add tutorial button if featureId is provided */}
             {currentFeatureId && (

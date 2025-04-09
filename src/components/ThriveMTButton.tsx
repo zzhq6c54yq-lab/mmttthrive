@@ -17,7 +17,7 @@ const ThriveMTButton: React.FC = () => {
       duration: 1500,
     });
     
-    // Always navigate to main screen with the 'main' screenState to avoid intro screens
+    // Navigate to main screen with the 'main' screenState to avoid intro screens
     // Also prevent tutorials from showing
     navigate("/", { 
       state: { 
@@ -31,13 +31,12 @@ const ThriveMTButton: React.FC = () => {
     <Button
       onClick={handleMainDashboard}
       variant="outline"
-      className="h-10 px-4 bg-white text-[#1a1a1f] border border-[#B87333]/30 hover:bg-white/90 hover:text-[#1a1a1f] shadow-md transition-all duration-300 flex items-center gap-2"
+      className="h-10 w-10 p-0 rounded-full bg-white text-[#B87333] border-2 border-[#B87333] hover:bg-white/90 hover:text-[#B87333]/90 shadow-md transition-all duration-300 flex items-center justify-center"
       aria-label={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
       title={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
     >
-      <div className="text-[#B87333] font-bold text-sm leading-none tracking-tighter flex flex-col items-center">
-        <span className="text-[6px] opacity-80 mb-0.5">THRIVE</span>
-        <span>MT</span>
+      <div className="font-bold text-sm leading-none tracking-tighter">
+        MT
       </div>
     </Button>
   );

@@ -23,10 +23,17 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   const state = location.state as { screenState?: string } | null;
   const screenState = state?.screenState;
   
-  // Only show on main dashboard, not on any initial screens
-  const shouldShow = location.pathname !== "/" || screenState === 'main';
+  // Check if this is one of the excluded pages
+  const isExcludedPage = 
+    location.pathname === "/" && 
+    (screenState === 'intro' || 
+     screenState === 'mood' ||
+     screenState === 'register' ||
+     screenState === 'subscription' ||
+     screenState === 'visionBoard' ||
+     screenState === 'main');
   
-  // Don't show during emotional check-in flow
+  // Don't show during emotional check-in flow or on excluded pages
   const isEmotionalCheckIn = location.pathname === "/" && (
     screenState === 'mood' || 
     screenState === 'moodResponse' || 
@@ -35,8 +42,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     screenState === 'subscription'
   );
 
-  // Don't show the help button on initial screens
-  if (!shouldShow || isEmotionalCheckIn) {
+  // Don't show the help button on initial screens or excluded pages
+  if (isExcludedPage || isEmotionalCheckIn) {
     return null;
   }
 
