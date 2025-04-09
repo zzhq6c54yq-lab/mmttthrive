@@ -52,7 +52,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           const words = affirmation.split(' ');
           const highlightedText = words.map(word => {
             if (word.includes('HEAL') || word.includes('LOVE') || word.includes('NEVER') || 
-                word.includes('ENOUGH') || word.includes('WORTHY')) {
+                word.includes('ENOUGH') || word.includes('WORTHY') || word.includes('FORGIVE')) {
               return `<span class="text-[#E5C5A1]">${word}</span>`;
             }
             return word;

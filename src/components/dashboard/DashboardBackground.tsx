@@ -2,13 +2,18 @@
 import React from "react";
 
 const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Array of affirmations to display in the background pattern
+  // Extended array of affirmations to display in the background pattern
   const affirmations = [
     { text: "I AM ENOUGH", highlight: "ENOUGH" },
     { text: "I AM WORTHY", highlight: "WORTHY" },
     { text: "I'M ALLOWED TO HEAL", highlight: "HEAL" },
     { text: "BE THE LOVE", highlight: "LOVE" },
-    { text: "NEVER GIVE UP", highlight: "NEVER" }
+    { text: "NEVER GIVE UP", highlight: "NEVER" },
+    { text: "I MATTER", highlight: "" },
+    { text: "I'M WORTH IT", highlight: "" },
+    { text: "FORGIVE MYSELF", highlight: "FORGIVE" },
+    { text: "LOVE MYSELF", highlight: "LOVE" },
+    { text: "BE MY BEST ME", highlight: "" }
   ];
   
   // Font styles to alternate between
@@ -24,14 +29,17 @@ const DashboardBackground: React.FC<{ children: React.ReactNode }> = ({ children
             const words = affirmation.text.split(' ');
             const highlightedText = words.map(word => {
               // Check if this word contains any of our highlight keywords
-              if (word.includes(affirmation.highlight)) {
+              if (word.includes(affirmation.highlight) || 
+                  word.includes("HEAL") || 
+                  word.includes("LOVE") || 
+                  word.includes("FORGIVE")) {
                 return `<span class="text-[#E5C5A1]/60">${word}</span>`;
               }
               return word;
             }).join(' ');
             
-            // Create 8 copies of each affirmation at different positions and angles
-            return Array.from({ length: 8 }).map((_, copyIndex) => (
+            // Create 10 copies of each affirmation at different positions and angles for better coverage
+            return Array.from({ length: 10 }).map((_, copyIndex) => (
               <div 
                 key={`${index}-${copyIndex}`}
                 className={`absolute text-white/10 whitespace-nowrap ${fontStyles[copyIndex % fontStyles.length]}`}
