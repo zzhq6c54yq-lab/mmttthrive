@@ -7,6 +7,7 @@ import usePopupManagement from "@/hooks/usePopupManagement";
 import useTranslation from "@/hooks/useTranslation";
 import useIndexState from "@/hooks/useIndexState";
 import IndexContent from "@/components/home/IndexContent";
+import MainMenuButton from "@/components/MainMenuButton";
 
 const Index = () => {
   // Custom hooks
@@ -67,53 +68,79 @@ const Index = () => {
 
   const navigateToFeature = (path: string) => {
     if (path.startsWith('/')) {
+      // Special case for workshop paths
+      if (path.startsWith('/workshop/')) {
+        navigate(path, { 
+          state: { 
+            qualities: selectedQualities, 
+            goals: selectedGoals,
+            activeTab: "workshop",
+            preventTutorial: true
+          }
+        });
+        return;
+      }
+      
       if (path === '/small-business-portal') {
         navigate(path, { 
           state: { 
             qualities: selectedQualities, 
             goals: selectedGoals,
-            fromMainMenu: true 
+            fromMainMenu: true,
+            preventTutorial: true
           }
         });
       } else {
         navigate(path, { 
           state: { 
             qualities: selectedQualities, 
-            goals: selectedGoals 
+            goals: selectedGoals,
+            preventTutorial: true
           }
         });
       }
     }
   };
 
+  // Show MainMenuButton only on intro and mood screens
+  const showMainMenuButton = screenState === 'intro' || screenState === 'mood';
+
   return (
-    <IndexContent
-      screenState={screenState}
-      selectedMood={selectedMood}
-      userInfo={userInfo}
-      selectedPlan={selectedPlan}
-      selectedQualities={selectedQualities}
-      selectedGoals={selectedGoals}
-      showHenry={showHenry}
-      isFirstVisit={isFirstVisit}
-      setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={showCoPayCredit}
-      setShowCoPayCredit={setShowCoPayCredit}
-      popupsShown={popupsShown}
-      getTranslatedText={getTranslatedText}
-      onMoodSelect={handleMoodSelect}
-      onUserInfoChange={handleUserInfoChange}
-      onQualityToggle={toggleQuality}
-      onGoalToggle={toggleGoal}
-      onPlanSelect={onPlanSelect}
-      onHenryToggle={toggleHenry}
-      navigateToFeature={navigateToFeature}
-      handleSubscriptionContinue={handleSubscriptionContinue}
-      handleVisionBoardContinue={handleVisionBoardContinue}
-      handleRegister={handleRegister}
-      setScreenState={setScreenState}
-      markTutorialCompleted={markTutorialCompleted}
-    />
+    <>
+      {showMainMenuButton && (
+        <div className="fixed top-5 right-5 z-50">
+          <MainMenuButton size="large" showAnimatedRings={true} />
+        </div>
+      )}
+      
+      <IndexContent
+        screenState={screenState}
+        selectedMood={selectedMood}
+        userInfo={userInfo}
+        selectedPlan={selectedPlan}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+        showHenry={showHenry}
+        isFirstVisit={isFirstVisit}
+        setIsFirstVisit={setIsFirstVisit}
+        showCoPayCredit={showCoPayCredit}
+        setShowCoPayCredit={setShowCoPayCredit}
+        popupsShown={popupsShown}
+        getTranslatedText={getTranslatedText}
+        onMoodSelect={handleMoodSelect}
+        onUserInfoChange={handleUserInfoChange}
+        onQualityToggle={toggleQuality}
+        onGoalToggle={toggleGoal}
+        onPlanSelect={onPlanSelect}
+        onHenryToggle={toggleHenry}
+        navigateToFeature={navigateToFeature}
+        handleSubscriptionContinue={handleSubscriptionContinue}
+        handleVisionBoardContinue={handleVisionBoardContinue}
+        handleRegister={handleRegister}
+        setScreenState={setScreenState}
+        markTutorialCompleted={markTutorialCompleted}
+      />
+    </>
   );
 };
 
