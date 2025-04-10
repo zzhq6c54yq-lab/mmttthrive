@@ -1,10 +1,23 @@
 
 export const getImageUrl = (imagePath: string) => {
+  // Fallback image in case the provided URL is invalid
   const fallbackImage = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
   
-  if (imagePath && imagePath.startsWith('https://') && !imagePath.includes('undefined')) {
+  // Check if the image URL is valid 
+  if (!imagePath || imagePath.includes('undefined') || imagePath.includes('null')) {
+    console.log("Invalid image path detected, using fallback image:", imagePath);
+    return fallbackImage;
+  }
+  
+  // Verify the URL is from unsplash or another trusted source
+  if (imagePath.startsWith('https://') && (
+    imagePath.includes('images.unsplash.com') || 
+    imagePath.includes('source.unsplash.com')
+  )) {
     return imagePath;
   }
+  
+  console.log("Using fallback image for non-trusted source:", imagePath);
   return fallbackImage;
 };
 

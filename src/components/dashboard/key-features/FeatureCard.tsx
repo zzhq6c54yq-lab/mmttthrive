@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { LucideIcon } from "lucide-react";
 
 interface FeatureCardProps {
   id: string;
@@ -34,6 +33,14 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
     hidden: { y: 20, opacity: 0 },
     show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
+  
+  // Track image loading state
+  const [imageError, setImageError] = React.useState(false);
+
+  const handleImageError = () => {
+    console.log(`Image error for ${id}:`, image);
+    setImageError(true);
+  };
 
   return (
     <motion.div 
@@ -52,12 +59,11 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
           <div className="absolute inset-0 h-full w-full">
             <div className="absolute inset-0 h-[70%] overflow-hidden">
               <img 
-                src={image} 
+                src={imageError ? "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" : image} 
                 alt={title}
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
-                }}
+                onError={handleImageError}
+                loading="eager"
               />
               <div className="absolute inset-0 bg-black/30"></div>
             </div>
