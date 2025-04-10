@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import TutorialButton from "./tutorials/TutorialButton";
-import ThriveMTButton from "./ThriveMTButton";
 import ThriveButton from "./ThriveButton";
 import useTranslation from "@/hooks/useTranslation";
 
@@ -127,9 +126,6 @@ const Page: React.FC<PageProps> = ({
           </div>
           
           <div className="flex items-center gap-2">
-            {/* Add ThriveMT button if not on an excluded page */}
-            {!isExcludedPage && <ThriveMTButton />}
-            
             {/* Add THRIVE button if appropriate */}
             {shouldShowThriveButton && <ThriveButton />}
             
