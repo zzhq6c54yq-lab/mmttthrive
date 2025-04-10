@@ -39,14 +39,16 @@ const DoDDashboard = () => {
       description: "Loading assessment questions...",
       duration: 1500,
     });
-    // Navigate to the mental wellness tools page with the assessment type as a parameter
-    navigate("/mental-wellness-tools", {
+    
+    // Navigate directly to the assessment instead of the general page
+    navigate("/mental-wellness/assessments", {
       state: {
         preventTutorial: true,
         returnToMain: false,
         returnToPortal: "/dod-portal",
         assessmentType,
-        openAssessment: true
+        startAssessment: true,
+        directToAssessment: true
       }
     });
   };

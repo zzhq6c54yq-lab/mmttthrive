@@ -65,7 +65,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
       navigate(path, { 
         state: { 
           fromMainMenu: true,
-          preventTutorial: true 
+          preventTutorial: true,
+          directToAssessment: path.includes('/mental-wellness') || path.includes('/games-and-quizzes')
         } 
       });
     }

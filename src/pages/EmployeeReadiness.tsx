@@ -34,10 +34,15 @@ const EmployeeReadiness: React.FC = () => {
       duration: 2000
     });
     
+    // Add directToAssessment flag for assessment-related paths
+    const isAssessmentPath = path.includes('assessment') || path === 'mental-wellness';
+    
     navigate(`/${path}`, { 
       state: { 
         fromEmployeePortal: true, 
-        preventTutorial: true 
+        preventTutorial: true,
+        directToAssessment: isAssessmentPath,
+        startAssessment: isAssessmentPath
       }
     });
   };
@@ -111,7 +116,7 @@ const EmployeeReadiness: React.FC = () => {
                 </div>
                 <Button 
                   className="w-full bg-green-700 hover:bg-green-800 text-white"
-                  onClick={() => handleFeatureClick("mental-wellness/assessments")}
+                  onClick={() => handleFeatureClick("mental-wellness/assessments/workplace-stress")}
                 >
                   Begin Assessment
                 </Button>
@@ -135,7 +140,7 @@ const EmployeeReadiness: React.FC = () => {
                 </div>
                 <Button 
                   className="w-full bg-green-700 hover:bg-green-800 text-white"
-                  onClick={() => handleFeatureClick("mental-wellness/assessments")}
+                  onClick={() => handleFeatureClick("mental-wellness/assessments/work-life-balance")}
                 >
                   Begin Assessment
                 </Button>

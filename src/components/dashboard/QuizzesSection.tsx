@@ -51,17 +51,18 @@ const QuizzesSection = () => {
   const handleQuizClick = (quizId: string, quizTitle: string) => {
     toast({
       title: `Starting ${quizTitle}`,
-      description: "Preparing your assessment...",
+      description: "Loading your assessment...",
       duration: 1500,
     });
     
-    // Navigate to the specific assessment page
+    // Navigate directly to the assessment instead of the assessment page
     navigate(`/mental-wellness/assessments/${quizId}`, { 
       state: { 
         quizId, 
         quizTitle,
         preventTutorial: true,
-        fromQuizCard: true
+        fromQuizCard: true,
+        startAssessment: true
       } 
     });
   };
@@ -76,7 +77,8 @@ const QuizzesSection = () => {
     navigate("/mental-wellness", { 
       state: { 
         activeTab: "assessments",
-        preventTutorial: true 
+        preventTutorial: true,
+        directToAssessment: true
       } 
     });
   };

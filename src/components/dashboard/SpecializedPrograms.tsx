@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight } from "lucide-react";
@@ -84,10 +85,12 @@ const SpecializedPrograms: React.FC = () => {
       duration: 1500,
     });
     
+    // Updated to include directToAssessment flag to indicate we want to go directly to assessment
     navigate(path, { 
       state: { 
         fromMainMenu: true,
-        preventTutorial: true 
+        preventTutorial: true,
+        directToAssessment: true
       }
     });
   };

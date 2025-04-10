@@ -23,10 +23,15 @@ const Home = () => {
       duration: 1500,
     });
     
+    // Add directToAssessment flag for assessment-related paths
+    const isAssessmentPath = path.includes('/mental-wellness') || path.includes('/games-and-quizzes');
+    
     navigate(path, { 
       state: { 
         fromMainMenu: true,
-        preventTutorial: true 
+        preventTutorial: true,
+        directToAssessment: isAssessmentPath,
+        startAssessment: isAssessmentPath
       } 
     });
   };

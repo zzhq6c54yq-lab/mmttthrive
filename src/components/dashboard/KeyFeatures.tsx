@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -65,7 +66,23 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   };
   
   const handleNavigate = (path: string) => {
-    navigateToFeature(path);
+    // Add directToAssessment flag for assessment-related features
+    const isAssessmentRelated = 
+      path === "/mental-wellness" || 
+      path === "/games-and-quizzes" ||
+      path.includes("assessment");
+    
+    if (isAssessmentRelated) {
+      navigate(path, {
+        state: {
+          preventTutorial: true,
+          directToAssessment: true,
+          activeTab: "assessments"
+        }
+      });
+    } else {
+      navigateToFeature(path);
+    }
   };
 
   const container = {
