@@ -122,16 +122,20 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         size="sm"
         variant="ghost"
         className="p-1.5 h-auto bg-white/10 hover:bg-white/20 text-white"
-        onClick={() => toggleSection(section)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleSection(section);
+        }}
       >
-        {openSections[section] ? (
-          <ChevronUp className="h-5 w-5" />
-        ) : (
-          <ChevronDown className="h-5 w-5" />
-        )}
-        <span className="sr-only">
+        <span className="mr-1 text-xs font-medium">
           {openSections[section] ? translations.collapse : translations.expand}
         </span>
+        {openSections[section] ? (
+          <ChevronUp className="h-4 w-4" />
+        ) : (
+          <ChevronDown className="h-4 w-4" />
+        )}
       </Button>
     </div>
   );
