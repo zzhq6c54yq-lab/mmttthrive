@@ -72,21 +72,19 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     }
   };
 
-  // Collapsible section component that properly integrates the header with the content
+  // Collapsible section component with default expanded state
   const CollapsibleSection = ({ 
     title, 
     gradientClasses,
     icon: Icon,
-    children,
-    defaultOpen = true
+    children
   }: {
     title: string;
     gradientClasses: string;
     icon: React.ElementType;
     children: React.ReactNode;
-    defaultOpen?: boolean;
   }) => {
-    const [isOpen, setIsOpen] = useState(defaultOpen);
+    const [isOpen, setIsOpen] = useState(true);
     
     return (
       <Collapsible
@@ -95,23 +93,25 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         className="mb-8"
       >
         <div className={`${gradientClasses} rounded-lg overflow-hidden`}>
-          <CollapsibleTrigger className="w-full flex justify-between items-center px-4 py-3 focus:outline-none">
-            <div className="flex items-center">
-              <div className="bg-white/20 p-2 rounded-full mr-3">
-                <Icon className="h-5 w-5 text-white" />
+          <CollapsibleTrigger asChild className="w-full">
+            <div className="flex justify-between items-center px-4 py-3 focus:outline-none cursor-pointer">
+              <div className="flex items-center">
+                <div className="bg-white/20 p-2 rounded-full mr-3">
+                  <Icon className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-base sm:text-xl font-semibold text-white">{title}</span>
               </div>
-              <span className="text-base sm:text-xl font-semibold text-white">{title}</span>
-            </div>
-            
-            <div className="p-1.5 h-auto bg-white/10 hover:bg-white/20 text-white rounded flex items-center">
-              <span className="mr-1 text-xs font-medium">
-                {isOpen ? translations.collapse : translations.expand}
-              </span>
-              {isOpen ? (
-                <ChevronUp className="h-4 w-4" />
-              ) : (
-                <ChevronDown className="h-4 w-4" />
-              )}
+              
+              <div className="p-1.5 h-auto bg-white/10 hover:bg-white/20 text-white rounded flex items-center">
+                <span className="mr-1 text-xs font-medium">
+                  {isOpen ? translations.collapse : translations.expand}
+                </span>
+                {isOpen ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
+              </div>
             </div>
           </CollapsibleTrigger>
         </div>

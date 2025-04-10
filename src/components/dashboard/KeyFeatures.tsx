@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -56,19 +57,8 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   };
   
   const handleNavigate = (path: string) => {
-    toast({
-      title: isSpanish ? "Navegando..." : "Navigating...",
-      description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
-      duration: 1500,
-    });
-    
-    navigate(path, { 
-      state: { 
-        from: window.location.pathname,
-        qualities: selectedQualities, 
-        goals: selectedGoals 
-      }
-    });
+    // Use the navigateToFeature prop directly instead of creating another function
+    navigateToFeature(path);
   };
 
   const container = {
@@ -89,161 +79,152 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   const features = [
     {
       id: "progress-reports",
-      title: "Progress Reports",
+      title: isSpanish ? "Informes de Progreso" : "Progress Reports",
       icon: <BarChart3 />,
       path: "/progress-reports",
       color: "from-purple-600 to-blue-600",
-      description: "Track your mental wellness journey",
+      description: isSpanish ? "Seguimiento de tu bienestar mental" : "Track your mental wellness journey",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "family-resources",
-      title: "Family Resources",
+      title: isSpanish ? "Recursos Familiares" : "Family Resources",
       icon: <HandHeart />,
       path: "/family-resources",
       color: "from-pink-600 to-purple-600",
-      description: "Support for you and your loved ones",
+      description: isSpanish ? "Apoyo para ti y tus seres queridos" : "Support for you and your loved ones",
       image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "mental-wellness",
-      title: "Mental Wellness",
+      title: isSpanish ? "Bienestar Mental" : "Mental Wellness",
       icon: <BookOpen />,
       path: "/mental-wellness",
       color: "from-blue-600 to-indigo-600",
-      description: "Tools and assessments for your wellbeing",
+      description: isSpanish ? "Herramientas y evaluaciones para tu bienestar" : "Tools and assessments for your wellbeing",
       image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "games",
-      title: "Brain Games",
+      title: isSpanish ? "Juegos Mentales" : "Brain Games",
       icon: <Brain />,
       path: "/games-and-quizzes",
       color: "from-orange-600 to-red-600",
-      description: "Fun activities to engage your mind",
+      description: isSpanish ? "Actividades divertidas para ejercitar tu mente" : "Fun activities to engage your mind",
       image: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "video-diary",
-      title: "Video Diary",
+      title: isSpanish ? "Diario en Video" : "Video Diary",
       icon: <Video />,
       path: "/video-diary",
       color: "from-amber-500 to-orange-600",
-      description: "Record and reflect on your journey",
+      description: isSpanish ? "Graba y reflexiona sobre tu proceso" : "Record and reflect on your journey",
       image: "https://images.unsplash.com/photo-1576087503901-b2a3b817f0d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "wellness-challenges",
-      title: "Wellness Challenges",
+      title: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
       icon: <Activity />,
       path: "/wellness-challenges",
       color: "from-emerald-600 to-green-600",
-      description: "Daily challenges to boost wellbeing",
+      description: isSpanish ? "Retos diarios para mejorar tu bienestar" : "Daily challenges to boost wellbeing",
       image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "resource-library",
-      title: "Resource Library",
+      title: isSpanish ? "Biblioteca de Recursos" : "Resource Library",
       icon: <BookText />,
       path: "/resource-library",
       color: "from-cyan-600 to-blue-600",
-      description: "Extensive collection of helpful materials",
+      description: isSpanish ? "Extensa colección de materiales útiles" : "Extensive collection of helpful materials",
       image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "sponsor-alternative",
-      title: "My Sponsor",
+      title: isSpanish ? "Mi Patrocinador" : "My Sponsor",
       icon: <Users />,
       path: "/my-sponsor",
       color: "from-rose-600 to-pink-600",
-      description: "Support for your recovery journey",
+      description: isSpanish ? "Apoyo para tu proceso de recuperación" : "Support for your recovery journey",
       image: "https://images.unsplash.com/photo-1531983412531-1f49a365ffed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "binaural-beats",
-      title: "Binaural Beats",
+      title: isSpanish ? "Tonos Binaurales" : "Binaural Beats",
       icon: <Headphones />,
       path: "/binaural-beats",
       color: "from-violet-600 to-purple-600",
-      description: "Audio therapy for relaxation",
+      description: isSpanish ? "Terapia de audio para relajación" : "Audio therapy for relaxation",
       image: "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "workshops",
-      title: "Workshops",
+      title: isSpanish ? "Talleres" : "Workshops",
       icon: <Calendar />,
       path: "/workshops",
       color: "from-emerald-600 to-teal-600",
-      description: "Interactive sessions with professionals",
+      description: isSpanish ? "Sesiones interactivas con profesionales" : "Interactive sessions with professionals",
       image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "journaling",
-      title: "Journaling",
+      title: isSpanish ? "Diario Personal" : "Journaling",
       icon: <BookText />,
       path: "/journaling",
       color: "from-blue-600 to-cyan-600",
-      description: "Express thoughts and track emotions",
+      description: isSpanish ? "Expresa pensamientos y registra emociones" : "Express thoughts and track emotions",
       image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "mindfulness",
-      title: "Mindfulness & Sleep",
+      title: isSpanish ? "Mindfulness y Sueño" : "Mindfulness & Sleep",
       icon: <Sparkles />,
       path: "/mindfulness-sleep",
       color: "from-violet-600 to-indigo-600",
-      description: "Practices for better rest and awareness",
+      description: isSpanish ? "Prácticas para mejor descanso y conciencia" : "Practices for better rest and awareness",
       image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "real-time-therapy",
-      title: "Real-Time Therapy",
+      title: isSpanish ? "Terapia en Tiempo Real" : "Real-Time Therapy",
       icon: <MessageCircle />,
       path: "/real-time-therapy",
       color: "from-red-600 to-rose-600",
-      description: "Connect with therapists instantly",
+      description: isSpanish ? "Conecta con terapeutas al instante" : "Connect with therapists instantly",
       image: "https://images.unsplash.com/photo-1573497491765-dccce02b29df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "holistic-wellness",
-      title: "Holistic Wellness",
+      title: isSpanish ? "Bienestar Holístico" : "Holistic Wellness",
       icon: <Leaf />,
       path: "/holistic-wellness",
       color: "from-green-600 to-lime-600",
-      description: "Whole-person approach to wellbeing",
+      description: isSpanish ? "Enfoque integral para tu bienestar" : "Whole-person approach to wellbeing",
       image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "alternative-therapies",
-      title: "Alternative Therapies",
+      title: isSpanish ? "Terapias Alternativas" : "Alternative Therapies",
       icon: <Rocket />,
       path: "/alternative-therapies",
       color: "from-teal-600 to-cyan-600",
-      description: "Explore innovative healing methods",
+      description: isSpanish ? "Explora métodos innovadores de sanación" : "Explore innovative healing methods",
       image: "https://images.unsplash.com/photo-1615529162924-f8605388461d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
     {
       id: "community-support",
-      title: "Community Support",
+      title: isSpanish ? "Apoyo Comunitario" : "Community Support",
       icon: <Globe />,
       path: "/community-support",
       color: "from-blue-600 to-indigo-600",
-      description: "Connect with others on similar journeys",
+      description: isSpanish ? "Conecta con otros en caminos similares" : "Connect with others on similar journeys",
       image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
     },
   ];
 
   return (
     <div className="mt-8">
-      <h2 className="text-xl md:text-2xl font-semibold mb-5 flex items-center gap-2">
-        <div className="p-1.5 rounded-full bg-[#9b87f5]/30">
-          <Heart className="h-5 w-5 text-[#9b87f5]" />
-        </div>
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b87f5] via-[#ffffff] to-[#ffffff] border-b-2 border-[#9b87f5]/30 pb-1">
-          Key Features
-        </span>
-      </h2>
-      
       <motion.div 
         className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
         variants={container}
@@ -259,7 +240,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
             transition={{ duration: 0.2 }}
           >
             <button
-              onClick={() => navigateToFeature(feature.path)}
+              onClick={() => handleNavigate(feature.path)}
               className="w-full h-full text-left"
               aria-label={feature.title}
             >
@@ -289,7 +270,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                     
                     {isRecommended(feature.id) && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium float-right">
-                        Recommended
+                        {isSpanish ? "Recomendado" : "Recommended"}
                       </span>
                     )}
                   </div>
