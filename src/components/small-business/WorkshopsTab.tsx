@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,19 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
       'entrepreneurial-resilience': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
       'wellness-focused-team': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952',
       'stress-management': 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
-      'mindful-communication': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c'
+      'mindful-communication': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c',
+      // Additional mappings for all workshop ids
+      'emotional-regulation': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a',
+      'better-sleep': 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55',
+      'cognitive-reframing': 'https://images.unsplash.com/photo-1454692173233-f4f34c13cfda',
+      'gratitude-practice': 'https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6',
+      'self-compassion': 'https://images.unsplash.com/photo-1531081144778-a3d0613172a7',
+      'social-connection': 'https://images.unsplash.com/photo-1543269865-cbf427effbad',
+      'anxiety-management': 'https://images.unsplash.com/photo-1559000357-f6b52ddfcbba',
+      'boundary-setting': 'https://images.unsplash.com/photo-1572504050773-a93cbcdee34e',
+      'values-alignment': 'https://images.unsplash.com/photo-1520853504280-249365dd7617',
+      'habit-formation': 'https://images.unsplash.com/photo-1616197439049-799b519adc48',
+      'transition': 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d'
     };
     
     return imageMap[workshopId] || 'https://images.unsplash.com/photo-1552581234-26160f608093';

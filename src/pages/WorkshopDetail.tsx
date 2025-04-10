@@ -17,7 +17,7 @@ const WorkshopDetail = () => {
   const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState(
-    location.state?.activeTab || "workshop"
+    location.state?.activeTab || "overview"
   );
 
   const workshop = workshopData.find(w => w.id === workshopId);
@@ -80,7 +80,11 @@ const WorkshopDetail = () => {
       'anxiety-management': 'https://player.vimeo.com/video/248736159?autoplay=1&title=0&byline=0&portrait=0',
       'boundary-setting': 'https://player.vimeo.com/video/231354112?autoplay=1&title=0&byline=0&portrait=0',
       'values-alignment': 'https://player.vimeo.com/video/286898202?autoplay=1&title=0&byline=0&portrait=0',
-      'habit-formation': 'https://player.vimeo.com/video/418701977?autoplay=1&title=0&byline=0&portrait=0'
+      'habit-formation': 'https://player.vimeo.com/video/418701977?autoplay=1&title=0&byline=0&portrait=0',
+      // Additional videos for comprehensive coverage
+      'transition': 'https://player.vimeo.com/video/393832542?autoplay=1&title=0&byline=0&portrait=0',
+      'entrepreneurial-resilience': 'https://player.vimeo.com/video/362419242?autoplay=1&title=0&byline=0&portrait=0',
+      'wellness-focused-team': 'https://player.vimeo.com/video/255054693?autoplay=1&title=0&byline=0&portrait=0'
     };
     
     // Return the video URL if it exists, otherwise use a default inspirational video
@@ -101,7 +105,11 @@ const WorkshopDetail = () => {
       'anxiety-management': '1501854140801-50d01698950b',
       'boundary-setting': '1615729947596-a598e5de0ab3',
       'values-alignment': '1543618903355-efbc3e8e9284',
-      'habit-formation': '1517048676732-d65bc937f952'
+      'habit-formation': '1517048676732-d65bc937f952',
+      // Additional images for comprehensive coverage
+      'transition': '1486312338219-ce68d2c6f44d',
+      'entrepreneurial-resilience': '1517245386807-bb43f82c33c4',
+      'wellness-focused-team': '1522071820081-009f0129c71c'
     };
     
     return `https://images.unsplash.com/photo-${imageMap[workshopId] || '1486312338219-ce68d2c6f44d'}`;
