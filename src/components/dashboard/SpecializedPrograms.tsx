@@ -85,16 +85,6 @@ const SpecializedPrograms: React.FC = () => {
 
   return (
     <div className="mb-10">
-      <div className="mb-6 relative">
-        <h2 className="text-3xl font-bold inline-flex items-center gap-3 relative">
-          <Sparkles className="h-6 w-6 text-[#B87333]" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#ffffff] to-[#ffffff] tracking-tight">
-            {translations.title}
-          </span>
-        </h2>
-        <div className="absolute -bottom-2 left-0 w-64 h-[2px] bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-transparent"></div>
-      </div>
-      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {specializedPrograms.map((program, index) => (
           <div 
@@ -102,8 +92,8 @@ const SpecializedPrograms: React.FC = () => {
             onClick={() => handleFeatureClick(program.path)}
             className="relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 group h-80"
           >
-            {/* Background image - covers about 90% of card height now */}
-            <div className="absolute inset-0 h-[90%] z-0">
+            {/* Background image - covers about 80% of card height now */}
+            <div className="absolute inset-0 h-[80%] z-0">
               <img 
                 src={program.imagePath} 
                 alt={program.title} 
@@ -112,20 +102,18 @@ const SpecializedPrograms: React.FC = () => {
               <div className="absolute inset-0 bg-black/30"></div>
             </div>
             
-            {/* Bottom color section - reduced to 10% of card height, just for the name */}
-            <div className={`absolute bottom-0 left-0 right-0 h-[10%] bg-gradient-to-br ${program.gradient}`}></div>
+            {/* Bottom color section - increased to 20% of card height to better cover the title */}
+            <div className={`absolute bottom-0 left-0 right-0 h-[20%] bg-gradient-to-br ${program.gradient} flex items-center justify-center`}>
+              <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
+                {program.title}
+              </h3>
+            </div>
             
             <div className="relative z-10 p-4 flex flex-col h-full">
               <div className="mb-auto">
                 <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm inline-flex">
                   <program.icon className="h-8 w-8 text-white" />
                 </div>
-              </div>
-              
-              <div className="mt-auto flex items-center justify-between h-[10%] px-3">
-                <h3 className="text-xl font-semibold text-white truncate text-center w-full">
-                  {program.title}
-                </h3>
               </div>
             </div>
             

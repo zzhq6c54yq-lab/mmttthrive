@@ -15,11 +15,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { 
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { Calendar, HelpCircle, ChevronUp, ChevronDown, Sparkles, Award, Users, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -43,25 +38,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
   const { toast } = useToast();
-  
-  // State to track which sections are open
-  const [openSections, setOpenSections] = useState({
-    challenges: true,
-    specializedPrograms: true,
-    gratitude: true,
-    appointments: true,
-    quizzes: true,
-    workshops: true,
-    keyFeatures: true
-  });
-  
-  // Toggle section visibility
-  const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
   
   // Translations
   const translations = {
@@ -97,177 +73,128 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     }
   };
 
-  // Section header component with collapse/expand button
-  const SectionHeader = ({ 
+  // Collapsible section component to replace the old SectionHeader
+  const CollapsibleSection = ({ 
     title, 
-    section, 
+    gradientClasses,
     icon: Icon,
-    iconColor, 
-    gradientClasses 
+    children 
   }: {
     title: string;
-    section: keyof typeof openSections;
-    icon: React.ElementType;
-    iconColor: string;
     gradientClasses: string;
-  }) => (
-    <div className={`flex justify-between items-center mb-2 px-4 py-3 rounded-lg ${gradientClasses}`}>
-      <div className="flex items-center">
-        <div className={`bg-white/20 p-2 rounded-full mr-3`}>
-          <Icon className="h-5 w-5 text-white" />
+    icon: React.ElementType;
+    children: React.ReactNode;
+  }) => {
+    const [isOpen, setIsOpen] = useState(true);
+    
+    const toggleOpen = () => {
+      setIsOpen(!isOpen);
+    };
+    
+    return (
+      <div className="mb-8">
+        <div className={`${gradientClasses} rounded-lg overflow-hidden`}>
+          <button 
+            onClick={toggleOpen}
+            className="w-full flex justify-between items-center px-4 py-3 focus:outline-none"
+          >
+            <div className="flex items-center">
+              <div className="bg-white/20 p-2 rounded-full mr-3">
+                <Icon className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-base sm:text-xl font-semibold text-white">{title}</span>
+            </div>
+            
+            <div className="p-1.5 h-auto bg-white/10 hover:bg-white/20 text-white rounded flex items-center">
+              <span className="mr-1 text-xs font-medium">
+                {isOpen ? translations.collapse : translations.expand}
+              </span>
+              {isOpen ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </div>
+          </button>
         </div>
-        <span className="text-base sm:text-xl font-semibold text-white">{title}</span>
+        
+        {isOpen && <div className="mt-4">{children}</div>}
       </div>
-      <Button
-        size="sm"
-        variant="ghost"
-        className="p-1.5 h-auto bg-white/10 hover:bg-white/20 text-white"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleSection(section);
-        }}
-      >
-        <span className="mr-1 text-xs font-medium">
-          {openSections[section] ? translations.collapse : translations.expand}
-        </span>
-        {openSections[section] ? (
-          <ChevronUp className="h-4 w-4" />
-        ) : (
-          <ChevronDown className="h-4 w-4" />
-        )}
-      </Button>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
       {/* Daily Wellness Challenges */}
-      <div className="mb-8">
-        <SectionHeader
-          title={translations.dailyChallenges}
-          section="challenges"
-          icon={Calendar}
-          iconColor="text-white"
-          gradientClasses="bg-gradient-to-r from-[#8D65C5]/80 to-[#6C85DD]/80"
-        />
-        
-        {openSections.challenges && (
-          <div className="mt-4">
-            <DailyWellnessChallenges />
-          </div>
-        )}
-      </div>
+      <CollapsibleSection
+        title={translations.dailyChallenges}
+        icon={Calendar}
+        gradientClasses="bg-gradient-to-r from-[#8D65C5]/80 to-[#6C85DD]/80"
+      >
+        <DailyWellnessChallenges />
+      </CollapsibleSection>
       
       {/* Specialized Programs */}
-      <div className="mb-8">
-        <SectionHeader
-          title={translations.specializedPrograms}
-          section="specializedPrograms"
-          icon={Sparkles}
-          iconColor="text-[#B87333]"
-          gradientClasses="bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80"
-        />
-        
-        {openSections.specializedPrograms && (
-          <div className="mt-4">
-            <SpecializedPrograms />
-          </div>
-        )}
-      </div>
+      <CollapsibleSection
+        title={translations.specializedPrograms}
+        icon={Sparkles}
+        gradientClasses="bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80"
+      >
+        <SpecializedPrograms />
+      </CollapsibleSection>
       
       {/* Gratitude Visualizer */}
-      <div className="mb-8">
-        <SectionHeader
-          title={translations.gratitudeJournal}
-          section="gratitude"
-          icon={Heart}
-          iconColor="text-white"
-          gradientClasses="bg-gradient-to-r from-[#F97316]/80 to-[#FB923C]/80"
-        />
-        
-        {openSections.gratitude && (
-          <div className="mt-4">
-            <GratitudeVisualizer />
-          </div>
-        )}
-      </div>
+      <CollapsibleSection
+        title={translations.gratitudeJournal}
+        icon={Heart}
+        gradientClasses="bg-gradient-to-r from-[#F97316]/80 to-[#FB923C]/80"
+      >
+        <GratitudeVisualizer />
+      </CollapsibleSection>
       
       {/* Appointments and Quizzes */}
       <div className="grid grid-cols-1 gap-6 mb-8">
-        <div>
-          <SectionHeader
-            title={translations.upcomingAppointments}
-            section="appointments"
-            icon={Calendar}
-            iconColor="text-white"
-            gradientClasses="bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80"
-          />
-          
-          {openSections.appointments && (
-            <div className="mt-4">
-              <UpcomingAppointments />
-            </div>
-          )}
-        </div>
+        <CollapsibleSection
+          title={translations.upcomingAppointments}
+          icon={Calendar}
+          gradientClasses="bg-gradient-to-r from-[#B87333]/80 to-[#E5C5A1]/80"
+        >
+          <UpcomingAppointments />
+        </CollapsibleSection>
         
-        <div>
-          <SectionHeader
-            title={translations.mentalHealthQuizzes}
-            section="quizzes"
-            icon={HelpCircle}
-            iconColor="text-white"
-            gradientClasses="bg-gradient-to-r from-[#6C85DD]/80 to-[#8D65C5]/80"
-          />
-          
-          {openSections.quizzes && (
-            <div className="mt-4">
-              <QuizzesSection />
-            </div>
-          )}
-        </div>
+        <CollapsibleSection
+          title={translations.mentalHealthQuizzes}
+          icon={HelpCircle}
+          gradientClasses="bg-gradient-to-r from-[#6C85DD]/80 to-[#8D65C5]/80"
+        >
+          <QuizzesSection />
+        </CollapsibleSection>
       </div>
       
       {/* Featured Workshops */}
-      <div className="mb-8">
-        <SectionHeader
-          title={translations.featuredWorkshops}
-          section="workshops"
-          icon={Calendar}
-          iconColor="text-white"
-          gradientClasses="bg-gradient-to-r from-[#8D65C5]/80 to-[#6C85DD]/80"
+      <CollapsibleSection
+        title={translations.featuredWorkshops}
+        icon={Calendar}
+        gradientClasses="bg-gradient-to-r from-[#8D65C5]/80 to-[#6C85DD]/80"
+      >
+        <FeaturedWorkshops 
+          navigate={navigate} 
+          onWorkshopClick={onWorkshopClick}
         />
-        
-        {openSections.workshops && (
-          <div className="mt-4">
-            <FeaturedWorkshops 
-              navigate={navigate} 
-              onWorkshopClick={onWorkshopClick}
-            />
-          </div>
-        )}
-      </div>
+      </CollapsibleSection>
 
       {/* Key Features */}
-      <div>
-        <SectionHeader
-          title={translations.keyFeatures}
-          section="keyFeatures"
-          icon={Heart}
-          iconColor="text-[#9b87f5]"
-          gradientClasses="bg-gradient-to-r from-[#9b87f5]/80 to-[#ffffff]/10"
+      <CollapsibleSection
+        title={translations.keyFeatures}
+        icon={Heart}
+        gradientClasses="bg-gradient-to-r from-[#9b87f5]/80 to-[#ffffff]/10"
+      >
+        <KeyFeatures 
+          navigateToFeature={handleFeatureClick}
+          selectedQualities={selectedQualities}
+          selectedGoals={selectedGoals}
         />
-        
-        {openSections.keyFeatures && (
-          <div className="mt-4">
-            <KeyFeatures 
-              navigateToFeature={handleFeatureClick}
-              selectedQualities={selectedQualities}
-              selectedGoals={selectedGoals}
-            />
-          </div>
-        )}
-      </div>
+      </CollapsibleSection>
     </div>
   );
 };

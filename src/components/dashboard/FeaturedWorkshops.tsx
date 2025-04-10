@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { NavigateFunction } from "react-router-dom";
@@ -12,7 +12,8 @@ interface FeaturedWorkshopsProps {
 }
 
 const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorkshopClick }) => {
-  const [featuredWorkshops, setFeaturedWorkshops] = useState(workshopData.slice(0, 4));
+  // Only get the first 4 workshops
+  const featuredWorkshops = workshopData.slice(0, 4);
   
   // Workshop cover images mapped to topics
   const getWorkshopImage = (workshopId: string) => {
@@ -35,7 +36,7 @@ const FeaturedWorkshops: React.FC<FeaturedWorkshopsProps> = ({ navigate, onWorks
   };
 
   return (
-    <div className="mb-6">
+    <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {featuredWorkshops.map((workshop) => {
           const colorClass = workshop.color.split(' ')[0];
