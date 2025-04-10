@@ -7,6 +7,7 @@ import InsightsSection from "@/components/dashboard/InsightsSection";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
 import KeyFeatures from "@/components/dashboard/KeyFeatures";
+import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import { NavigateFunction } from "react-router-dom";
 import { 
   Accordion,
@@ -46,6 +47,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     specializedPrograms: isSpanish ? "Programas Especializados" : "Specialized Programs",
     featuredWorkshops: isSpanish ? "Talleres Destacados" : "Featured Workshops",
     keyFeatures: isSpanish ? "Características Principales" : "Key Features",
+    gratitudeVisualizer: isSpanish ? "Visualizador de Gratitud" : "Gratitude Visualizer",
   };
 
   // Create a function that uses navigate if navigateToFeature is not provided
@@ -71,7 +73,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   return (
     <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-6 relative z-10">
-      <Accordion type="multiple" defaultValue={["dailyChallenges", "specializedPrograms", "appointments", "quizzes", "workshops", "keyFeatures"]} className="space-y-6">
+      <Accordion type="multiple" defaultValue={["dailyChallenges", "specializedPrograms", "appointments", "quizzes", "workshops", "keyFeatures", "gratitudeVisualizer"]} className="space-y-6">
         {/* Daily Wellness Challenges */}
         <AccordionItem value="dailyChallenges" className="border-none">
           <div className="bg-gradient-to-r from-[#8D65C5]/80 to-[#6C85DD]/80 rounded-lg overflow-hidden">
@@ -103,6 +105,23 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           </div>
           <AccordionContent className="mt-4 pb-6">
             <SpecializedPrograms />
+          </AccordionContent>
+        </AccordionItem>
+        
+        {/* Gratitude Visualizer */}
+        <AccordionItem value="gratitudeVisualizer" className="border-none">
+          <div className="bg-gradient-to-r from-[#FF9A9E]/80 to-[#FECFEF]/80 rounded-lg overflow-hidden">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline">
+              <div className="flex items-center">
+                <div className="bg-white/20 p-2 rounded-full mr-3">
+                  <Heart className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-base sm:text-xl font-semibold text-white">{translations.gratitudeVisualizer}</span>
+              </div>
+            </AccordionTrigger>
+          </div>
+          <AccordionContent className="mt-4 pb-6">
+            <GratitudeVisualizer />
           </AccordionContent>
         </AccordionItem>
         

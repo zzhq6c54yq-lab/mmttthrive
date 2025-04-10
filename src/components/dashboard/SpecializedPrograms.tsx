@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight } from "lucide-react";
@@ -19,6 +18,16 @@ const SpecializedPrograms: React.FC = () => {
     exploreProgram: isSpanish ? "Explorar Programa" : "Explore Program"
   };
 
+  // Working image URLs with fallbacks
+  const getImageUrl = (imagePath: string) => {
+    // If the image URL starts with https, use it directly
+    if (imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    // Otherwise, use a placeholder
+    return "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+  };
+
   const specializedPrograms = [
     {
       title: isSpanish ? "Departamento de Defensa" : "Department of Defense",
@@ -29,7 +38,7 @@ const SpecializedPrograms: React.FC = () => {
       path: "/dod-welcome",
       gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
       borderColor: "#0EA5E9",
-      imagePath: "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     },
     {
       title: isSpanish ? "La Experiencia Universitaria" : "The College Experience",
@@ -40,7 +49,7 @@ const SpecializedPrograms: React.FC = () => {
       path: "/college-welcome",
       gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
       borderColor: "#8B5CF6",
-      imagePath: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     },
     {
       title: isSpanish ? "Pequeñas Empresas" : "Small Business",
@@ -51,7 +60,7 @@ const SpecializedPrograms: React.FC = () => {
       path: "/small-business-welcome",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316",
-      imagePath: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     }
   ];
   
@@ -96,8 +105,12 @@ const SpecializedPrograms: React.FC = () => {
             <div className="absolute inset-0 h-[70%] z-0">
               <img 
                 src={program.imagePath} 
-                alt={program.title} 
+                alt={program.title}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  // If image fails to load, replace with fallback
+                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+                }}
               />
               <div className="absolute inset-0 bg-black/30"></div>
             </div>

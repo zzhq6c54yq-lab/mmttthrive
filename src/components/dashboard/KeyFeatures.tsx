@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +23,15 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
   const isSpanish = preferredLanguage === 'Español';
+  
+  const getImageUrl = (imagePath: string) => {
+    const fallbackImage = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+    
+    if (imagePath && imagePath.startsWith('https://') && !imagePath.includes('undefined')) {
+      return imagePath;
+    }
+    return fallbackImage;
+  };
   
   const isRecommended = (feature: string) => {
     const featureMap: { [key: string]: string[] } = {
@@ -57,7 +65,6 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
   };
   
   const handleNavigate = (path: string) => {
-    // Use the navigateToFeature prop directly instead of creating another function
     navigateToFeature(path);
   };
 
@@ -84,7 +91,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/progress-reports",
       color: "from-purple-600 to-blue-600",
       description: isSpanish ? "Seguimiento de tu bienestar mental" : "Track your mental wellness journey",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "family-resources",
@@ -93,7 +100,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/family-resources",
       color: "from-pink-600 to-purple-600",
       description: isSpanish ? "Apoyo para ti y tus seres queridos" : "Support for you and your loved ones",
-      image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "mental-wellness",
@@ -102,7 +109,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/mental-wellness",
       color: "from-blue-600 to-indigo-600",
       description: isSpanish ? "Herramientas y evaluaciones para tu bienestar" : "Tools and assessments for your wellbeing",
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "games",
@@ -111,7 +118,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/games-and-quizzes",
       color: "from-orange-600 to-red-600",
       description: isSpanish ? "Actividades divertidas para ejercitar tu mente" : "Fun activities to engage your mind",
-      image: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1606167668584-78701c57f13d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "video-diary",
@@ -120,7 +127,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/video-diary",
       color: "from-amber-500 to-orange-600",
       description: isSpanish ? "Graba y reflexiona sobre tu proceso" : "Record and reflect on your journey",
-      image: "https://images.unsplash.com/photo-1576087503901-b2a3b817f0d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1576087503901-b2a3b817f0d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "wellness-challenges",
@@ -129,7 +136,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/wellness-challenges",
       color: "from-emerald-600 to-green-600",
       description: isSpanish ? "Retos diarios para mejorar tu bienestar" : "Daily challenges to boost wellbeing",
-      image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "resource-library",
@@ -138,7 +145,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/resource-library",
       color: "from-cyan-600 to-blue-600",
       description: isSpanish ? "Extensa colección de materiales útiles" : "Extensive collection of helpful materials",
-      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "sponsor-alternative",
@@ -147,7 +154,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/my-sponsor",
       color: "from-rose-600 to-pink-600",
       description: isSpanish ? "Apoyo para tu proceso de recuperación" : "Support for your recovery journey",
-      image: "https://images.unsplash.com/photo-1531983412531-1f49a365ffed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1531983412531-1f49a365ffed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "binaural-beats",
@@ -156,7 +163,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/binaural-beats",
       color: "from-violet-600 to-purple-600",
       description: isSpanish ? "Terapia de audio para relajación" : "Audio therapy for relaxation",
-      image: "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "workshops",
@@ -165,7 +172,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/workshops",
       color: "from-emerald-600 to-teal-600",
       description: isSpanish ? "Sesiones interactivas con profesionales" : "Interactive sessions with professionals",
-      image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "journaling",
@@ -174,7 +181,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/journaling",
       color: "from-blue-600 to-cyan-600",
       description: isSpanish ? "Expresa pensamientos y registra emociones" : "Express thoughts and track emotions",
-      image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "mindfulness",
@@ -183,7 +190,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/mindfulness-sleep",
       color: "from-violet-600 to-indigo-600",
       description: isSpanish ? "Prácticas para mejor descanso y conciencia" : "Practices for better rest and awareness",
-      image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "real-time-therapy",
@@ -192,7 +199,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/real-time-therapy",
       color: "from-red-600 to-rose-600",
       description: isSpanish ? "Conecta con terapeutas al instante" : "Connect with therapists instantly",
-      image: "https://images.unsplash.com/photo-1573497491765-dccce02b29df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1573497491765-dccce02b29df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "holistic-wellness",
@@ -201,7 +208,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/holistic-wellness",
       color: "from-green-600 to-lime-600",
       description: isSpanish ? "Enfoque integral para tu bienestar" : "Whole-person approach to wellbeing",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "alternative-therapies",
@@ -210,7 +217,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/alternative-therapies",
       color: "from-teal-600 to-cyan-600",
       description: isSpanish ? "Explora métodos innovadores de sanación" : "Explore innovative healing methods",
-      image: "https://images.unsplash.com/photo-1615529162924-f8605388461d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1615529162924-f8605388461d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
     {
       id: "community-support",
@@ -219,7 +226,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
       path: "/community-support",
       color: "from-blue-600 to-indigo-600",
       description: isSpanish ? "Conecta con otros en caminos similares" : "Connect with others on similar journeys",
-      image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
+      image: getImageUrl("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
   ];
 
@@ -251,6 +258,9 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
                       src={feature.image} 
                       alt={feature.title}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
+                      }}
                     />
                     <div className="absolute inset-0 bg-black/30"></div>
                   </div>
