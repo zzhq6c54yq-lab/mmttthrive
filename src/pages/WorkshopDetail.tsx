@@ -15,19 +15,15 @@ const WorkshopDetail = () => {
   const location = useLocation();
   const { toast } = useToast();
   
-  // Get the active tab from location state or default to "workshop" instead of "overview"
   const [activeTab, setActiveTab] = useState(
     location.state?.activeTab || "workshop"
   );
 
-  // Find the workshop data
   const workshop = workshopData.find(w => w.id === workshopId);
   
   useEffect(() => {
-    // If joining directly from workshop card, auto-start the workshop
     if (location.state?.activeTab === "workshop") {
       setActiveTab("workshop");
-      // Additional message for immediacy
       toast({
         title: "Workshop Ready",
         description: "Your workshop content is ready to begin",
@@ -36,7 +32,6 @@ const WorkshopDetail = () => {
     }
   }, [location.state?.activeTab, toast]);
 
-  // Handle play video
   const handlePlayVideo = () => {
     setActiveTab("workshop");
     toast({
@@ -46,20 +41,16 @@ const WorkshopDetail = () => {
     });
   };
 
-  // Handle back navigation
   const handleBack = () => {
-    // Try to go back to the previous page
     navigate(-1);
   };
 
-  // Handle worksheet download
   const handleDownloadWorksheet = () => {
     if (workshopId) {
-      downloadWorksheet(workshopId, { toast });
+      downloadWorksheet(workshopId, toast);
     }
   };
 
-  // If workshop not found, show error and redirect
   if (!workshop) {
     return (
       <Page title="Workshop Not Found" showBackButton={true} onBackClick={handleBack}>
@@ -74,9 +65,7 @@ const WorkshopDetail = () => {
     );
   }
 
-  // Get video URL based on workshop ID - Now properly mapped to each workshop
   const getVideoUrl = (workshopId: string) => {
-    // Map workshop IDs to video URLs with more specific videos for each workshop
     const videoMap: {[key: string]: string} = {
       'mindful-communication': 'https://player.vimeo.com/video/305501304',
       'emotional-regulation': 'https://player.vimeo.com/video/139195467',
@@ -95,7 +84,6 @@ const WorkshopDetail = () => {
     return videoMap[workshopId] || 'https://player.vimeo.com/video/76979871';
   };
 
-  // Get workshop image URL based on workshop ID
   const getWorkshopImage = (workshopId: string) => {
     const imageMap: {[key: string]: string} = {
       'mindful-communication': '1581091226825-a6a2a5aee158',
@@ -123,7 +111,6 @@ const WorkshopDetail = () => {
     >
       <div className="space-y-6 pb-10">
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Main Content */}
           <div className="w-full md:w-2/3 space-y-4">
             <Card>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -133,7 +120,6 @@ const WorkshopDetail = () => {
                   <TabsTrigger value="resources">Resources</TabsTrigger>
                 </TabsList>
                 
-                {/* Overview Tab */}
                 <TabsContent value="overview" className="space-y-4">
                   <div className="aspect-video relative overflow-hidden rounded-lg bg-black">
                     <img 
@@ -193,7 +179,6 @@ const WorkshopDetail = () => {
                   </div>
                 </TabsContent>
                 
-                {/* Workshop Tab */}
                 <TabsContent value="workshop">
                   <div>
                     <div className="aspect-video md:mb-4 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
@@ -247,7 +232,6 @@ const WorkshopDetail = () => {
                   </div>
                 </TabsContent>
                 
-                {/* Resources Tab */}
                 <TabsContent value="resources">
                   <div className="space-y-6">
                     <div>
@@ -335,7 +319,6 @@ const WorkshopDetail = () => {
             </Card>
           </div>
           
-          {/* Sidebar */}
           <div className="w-full md:w-1/3 space-y-4">
             <Card>
               <CardHeader>

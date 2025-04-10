@@ -200,28 +200,52 @@ export const generateWorksheetPDF = (workshopId: string): void => {
   doc.save(`${content.title.replace(/\s+/g, '-').toLowerCase()}.pdf`);
 };
 
+// Updated interface for the toast parameter to match what's expected
+type ToastHelper = {
+  toast: ReturnType<typeof useToast>["toast"];
+}
+
 // Function to handle worksheet download with toast notification
-export const downloadWorksheet = (workshopId: string, toast?: ReturnType<typeof useToast>) => {
+export const downloadWorksheet = (workshopId: string, toastHelper?: ToastHelper | ReturnType<typeof useToast>) => {
   try {
     generateWorksheetPDF(workshopId);
     
-    if (toast) {
-      toast.toast({
-        title: "Worksheet Downloaded",
-        description: "Your worksheet is ready to use",
-        duration: 2000,
-      });
+    if (toastHelper) {
+      // Handle both the object with toast method and the full useToast return value
+      if ('toast' in toastHelper) {
+        toastHelper.toast({
+          title: "Worksheet Downloaded",
+          description: "Your worksheet is ready to use",
+          duration: 2000,
+        });
+      } else {
+        toastHelper({
+          title: "Worksheet Downloaded",
+          description: "Your worksheet is ready to use",
+          duration: 2000,
+        });
+      }
     }
     
     return true;
   } catch (error) {
-    if (toast) {
-      toast.toast({
-        title: "Download Failed",
-        description: "There was an issue downloading your worksheet",
-        variant: "destructive",
-        duration: 2000,
-      });
+    if (toastHelper) {
+      // Handle both the object with toast method and the full useToast return value
+      if ('toast' in toastHelper) {
+        toastHelper.toast({
+          title: "Download Failed",
+          description: "There was an issue downloading your worksheet",
+          variant: "destructive",
+          duration: 2000,
+        });
+      } else {
+        toastHelper({
+          title: "Download Failed",
+          description: "There was an issue downloading your worksheet",
+          variant: "destructive",
+          duration: 2000,
+        });
+      }
     }
     console.error("Worksheet download error:", error);
     return false;
