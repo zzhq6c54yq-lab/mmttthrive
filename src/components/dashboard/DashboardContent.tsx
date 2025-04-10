@@ -6,7 +6,7 @@ import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
 import InsightsSection from "@/components/dashboard/InsightsSection";
 import QuizzesSection from "@/components/dashboard/QuizzesSection";
 import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
-import KeyFeatures from "@/components/dashboard/KeyFeatures";
+import KeyFeatures from "@/components/dashboard/key-features/KeyFeatures";
 import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
 import { NavigateFunction } from "react-router-dom";
 import { 

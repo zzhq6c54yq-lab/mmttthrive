@@ -1,110 +1,27 @@
 
-import React from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { 
+import {
   Activity, BookOpen, Brain, BarChart3, Video, Calendar, Headphones,
   BookText, Sparkles, MessageCircle, Leaf, Rocket, Globe, Heart, Users, HandHeart
 } from "lucide-react";
+import React from "react";
+import { getImageUrl } from "./featureUtils";
 
-interface KeyFeaturesProps {
-  navigateToFeature: (path: string) => void;
-  selectedQualities?: string[];
-  selectedGoals?: string[];
+export interface Feature {
+  id: string;
+  title: string;
+  icon: React.ReactNode;
+  path: string;
+  color: string;
+  description: string;
+  image: string;
 }
 
-const KeyFeatures: React.FC<KeyFeaturesProps> = ({ 
-  navigateToFeature,
-  selectedQualities = [],
-  selectedGoals = []
-}) => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
-  
-  const getImageUrl = (imagePath: string) => {
-    const fallbackImage = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    
-    if (imagePath && imagePath.startsWith('https://') && !imagePath.includes('undefined')) {
-      return imagePath;
-    }
-    return fallbackImage;
-  };
-  
-  const isRecommended = (feature: string) => {
-    const featureMap: { [key: string]: string[] } = {
-      "progress-reports": ["consistency", "data-driven", "reflective", "goal-oriented"],
-      "family-resources": ["supportive", "family-oriented", "compassionate", "community"],
-      "mental-wellness": ["mindful", "balanced", "wellness-focused", "creative"],
-      "games": ["curious", "analytical", "intellectual", "playful"],
-      "physical-wellness": ["active", "energetic", "disciplined", "health-conscious"],
-      "community-support": ["social", "collaborative", "communicative", "empathetic"],
-      "video-diary": ["reflective", "expressive", "authentic", "introspective"],
-      "wellness-challenges": ["motivated", "disciplined", "competitive", "growth-focused"],
-      "resource-library": ["curious", "informed", "analytical", "studious"],
-      "sponsor-alternative": ["supportive", "recovery-focused", "accountable", "healing"],
-      "binaural-beats": ["mindful", "experimental", "relaxation-focused", "open-minded"],
-      "workshops": ["engaged", "learning-oriented", "growth-focused", "curious"],
-      "journaling": ["reflective", "expressive", "creative", "introspective"],
-      "real-time-therapy": ["communicative", "open", "healing-focused", "expressive"],
-      "holistic-wellness": ["balanced", "holistic", "natural", "wellness-focused"],
-      "alternative-therapies": ["experimental", "open-minded", "holistic", "healing-focused"]
-    };
-    
-    const qualityMatch = selectedQualities.some(quality => 
-      featureMap[feature] && featureMap[feature].includes(quality.toLowerCase())
-    );
-    
-    const goalMatch = selectedGoals.some(goal => 
-      goal.toLowerCase().includes(feature.replace('-', ' '))
-    );
-    
-    return qualityMatch || goalMatch;
-  };
-  
-  const handleNavigate = (path: string) => {
-    // Add directToAssessment flag for assessment-related features
-    const isAssessmentRelated = 
-      path === "/mental-wellness" || 
-      path === "/games-and-quizzes" ||
-      path.includes("assessment");
-    
-    if (isAssessmentRelated) {
-      navigate(path, {
-        state: {
-          preventTutorial: true,
-          directToAssessment: true,
-          activeTab: "assessments"
-        }
-      });
-    } else {
-      navigateToFeature(path);
-    }
-  };
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08
-      }
-    }
-  };
-
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
-  };
-
-  const features = [
+export const getFeatures = (isSpanish: boolean): Feature[] => {
+  return [
     {
       id: "progress-reports",
       title: isSpanish ? "Informes de Progreso" : "Progress Reports",
-      icon: <BarChart3 />,
+      icon: <BarChart3 className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/progress-reports",
       color: "from-purple-600 to-blue-600",
       description: isSpanish ? "Seguimiento de tu bienestar mental" : "Track your mental wellness journey",
@@ -113,7 +30,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "family-resources",
       title: isSpanish ? "Recursos Familiares" : "Family Resources",
-      icon: <HandHeart />,
+      icon: <HandHeart className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/family-resources",
       color: "from-pink-600 to-purple-600",
       description: isSpanish ? "Apoyo para ti y tus seres queridos" : "Support for you and your loved ones",
@@ -122,7 +39,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "mental-wellness",
       title: isSpanish ? "Bienestar Mental" : "Mental Wellness",
-      icon: <BookOpen />,
+      icon: <BookOpen className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/mental-wellness",
       color: "from-blue-600 to-indigo-600",
       description: isSpanish ? "Herramientas y evaluaciones para tu bienestar" : "Tools and assessments for your wellbeing",
@@ -131,7 +48,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "games",
       title: isSpanish ? "Juegos Mentales" : "Brain Games",
-      icon: <Brain />,
+      icon: <Brain className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/games-and-quizzes",
       color: "from-orange-600 to-red-600",
       description: isSpanish ? "Actividades divertidas para ejercitar tu mente" : "Fun activities to engage your mind",
@@ -140,7 +57,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "video-diary",
       title: isSpanish ? "Diario en Video" : "Video Diary",
-      icon: <Video />,
+      icon: <Video className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/video-diary",
       color: "from-amber-500 to-orange-600",
       description: isSpanish ? "Graba y reflexiona sobre tu proceso" : "Record and reflect on your journey",
@@ -149,7 +66,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "wellness-challenges",
       title: isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges",
-      icon: <Activity />,
+      icon: <Activity className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/wellness-challenges",
       color: "from-emerald-600 to-green-600",
       description: isSpanish ? "Retos diarios para mejorar tu bienestar" : "Daily challenges to boost wellbeing",
@@ -158,7 +75,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "resource-library",
       title: isSpanish ? "Biblioteca de Recursos" : "Resource Library",
-      icon: <BookText />,
+      icon: <BookText className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/resource-library",
       color: "from-cyan-600 to-blue-600",
       description: isSpanish ? "Extensa colección de materiales útiles" : "Extensive collection of helpful materials",
@@ -167,7 +84,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "sponsor-alternative",
       title: isSpanish ? "Mi Patrocinador" : "My Sponsor",
-      icon: <Users />,
+      icon: <Users className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/my-sponsor",
       color: "from-rose-600 to-pink-600",
       description: isSpanish ? "Apoyo para tu proceso de recuperación" : "Support for your recovery journey",
@@ -176,7 +93,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "binaural-beats",
       title: isSpanish ? "Tonos Binaurales" : "Binaural Beats",
-      icon: <Headphones />,
+      icon: <Headphones className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/binaural-beats",
       color: "from-violet-600 to-purple-600",
       description: isSpanish ? "Terapia de audio para relajación" : "Audio therapy for relaxation",
@@ -185,7 +102,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "workshops",
       title: isSpanish ? "Talleres" : "Workshops",
-      icon: <Calendar />,
+      icon: <Calendar className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/workshops",
       color: "from-emerald-600 to-teal-600",
       description: isSpanish ? "Sesiones interactivas con profesionales" : "Interactive sessions with professionals",
@@ -194,7 +111,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "journaling",
       title: isSpanish ? "Diario Personal" : "Journaling",
-      icon: <BookText />,
+      icon: <BookText className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/journaling",
       color: "from-blue-600 to-cyan-600",
       description: isSpanish ? "Expresa pensamientos y registra emociones" : "Express thoughts and track emotions",
@@ -203,7 +120,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "mindfulness",
       title: isSpanish ? "Mindfulness y Sueño" : "Mindfulness & Sleep",
-      icon: <Sparkles />,
+      icon: <Sparkles className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/mindfulness-sleep",
       color: "from-violet-600 to-indigo-600",
       description: isSpanish ? "Prácticas para mejor descanso y conciencia" : "Practices for better rest and awareness",
@@ -212,7 +129,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "real-time-therapy",
       title: isSpanish ? "Terapia en Tiempo Real" : "Real-Time Therapy",
-      icon: <MessageCircle />,
+      icon: <MessageCircle className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/real-time-therapy",
       color: "from-red-600 to-rose-600",
       description: isSpanish ? "Conecta con terapeutas al instante" : "Connect with therapists instantly",
@@ -221,7 +138,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "holistic-wellness",
       title: isSpanish ? "Bienestar Holístico" : "Holistic Wellness",
-      icon: <Leaf />,
+      icon: <Leaf className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/holistic-wellness",
       color: "from-green-600 to-lime-600",
       description: isSpanish ? "Enfoque integral para tu bienestar" : "Whole-person approach to wellbeing",
@@ -230,7 +147,7 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "alternative-therapies",
       title: isSpanish ? "Terapias Alternativas" : "Alternative Therapies",
-      icon: <Rocket />,
+      icon: <Rocket className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/alternative-therapies",
       color: "from-teal-600 to-cyan-600",
       description: isSpanish ? "Explora métodos innovadores de sanación" : "Explore innovative healing methods",
@@ -239,76 +156,11 @@ const KeyFeatures: React.FC<KeyFeaturesProps> = ({
     {
       id: "community-support",
       title: isSpanish ? "Apoyo Comunitario" : "Community Support",
-      icon: <Globe />,
+      icon: <Globe className="h-4 w-4 text-white drop-shadow-sm" />,
       path: "/community-support",
       color: "from-blue-600 to-indigo-600",
       description: isSpanish ? "Conecta con otros en caminos similares" : "Connect with others on similar journeys",
       image: getImageUrl("https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80")
     },
   ];
-
-  return (
-    <div className="mt-8">
-      <motion.div 
-        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
-        variants={container}
-        initial="hidden"
-        animate="show"
-      >
-        {features.map((feature) => (
-          <motion.div 
-            key={feature.id}
-            variants={item}
-            className="relative"
-            whileHover={{ y: -5, scale: 1.03 }}
-            transition={{ duration: 0.2 }}
-          >
-            <button
-              onClick={() => handleNavigate(feature.path)}
-              className="w-full h-full text-left"
-              aria-label={feature.title}
-            >
-              <div className="relative overflow-hidden rounded-xl h-44 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="absolute inset-0 h-full w-full">
-                  <div className="absolute inset-0 h-[70%] overflow-hidden">
-                    <img 
-                      src={feature.image} 
-                      alt={feature.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-black/30"></div>
-                  </div>
-                  
-                  <div className={`absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-br ${feature.color} flex items-center justify-center`}>
-                    <h3 className="font-bold text-sm text-white truncate text-center w-full px-2">
-                      {feature.title}
-                    </h3>
-                  </div>
-                </div>
-                
-                <div className="absolute inset-0 p-3 flex flex-col justify-between">
-                  <div>
-                    <div className="p-1.5 rounded-full bg-white/20 w-fit backdrop-blur-sm inline-flex">
-                      {React.cloneElement(feature.icon, { className: "h-4 w-4 text-white drop-shadow-sm" })}
-                    </div>
-                    
-                    {isRecommended(feature.id) && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/30 text-white font-medium float-right">
-                        {isSpanish ? "Recomendado" : "Recommended"}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </button>
-          </motion.div>
-        ))}
-      </motion.div>
-    </div>
-  );
 };
-
-export default KeyFeatures;
