@@ -2,10 +2,11 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Building, Users, Calendar } from "lucide-react";
+import { FileText, Building, Users, Calendar, Clock, BookOpen, CheckCircle, Download } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 import FeatureCard from "./FeatureCard";
 import { workshopData } from "@/data/workshopData";
+import { Badge } from "@/components/ui/badge";
 
 interface WorkshopsTabProps {
   onFeatureClick: (path: string) => void;
@@ -70,10 +71,31 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
                 ? "Desarrolla fortaleza mental y resiliencia para los desafíos únicos de dirigir una pequeña empresa."
                 : "Build mental toughness and resilience for the unique challenges of small business ownership."}
             </p>
-            <div className="mb-4 p-2 bg-amber-900/20 rounded-lg text-sm text-white/70">
-              <div className="flex items-center">
+            <div className="mb-4 flex gap-2 flex-wrap">
+              <div className="p-2 bg-amber-900/20 rounded-lg text-sm text-white/70 flex items-center">
                 <Calendar className="h-4 w-4 mr-2 text-amber-400" />
                 <span>{isSpanish ? "19 de Abril, 2025 - 14:00 ET" : "April 19, 2025 - 2:00 PM ET"}</span>
+              </div>
+              <Badge className="bg-amber-700/50 text-white">
+                {isSpanish ? "Incluye Ejercicios Prácticos" : "Includes Practical Exercises"}
+              </Badge>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              <div className="flex items-center text-white/70 text-sm">
+                <Clock className="h-4 w-4 mr-1 text-amber-400" />
+                <span>45 min</span>
+              </div>
+              <div className="flex items-center text-white/70 text-sm">
+                <BookOpen className="h-4 w-4 mr-1 text-amber-400" />
+                <span>3 {isSpanish ? "secciones" : "sections"}</span>
+              </div>
+              <div className="flex items-center text-white/70 text-sm">
+                <CheckCircle className="h-4 w-4 mr-1 text-amber-400" />
+                <span>4 {isSpanish ? "resultados" : "outcomes"}</span>
+              </div>
+              <div className="flex items-center text-white/70 text-sm">
+                <Download className="h-4 w-4 mr-1 text-amber-400" />
+                <span>{isSpanish ? "Hojas de Trabajo" : "Worksheets"}</span>
               </div>
             </div>
             <Button 
@@ -109,10 +131,31 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
                 ? "Aprende a crear una cultura laboral que apoye la salud mental de todos los miembros del equipo."
                 : "Learn how to create a workplace culture that supports mental health for all team members."}
             </p>
-            <div className="mb-4 p-2 bg-amber-900/20 rounded-lg text-sm text-white/70">
-              <div className="flex items-center">
+            <div className="mb-4 flex gap-2 flex-wrap">
+              <div className="p-2 bg-amber-900/20 rounded-lg text-sm text-white/70 flex items-center">
                 <Calendar className="h-4 w-4 mr-2 text-amber-400" />
                 <span>{isSpanish ? "26 de Abril, 2025 - 13:00 ET" : "April 26, 2025 - 1:00 PM ET"}</span>
+              </div>
+              <Badge className="bg-amber-700/50 text-white">
+                {isSpanish ? "Incluye Ejercicios Prácticos" : "Includes Practical Exercises"}
+              </Badge>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              <div className="flex items-center text-white/70 text-sm">
+                <Clock className="h-4 w-4 mr-1 text-amber-400" />
+                <span>45 min</span>
+              </div>
+              <div className="flex items-center text-white/70 text-sm">
+                <BookOpen className="h-4 w-4 mr-1 text-amber-400" />
+                <span>3 {isSpanish ? "secciones" : "sections"}</span>
+              </div>
+              <div className="flex items-center text-white/70 text-sm">
+                <CheckCircle className="h-4 w-4 mr-1 text-amber-400" />
+                <span>4 {isSpanish ? "resultados" : "outcomes"}</span>
+              </div>
+              <div className="flex items-center text-white/70 text-sm">
+                <Download className="h-4 w-4 mr-1 text-amber-400" />
+                <span>{isSpanish ? "Hojas de Trabajo" : "Worksheets"}</span>
               </div>
             </div>
             <Button 
@@ -149,24 +192,83 @@ const WorkshopsTab: React.FC<WorkshopsTabProps> = ({ onFeatureClick }) => {
         </CardContent>
       </Card>
       
-      {/* Display a few featured workshops */}
+      {/* Display featured workshops with enhanced info */}
       <div className="col-span-1 md:col-span-2 mt-4">
-        <h3 className="text-xl font-bold text-white mb-4">
-          {isSpanish ? "Talleres Recomendados" : "Featured Workshops"}
+        <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+          {isSpanish ? "Talleres Recomendados" : "Featured Intensive Workshops"}
+          <Badge className="ml-2 bg-amber-600">NEW</Badge>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {featuredWorkshops.map((workshop) => (
             workshop && (
-              <FeatureCard
+              <Card 
                 key={workshop.id}
-                title={workshop.title}
-                description={workshop.description}
-                icon={workshop.icon}
-                color={workshop.color}
+                className="overflow-hidden hover:border-amber-600 transition-colors cursor-pointer group"
                 onClick={() => onFeatureClick(`workshops/${workshop.id}`)}
-              />
+              >
+                <div className="relative h-36 overflow-hidden">
+                  <img 
+                    src={getWorkshopImage(workshop.id)} 
+                    alt={workshop.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                  <div className="absolute bottom-2 left-3">
+                    <Badge className="bg-amber-600">
+                      {isSpanish ? "Intensivo" : "Intensive"}
+                    </Badge>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3 mb-2">
+                    <div className="p-2 rounded-full mt-1" style={{ backgroundColor: workshop.color }}>
+                      <workshop.icon className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold line-clamp-1">{workshop.title}</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                        {workshop.description}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 mt-3 text-xs text-gray-600 dark:text-gray-400">
+                    <div className="flex items-center">
+                      <Clock className="h-3 w-3 mr-1" />
+                      <span>{workshop.duration}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      <span>{workshop.sections?.length || 3} {isSpanish ? "secciones" : "sections"}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <BookOpen className="h-3 w-3 mr-1" />
+                      <span>{workshop.learningOutcomes?.length || 4} {isSpanish ? "resultados" : "outcomes"}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Download className="h-3 w-3 mr-1" />
+                      <span>{isSpanish ? "Materiales" : "Materials"}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             )
           ))}
+          
+          <Card 
+            className="overflow-hidden border-dashed border-gray-300 hover:border-amber-600 transition-colors cursor-pointer flex items-center justify-center h-full"
+            onClick={() => onFeatureClick("workshops")}
+          >
+            <CardContent className="p-4 text-center">
+              <FileText className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+              <p className="font-medium">
+                {isSpanish ? "Explorar Todos los Talleres Intensivos" : "Explore All Intensive Workshops"}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                {isSpanish ? "12 talleres disponibles" : "12 workshops available"}
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
