@@ -47,7 +47,7 @@ const WorkshopDetail = () => {
 
   const handleDownloadWorksheet = () => {
     if (workshopId) {
-      downloadWorksheet(workshopId, toast);
+      downloadWorksheet(workshopId, { toast });
     }
   };
 

@@ -188,7 +188,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   };
 
   const downloadWorksheetPDF = (sectionTitle: string) => {
-    downloadWorksheet(workshopData.id, toast);
+    downloadWorksheet(workshopData.id, { toast });
   };
 
   const saveJournalEntry = (sectionIndex: number, exerciseIndex: number) => {

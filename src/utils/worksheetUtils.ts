@@ -1,7 +1,7 @@
-
 import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
 import { useToast } from "@/hooks/use-toast";
+import { type ToastProps } from "@/hooks/use-toast";
 
 export interface WorksheetContent {
   title: string;
@@ -200,26 +200,28 @@ export const generateWorksheetPDF = (workshopId: string): void => {
   doc.save(`${content.title.replace(/\s+/g, '-').toLowerCase()}.pdf`);
 };
 
-// Updated interface for the toast parameter to match what's expected
-type ToastHelper = {
-  toast: ReturnType<typeof useToast>["toast"];
-}
+// Define the possible types that can be passed as toast helpers
+type ToastFunction = (props: ToastProps) => { id: string; dismiss: () => void; update: (props: any) => void };
+type ToastHelper = { toast: ToastFunction };
+type ToastObject = ReturnType<typeof useToast>;
 
 // Function to handle worksheet download with toast notification
-export const downloadWorksheet = (workshopId: string, toastHelper?: ToastHelper | ReturnType<typeof useToast>) => {
+export const downloadWorksheet = (workshopId: string, toastHelper?: ToastFunction | ToastHelper | ToastObject) => {
   try {
     generateWorksheetPDF(workshopId);
     
     if (toastHelper) {
-      // Handle both the object with toast method and the full useToast return value
-      if ('toast' in toastHelper) {
-        toastHelper.toast({
+      // Handle the different possible types of toast helpers
+      if (typeof toastHelper === 'function') {
+        // Direct toast function
+        toastHelper({
           title: "Worksheet Downloaded",
           description: "Your worksheet is ready to use",
           duration: 2000,
         });
-      } else {
-        toastHelper({
+      } else if ('toast' in toastHelper) {
+        // Object with toast method
+        toastHelper.toast({
           title: "Worksheet Downloaded",
           description: "Your worksheet is ready to use",
           duration: 2000,
@@ -230,16 +232,18 @@ export const downloadWorksheet = (workshopId: string, toastHelper?: ToastHelper 
     return true;
   } catch (error) {
     if (toastHelper) {
-      // Handle both the object with toast method and the full useToast return value
-      if ('toast' in toastHelper) {
-        toastHelper.toast({
+      // Handle the different possible types of toast helpers for error case
+      if (typeof toastHelper === 'function') {
+        // Direct toast function
+        toastHelper({
           title: "Download Failed",
           description: "There was an issue downloading your worksheet",
           variant: "destructive",
           duration: 2000,
         });
-      } else {
-        toastHelper({
+      } else if ('toast' in toastHelper) {
+        // Object with toast method
+        toastHelper.toast({
           title: "Download Failed",
           description: "There was an issue downloading your worksheet",
           variant: "destructive",

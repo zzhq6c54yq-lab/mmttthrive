@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
@@ -126,12 +125,10 @@ const MilitaryWorkshops = () => {
   const { toast } = useToast();
   
   const filteredWorkshops = workshops.filter(workshop => {
-    // Filter by search term
     const matchesSearch = workshop.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          workshop.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          workshop.instructor.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Filter by selected categories (if any are selected)
     const matchesCategory = selectedCategories.length === 0 || 
                            selectedCategories.includes(workshop.category);
     
@@ -164,7 +161,6 @@ const MilitaryWorkshops = () => {
 
   return (
     <div className="min-h-screen bg-[#0A1929] text-white">
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#0A1929] to-[#1A365D] py-12">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
@@ -182,7 +178,6 @@ const MilitaryWorkshops = () => {
         </div>
       </div>
       
-      {/* Search and Filter Bar */}
       <div className="bg-[#0F2942] border-y border-white/10 py-4">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -234,9 +229,7 @@ const MilitaryWorkshops = () => {
         </div>
       </div>
       
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
-        {/* Featured Workshops */}
         <h2 className="text-2xl font-bold text-[#B87333] mb-6 flex items-center">
           <Star className="mr-2 h-5 w-5" />
           Featured Workshops
@@ -259,7 +252,6 @@ const MilitaryWorkshops = () => {
           ))}
         </div>
         
-        {/* All Workshops */}
         <h2 className="text-2xl font-bold text-white mb-6">All Upcoming Workshops</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -299,7 +291,6 @@ const MilitaryWorkshops = () => {
           )}
         </div>
         
-        {/* Request Workshop Section */}
         <div className="mt-16 bg-gradient-to-r from-[#B87333]/20 to-transparent p-8 rounded-lg border border-[#B87333]/30">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
@@ -320,7 +311,6 @@ const MilitaryWorkshops = () => {
         </div>
       </div>
       
-      {/* Footer */}
       <footer className="bg-[#0F2942] border-t border-white/10 py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400 mb-4">
@@ -347,7 +337,6 @@ const MilitaryWorkshops = () => {
   );
 };
 
-// Workshop Card Component
 interface WorkshopCardProps {
   id: number;
   title: string;
