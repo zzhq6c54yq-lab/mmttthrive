@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Page from "@/components/Page";
@@ -8,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { workshopData } from "@/data/workshopData";
 import { useToast } from "@/hooks/use-toast";
 import { Award, BookOpen, CheckCircle, Clock, Download, FileText, Play, User, Video } from "lucide-react";
+import { downloadWorksheet } from "@/utils/worksheetUtils";
 
 const WorkshopDetail = () => {
   const { workshopId } = useParams<{ workshopId: string }>();
@@ -50,6 +50,13 @@ const WorkshopDetail = () => {
   const handleBack = () => {
     // Try to go back to the previous page
     navigate(-1);
+  };
+
+  // Handle worksheet download
+  const handleDownloadWorksheet = () => {
+    if (workshopId) {
+      downloadWorksheet(workshopId, toast);
+    }
   };
 
   // If workshop not found, show error and redirect
@@ -219,13 +226,7 @@ const WorkshopDetail = () => {
                         <Button 
                           variant="outline" 
                           className="flex items-center gap-2"
-                          onClick={() => {
-                            toast({
-                              title: "Worksheet Downloaded",
-                              description: "Workshop materials have been downloaded",
-                              duration: 2000,
-                            });
-                          }}
+                          onClick={handleDownloadWorksheet}
                         >
                           <Download className="h-4 w-4" />
                           Download Worksheet
@@ -369,13 +370,7 @@ const WorkshopDetail = () => {
                   <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => {
-                      toast({
-                        title: "Download Started",
-                        description: "Workshop materials are downloading",
-                        duration: 2000,
-                      });
-                    }}
+                    onClick={handleDownloadWorksheet}
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Download Materials

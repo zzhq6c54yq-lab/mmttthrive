@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { LucideIcon, ChevronDown, ChevronUp, Play, Pause, Volume, Volume2, Download, CheckCircle, Clipboard, ClipboardCheck, Calendar, Clock, Users, Gift, Trophy, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
+import { downloadWorksheet } from "@/utils/worksheetUtils";
 
 export interface WorkshopData {
   id: string;
@@ -195,20 +195,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   };
 
   const downloadWorksheetPDF = (sectionTitle: string) => {
-    toast({
-      title: "Downloading Worksheet",
-      description: `The worksheet for "${sectionTitle}" is being downloaded`,
-      duration: 2000,
-    });
-    
-    // In a real app, this would trigger an actual download
-    setTimeout(() => {
-      toast({
-        title: "Download Complete",
-        description: "Worksheet has been downloaded successfully",
-        duration: 2000,
-      });
-    }, 1500);
+    downloadWorksheet(workshopData.id, toast);
   };
 
   const saveJournalEntry = (sectionIndex: number, exerciseIndex: number) => {
@@ -426,7 +413,7 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
                         onClick={() => downloadWorksheetPDF(section.title)}
                       >
                         <Download className="h-4 w-4" />
-                        Download Notes
+                        Download Worksheet
                       </Button>
                     </div>
                   </div>
