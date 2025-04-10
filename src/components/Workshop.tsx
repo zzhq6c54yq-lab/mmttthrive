@@ -40,7 +40,6 @@ interface JournalEntry {
   exerciseId: string;
 }
 
-// Map workshop IDs to relevant YouTube video IDs
 const getVideoForWorkshop = (workshopId: string, sectionIndex: number): string => {
   const videoMappings: {[key: string]: string[]} = {
     "mindful-communication": [
@@ -105,12 +104,10 @@ const getVideoForWorkshop = (workshopId: string, sectionIndex: number): string =
     ]
   };
   
-  // Return default video if workshop ID isn't found
   if (!videoMappings[workshopId]) {
     return "L8tONnEoSNE"; // Default video about mental wellness
   }
   
-  // Return specific section video if available, otherwise first video
   return videoMappings[workshopId][sectionIndex] || videoMappings[workshopId][0];
 };
 
@@ -125,7 +122,6 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
   const [showCongratulations, setShowCongratulations] = useState(false);
   const { toast } = useToast();
 
-  // Load saved progress from localStorage on component mount
   useEffect(() => {
     const savedProgress = localStorage.getItem(`workshop-progress-${workshopData.id}`);
     if (savedProgress) {
@@ -138,14 +134,12 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
     }
   }, [workshopData.id]);
 
-  // Save progress to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem(
       `workshop-progress-${workshopData.id}`, 
       JSON.stringify(Array.from(completedExercises))
     );
     
-    // Check if all exercises are completed
     const totalExercisesCount = workshopData.sections.reduce(
       (count, section) => count + section.exercises.length, 0
     );
@@ -155,7 +149,6 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
     }
   }, [completedExercises, workshopData]);
 
-  // Save journal entries to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem(
       `workshop-journal-${workshopData.id}`, 
@@ -227,13 +220,11 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
       duration: 2000,
     });
     
-    // Auto-mark exercise as complete when journal entry is saved
     const newCompleted = new Set(completedExercises);
     newCompleted.add(exerciseKey);
     setCompletedExercises(newCompleted);
   };
 
-  // Extract color code for styling
   const colorClass = workshopData.color.split(' ')[0];
   const accentColor = colorClass.includes('bg-[#') 
     ? colorClass.replace('bg-[', '').replace(']/10', '') 
@@ -343,7 +334,6 @@ const Workshop: React.FC<WorkshopProps> = ({ workshopData }) => {
             </CardContent>
           </Card>
 
-          {/* Workshop Sections */}
           <div className="space-y-8 mt-8">
             {workshopData.sections.map((section, sectionIndex) => (
               <Card key={sectionIndex} className="overflow-hidden border border-gray-200">

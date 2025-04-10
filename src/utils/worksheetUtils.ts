@@ -206,7 +206,7 @@ export const downloadWorksheet = (workshopId: string, toast?: ReturnType<typeof 
     generateWorksheetPDF(workshopId);
     
     if (toast) {
-      toast({
+      toast.toast({
         title: "Worksheet Downloaded",
         description: "Your worksheet is ready to use",
         duration: 2000,
@@ -216,7 +216,7 @@ export const downloadWorksheet = (workshopId: string, toast?: ReturnType<typeof 
     return true;
   } catch (error) {
     if (toast) {
-      toast({
+      toast.toast({
         title: "Download Failed",
         description: "There was an issue downloading your worksheet",
         variant: "destructive",
