@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import FeatureCard from "./FeatureCard";
+import MentalWellnessFeature from "./MentalWellnessFeature";
 import { Feature } from "./featuresData";
 import { isFeatureRecommended } from "./featureUtils";
 
@@ -39,19 +40,34 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
       animate="show"
     >
       {features.map((feature) => (
-        <FeatureCard
-          key={feature.id}
-          id={feature.id}
-          title={feature.title}
-          icon={feature.icon}
-          path={feature.path}
-          color={feature.color}
-          description={feature.description}
-          image={feature.image}
-          isRecommended={isFeatureRecommended(feature.id, selectedQualities, selectedGoals)}
-          isSpanish={isSpanish}
-          handleNavigate={handleNavigate}
-        />
+        feature.id === "mental-wellness" ? (
+          <MentalWellnessFeature
+            key={feature.id}
+            id={feature.id}
+            title={feature.title}
+            path={feature.path}
+            color={feature.color}
+            description={feature.description}
+            image={feature.image}
+            isRecommended={isFeatureRecommended(feature.id, selectedQualities, selectedGoals)}
+            isSpanish={isSpanish}
+            handleNavigate={handleNavigate}
+          />
+        ) : (
+          <FeatureCard
+            key={feature.id}
+            id={feature.id}
+            title={feature.title}
+            icon={feature.icon}
+            path={feature.path}
+            color={feature.color}
+            description={feature.description}
+            image={feature.image}
+            isRecommended={isFeatureRecommended(feature.id, selectedQualities, selectedGoals)}
+            isSpanish={isSpanish}
+            handleNavigate={handleNavigate}
+          />
+        )
       ))}
     </motion.div>
   );
