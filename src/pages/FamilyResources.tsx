@@ -1,7 +1,8 @@
+
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HeartHandshake, BookOpen, Users, FileDown, Calendar, Play } from "lucide-react";
+import { HeartHandshake, BookOpen, Users, FileDown, Calendar, Play, MessageSquare } from "lucide-react";
 import BackButton from "@/components/navigation/BackButton";
 import ActionButton from "@/components/navigation/ActionButton";
 import HomeButton from "@/components/HomeButton";
