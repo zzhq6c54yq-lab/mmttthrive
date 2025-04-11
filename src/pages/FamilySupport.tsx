@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   ArrowLeft, Heart, Users, BookOpen, Calendar, MessageSquare, 
@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
-// Sample data for resources
 const resourceCategories = [
   {
     id: "partners",
@@ -140,13 +139,24 @@ const testimonials = [
 
 const FamilySupport: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("resources");
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleGoBack = () => {
-    navigate('/home');
+    if (location.state?.fromMainMenu) {
+      navigate('/home', { state: { preventTutorial: true } });
+    } else if (location.state?.returnToPortal) {
+      navigate(location.state.returnToPortal, { 
+        state: { 
+          preventTutorial: true 
+        } 
+      });
+    } else {
+      navigate('/home', { state: { preventTutorial: true } });
+    }
   };
 
   const handleResourceClick = (resourceId: number) => {
@@ -155,8 +165,13 @@ const FamilySupport: React.FC = () => {
       description: "Loading your selected resource...",
       duration: 1500,
     });
-    // In a real app, we'd navigate to the resource page
-    // For now, just show a toast
+    navigate('/resource-library', { 
+      state: { 
+        highlightResource: resourceId,
+        preventTutorial: true,
+        fromFamilySupport: true
+      } 
+    });
   };
 
   const handleRegisterEvent = (eventId: number) => {
@@ -169,13 +184,55 @@ const FamilySupport: React.FC = () => {
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
+    toast({
+      title: "Category Updated",
+      description: `Showing resources for: ${category}`,
+      duration: 1500,
+    });
   };
 
   const handleConnectWithProfessional = () => {
-    navigate('/real-time-therapy');
+    navigate('/real-time-therapy', { 
+      state: { 
+        fromFamilySupport: true,
+        preventTutorial: true
+      } 
+    });
   };
 
-  // Animation variants for framer-motion
+  const handleViewAllEvents = () => {
+    navigate('/workshops', { 
+      state: { 
+        eventCategory: 'family',
+        preventTutorial: true
+      } 
+    });
+  };
+
+  const handleSubmitStory = () => {
+    toast({
+      title: "Story Submission",
+      description: "Thank you for your interest. You'll be redirected to our story submission form shortly.",
+      duration: 2000,
+    });
+    setTimeout(() => {
+      navigate('/community-support', { 
+        state: { 
+          openSubmission: true,
+          preventTutorial: true
+        } 
+      });
+    }, 2000);
+  };
+
+  const handleJoinCommunity = (platform: string) => {
+    toast({
+      title: `Joining ${platform} Community`,
+      description: "You'll be redirected to our community platform shortly.",
+      duration: 2000,
+    });
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -197,14 +254,12 @@ const FamilySupport: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white pb-12">
-      {/* Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-pink-500/20 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-amber-500/20 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute top-1/2 left-1/4 w-40 h-40 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-3xl"></div>
       </div>
 
-      {/* Header */}
       <div className="relative bg-gradient-to-r from-[#1a1a1f] to-[#272730] py-6 px-4 shadow-md">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -231,7 +286,6 @@ const FamilySupport: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 mt-8 relative z-10">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-4 mb-8 bg-white/5 backdrop-blur-sm">
@@ -249,7 +303,6 @@ const FamilySupport: React.FC = () => {
             </TabsTrigger>
           </TabsList>
           
-          {/* Resources Tab */}
           <TabsContent value="resources" className="focus:outline-none">
             <motion.div
               variants={containerVariants}
@@ -257,7 +310,6 @@ const FamilySupport: React.FC = () => {
               animate="visible"
               className="space-y-6"
             >
-              {/* Search Bar */}
               <motion.div variants={itemVariants} className="relative">
                 <input
                   type="text"
@@ -268,14 +320,13 @@ const FamilySupport: React.FC = () => {
                 />
               </motion.div>
               
-              {/* Categories */}
               <motion.div variants={itemVariants}>
                 <h2 className="text-xl font-bold text-white mb-4">Browse by Family Role</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   {resourceCategories.map((category) => (
                     <Card 
                       key={category.id}
-                      className="bg-white/10 backdrop-blur-sm border-0 shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                      className={`bg-white/10 backdrop-blur-sm border-0 shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105 ${activeCategory === category.id ? 'ring-2 ring-pink-500' : ''}`}
                       onClick={() => handleCategoryChange(category.id)}
                     >
                       <div 
@@ -290,11 +341,19 @@ const FamilySupport: React.FC = () => {
                 </div>
               </motion.div>
               
-              {/* Featured Resources */}
               <motion.div variants={itemVariants}>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold text-white">Featured Resources</h2>
-                  <Button variant="link" className="text-pink-400">
+                  <Button 
+                    variant="link" 
+                    className="text-pink-400"
+                    onClick={() => navigate('/resource-library', { 
+                      state: { 
+                        category: 'family',
+                        preventTutorial: true 
+                      } 
+                    })}
+                  >
                     View All <ChevronRight className="h-4 w-4 ml-1" />
                   </Button>
                 </div>
@@ -327,7 +386,6 @@ const FamilySupport: React.FC = () => {
                 </div>
               </motion.div>
               
-              {/* Testimonials */}
               <motion.div variants={itemVariants}>
                 <h2 className="text-xl font-bold text-white mb-4 flex items-center">
                   <Star className="h-5 w-5 text-amber-400 mr-2" />
@@ -361,7 +419,6 @@ const FamilySupport: React.FC = () => {
             </motion.div>
           </TabsContent>
           
-          {/* Support Groups Tab */}
           <TabsContent value="support" className="focus:outline-none">
             <motion.div
               variants={containerVariants}
@@ -444,7 +501,15 @@ const FamilySupport: React.FC = () => {
                   </div>
                   
                   <div className="mt-6 text-center">
-                    <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+                    <Button 
+                      className="bg-pink-500 hover:bg-pink-600 text-white"
+                      onClick={() => navigate('/community-support', { 
+                        state: { 
+                          joinGroup: 'family',
+                          preventTutorial: true 
+                        } 
+                      })}
+                    >
                       Register for a Group
                     </Button>
                   </div>
@@ -464,12 +529,19 @@ const FamilySupport: React.FC = () => {
                   </p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Button className="bg-[#4267B2] hover:bg-[#365899] flex items-center justify-center gap-2 h-12">
+                    <Button 
+                      className="bg-[#4267B2] hover:bg-[#365899] flex items-center justify-center gap-2 h-12"
+                      onClick={() => handleJoinCommunity('Facebook')}
+                    >
                       <Users className="h-5 w-5" />
                       Join Facebook Group
                     </Button>
                     
-                    <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 flex items-center justify-center gap-2 h-12">
+                    <Button 
+                      variant="outline" 
+                      className="border-white/20 text-white hover:bg-white/10 flex items-center justify-center gap-2 h-12"
+                      onClick={() => handleJoinCommunity('Discord')}
+                    >
                       <MessageSquare className="h-5 w-5" />
                       Join Discord Community
                     </Button>
@@ -479,7 +551,6 @@ const FamilySupport: React.FC = () => {
             </motion.div>
           </TabsContent>
           
-          {/* Events Tab */}
           <TabsContent value="events" className="focus:outline-none">
             <motion.div
               variants={containerVariants}
@@ -567,7 +638,11 @@ const FamilySupport: React.FC = () => {
                   </CardContent>
                   
                   <CardFooter>
-                    <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-white/20 text-white hover:bg-white/10"
+                      onClick={handleViewAllEvents}
+                    >
                       View All Events
                     </Button>
                   </CardFooter>
@@ -616,7 +691,6 @@ const FamilySupport: React.FC = () => {
             </motion.div>
           </TabsContent>
           
-          {/* Connect Tab */}
           <TabsContent value="connect" className="focus:outline-none">
             <motion.div
               variants={containerVariants}
@@ -642,7 +716,15 @@ const FamilySupport: React.FC = () => {
                         <PhoneCall className="h-8 w-8 text-pink-400 mx-auto mb-3" />
                         <h3 className="font-medium text-white mb-1">Phone Support</h3>
                         <p className="text-sm text-gray-400 mb-3">Talk one-on-one with a specialist</p>
-                        <Button className="bg-pink-500 hover:bg-pink-600 w-full">
+                        <Button 
+                          className="bg-pink-500 hover:bg-pink-600 w-full"
+                          onClick={() => navigate('/virtual-meetings', { 
+                            state: { 
+                              supportType: 'phone',
+                              preventTutorial: true 
+                            } 
+                          })}
+                        >
                           Request Call
                         </Button>
                       </CardContent>
@@ -653,7 +735,15 @@ const FamilySupport: React.FC = () => {
                         <Video className="h-8 w-8 text-pink-400 mx-auto mb-3" />
                         <h3 className="font-medium text-white mb-1">Video Chat</h3>
                         <p className="text-sm text-gray-400 mb-3">Face-to-face virtual support</p>
-                        <Button className="bg-pink-500 hover:bg-pink-600 w-full">
+                        <Button 
+                          className="bg-pink-500 hover:bg-pink-600 w-full"
+                          onClick={() => navigate('/virtual-meetings', { 
+                            state: { 
+                              supportType: 'video',
+                              preventTutorial: true 
+                            } 
+                          })}
+                        >
                           Schedule Session
                         </Button>
                       </CardContent>
@@ -664,7 +754,15 @@ const FamilySupport: React.FC = () => {
                         <MessageSquare className="h-8 w-8 text-pink-400 mx-auto mb-3" />
                         <h3 className="font-medium text-white mb-1">Text Chat</h3>
                         <p className="text-sm text-gray-400 mb-3">Message with a support specialist</p>
-                        <Button className="bg-pink-500 hover:bg-pink-600 w-full">
+                        <Button 
+                          className="bg-pink-500 hover:bg-pink-600 w-full"
+                          onClick={() => navigate('/virtual-meetings', { 
+                            state: { 
+                              supportType: 'chat',
+                              preventTutorial: true 
+                            } 
+                          })}
+                        >
                           Start Chat
                         </Button>
                       </CardContent>
@@ -684,7 +782,10 @@ const FamilySupport: React.FC = () => {
                         Connect with licensed therapists who specialize in family therapy and supporting
                         loved ones of those with mental health conditions.
                       </p>
-                      <Button className="bg-white text-pink-600 hover:bg-gray-100" onClick={handleConnectWithProfessional}>
+                      <Button 
+                        className="bg-white text-pink-600 hover:bg-gray-100" 
+                        onClick={handleConnectWithProfessional}
+                      >
                         Find a Therapist
                       </Button>
                     </div>
@@ -707,7 +808,11 @@ const FamilySupport: React.FC = () => {
                     to inspire and support other family members.
                   </p>
                   
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                  <Button 
+                    variant="outline" 
+                    className="border-white/20 text-white hover:bg-white/10"
+                    onClick={handleSubmitStory}
+                  >
                     Submit Your Story
                   </Button>
                 </Card>

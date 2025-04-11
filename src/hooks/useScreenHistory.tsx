@@ -9,55 +9,62 @@ export const useScreenHistory = (
   const location = useLocation();
 
   useEffect(() => {
-    if (location.state && location.state.screenState) {
-      setScreenState(location.state.screenState);
-      
-      // Don't trigger any tutorial logic on transition to 'main'
-      // This is now handled directly in MainDashboard component
-      
+    // Handle incoming state from navigation
+    if (location.state) {
+      // If we're returning from another feature to the main dashboard
       if (location.state.returnToMain) {
+        setScreenState('main');
+        
         window.history.replaceState(
-          { ...window.history.state, screenState: location.state.screenState, returnToMain: true }, 
+          { ...window.history.state, screenState: 'main', returnToMain: true }, 
           document.title
         );
-      } else {
+      } 
+      // If we have a specific screen state to set
+      else if (location.state.screenState) {
+        setScreenState(location.state.screenState);
+        
         window.history.replaceState(
           { ...window.history.state, screenState: location.state.screenState }, 
           document.title
         );
+      } 
+      // If we're explicitly returning to intro
+      else if (location.state.returnToIntro) {
+        setScreenState('intro');
+        
+        window.history.replaceState(
+          { ...window.history.state, screenState: 'intro' }, 
+          document.title
+        );
       }
-    } else if (location.state && location.state.returnToIntro) {
-      setScreenState('intro');
-      
-      window.history.replaceState(
-        { ...window.history.state, screenState: 'intro' }, 
-        document.title
-      );
     } else {
-      // When returning from other pages (like workshops) without state, 
-      // go directly to 'main' instead of 'intro' screen
+      // When returning without state (like browser back button)
+      // Always return to main instead of intro
+      setScreenState('main');
+      
       window.history.replaceState(
         { ...window.history.state, screenState: 'main' }, 
         document.title
       );
-      
-      // Only start the intro timer if we're explicitly on the intro screen
-      // This prevents the auto-transition when coming back from other pages
-      if (screenState === 'intro') {
-        const timer = setTimeout(() => {
-          if (screenState === 'intro') {
-            setScreenState('mood');
-            window.history.replaceState(
-              { ...window.history.state, screenState: 'mood' }, 
-              document.title
-            );
-          }
-        }, 7000);
-
-        return () => clearTimeout(timer);
-      }
     }
-  }, [location.state, screenState, setScreenState]);
+    
+    // Only start the intro timer if we're explicitly on the intro screen
+    // and there's no state indicating we came from elsewhere
+    if (screenState === 'intro' && (!location.state || !location.state.preventTutorial)) {
+      const timer = setTimeout(() => {
+        if (screenState === 'intro') {
+          setScreenState('mood');
+          window.history.replaceState(
+            { ...window.history.state, screenState: 'mood' }, 
+            document.title
+          );
+        }
+      }, 7000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [location.state, setScreenState]);
 
   useEffect(() => {
     console.log("Screen state changed to:", screenState);
