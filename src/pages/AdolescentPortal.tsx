@@ -65,7 +65,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Reading",
         color: "bg-pink-100 text-pink-800 border-pink-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'emotion-stories',
           title: 'Emotion Stories'
         }
@@ -77,7 +77,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Interactive",
         color: "bg-purple-100 text-purple-800 border-purple-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'feelings-friends',
           title: 'Feelings Friends'
         }
@@ -89,7 +89,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Self-Regulation",
         color: "bg-blue-100 text-blue-800 border-blue-200",
         action: {
-          type: 'practice',
+          type: 'practice' as const,
           id: 'calm-corner',
           title: 'Calm Down Corner'
         }
@@ -101,7 +101,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Activity",
         color: "bg-green-100 text-green-800 border-green-200",
         action: {
-          type: 'practice',
+          type: 'practice' as const,
           id: 'music-movement',
           title: 'Music & Movement'
         }
@@ -115,7 +115,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Game",
         color: "bg-orange-100 text-orange-800 border-orange-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/emotion-matching',
           title: 'Emotion Matching Game'
         }
@@ -127,7 +127,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Interactive",
         color: "bg-teal-100 text-teal-800 border-teal-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/feeling-bubbles',
           title: 'Feeling Bubbles Game'
         }
@@ -139,7 +139,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Creative",
         color: "bg-indigo-100 text-indigo-800 border-indigo-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/color-mood',
           title: 'Color Your Mood'
         }
@@ -153,7 +153,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Video",
         color: "bg-red-100 text-red-800 border-red-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/videos/calm-breathing',
           title: 'Calm Breathing Videos'
         }
@@ -165,7 +165,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Video",
         color: "bg-yellow-100 text-yellow-800 border-yellow-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/videos/emotion-stories',
           title: 'Emotion Stories Videos'
         }
@@ -179,7 +179,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "For Parents",
         color: "bg-emerald-100 text-emerald-800 border-emerald-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/parent-resources/early-childhood',
           title: 'Parent Corner'
         }
@@ -191,7 +191,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Q&A",
         color: "bg-cyan-100 text-cyan-800 border-cyan-200", 
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/expert-advice/early-childhood',
           title: 'Ask an Expert'
         }
@@ -213,7 +213,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Self-Expression",
         color: "bg-purple-100 text-purple-800 border-purple-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/journaling',
           title: 'Feelings Journal'
         }
@@ -225,7 +225,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Social Skills",
         color: "bg-blue-100 text-blue-800 border-blue-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'friendship-workshop',
           title: 'Friendship Workshop'
         }
@@ -237,7 +237,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Anxiety",
         color: "bg-teal-100 text-teal-800 border-teal-200",
         action: {
-          type: 'practice',
+          type: 'practice' as const,
           id: 'worry-warriors',
           title: 'Worry Warriors'
         }
@@ -249,7 +249,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Self-Esteem",
         color: "bg-pink-100 text-pink-800 border-pink-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'body-confidence',
           title: 'Body Confidence'
         }
@@ -263,7 +263,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Game",
         color: "bg-amber-100 text-amber-800 border-amber-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/emotion-detective',
           title: 'Emotion Detective Game'
         }
@@ -275,7 +275,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Interactive",
         color: "bg-emerald-100 text-emerald-800 border-emerald-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/mindfulness-quest',
           title: 'Mindfulness Quest'
         }
@@ -287,7 +287,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Social",
         color: "bg-indigo-100 text-indigo-800 border-indigo-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/social-skills',
           title: 'Social Skills Builder'
         }
@@ -301,7 +301,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Video",
         color: "bg-red-100 text-red-800 border-red-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/videos/coping-strategies',
           title: 'Coping Strategies Videos'
         }
@@ -313,7 +313,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Video",
         color: "bg-orange-100 text-orange-800 border-orange-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/videos/kid-stories',
           title: 'Kid Stories Videos'
         }
@@ -327,7 +327,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "For Families",
         color: "bg-cyan-100 text-cyan-800 border-cyan-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/family-resources/middle-childhood',
           title: 'Family Resources'
         }
@@ -339,7 +339,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Education",
         color: "bg-violet-100 text-violet-800 border-violet-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/school-resources',
           title: 'School Connection'
         }
@@ -361,7 +361,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Self-Development",
         color: "bg-blue-100 text-blue-800 border-blue-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'identity-self',
           title: 'Identity & Self'
         }
@@ -373,7 +373,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Mental Health",
         color: "bg-teal-100 text-teal-800 border-teal-200",
         action: {
-          type: 'practice',
+          type: 'practice' as const,
           id: 'stress-management',
           title: 'Stress Management'
         }
@@ -385,7 +385,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Social",
         color: "bg-purple-100 text-purple-800 border-purple-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'relationship-skills',
           title: 'Relationship Skills'
         }
@@ -397,7 +397,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Planning",
         color: "bg-indigo-100 text-indigo-800 border-indigo-200",
         action: {
-          type: 'workshop',
+          type: 'workshop' as const,
           id: 'future-planning',
           title: 'Future Planning'
         }
@@ -411,7 +411,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Game",
         color: "bg-emerald-100 text-emerald-800 border-emerald-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/decision-maker',
           title: 'Decision Maker Game'
         }
@@ -423,7 +423,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Interactive",
         color: "bg-amber-100 text-amber-800 border-amber-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/mood-tracker',
           title: 'Mood Tracker Game'
         }
@@ -435,7 +435,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Challenge",
         color: "bg-cyan-100 text-cyan-800 border-cyan-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/games/mindfulness-challenge',
           title: 'Mindfulness Challenge'
         }
@@ -449,7 +449,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Video",
         color: "bg-red-100 text-red-800 border-red-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/videos/teen-talks',
           title: 'Teen Talks Videos'
         }
@@ -461,7 +461,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Video",
         color: "bg-violet-100 text-violet-800 border-violet-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/videos/expert-insights',
           title: 'Expert Insights Videos'
         }
@@ -475,7 +475,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Support",
         color: "bg-pink-100 text-pink-800 border-pink-200",
         action: {
-          type: 'other',
+          type: 'other' as const,
           path: '/crisis-support',
           title: 'Crisis Resources'
         }
@@ -487,7 +487,7 @@ const AdolescentPortal: React.FC = () => {
         tag: "Community",
         color: "bg-orange-100 text-orange-800 border-orange-200",
         action: {
-          type: 'discussion',
+          type: 'discussion' as const,
           id: 'teen-community',
           title: 'Teen Community'
         }
