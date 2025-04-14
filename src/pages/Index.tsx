@@ -44,16 +44,24 @@ const Index = () => {
     markTutorialCompleted
   } = usePopupManagement(screenState);
 
-  // Reset onboarding flow for testing
+  // Check for URL parameters on component mount to ensure they're processed before rendering
   useEffect(() => {
     // Check if there's a URL parameter to force reset onboarding
     const searchParams = new URLSearchParams(location.search);
-    if (searchParams.get('resetOnboarding') === 'true') {
-      console.log("Resetting onboarding due to URL parameter");
+    if (searchParams.get('resetOnboarding') === 'true' || searchParams.get('forceReset') === 'true') {
+      console.log("Resetting onboarding due to URL parameter in Index component");
       localStorage.removeItem('hasCompletedOnboarding');
+      localStorage.removeItem('prevScreenState');
       setScreenState('intro');
     }
-  }, [location, setScreenState]);
+    
+    // Force onboarding flow when no record of completion
+    const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding');
+    if (!hasCompletedOnboarding && screenState !== 'intro') {
+      console.log("No onboarding completion record found, starting from intro");
+      setScreenState('intro');
+    }
+  }, [location.search, setScreenState]);
 
   // Use the screen history hook
   useScreenHistory(screenState, setScreenState);
@@ -100,9 +108,16 @@ const Index = () => {
   // Helper function to reset onboarding - can be called from external links or buttons
   const resetOnboarding = () => {
     localStorage.removeItem('hasCompletedOnboarding');
+    localStorage.removeItem('prevScreenState');
     setScreenState('intro');
     console.log("Onboarding reset manually");
   };
+
+  // Log current state for debugging
+  useEffect(() => {
+    console.log("Index component rendered with screenState:", screenState);
+    console.log("Onboarding completed status:", localStorage.getItem('hasCompletedOnboarding'));
+  }, [screenState]);
 
   return (
     <IndexContent

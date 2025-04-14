@@ -1,8 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 export const useIndexState = () => {
+  // Initialize to 'intro' by default to ensure onboarding flow starts properly
   const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
@@ -15,6 +16,20 @@ export const useIndexState = () => {
   });
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const { toast } = useToast();
+  
+  // Check onboarding status on mount
+  useEffect(() => {
+    const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
+    
+    if (hasCompletedOnboarding) {
+      console.log("useIndexState: Onboarding already completed, initializing to main dashboard");
+      setScreenState('main');
+    } else {
+      console.log("useIndexState: No onboarding record, starting from intro screen");
+      // This ensures we start from the beginning of onboarding
+      setScreenState('intro');
+    }
+  }, []);
   
   // Get language preference
   const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';

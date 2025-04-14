@@ -67,6 +67,9 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   React.useEffect(() => {
     if (screenState === 'intro') {
       console.log("Starting new session from intro screen");
+      
+      // Reset onboarding flag to ensure complete onboarding flow
+      localStorage.removeItem('hasCompletedOnboarding');
     }
   }, [screenState]);
 
@@ -128,7 +131,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           onPlanSelect={onPlanSelect}
           onContinue={handleSubscriptionContinue}
           onPrevious={() => setScreenState('register')}
-          onSkip={() => setScreenState('main')}
+          onSkip={() => setScreenState('visionBoard')}
         />
       );
     case 'visionBoard':

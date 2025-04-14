@@ -48,7 +48,7 @@ export const useScreenHistory = (
       }
     } else {
       // When returning without state (like browser back button or initial load)
-      // Start onboarding process if user hasn't completed it yet
+      // If onboarding wasn't completed, start from the beginning
       if (!hasCompletedOnboarding) {
         setScreenState('intro');
         console.log("Starting onboarding from beginning - no completion record found");
@@ -65,23 +65,6 @@ export const useScreenHistory = (
           document.title
         );
       }
-    }
-    
-    // Only start the intro timer if we're explicitly on the intro screen
-    // and there's no state indicating we came from elsewhere
-    if (screenState === 'intro' && (!location.state || !location.state.preventTutorial)) {
-      const timer = setTimeout(() => {
-        if (screenState === 'intro') {
-          setScreenState('mood');
-          console.log("Auto-advancing from intro to mood screen");
-          window.history.replaceState(
-            { ...window.history.state, screenState: 'mood' }, 
-            document.title
-          );
-        }
-      }, 7000);
-
-      return () => clearTimeout(timer);
     }
   }, [location.state, setScreenState]);
 
