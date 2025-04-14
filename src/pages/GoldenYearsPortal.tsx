@@ -36,9 +36,9 @@ const GoldenYearsPortal: React.FC = () => {
     {
       title: "Legacy Journal",
       description: "Preserve your life story and wisdom for future generations through guided memoir writing.",
-      icon: <Book className="h-6 w-6 text-amber-500" />,
+      icon: <Book className="h-6 w-6 text-teal-500" />,
       tag: "Featured",
-      color: "bg-amber-100 text-amber-800",
+      color: "bg-teal-100 text-teal-800",
       action: {
         type: "join" as const,
         id: "legacy-journal",
@@ -205,9 +205,9 @@ const GoldenYearsPortal: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FEF3C7] via-[#FEF9E7] to-[#FFFBEB] text-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-[#EBF9F8] via-[#F1FDFB] to-[#F7FEFD] text-gray-800">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500 to-orange-400 p-6 relative">
+      <div className="bg-gradient-to-r from-teal-500 to-emerald-400 p-6 relative">
         <div className="absolute top-4 right-4 z-10">
           <HomeButton portalMode={true} portalPath="/golden-years-portal" />
         </div>
@@ -244,22 +244,22 @@ const GoldenYearsPortal: React.FC = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8 border border-amber-200">
+        <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8 border border-teal-200">
           <div className="flex items-center gap-4 mb-3">
-            <Calendar className="h-12 w-12 text-amber-500" />
+            <Calendar className="h-12 w-12 text-teal-500" />
             <div>
-              <h2 className="text-2xl font-medium text-amber-700">Welcome to Your Golden Years Journey</h2>
+              <h2 className="text-2xl font-medium text-teal-700">Welcome to Your Golden Years Journey</h2>
               <p className="text-gray-600">Today is a perfect day to embrace life's wisdom and connect with others.</p>
             </div>
           </div>
-          <p className="text-gray-700 italic border-l-4 border-amber-300 pl-4 mt-2">
+          <p className="text-gray-700 italic border-l-4 border-teal-300 pl-4 mt-2">
             "The longer I live, the more beautiful life becomes." — Frank Lloyd Wright
           </p>
           
-          <div className="mt-6 bg-amber-50 rounded-lg p-4 border border-amber-200">
+          <div className="mt-6 bg-teal-50 rounded-lg p-4 border border-teal-200">
             <div className="flex items-center gap-3 mb-2">
-              <Footprints className="h-5 w-5 text-amber-600" />
-              <h3 className="font-medium text-amber-800">Your Legacy Journal</h3>
+              <Footprints className="h-5 w-5 text-teal-600" />
+              <h3 className="font-medium text-teal-800">Your Legacy Journal</h3>
             </div>
             <p className="text-gray-700 mb-3">
               Begin your memoir journey today. Our guided prompts help you capture your life story, 
@@ -267,7 +267,7 @@ const GoldenYearsPortal: React.FC = () => {
             </p>
             <Button 
               onClick={() => handleNavigate("/golden-years-journal")}
-              className="bg-gradient-to-r from-amber-500 to-orange-400 hover:from-amber-600 hover:to-orange-500 text-white"
+              className="bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-600 hover:to-emerald-500 text-white"
             >
               Continue Your Story <Book className="ml-2 h-4 w-4" />
             </Button>
@@ -276,17 +276,17 @@ const GoldenYearsPortal: React.FC = () => {
 
         {/* Navigation Tabs */}
         <Tabs defaultValue="resources" className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="bg-white/50 border border-amber-200">
-            <TabsTrigger value="resources" className="data-[state=active]:bg-amber-100">
+          <TabsList className="bg-white/50 border border-teal-200">
+            <TabsTrigger value="resources" className="data-[state=active]:bg-teal-100">
               <BookMarked className="h-4 w-4 mr-2" /> Resources
             </TabsTrigger>
-            <TabsTrigger value="workshops" className="data-[state=active]:bg-amber-100">
+            <TabsTrigger value="workshops" className="data-[state=active]:bg-teal-100">
               <Calendar className="h-4 w-4 mr-2" /> Workshops
             </TabsTrigger>
-            <TabsTrigger value="family" className="data-[state=active]:bg-amber-100">
+            <TabsTrigger value="family" className="data-[state=active]:bg-teal-100">
               <HeartHandshake className="h-4 w-4 mr-2" /> Family Connection
             </TabsTrigger>
-            <TabsTrigger value="support" className="data-[state=active]:bg-amber-100">
+            <TabsTrigger value="support" className="data-[state=active]:bg-teal-100">
               <MessageCircle className="h-4 w-4 mr-2" /> Support Groups
             </TabsTrigger>
           </TabsList>
@@ -297,7 +297,7 @@ const GoldenYearsPortal: React.FC = () => {
               {resources.map((resource, index) => (
                 <div 
                   key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-amber-100 hover:shadow-lg transition-shadow"
+                  className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow"
                 >
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-3">
@@ -306,7 +306,7 @@ const GoldenYearsPortal: React.FC = () => {
                     </div>
                     <h3 className="text-lg font-medium text-gray-800 mb-1">{resource.title}</h3>
                     <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
-                    <ActionButton {...resource.action} variant="amber-outline" />
+                    <ActionButton {...resource.action} variant="outline" className="border-teal-300 text-teal-700 hover:bg-teal-50" />
                   </div>
                 </div>
               ))}
@@ -319,7 +319,7 @@ const GoldenYearsPortal: React.FC = () => {
               {workshops.map((workshop, index) => (
                 <div 
                   key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-amber-100 hover:shadow-lg transition-shadow"
+                  className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow"
                 >
                   <div className="h-40 overflow-hidden">
                     <img 
@@ -353,8 +353,8 @@ const GoldenYearsPortal: React.FC = () => {
 
           {/* Family Connection Tab */}
           <TabsContent value="family" className="mt-6">
-            <div className="bg-amber-50 rounded-xl p-6 mb-6 border border-amber-200">
-              <h2 className="text-xl text-amber-800 font-medium mb-2">Connect with Your Family</h2>
+            <div className="bg-teal-50 rounded-xl p-6 mb-6 border border-teal-200">
+              <h2 className="text-xl text-teal-800 font-medium mb-2">Connect with Your Family</h2>
               <p className="text-gray-700 mb-4">
                 Share your stories, wisdom, and experiences with loved ones. These activities help bridge generations and create lasting memories for your family.
               </p>
@@ -362,10 +362,10 @@ const GoldenYearsPortal: React.FC = () => {
                 {familyActivities.map((activity, index) => (
                   <div 
                     key={index} 
-                    className="bg-white rounded-xl shadow-md overflow-hidden border border-amber-100 hover:shadow-lg transition-shadow p-5"
+                    className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow p-5"
                   >
                     <div className="flex justify-center mb-4">
-                      <div className="p-3 rounded-full bg-amber-100">
+                      <div className="p-3 rounded-full bg-teal-100">
                         {activity.icon}
                       </div>
                     </div>
@@ -379,19 +379,19 @@ const GoldenYearsPortal: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-md border border-amber-100">
+            <div className="bg-white rounded-xl p-6 shadow-md border border-teal-100">
               <div className="flex items-center gap-3 mb-4">
-                <PenTool className="h-6 w-6 text-amber-500" />
+                <PenTool className="h-6 w-6 text-teal-500" />
                 <h3 className="text-lg font-medium">Today's Journal Prompt</h3>
               </div>
-              <div className="bg-amber-50 rounded-lg p-4 mb-4 border border-amber-200">
+              <div className="bg-teal-50 rounded-lg p-4 mb-4 border border-teal-200">
                 <p className="text-gray-800 italic">
                   "What is one piece of wisdom you wish you could share with your younger self? How has this insight shaped your life?"
                 </p>
               </div>
               <Button 
                 onClick={() => handleNavigate("/journaling")}
-                className="bg-gradient-to-r from-amber-500 to-orange-400 hover:from-amber-600 hover:to-orange-500 text-white"
+                className="bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-600 hover:to-emerald-500 text-white"
               >
                 Open Journal <PenTool className="ml-2 h-4 w-4" />
               </Button>
@@ -404,7 +404,7 @@ const GoldenYearsPortal: React.FC = () => {
               {supportGroups.map((group, index) => (
                 <div 
                   key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-amber-100 hover:shadow-lg transition-shadow p-6"
+                  className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow p-6"
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between">
                     <div className="mb-4 md:mb-0">
@@ -421,9 +421,9 @@ const GoldenYearsPortal: React.FC = () => {
                 </div>
               ))}
 
-              <div className="bg-amber-50 rounded-xl p-6 border border-amber-200 mt-4">
+              <div className="bg-teal-50 rounded-xl p-6 border border-teal-200 mt-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <Heart className="h-6 w-6 text-amber-500" />
+                  <Heart className="h-6 w-6 text-teal-500" />
                   <h3 className="text-lg font-medium">Need immediate support?</h3>
                 </div>
                 <p className="text-gray-700 mb-4">
@@ -432,7 +432,7 @@ const GoldenYearsPortal: React.FC = () => {
                 <Button 
                   onClick={() => handleNavigate("/crisis-support")}
                   variant="outline"
-                  className="border-amber-400 text-amber-700 hover:bg-amber-100"
+                  className="border-teal-400 text-teal-700 hover:bg-teal-100"
                 >
                   Contact Support <MessageCircle className="ml-2 h-4 w-4" />
                 </Button>

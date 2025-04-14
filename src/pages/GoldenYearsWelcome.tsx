@@ -16,10 +16,10 @@ const GoldenYearsWelcome: React.FC = () => {
         "Resources for managing age-related transitions and challenges",
         "Interactive family features to strengthen intergenerational bonds"
       ]}
-      color="amber"
-      gradientFrom="amber-500"
-      gradientTo="orange-300"
-      borderColor="#F59E0B"
+      color="teal"
+      gradientFrom="teal-500"
+      gradientTo="emerald-300"
+      borderColor="#14B8A6"
       portalPath="/golden-years-portal"
       icon={<Sparkles className="h-10 w-10 text-white" />}
     />

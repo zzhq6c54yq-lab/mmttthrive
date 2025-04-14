@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,7 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
-      <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden">
+      <div className="max-w-5xl mx-auto bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden">
         <div className="absolute top-4 right-4 z-20">
           <HomeButton />
         </div>
@@ -70,16 +71,16 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
         <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4 animate-fade-in">
           {screenState === 'welcome' ? (
             <>
-              <div className={`p-5 rounded-full bg-${color}/20 backdrop-blur-sm mb-6`}>
+              <div className={`p-5 rounded-full bg-${color}/30 backdrop-blur-sm mb-6`}>
                 {icon}
               </div>
               
-              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-[${gradientTo}]`}>
+              <h1 className={`text-4xl md:text-5xl font-semibold mb-8 text-white`}>
                 {title}
               </h1>
               
               <div className="max-w-2xl mb-10">
-                <p className="text-xl mb-6 text-white/90 font-medium">
+                <p className="text-xl mb-6 text-white font-medium">
                   {description}
                 </p>
               </div>
@@ -93,19 +94,19 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
             </>
           ) : (
             <>
-              <h1 className={`text-4xl md:text-5xl font-light mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[${borderColor}] to-[${gradientTo}]`}>
+              <h1 className={`text-4xl md:text-5xl font-semibold mb-8 text-white`}>
                 What to Expect
               </h1>
               
               <div className="max-w-3xl mb-10">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-8">
                   <ul className="space-y-4 text-left">
                     {whatToExpect.map((item, index) => (
                       <li key={index} className="flex items-start">
-                        <div className={`p-1 rounded-full bg-${color}/20 mr-3 mt-1`}>
+                        <div className={`p-1 rounded-full bg-${color}/40 mr-3 mt-1`}>
                           <div className={`w-3 h-3 rounded-full bg-${color}`}></div>
                         </div>
-                        <span className="text-lg text-white/90">{item}</span>
+                        <span className="text-lg text-white">{item}</span>
                       </li>
                     ))}
                   </ul>

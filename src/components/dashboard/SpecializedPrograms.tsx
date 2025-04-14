@@ -81,8 +81,8 @@ const SpecializedPrograms: React.FC = () => {
         : "Mental wellness resources for seniors and elderly adults",
       icon: Sparkles,
       path: "/golden-years-welcome",
-      gradient: "from-[#F59E0B]/80 to-[#FBBF24]/80",
-      borderColor: "#F59E0B",
+      gradient: "from-[#14B8A6]/80 to-[#34D399]/80",
+      borderColor: "#14B8A6",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
