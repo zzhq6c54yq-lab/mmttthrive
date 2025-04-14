@@ -1,445 +1,253 @@
+
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import HomeButton from "@/components/HomeButton";
-import { 
-  BookOpen, FileText, Users, Heart, Calendar, Video, 
-  Sparkles, BookMarked, MessageCircle, Lightbulb, Book, 
-  HeartHandshake, PenTool, Clock, FileCheck, Footprints
-} from "lucide-react";
-import ActionButton from "@/components/navigation/ActionButton";
+import { useToast } from "@/hooks/use-toast";
+import ThriveButton from "@/components/navigation/ThriveButton";
+import NavigationBar from "@/components/navigation/NavigationBar";
+import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe } from "lucide-react";
 
 const GoldenYearsPortal: React.FC = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("resources");
   const location = useLocation();
-
-  const handleNavigate = (path: string) => {
+  const { toast } = useToast();
+  
+  const handleFeatureClick = (feature: string) => {
     toast({
-      title: "Navigating",
-      description: `Taking you to ${path}`,
+      title: `Accessing ${feature}`,
+      description: `Loading ${feature} for seniors...`,
       duration: 1500,
     });
     
-    navigate(path, { 
+    navigate(`/golden-years-portal/${feature.toLowerCase().replace(/\s+/g, '-')}`, {
       state: { 
+        feature: feature,
         stayInPortal: true,
-        preventTutorial: true 
+        preventTutorial: true,
+        portalPath: '/golden-years-portal'
       }
     });
   };
 
-  const resources = [
-    {
-      title: "Legacy Journal",
-      description: "Preserve your life story and wisdom for future generations through guided memoir writing.",
-      icon: <Book className="h-6 w-6 text-teal-500" />,
-      tag: "Featured",
-      color: "bg-teal-100 text-teal-800",
-      action: {
-        type: "join" as const,
-        id: "legacy-journal",
-        title: "Open Journal",
-        path: "/golden-years-journal"
-      }
-    },
-    {
-      title: "End-of-Life Planning",
-      description: "Thoughtfully prepare important decisions and documents for peace of mind.",
-      icon: <FileCheck className="h-6 w-6 text-blue-500" />,
-      tag: "Planning",
-      color: "bg-blue-100 text-blue-800",
-      action: {
-        type: "view" as const,
-        id: "eol-planning",
-        title: "Start Planning",
-        path: "/golden-years-journal?tab=planning"
-      }
-    },
-    {
-      title: "Sleep & Seniors",
-      description: "Understanding sleep changes and improving your rest quality.",
-      icon: <Clock className="h-6 w-6 text-purple-500" />,
-      tag: "Health",
-      color: "bg-purple-100 text-purple-800",
-      action: {
-        type: "view" as const,
-        id: "sleep-guide",
-        title: "Read Article",
-        path: "/mindfulness-sleep"
-      }
-    },
-    {
-      title: "Memory Exercises",
-      description: "Daily activities to keep your mind sharp and memory strong.",
-      icon: <Lightbulb className="h-6 w-6 text-green-500" />,
-      tag: "Cognitive",
-      color: "bg-green-100 text-green-800",
-      action: {
-        type: "practice" as const,
-        id: "memory-exercises",
-        title: "Start Exercises",
-        path: "/mental-health-games"
-      }
-    }
-  ];
-
-  const workshops = [
-    {
-      title: "Technology Made Simple",
-      description: "Learn to use digital tools to stay connected with loved ones.",
-      date: "Every Tuesday at 11:00 AM",
-      image: "https://images.unsplash.com/photo-1565549299390-64d8072dc996?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-      tags: ["Tech", "Beginner"],
-      action: {
-        type: "workshop" as const,
-        id: "tech-workshop",
-        title: "Join Workshop",
-        path: "/workshop/tech-seniors"
-      }
-    },
-    {
-      title: "Mindfulness for Seniors",
-      description: "Meditation techniques specially adapted for older adults.",
-      date: "Every Thursday at 9:30 AM",
-      image: "https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-      tags: ["Wellness", "Meditation"],
-      action: {
-        type: "workshop" as const,
-        id: "mindfulness-workshop",
-        title: "Join Workshop",
-        path: "/workshop/senior-mindfulness"
-      }
-    },
-    {
-      title: "Life Story Writing",
-      description: "Learn techniques to write and share your life experiences.",
-      date: "Every Wednesday at 2:00 PM",
-      image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-      tags: ["Creative", "Writing"],
-      action: {
-        type: "workshop" as const,
-        id: "writing-workshop",
-        title: "Join Workshop",
-        path: "/workshop/life-story-writing"
-      }
-    }
-  ];
-
-  const familyActivities = [
-    {
-      title: "Legacy Video Messages",
-      description: "Record video messages to share wisdom and stories with younger generations.",
-      icon: <Video className="h-6 w-6 text-rose-500" />,
-      action: {
-        type: "record" as const,
-        id: "legacy-video",
-        title: "Record Message",
-        path: "/video-diary/record"
-      }
-    },
-    {
-      title: "Family History Project",
-      description: "Collaborative space to build your family tree and share memories with loved ones.",
-      icon: <Users className="h-6 w-6 text-emerald-500" />,
-      action: {
-        type: "join" as const,
-        id: "family-history",
-        title: "Enter Project",
-        path: "/family-resources"
-      }
-    },
-    {
-      title: "Guided Journal Prompts",
-      description: "Daily prompts to write about your life experiences and share with family.",
-      icon: <PenTool className="h-6 w-6 text-amber-500" />,
-      action: {
-        type: "join" as const,
-        id: "journal-prompts",
-        title: "Start Writing",
-        path: "/journaling"
-      }
-    }
-  ];
-
-  const supportGroups = [
-    {
-      title: "Retirement Transitions",
-      description: "Connect with others navigating the transition to retirement.",
-      members: 124,
-      nextMeeting: "Monday, 3:00 PM",
-      action: {
-        type: "discussion" as const,
-        id: "retirement-group",
-        title: "Join Group",
-        path: "/community-support"
-      }
-    },
-    {
-      title: "Caregivers Corner",
-      description: "Support for seniors who are also caregivers to spouses or others.",
-      members: 87,
-      nextMeeting: "Wednesday, 1:00 PM",
-      action: {
-        type: "discussion" as const,
-        id: "caregivers-group",
-        title: "Join Group",
-        path: "/community-support"
-      }
-    },
-    {
-      title: "Living with Loss",
-      description: "Grief support specific to the experiences of seniors.",
-      members: 56,
-      nextMeeting: "Friday, 11:00 AM",
-      action: {
-        type: "discussion" as const,
-        id: "grief-group",
-        title: "Join Group",
-        path: "/community-support"
-      }
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#EBF9F8] via-[#F1FDFB] to-[#F7FEFD] text-gray-800">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-teal-500 to-emerald-400 p-6 relative">
-        <div className="absolute top-4 right-4 z-10">
-          <HomeButton portalMode={true} portalPath="/golden-years-portal" />
-        </div>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center mb-4 md:mb-0">
-              <div className="bg-white/20 p-3 rounded-full mr-4">
-                <Sparkles className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-light text-white">The Golden Years</h1>
-                <p className="text-white/90">Embrace wisdom, share stories, thrive together</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <Button 
-                onClick={() => handleNavigate("/golden-years-journal")}
-                variant="outline"
-                className="border-white/40 text-white bg-white/10 hover:bg-white/20"
-              >
-                Legacy Journal <Book className="ml-2 h-4 w-4" />
-              </Button>
-              <Button 
-                onClick={() => handleNavigate("/community-support")}
-                variant="outline"
-                className="border-white/40 text-white bg-white/10 hover:bg-white/20"
-              >
-                Community <Users className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-md mb-8 border border-teal-200">
-          <div className="flex items-center gap-4 mb-3">
-            <Calendar className="h-12 w-12 text-teal-500" />
-            <div>
-              <h2 className="text-2xl font-medium text-teal-700">Welcome to Your Golden Years Journey</h2>
-              <p className="text-gray-600">Today is a perfect day to embrace life's wisdom and connect with others.</p>
-            </div>
-          </div>
-          <p className="text-gray-700 italic border-l-4 border-teal-300 pl-4 mt-2">
-            "The longer I live, the more beautiful life becomes." — Frank Lloyd Wright
+    <div className="min-h-screen bg-gradient-to-b from-[#034b45] via-[#046b62] to-[#067b6d] text-white">
+      {/* Navigation bar */}
+      <NavigationBar 
+        showBackButton={true} 
+        showHomeButton={false}
+        showThriveButton={true}
+        title="Golden Years Journey"
+        portalMode={true}
+        portalPath="/golden-years-welcome"
+      />
+      
+      <div className="container mx-auto px-4 py-8 pt-16">
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-semibold mb-4">Welcome to Your Golden Years Journey</h1>
+          <p className="text-xl text-teal-100 max-w-2xl mx-auto">
+            Explore resources designed to enhance your wellbeing, connect with others, and embrace this meaningful time of life.
           </p>
-          
-          <div className="mt-6 bg-teal-50 rounded-lg p-4 border border-teal-200">
-            <div className="flex items-center gap-3 mb-2">
-              <Footprints className="h-5 w-5 text-teal-600" />
-              <h3 className="font-medium text-teal-800">Your Legacy Journal</h3>
+        </div>
+        
+        {/* Featured Content */}
+        <div className="bg-teal-900/30 backdrop-blur-md border border-teal-200/30 rounded-xl p-6 mb-10">
+          <h2 className="text-2xl font-medium mb-4 flex items-center">
+            <Lightbulb className="mr-2 h-6 w-6 text-teal-300" />
+            Featured: Legacy Journal
+          </h2>
+          <p className="mb-6 text-teal-50">
+            Preserve your life story, wisdom, and memories for future generations. Our guided journaling 
+            experience helps you document your journey in a meaningful way that can be shared with loved ones.
+          </p>
+          <Button 
+            className="bg-teal-500 hover:bg-teal-600 text-white px-6"
+            onClick={() => handleFeatureClick("Legacy Journal")}
+          >
+            Start Your Journal
+          </Button>
+        </div>
+        
+        {/* Main Resources */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          {/* Wellness Resources */}
+          <div className="bg-teal-900/20 backdrop-blur-sm border border-teal-200/20 rounded-xl p-6 hover:bg-teal-900/30 transition">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-medium">Wellness Resources</h3>
+              <div className="p-2 bg-teal-600/40 rounded-full">
+                <HeartHandshake className="h-5 w-5 text-teal-200" />
+              </div>
             </div>
-            <p className="text-gray-700 mb-3">
-              Begin your memoir journey today. Our guided prompts help you capture your life story, 
-              creating a treasure of wisdom for future generations.
+            <p className="mb-6 text-teal-100">
+              Age-appropriate exercises, nutrition advice, and mental wellness practices designed specifically for seniors.
             </p>
             <Button 
-              onClick={() => handleNavigate("/golden-years-journal")}
-              className="bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-600 hover:to-emerald-500 text-white"
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white"
+              onClick={() => handleFeatureClick("Wellness Resources")}
             >
-              Continue Your Story <Book className="ml-2 h-4 w-4" />
+              Explore Resources
+            </Button>
+          </div>
+          
+          {/* End-of-Life Planning */}
+          <div className="bg-teal-900/20 backdrop-blur-sm border border-teal-200/20 rounded-xl p-6 hover:bg-teal-900/30 transition">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-medium">End-of-Life Planning</h3>
+              <div className="p-2 bg-teal-600/40 rounded-full">
+                <BookOpen className="h-5 w-5 text-teal-200" />
+              </div>
+            </div>
+            <p className="mb-6 text-teal-100">
+              Thoughtful resources to help with advance care planning, will preparation, and ensuring your wishes are documented.
+            </p>
+            <Button 
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white"
+              onClick={() => handleFeatureClick("End-of-Life Planning")}
+            >
+              Access Planning Tools
+            </Button>
+          </div>
+          
+          {/* Community Connections */}
+          <div className="bg-teal-900/20 backdrop-blur-sm border border-teal-200/20 rounded-xl p-6 hover:bg-teal-900/30 transition">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-medium">Community Connections</h3>
+              <div className="p-2 bg-teal-600/40 rounded-full">
+                <Users className="h-5 w-5 text-teal-200" />
+              </div>
+            </div>
+            <p className="mb-6 text-teal-100">
+              Connect with peers, join discussion groups, and find community events in your area.
+            </p>
+            <Button 
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white"
+              onClick={() => handleFeatureClick("Community Connections")}
+            >
+              Join Community
+            </Button>
+          </div>
+          
+          {/* Memory & Cognitive Health */}
+          <div className="bg-teal-900/20 backdrop-blur-sm border border-teal-200/20 rounded-xl p-6 hover:bg-teal-900/30 transition">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-medium">Memory & Cognitive Health</h3>
+              <div className="p-2 bg-teal-600/40 rounded-full">
+                <Lightbulb className="h-5 w-5 text-teal-200" />
+              </div>
+            </div>
+            <p className="mb-6 text-teal-100">
+              Brain exercises, memory techniques, and activities to maintain cognitive function and mental sharpness.
+            </p>
+            <Button 
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white"
+              onClick={() => handleFeatureClick("Memory and Cognitive Health")}
+            >
+              Brain Fitness
+            </Button>
+          </div>
+          
+          {/* Life Transitions */}
+          <div className="bg-teal-900/20 backdrop-blur-sm border border-teal-200/20 rounded-xl p-6 hover:bg-teal-900/30 transition">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-medium">Life Transitions</h3>
+              <div className="p-2 bg-teal-600/40 rounded-full">
+                <Clock className="h-5 w-5 text-teal-200" />
+              </div>
+            </div>
+            <p className="mb-6 text-teal-100">
+              Resources for major life changes: retirement, downsizing, loss of a spouse, and adapting to changing health needs.
+            </p>
+            <Button 
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white"
+              onClick={() => handleFeatureClick("Life Transitions")}
+            >
+              Explore Guidance
+            </Button>
+          </div>
+          
+          {/* Family Connection Tools */}
+          <div className="bg-teal-900/20 backdrop-blur-sm border border-teal-200/20 rounded-xl p-6 hover:bg-teal-900/30 transition">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-medium">Family Connection Tools</h3>
+              <div className="p-2 bg-teal-600/40 rounded-full">
+                <Globe className="h-5 w-5 text-teal-200" />
+              </div>
+            </div>
+            <p className="mb-6 text-teal-100">
+              Tools to strengthen bonds with children and grandchildren, create memories, and bridge generational gaps.
+            </p>
+            <Button 
+              className="w-full bg-teal-700 hover:bg-teal-800 text-white"
+              onClick={() => handleFeatureClick("Family Connection Tools")}
+            >
+              Connect with Family
             </Button>
           </div>
         </div>
-
-        {/* Navigation Tabs */}
-        <Tabs defaultValue="resources" className="mb-8" onValueChange={setActiveTab}>
-          <TabsList className="bg-white/50 border border-teal-200">
-            <TabsTrigger value="resources" className="data-[state=active]:bg-teal-100">
-              <BookMarked className="h-4 w-4 mr-2" /> Resources
-            </TabsTrigger>
-            <TabsTrigger value="workshops" className="data-[state=active]:bg-teal-100">
-              <Calendar className="h-4 w-4 mr-2" /> Workshops
-            </TabsTrigger>
-            <TabsTrigger value="family" className="data-[state=active]:bg-teal-100">
-              <HeartHandshake className="h-4 w-4 mr-2" /> Family Connection
-            </TabsTrigger>
-            <TabsTrigger value="support" className="data-[state=active]:bg-teal-100">
-              <MessageCircle className="h-4 w-4 mr-2" /> Support Groups
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Resources Tab */}
-          <TabsContent value="resources" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {resources.map((resource, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow"
-                >
-                  <div className="p-5">
-                    <div className="flex justify-between items-start mb-3">
-                      {resource.icon}
-                      <span className={`text-xs px-2 py-1 rounded-full ${resource.color}`}>{resource.tag}</span>
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-800 mb-1">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
-                    <ActionButton {...resource.action} variant="outline" className="border-teal-300 text-teal-700 hover:bg-teal-50" />
-                  </div>
-                </div>
-              ))}
+        
+        {/* Calendar/Upcoming Events */}
+        <div className="bg-teal-800/30 backdrop-blur-md border border-teal-200/30 rounded-xl p-6 mb-10">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-medium flex items-center">
+              <Calendar className="mr-2 h-6 w-6 text-teal-300" />
+              Upcoming Events
+            </h2>
+            <Button 
+              variant="outline" 
+              className="border-teal-400 text-teal-100 hover:bg-teal-700/50"
+              onClick={() => handleFeatureClick("Calendar")}
+            >
+              View All Events
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div 
+              className="bg-teal-700/30 p-4 rounded-lg cursor-pointer hover:bg-teal-700/40 transition"
+              onClick={() => handleFeatureClick("Virtual Wellness Workshop")}
+            >
+              <p className="text-teal-200 text-sm">June 20, 2025 • 2:00 PM</p>
+              <h4 className="font-medium mb-1">Virtual Wellness Workshop</h4>
+              <p className="text-sm text-teal-100">Learn gentle exercises you can do at home to maintain mobility.</p>
             </div>
-          </TabsContent>
-
-          {/* Workshops Tab */}
-          <TabsContent value="workshops" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {workshops.map((workshop, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow"
-                >
-                  <div className="h-40 overflow-hidden">
-                    <img 
-                      src={workshop.image} 
-                      alt={workshop.title} 
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1524069290683-0457abfe42c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80";
-                      }}
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-lg font-medium text-gray-800 mb-1">{workshop.title}</h3>
-                    <p className="text-amber-600 text-sm mb-2">{workshop.date}</p>
-                    <p className="text-gray-600 text-sm mb-3">{workshop.description}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-2">
-                        {workshop.tags.map((tag, i) => (
-                          <span key={i} className="bg-amber-50 text-amber-700 text-xs px-2 py-1 rounded-full">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <ActionButton {...workshop.action} variant="amber" size="sm" />
-                    </div>
-                  </div>
-                </div>
-              ))}
+            
+            <div 
+              className="bg-teal-700/30 p-4 rounded-lg cursor-pointer hover:bg-teal-700/40 transition"
+              onClick={() => handleFeatureClick("Memory Sharing Circle")}
+            >
+              <p className="text-teal-200 text-sm">June 25, 2025 • 3:30 PM</p>
+              <h4 className="font-medium mb-1">Memory Sharing Circle</h4>
+              <p className="text-sm text-teal-100">Join our virtual circle to share stories from your past with peers.</p>
             </div>
-          </TabsContent>
-
-          {/* Family Connection Tab */}
-          <TabsContent value="family" className="mt-6">
-            <div className="bg-teal-50 rounded-xl p-6 mb-6 border border-teal-200">
-              <h2 className="text-xl text-teal-800 font-medium mb-2">Connect with Your Family</h2>
-              <p className="text-gray-700 mb-4">
-                Share your stories, wisdom, and experiences with loved ones. These activities help bridge generations and create lasting memories for your family.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                {familyActivities.map((activity, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow p-5"
-                  >
-                    <div className="flex justify-center mb-4">
-                      <div className="p-3 rounded-full bg-teal-100">
-                        {activity.icon}
-                      </div>
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-800 mb-2 text-center">{activity.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 text-center">{activity.description}</p>
-                    <div className="flex justify-center">
-                      <ActionButton {...activity.action} variant="amber" />
-                    </div>
-                  </div>
-                ))}
-              </div>
+          </div>
+        </div>
+        
+        {/* Support Resources */}
+        <div className="bg-red-900/20 border border-red-300/30 p-4 rounded-lg flex flex-col md:flex-row md:items-center md:justify-between">
+          <div className="mb-4 md:mb-0">
+            <div className="flex items-center">
+              <LifeBuoy className="h-5 w-5 text-red-300 mr-2" />
+              <h3 className="font-medium text-lg">Need Assistance?</h3>
             </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-md border border-teal-100">
-              <div className="flex items-center gap-3 mb-4">
-                <PenTool className="h-6 w-6 text-teal-500" />
-                <h3 className="text-lg font-medium">Today's Journal Prompt</h3>
-              </div>
-              <div className="bg-teal-50 rounded-lg p-4 mb-4 border border-teal-200">
-                <p className="text-gray-800 italic">
-                  "What is one piece of wisdom you wish you could share with your younger self? How has this insight shaped your life?"
-                </p>
-              </div>
-              <Button 
-                onClick={() => handleNavigate("/journaling")}
-                className="bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-600 hover:to-emerald-500 text-white"
-              >
-                Open Journal <PenTool className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </TabsContent>
-
-          {/* Support Groups Tab */}
-          <TabsContent value="support" className="mt-6">
-            <div className="grid grid-cols-1 gap-6">
-              {supportGroups.map((group, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white rounded-xl shadow-md overflow-hidden border border-teal-100 hover:shadow-lg transition-shadow p-6"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between">
-                    <div className="mb-4 md:mb-0">
-                      <h3 className="text-xl font-medium text-gray-800 mb-1">{group.title}</h3>
-                      <p className="text-gray-600 mb-2">{group.description}</p>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Users className="h-4 w-4 mr-1" /> <span>{group.members} members</span>
-                        <span className="mx-2">•</span>
-                        <Calendar className="h-4 w-4 mr-1" /> <span>Next: {group.nextMeeting}</span>
-                      </div>
-                    </div>
-                    <ActionButton {...group.action} variant="amber" className="min-w-[120px]" />
-                  </div>
-                </div>
-              ))}
-
-              <div className="bg-teal-50 rounded-xl p-6 border border-teal-200 mt-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Heart className="h-6 w-6 text-teal-500" />
-                  <h3 className="text-lg font-medium">Need immediate support?</h3>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Our team is available to help you navigate challenges or simply provide a listening ear when you need it.
-                </p>
-                <Button 
-                  onClick={() => handleNavigate("/crisis-support")}
-                  variant="outline"
-                  className="border-teal-400 text-teal-700 hover:bg-teal-100"
-                >
-                  Contact Support <MessageCircle className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+            <p className="text-sm text-red-100">Resources for emergency help, caregiver support, or technical assistance.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button 
+              size="sm" 
+              className="bg-red-700 hover:bg-red-800 text-white"
+              onClick={() => handleFeatureClick("Emergency Resources")}
+            >
+              Emergency Resources
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="border-red-400 text-red-100 hover:bg-red-900/50"
+              onClick={() => handleFeatureClick("Technical Support")}
+            >
+              Technical Support
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

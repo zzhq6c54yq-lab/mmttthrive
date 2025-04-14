@@ -5,9 +5,31 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
+import NavigationBar from "@/components/navigation/NavigationBar";
 
 // Early Childhood Portal (Ages 2-7)
 const EarlyChildhoodPortal: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleButtonClick = (activity: string) => {
+    toast({
+      title: `Starting ${activity}`,
+      description: `Loading ${activity} content for early childhood...`,
+      duration: 1500,
+    });
+    
+    navigate(`/adolescent-portal/early-childhood/${activity.toLowerCase().replace(/\s+/g, '-')}`, {
+      state: { 
+        ageGroup: 'early-childhood',
+        activity: activity,
+        stayInPortal: true,
+        preventTutorial: true,
+        portalPath: '/adolescent-portal'
+      }
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#ff85a2] via-[#ffa9c6] to-[#ffd6e6] py-8 px-4 relative overflow-hidden">
       {/* Fun background elements */}
@@ -27,15 +49,17 @@ const EarlyChildhoodPortal: React.FC = () => {
         <div className="absolute top-[40%] right-[25%] text-4xl animate-[bounce_4s_infinite]">🎁</div>
       </div>
       
-      {/* Navigation buttons */}
-      <div className="absolute top-4 left-4 z-20">
-        <PortalBackButton returnPath="/adolescent-selection" />
-      </div>
-      <div className="absolute top-4 right-4 z-20">
-        <ThriveButton size="sm" />
-      </div>
+      {/* Navigation bar */}
+      <NavigationBar 
+        showBackButton={true} 
+        showHomeButton={false}
+        showThriveButton={true}
+        title="Feelings & Friends"
+        portalMode={true}
+        portalPath="/adolescent-selection"
+      />
       
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10 pt-14">
         <div className="flex flex-col items-center text-center mb-8">
           <div className="text-6xl mb-2">🧸</div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-purple-800">
@@ -59,6 +83,7 @@ const EarlyChildhoodPortal: React.FC = () => {
             </p>
             <Button 
               className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-xl border-2 border-yellow-600 text-lg py-6 h-auto"
+              onClick={() => handleButtonClick("Story Time")}
             >
               Read Stories
             </Button>
@@ -75,6 +100,7 @@ const EarlyChildhoodPortal: React.FC = () => {
             </p>
             <Button 
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl border-2 border-blue-600 text-lg py-6 h-auto"
+              onClick={() => handleButtonClick("Feeling Games")}
             >
               Play Now
             </Button>
@@ -91,6 +117,7 @@ const EarlyChildhoodPortal: React.FC = () => {
             </p>
             <Button 
               className="w-full bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl border-2 border-green-600 text-lg py-6 h-auto"
+              onClick={() => handleButtonClick("Coloring Fun")}
             >
               Start Coloring
             </Button>
@@ -107,6 +134,7 @@ const EarlyChildhoodPortal: React.FC = () => {
             </p>
             <Button 
               className="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-xl border-2 border-purple-600 text-lg py-6 h-auto"
+              onClick={() => handleButtonClick("Calm Corner")}
             >
               Feel Calm
             </Button>
@@ -123,6 +151,7 @@ const EarlyChildhoodPortal: React.FC = () => {
             </p>
             <Button 
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl border-2 border-orange-600 text-lg py-6 h-auto"
+              onClick={() => handleButtonClick("Family Fun")}
             >
               Play Together
             </Button>
@@ -139,6 +168,7 @@ const EarlyChildhoodPortal: React.FC = () => {
             </p>
             <Button 
               className="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-xl border-2 border-teal-600 text-lg py-6 h-auto"
+              onClick={() => handleButtonClick("Parent Zone")}
             >
               For Parents
             </Button>
@@ -147,7 +177,10 @@ const EarlyChildhoodPortal: React.FC = () => {
         
         {/* Help button for kids */}
         <div className="mt-12 flex justify-center">
-          <Button className="bg-red-400 hover:bg-red-500 text-white rounded-full px-8 py-6 h-auto text-xl font-bold border-4 border-red-500 shadow-lg">
+          <Button 
+            className="bg-red-400 hover:bg-red-500 text-white rounded-full px-8 py-6 h-auto text-xl font-bold border-4 border-red-500 shadow-lg"
+            onClick={() => handleButtonClick("Help")}
+          >
             <div className="text-2xl mr-2">🆘</div> Need Help?
           </Button>
         </div>
@@ -158,17 +191,40 @@ const EarlyChildhoodPortal: React.FC = () => {
 
 // Middle Childhood Portal (Ages 8-13)
 const MiddleChildhoodPortal: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleButtonClick = (activity: string) => {
+    toast({
+      title: `Starting ${activity}`,
+      description: `Loading ${activity} content for middle childhood...`,
+      duration: 1500,
+    });
+    
+    navigate(`/adolescent-portal/middle-childhood/${activity.toLowerCase().replace(/\s+/g, '-')}`, {
+      state: { 
+        ageGroup: 'middle-childhood',
+        activity: activity,
+        stayInPortal: true,
+        preventTutorial: true,
+        portalPath: '/adolescent-portal'
+      }
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#9333ea] via-[#a855f7] to-[#c084fc] text-white py-8 px-4">
-      {/* Navigation buttons */}
-      <div className="absolute top-4 left-4 z-20">
-        <PortalBackButton returnPath="/adolescent-selection" />
-      </div>
-      <div className="absolute top-4 right-4 z-20">
-        <ThriveButton size="sm" />
-      </div>
+      {/* Navigation bar */}
+      <NavigationBar 
+        showBackButton={true} 
+        showHomeButton={false}
+        showThriveButton={true}
+        title="Growing Up Strong"
+        portalMode={true}
+        portalPath="/adolescent-selection"
+      />
       
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10 pt-14">
         <div className="flex flex-col md:flex-row items-center justify-between mb-12">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
@@ -192,7 +248,10 @@ const MiddleChildhoodPortal: React.FC = () => {
             <p className="text-purple-100 mb-6">
               Exciting games that teach important life skills while having fun!
             </p>
-            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+            <Button 
+              className="w-full bg-indigo-500 hover:bg-indigo-600"
+              onClick={() => handleButtonClick("Adventure Games")}
+            >
               Play Games
             </Button>
           </div>
@@ -206,7 +265,10 @@ const MiddleChildhoodPortal: React.FC = () => {
             <p className="text-purple-100 mb-6">
               Test your problem-solving skills with fun puzzles and quests!
             </p>
-            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+            <Button 
+              className="w-full bg-indigo-500 hover:bg-indigo-600"
+              onClick={() => handleButtonClick("Brain Challenges")}
+            >
               Start Challenge
             </Button>
           </div>
@@ -220,7 +282,10 @@ const MiddleChildhoodPortal: React.FC = () => {
             <p className="text-purple-100 mb-6">
               Learn about making and keeping friends, solving conflicts, and teamwork!
             </p>
-            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+            <Button 
+              className="w-full bg-indigo-500 hover:bg-indigo-600"
+              onClick={() => handleButtonClick("Friendship Zone")}
+            >
               Explore
             </Button>
           </div>
@@ -234,7 +299,10 @@ const MiddleChildhoodPortal: React.FC = () => {
             <p className="text-purple-100 mb-6">
               Collect badges as you complete activities and learn new skills!
             </p>
-            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+            <Button 
+              className="w-full bg-indigo-500 hover:bg-indigo-600"
+              onClick={() => handleButtonClick("Achievement Badges")}
+            >
               See Badges
             </Button>
           </div>
@@ -248,7 +316,10 @@ const MiddleChildhoodPortal: React.FC = () => {
             <p className="text-purple-100 mb-6">
               Helpful information for parents to support kids during this important stage!
             </p>
-            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+            <Button 
+              className="w-full bg-indigo-500 hover:bg-indigo-600"
+              onClick={() => handleButtonClick("Parent Resources")}
+            >
               For Parents
             </Button>
           </div>
@@ -262,7 +333,10 @@ const MiddleChildhoodPortal: React.FC = () => {
             <p className="text-purple-100 mb-6">
               Need someone to talk to? Find resources and support here!
             </p>
-            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+            <Button 
+              className="w-full bg-indigo-500 hover:bg-indigo-600"
+              onClick={() => handleButtonClick("Help and Support")}
+            >
               Get Help
             </Button>
           </div>
@@ -274,17 +348,40 @@ const MiddleChildhoodPortal: React.FC = () => {
 
 // Teen Portal (Ages 14+)
 const TeenPortal: React.FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleButtonClick = (activity: string) => {
+    toast({
+      title: `Starting ${activity}`,
+      description: `Loading ${activity} content for teens...`,
+      duration: 1500,
+    });
+    
+    navigate(`/adolescent-portal/teen/${activity.toLowerCase().replace(/\s+/g, '-')}`, {
+      state: { 
+        ageGroup: 'adolescence',
+        activity: activity,
+        stayInPortal: true,
+        preventTutorial: true,
+        portalPath: '/adolescent-portal'
+      }
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#3b82f6] via-[#6366f1] to-[#8b5cf6] text-white py-8 px-4">
-      {/* Navigation buttons */}
-      <div className="absolute top-4 left-4 z-20">
-        <PortalBackButton returnPath="/adolescent-selection" />
-      </div>
-      <div className="absolute top-4 right-4 z-20">
-        <ThriveButton size="sm" />
-      </div>
+      {/* Navigation bar */}
+      <NavigationBar 
+        showBackButton={true} 
+        showHomeButton={false}
+        showThriveButton={true}
+        title="Your Space, Your Journey"
+        portalMode={true}
+        portalPath="/adolescent-selection"
+      />
       
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10 pt-14">
         <div className="mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
             Your Space, Your Journey
@@ -302,7 +399,10 @@ const TeenPortal: React.FC = () => {
               <p className="mb-4">
                 Explore who you are, what matters to you, and where you want to go in life with our interactive tools and resources.
               </p>
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => handleButtonClick("Identity and Self-Discovery")}
+              >
                 Start Your Journey
               </Button>
             </div>
@@ -315,7 +415,11 @@ const TeenPortal: React.FC = () => {
             <p className="mb-4">
               Quick tools and techniques to manage stress, anxiety, and overwhelming emotions.
             </p>
-            <Button variant="outline" className="w-full border-blue-400 text-blue-100 hover:bg-blue-800/50">
+            <Button 
+              variant="outline" 
+              className="w-full border-blue-400 text-blue-100 hover:bg-blue-800/50"
+              onClick={() => handleButtonClick("Stress Relief")}
+            >
               Feel Better Now
             </Button>
           </div>
@@ -329,7 +433,10 @@ const TeenPortal: React.FC = () => {
             <p className="text-blue-100 mb-6">
               Exercises and challenges to build resilience, mindfulness, and emotional intelligence.
             </p>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={() => handleButtonClick("Mental Fitness")}
+            >
               Train Your Mind
             </Button>
           </div>
@@ -340,7 +447,10 @@ const TeenPortal: React.FC = () => {
             <p className="text-blue-100 mb-6">
               Navigate friendships, family dynamics, romance, and setting healthy boundaries.
             </p>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={() => handleButtonClick("Relationships")}
+            >
               Learn More
             </Button>
           </div>
@@ -351,7 +461,10 @@ const TeenPortal: React.FC = () => {
             <p className="text-blue-100 mb-6">
               Tools to explore career options, educational paths, and life after high school.
             </p>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={() => handleButtonClick("Future Planning")}
+            >
               Plan Ahead
             </Button>
           </div>
@@ -362,7 +475,10 @@ const TeenPortal: React.FC = () => {
             <p className="text-blue-100 mb-6">
               A confidential area to express yourself and connect with peers who understand.
             </p>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={() => handleButtonClick("Safe Space")}
+            >
               Enter Safe Space
             </Button>
           </div>
@@ -373,7 +489,10 @@ const TeenPortal: React.FC = () => {
             <p className="text-blue-100 mb-6">
               Articles, videos, and guides on topics that matter to teens.
             </p>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={() => handleButtonClick("Resources")}
+            >
               Browse Resources
             </Button>
           </div>
@@ -384,7 +503,10 @@ const TeenPortal: React.FC = () => {
             <p className="text-blue-100 mb-6">
               Connect with trained counselors and support services when you need help.
             </p>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={() => handleButtonClick("Support Services")}
+            >
               Find Support
             </Button>
           </div>
@@ -396,7 +518,10 @@ const TeenPortal: React.FC = () => {
             <h3 className="font-bold">Need immediate help?</h3>
             <p className="text-sm">If you're in crisis, help is available 24/7</p>
           </div>
-          <Button className="bg-white text-red-600 hover:bg-red-100">
+          <Button 
+            className="bg-white text-red-600 hover:bg-red-100"
+            onClick={() => handleButtonClick("Crisis Support")}
+          >
             Crisis Support
           </Button>
         </div>
