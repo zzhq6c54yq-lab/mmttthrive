@@ -1,7 +1,9 @@
-import React from "react";
+
+import React, { useState } from "react";
 import ResourceCard from "./ResourceCard";
 import { HeartHandshake, BookOpen, Users, Lightbulb, Clock, Globe, Brain, UserRound } from "lucide-react";
 import useFeatureActions from "@/hooks/useFeatureActions";
+import { useToast } from "@/hooks/use-toast";
 
 interface ResourcesSectionProps {
   onResourceClick: (feature: string) => void;
@@ -9,6 +11,8 @@ interface ResourcesSectionProps {
 
 const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) => {
   const { handleActionClick } = useFeatureActions();
+  const { toast } = useToast();
+  const [loadingResource, setLoadingResource] = useState<string | null>(null);
   
   const resources = [
     {
@@ -56,11 +60,23 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) 
   ];
 
   const handleResourceClick = (resource: any) => {
-    if (resource.action) {
-      handleActionClick(resource.action);
-    } else {
-      onResourceClick(resource.title);
-    }
+    setLoadingResource(resource.title);
+    
+    // Show a toast notification
+    toast({
+      title: `Accessing ${resource.title}`,
+      description: "Loading your requested resources...",
+      duration: 1500,
+    });
+    
+    setTimeout(() => {
+      if (resource.action) {
+        handleActionClick(resource.action);
+      } else {
+        onResourceClick(resource.title);
+      }
+      setLoadingResource(null);
+    }, 500);
   };
 
   return (
@@ -73,6 +89,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) 
           icon={resource.icon}
           onResourceClick={() => handleResourceClick(resource)}
           buttonText={resource.buttonText}
+          isLoading={loadingResource === resource.title}
         />
       ))}
     </div>

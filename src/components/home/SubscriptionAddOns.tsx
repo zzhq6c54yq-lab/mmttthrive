@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ArrowLeft, ArrowRight, Users, Check } from "lucide-react";
@@ -8,6 +9,8 @@ interface AddOn {
   id: string;
   title: string;
   description: string;
+  targetAudience: string;
+  features: string[];
   icon: React.ElementType;
   path: string;
   gradient: string;
@@ -39,6 +42,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
 }) => {
   const { getTranslatedText, preferredLanguage } = useTranslation();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [expandedAddon, setExpandedAddon] = useState<string | null>(null);
 
   const getImageUrl = (imagePath: string) => {
     if (imagePath.startsWith('https://')) {
@@ -180,11 +184,27 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     }
   };
 
+  const toggleExpandAddon = (id: string) => {
+    if (expandedAddon === id) {
+      setExpandedAddon(null);
+    } else {
+      setExpandedAddon(id);
+    }
+  };
+
   const addOns: AddOn[] = [
     {
       id: "dod",
       title: getTranslatedText('dodTitle'),
       description: getTranslatedText('dodDesc'),
+      targetAudience: "Active duty military personnel, veterans, and their families",
+      features: [
+        "Combat-related stress management tools",
+        "Transition assistance resources",
+        "Specialized military mental health content",
+        "Connection with other veterans and military families",
+        "Department of Defense approved resources"
+      ],
       icon: Shield,
       path: "/dod-welcome",
       gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
@@ -200,6 +220,14 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       id: "college",
       title: getTranslatedText('collegeTitle'),
       description: getTranslatedText('collegeDesc'),
+      targetAudience: "College students, graduate students, and young adults in academic settings",
+      features: [
+        "Study-life balance resources",
+        "Academic stress management",
+        "Social anxiety in college settings",
+        "Campus mental health resources directory",
+        "Career transition guidance"
+      ],
       icon: GraduationCap,
       path: "/college-welcome",
       gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
@@ -215,6 +243,14 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       id: "business",
       title: getTranslatedText('businessTitle'),
       description: getTranslatedText('businessDesc'),
+      targetAudience: "Small business owners, entrepreneurs, and their employees",
+      features: [
+        "Workplace stress management",
+        "Leadership mental wellness",
+        "Work-life balance strategies",
+        "Team mental health resources",
+        "Business growth without burnout"
+      ],
       icon: Briefcase,
       path: "/small-business-selection",
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
@@ -230,6 +266,14 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       id: "adolescent",
       title: getTranslatedText('adolescentTitle'),
       description: getTranslatedText('adolescentDesc'),
+      targetAudience: "Teenagers, young adults, and their parents or guardians",
+      features: [
+        "Age-specific mental wellness content",
+        "Social media and digital wellness",
+        "Identity development resources",
+        "Parent-teen communication tools",
+        "School stress management"
+      ],
       icon: Users,
       path: "/adolescent-selection",
       gradient: "from-[#D946EF]/80 to-[#EC4899]/80",
@@ -245,6 +289,14 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       id: "golden",
       title: getTranslatedText('goldenTitle'),
       description: getTranslatedText('goldenDesc'),
+      targetAudience: "Seniors, retirees, and older adults focusing on life's golden years",
+      features: [
+        "Legacy journal and life story preservation",
+        "Memory and cognitive exercises",
+        "End-of-life planning resources",
+        "Retirement transition support",
+        "Intergenerational connection tools"
+      ],
       icon: Sparkles,
       path: "/golden-years-welcome",
       gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
@@ -373,9 +425,44 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
                   <h3 className="font-semibold text-lg mb-1">
                     {addOn.title}
                   </h3>
-                  <p className="text-sm text-white/90 mb-3 line-clamp-2">
+                  <p className="text-sm text-white/90 mb-2 line-clamp-2">
                     {addOn.description}
                   </p>
+
+                  <div className="text-xs text-white/80 mb-3">
+                    <strong className="block mb-1">For: </strong>
+                    {addOn.targetAudience}
+                  </div>
+
+                  <div className="relative">
+                    <button
+                      className="text-xs text-white/90 underline flex items-center mb-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpandAddon(addOn.id);
+                      }}
+                    >
+                      {expandedAddon === addOn.id ? "Hide details" : "See what's included"}
+                    </button>
+                    
+                    {expandedAddon === addOn.id && (
+                      <div 
+                        className="absolute bottom-full left-0 right-0 bg-black/80 backdrop-blur-sm p-3 rounded-md mb-2 z-20 border border-white/20"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <h4 className="font-medium text-sm mb-1">Key Features:</h4>
+                        <ul className="text-xs">
+                          {addOn.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-center gap-1 mb-1">
+                              <span className="h-1 w-1 bg-[#B87333] rounded-full"></span>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold">{getPriceDisplay(addOn)}</span>
                     <Button 
