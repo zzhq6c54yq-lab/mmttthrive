@@ -24,42 +24,58 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useTranslation from "@/hooks/useTranslation";
 
 const Header = () => {
   const { toast } = useToast();
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
-  
-  // Check language preference and listen for changes
-  useEffect(() => {
-    const checkLanguage = () => {
-      const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-      setIsSpanish(preferredLanguage === 'Español');
-    };
-    
-    // Check initial language
-    checkLanguage();
-    
-    // Listen for language change events
-    window.addEventListener('languageChange', checkLanguage);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('languageChange', checkLanguage);
-    };
-  }, []);
+  const { preferredLanguage, isSpanish, isPortuguese } = useTranslation();
   
   const handleLogout = () => {
+    const logoutMessages = {
+      'English': {
+        title: "Logged out",
+        description: "You have been successfully logged out."
+      },
+      'Español': {
+        title: "Sesión cerrada",
+        description: "Has cerrado sesión exitosamente."
+      },
+      'Português': {
+        title: "Desconectado",
+        description: "Você foi desconectado com sucesso."
+      }
+    };
+    
+    const message = logoutMessages[preferredLanguage as keyof typeof logoutMessages] || logoutMessages['English'];
+    
     toast({
-      title: isSpanish ? "Sesión cerrada" : "Logged out",
-      description: isSpanish ? "Has cerrado sesión exitosamente." : "You have been successfully logged out.",
+      title: message.title,
+      description: message.description,
     });
   };
 
   const handleThemeToggle = () => {
+    const themeMessages = {
+      'English': {
+        title: "Theme setting",
+        description: "Dark mode is not implemented yet."
+      },
+      'Español': {
+        title: "Configuración de tema",
+        description: "El modo oscuro aún no está implementado."
+      },
+      'Português': {
+        title: "Configuração de tema",
+        description: "O modo escuro ainda não foi implementado."
+      }
+    };
+    
+    const message = themeMessages[preferredLanguage as keyof typeof themeMessages] || themeMessages['English'];
+    
     toast({
-      title: isSpanish ? "Configuración de tema" : "Theme setting",
-      description: isSpanish ? "El modo oscuro aún no está implementado." : "Dark mode is not implemented yet.",
+      title: message.title,
+      description: message.description,
     });
   };
 
@@ -73,7 +89,11 @@ const Header = () => {
               variant="outline" 
               size="icon" 
               className="h-12 w-12 rounded-full border-2 border-[#B87333] bg-gradient-to-br from-[#181820] to-[#1f1a25] shadow-lg hover:shadow-[0_0_20px_rgba(184,115,51,0.6)] transition-all duration-500 group relative overflow-hidden"
-              aria-label={isSpanish ? "Tutorial de la Aplicación" : "App Tutorial"}
+              aria-label={
+                isSpanish ? "Tutorial de la Aplicación" : 
+                isPortuguese ? "Tutorial do Aplicativo" : 
+                "App Tutorial"
+              }
               onClick={() => setShowWelcomeTutorial(true)}
             >
               {/* Animated rings */}
@@ -95,7 +115,11 @@ const Header = () => {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{isSpanish ? "Tutorial del sitio" : "Site Tutorial"}</p>
+            <p>
+              {isSpanish ? "Tutorial del sitio" : 
+               isPortuguese ? "Tutorial do site" : 
+               "Site Tutorial"}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -107,8 +131,16 @@ const Header = () => {
             variant="outline" 
             size="icon" 
             className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300 hover:shadow-[0_0_15px_#B87333]"
-            aria-label={isSpanish ? "Menú de usuario" : "User menu"}
-            title={isSpanish ? "Menú de usuario" : "User menu"}
+            aria-label={
+              isSpanish ? "Menú de usuario" : 
+              isPortuguese ? "Menu do usuário" : 
+              "User menu"
+            }
+            title={
+              isSpanish ? "Menú de usuario" : 
+              isPortuguese ? "Menu do usuário" : 
+              "User menu"
+            }
           >
             <User className="h-5 w-5 text-[#B87333]" />
           </Button>
@@ -116,9 +148,15 @@ const Header = () => {
         <DropdownMenuContent className="w-56 mt-2 mr-2 bg-white/95 backdrop-blur-sm border border-[#B87333]/20">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{isSpanish ? "Mi Perfil" : "My Profile"}</p>
+              <p className="text-sm font-medium leading-none">
+                {isSpanish ? "Mi Perfil" : 
+                 isPortuguese ? "Meu Perfil" : 
+                 "My Profile"}
+              </p>
               <p className="text-xs leading-none text-muted-foreground">
-                {isSpanish ? "Administra tu cuenta" : "Manage your account"}
+                {isSpanish ? "Administra tu cuenta" : 
+                 isPortuguese ? "Gerencie sua conta" : 
+                 "Manage your account"}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -126,37 +164,65 @@ const Header = () => {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Perfil" : "Profile"}</span>
+              <span>
+                {isSpanish ? "Perfil" : 
+                 isPortuguese ? "Perfil" : 
+                 "Profile"}
+              </span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Configuración" : "Settings"}</span>
+              <span>
+                {isSpanish ? "Configuración" : 
+                 isPortuguese ? "Configurações" : 
+                 "Settings"}
+              </span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleThemeToggle}>
               <Moon className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Modo Oscuro" : "Dark Mode"}</span>
+              <span>
+                {isSpanish ? "Modo Oscuro" : 
+                 isPortuguese ? "Modo Escuro" : 
+                 "Dark Mode"}
+              </span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <Bell className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Notificaciones" : "Notifications"}</span>
+              <span>
+                {isSpanish ? "Notificaciones" : 
+                 isPortuguese ? "Notificações" : 
+                 "Notifications"}
+              </span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Lock className="mr-2 h-4 w-4" />
-              <span>{isSpanish ? "Configuración de Privacidad" : "Privacy Settings"}</span>
+              <span>
+                {isSpanish ? "Configuración de Privacidad" : 
+                 isPortuguese ? "Configurações de Privacidade" : 
+                 "Privacy Settings"}
+              </span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <MessageSquare className="mr-2 h-4 w-4" />
-            <span>{isSpanish ? "Comentarios" : "Feedback"}</span>
+            <span>
+              {isSpanish ? "Comentarios" : 
+               isPortuguese ? "Feedback" : 
+               "Feedback"}
+            </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
-            <span>{isSpanish ? "Cerrar sesión" : "Log out"}</span>
+            <span>
+              {isSpanish ? "Cerrar sesión" : 
+               isPortuguese ? "Sair" : 
+               "Log out"}
+            </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import HelpDialog from "@/components/help/HelpDialog";
@@ -17,7 +17,7 @@ const NavigationHelpButton: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isButtonVisible = useButtonVisibility();
-  const { isSpanish } = useTranslation();
+  const { preferredLanguage, isSpanish, isPortuguese } = useTranslation();
   
   // Handle opening the help dialog
   const openHelp = (e: React.MouseEvent) => {
@@ -32,9 +32,26 @@ const NavigationHelpButton: React.FC = () => {
   };
 
   const handleMainDashboard = () => {
+    const dashboardMessages = {
+      'English': {
+        title: "Returning to Main Dashboard",
+        description: "Taking you back to the main dashboard"
+      },
+      'Español': {
+        title: "Volviendo al Panel Principal",
+        description: "Llevándote de regreso al panel principal"
+      },
+      'Português': {
+        title: "Voltando ao Painel Principal",
+        description: "Levando você de volta ao painel principal"
+      }
+    };
+    
+    const message = dashboardMessages[preferredLanguage as keyof typeof dashboardMessages] || dashboardMessages['English'];
+    
     toast({
-      title: isSpanish ? "Volviendo al Panel Principal" : "Returning to Main Dashboard",
-      description: isSpanish ? "Llevándote de regreso al panel principal" : "Taking you back to the main dashboard"
+      title: message.title,
+      description: message.description
     });
     
     // Always navigate to main screen with the 'main' screenState to avoid intro screens
@@ -59,8 +76,16 @@ const NavigationHelpButton: React.FC = () => {
           onClick={openHelp}
           className="h-14 w-14 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
           size="icon"
-          aria-label={isSpanish ? "Obtener Ayuda" : "Get Help"}
-          title={isSpanish ? "Obtener Ayuda" : "Get Help"}
+          aria-label={
+            isSpanish ? "Obtener Ayuda" : 
+            isPortuguese ? "Obter Ajuda" : 
+            "Get Help"
+          }
+          title={
+            isSpanish ? "Obtener Ayuda" : 
+            isPortuguese ? "Obter Ajuda" : 
+            "Get Help"
+          }
         >
           <Avatar className="h-10 w-10 border-2 border-white/30">
             <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
@@ -72,8 +97,16 @@ const NavigationHelpButton: React.FC = () => {
           onClick={handleMainDashboard}
           className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#2563EB] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
           size="icon"
-          aria-label={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
-          title={isSpanish ? "Volver al Panel Principal" : "Return to Main Dashboard"}
+          aria-label={
+            isSpanish ? "Volver al Panel Principal" : 
+            isPortuguese ? "Voltar ao Painel Principal" : 
+            "Return to Main Dashboard"
+          }
+          title={
+            isSpanish ? "Volver al Panel Principal" : 
+            isPortuguese ? "Voltar ao Painel Principal" : 
+            "Return to Main Dashboard"
+          }
         >
           <Home className="h-5 w-5" />
         </Button>
