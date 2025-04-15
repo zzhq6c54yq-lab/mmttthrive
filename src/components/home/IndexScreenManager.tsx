@@ -5,12 +5,13 @@ import MoodScreen from "@/components/home/MoodScreen";
 import MoodResponse from "@/components/home/MoodResponse";
 import RegistrationScreen from "@/components/home/RegistrationScreen";
 import SubscriptionScreen from "@/components/home/SubscriptionScreen";
+import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import VisionBoard from "@/components/home/VisionBoard";
 import MainDashboard from "@/components/home/MainDashboard";
 import useTranslation from "@/hooks/useTranslation";
 
 interface IndexScreenManagerProps {
-  screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
+  screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
   userInfo: {
     name: string;
@@ -18,6 +19,7 @@ interface IndexScreenManagerProps {
     password: string;
   };
   selectedPlan: string | null;
+  selectedAddOns: string[];
   selectedQualities: string[];
   selectedGoals: string[];
   showHenry: boolean;
@@ -26,12 +28,14 @@ interface IndexScreenManagerProps {
   onQualityToggle: (id: string) => void;
   onGoalToggle: (id: string) => void;
   onPlanSelect: (planTitle: string) => void;
+  onAddOnToggle: (id: string) => void;
   onHenryToggle: () => void;
   navigateToFeature: (path: string) => void;
   handleSubscriptionContinue: () => void;
+  handleAddOnsContinue: () => void;
   handleVisionBoardContinue: () => void;
   handleRegister: (e: React.FormEvent) => void;
-  setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main') => void;
+  setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main') => void;
   markTutorialCompleted?: () => void;
 }
 
@@ -40,6 +44,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   selectedMood,
   userInfo,
   selectedPlan,
+  selectedAddOns,
   selectedQualities,
   selectedGoals,
   showHenry,
@@ -48,9 +53,11 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   onQualityToggle,
   onGoalToggle,
   onPlanSelect,
+  onAddOnToggle,
   onHenryToggle,
   navigateToFeature,
   handleSubscriptionContinue,
+  handleAddOnsContinue,
   handleVisionBoardContinue,
   handleRegister,
   setScreenState,
@@ -74,7 +81,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   }, [screenState]);
 
   const handlePrevious = () => {
-    let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main' = 'intro';
+    let newScreenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main' = 'intro';
     
     if (screenState === 'mood') {
       newScreenState = 'intro';
@@ -84,8 +91,10 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
       newScreenState = 'moodResponse';
     } else if (screenState === 'subscription') {
       newScreenState = 'register';
-    } else if (screenState === 'visionBoard') {
+    } else if (screenState === 'subscriptionAddOns') {
       newScreenState = 'subscription';
+    } else if (screenState === 'visionBoard') {
+      newScreenState = 'subscriptionAddOns';
     } else if (screenState === 'main') {
       newScreenState = 'visionBoard';
     }
@@ -131,6 +140,17 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           onPlanSelect={onPlanSelect}
           onContinue={handleSubscriptionContinue}
           onPrevious={() => setScreenState('register')}
+          onSkip={() => setScreenState('subscriptionAddOns')}
+        />
+      );
+    case 'subscriptionAddOns':
+      return (
+        <SubscriptionAddOns
+          selectedPlan={selectedPlan}
+          selectedAddOns={selectedAddOns}
+          onAddOnToggle={onAddOnToggle}
+          onContinue={handleAddOnsContinue}
+          onPrevious={() => setScreenState('subscription')}
           onSkip={() => setScreenState('visionBoard')}
         />
       );
@@ -142,7 +162,7 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
           onQualityToggle={onQualityToggle}
           onGoalToggle={onGoalToggle}
           onContinue={handleVisionBoardContinue}
-          onPrevious={() => setScreenState('subscription')}
+          onPrevious={() => setScreenState('subscriptionAddOns')}
           onSkip={() => setScreenState('main')}
         />
       );

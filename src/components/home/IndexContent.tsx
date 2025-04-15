@@ -6,7 +6,7 @@ import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import { useToast } from "@/hooks/use-toast";
 
 interface IndexContentProps {
-  screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main';
+  screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
   userInfo: {
     name: string;
@@ -14,6 +14,7 @@ interface IndexContentProps {
     password: string;
   };
   selectedPlan: string | null;
+  selectedAddOns: string[];
   selectedQualities: string[];
   selectedGoals: string[];
   showHenry: boolean;
@@ -28,12 +29,14 @@ interface IndexContentProps {
   onQualityToggle: (id: string) => void;
   onGoalToggle: (id: string) => void;
   onPlanSelect: (planTitle: string) => void;
+  onAddOnToggle: (id: string) => void;
   onHenryToggle: () => void;
   navigateToFeature: (path: string) => void;
   handleSubscriptionContinue: () => void;
+  handleAddOnsContinue: () => void;
   handleVisionBoardContinue: () => void;
   handleRegister: (e: React.FormEvent) => void;
-  setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main') => void;
+  setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main') => void;
   markTutorialCompleted: () => void;
 }
 
@@ -42,6 +45,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
   selectedMood,
   userInfo,
   selectedPlan,
+  selectedAddOns,
   selectedQualities,
   selectedGoals,
   showHenry,
@@ -56,9 +60,11 @@ const IndexContent: React.FC<IndexContentProps> = ({
   onQualityToggle,
   onGoalToggle,
   onPlanSelect,
+  onAddOnToggle,
   onHenryToggle,
   navigateToFeature,
   handleSubscriptionContinue,
+  handleAddOnsContinue,
   handleVisionBoardContinue,
   handleRegister,
   setScreenState,
@@ -97,6 +103,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
         selectedMood={selectedMood}
         userInfo={userInfo}
         selectedPlan={selectedPlan}
+        selectedAddOns={selectedAddOns}
         selectedQualities={selectedQualities}
         selectedGoals={selectedGoals}
         showHenry={showHenry}
@@ -105,9 +112,11 @@ const IndexContent: React.FC<IndexContentProps> = ({
         onQualityToggle={onQualityToggle}
         onGoalToggle={onGoalToggle}
         onPlanSelect={onPlanSelect}
+        onAddOnToggle={onAddOnToggle}
         onHenryToggle={onHenryToggle}
         navigateToFeature={navigateToFeature}
         handleSubscriptionContinue={handleSubscriptionContinue}
+        handleAddOnsContinue={handleAddOnsContinue}
         handleVisionBoardContinue={handleVisionBoardContinue}
         handleRegister={handleRegister}
         setScreenState={setScreenState}

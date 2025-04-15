@@ -16,6 +16,7 @@ const Index = () => {
     selectedMood,
     userInfo,
     selectedPlan,
+    selectedAddOns,
     selectedQualities,
     selectedGoals,
     isFirstVisit,
@@ -25,7 +26,9 @@ const Index = () => {
     handleSubscriptionSelect: onPlanSelect,
     toggleQuality,
     toggleGoal,
+    toggleAddOn,
     handleSubscriptionContinue,
+    handleAddOnsContinue,
     handleVisionBoardContinue,
     handleMoodSelect
   } = useIndexState();
@@ -125,6 +128,7 @@ const Index = () => {
       selectedMood={selectedMood}
       userInfo={userInfo}
       selectedPlan={selectedPlan}
+      selectedAddOns={selectedAddOns}
       selectedQualities={selectedQualities}
       selectedGoals={selectedGoals}
       showHenry={showHenry}
@@ -139,9 +143,11 @@ const Index = () => {
       onQualityToggle={toggleQuality}
       onGoalToggle={toggleGoal}
       onPlanSelect={onPlanSelect}
+      onAddOnToggle={toggleAddOn}
       onHenryToggle={toggleHenry}
       navigateToFeature={navigateToFeature}
       handleSubscriptionContinue={handleSubscriptionContinue}
+      handleAddOnsContinue={handleAddOnsContinue}
       handleVisionBoardContinue={handleVisionBoardContinue}
       handleRegister={handleRegister}
       setScreenState={setScreenState}

@@ -4,11 +4,12 @@ import { useToast } from "@/hooks/use-toast";
 
 export const useIndexState = () => {
   // Initialize to 'intro' by default to ensure onboarding flow starts properly
-  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'visionBoard' | 'main'>('intro');
+  const [screenState, setScreenState] = useState<'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main'>('intro');
   const [selectedMood, setSelectedMood] = useState<'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null>(null);
   const [selectedQualities, setSelectedQualities] = useState<string[]>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -136,6 +137,46 @@ export const useIndexState = () => {
     );
   };
 
+  const toggleAddOn = (id: string) => {
+    setSelectedAddOns(prev => 
+      prev.includes(id) 
+        ? prev.filter(addon => addon !== id) 
+        : [...prev, id]
+    );
+
+    // Get appropriate add-on name based on language
+    let addOnName = '';
+    if (id === 'dod') addOnName = preferredLanguage === 'Español' ? 'Departamento de Defensa' : preferredLanguage === 'Português' ? 'Departamento de Defesa' : 'Department of Defense';
+    else if (id === 'college') addOnName = preferredLanguage === 'Español' ? 'La Experiencia Universitaria' : preferredLanguage === 'Português' ? 'A Experiência Universitária' : 'The College Experience';
+    else if (id === 'business') addOnName = preferredLanguage === 'Español' ? 'Pequeñas Empresas' : preferredLanguage === 'Português' ? 'Pequenos Negócios' : 'Small Business';
+    else if (id === 'adolescent') addOnName = preferredLanguage === 'Español' ? 'La Experiencia Adolescente' : preferredLanguage === 'Português' ? 'A Experiência Adolescente' : 'Adolescent Experience';
+    else if (id === 'golden') addOnName = preferredLanguage === 'Español' ? 'Los Años Dorados' : preferredLanguage === 'Português' ? 'Os Anos Dourados' : 'The Golden Years';
+    
+    // Display toast message
+    const isSelected = !selectedAddOns.includes(id);
+    const toastMessages = {
+      'English': {
+        title: isSelected ? "Add-on Selected" : "Add-on Removed",
+        description: isSelected ? `${addOnName} has been added to your subscription.` : `${addOnName} has been removed from your subscription.`
+      },
+      'Español': {
+        title: isSelected ? "Complemento Seleccionado" : "Complemento Eliminado",
+        description: isSelected ? `${addOnName} ha sido añadido a tu suscripción.` : `${addOnName} ha sido eliminado de tu suscripción.`
+      },
+      'Português': {
+        title: isSelected ? "Adicional Selecionado" : "Adicional Removido",
+        description: isSelected ? `${addOnName} foi adicionado à sua assinatura.` : `${addOnName} foi removido da sua assinatura.`
+      }
+    };
+    
+    const message = toastMessages[preferredLanguage as keyof typeof toastMessages] || toastMessages['English'];
+    
+    toast({
+      title: message.title,
+      description: message.description,
+    });
+  };
+
   const handleSubscriptionContinue = () => {
     if (!selectedPlan) {
       const errorMessages = {
@@ -166,15 +207,47 @@ export const useIndexState = () => {
     const successMessages = {
       'English': {
         title: "Plan Confirmed",
-        description: `Your ${selectedPlan} plan is now active. Enjoy your benefits!`
+        description: `Your ${selectedPlan} plan is now active. Let's explore add-ons!`
       },
       'Español': {
         title: "Plan Confirmado",
-        description: `Tu plan ${selectedPlan} ahora está activo. ¡Disfruta tus beneficios!`
+        description: `Tu plan ${selectedPlan} ahora está activo. ¡Exploremos complementos!`
       },
       'Português': {
         title: "Plano Confirmado",
-        description: `Seu plano ${selectedPlan} agora está ativo. Aproveite seus benefícios!`
+        description: `Seu plano ${selectedPlan} agora está ativo. Vamos explorar adicionais!`
+      }
+    };
+    
+    const message = successMessages[preferredLanguage as keyof typeof successMessages] || successMessages['English'];
+    
+    toast({
+      title: message.title,
+      description: message.description,
+    });
+    
+    setScreenState('subscriptionAddOns');
+  };
+
+  const handleAddOnsContinue = () => {
+    const successMessages = {
+      'English': {
+        title: selectedAddOns.length > 0 ? "Add-ons Selected" : "No Add-ons Selected",
+        description: selectedAddOns.length > 0 ? 
+          `You've selected ${selectedAddOns.length} add-on${selectedAddOns.length > 1 ? 's' : ''}. Let's set up your vision board!` : 
+          "No add-ons selected. Let's set up your vision board!"
+      },
+      'Español': {
+        title: selectedAddOns.length > 0 ? "Complementos Seleccionados" : "Sin Complementos Seleccionados",
+        description: selectedAddOns.length > 0 ? 
+          `Has seleccionado ${selectedAddOns.length} complemento${selectedAddOns.length > 1 ? 's' : ''}. ¡Configuremos tu tablero de visión!` : 
+          "No se seleccionaron complementos. ¡Configuremos tu tablero de visión!"
+      },
+      'Português': {
+        title: selectedAddOns.length > 0 ? "Adicionais Selecionados" : "Nenhum Adicional Selecionado",
+        description: selectedAddOns.length > 0 ? 
+          `Você selecionou ${selectedAddOns.length} adiciona${selectedAddOns.length > 1 ? 'is' : 'l'}. Vamos configurar seu quadro de visão!` : 
+          "Nenhum adicional selecionado. Vamos configurar seu quadro de visão!"
       }
     };
     
@@ -251,6 +324,7 @@ export const useIndexState = () => {
     selectedMood,
     userInfo,
     selectedPlan,
+    selectedAddOns,
     selectedQualities,
     selectedGoals,
     isFirstVisit,
@@ -262,7 +336,9 @@ export const useIndexState = () => {
     handleSubscriptionSelect,
     toggleQuality,
     toggleGoal,
+    toggleAddOn,
     handleSubscriptionContinue,
+    handleAddOnsContinue,
     handleVisionBoardContinue,
     handleMoodSelect
   };
