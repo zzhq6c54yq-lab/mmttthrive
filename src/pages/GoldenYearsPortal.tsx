@@ -54,7 +54,11 @@ const GoldenYearsPortal: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#8B6F1D] via-[#B89237] to-[#DAB258] text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#8B6F1D] via-[#B89237] to-[#DAB258] text-white relative">
+      {/* Enhanced metallic gold background effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-700/20 via-amber-500/10 to-amber-800/20 z-0"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M10 15.27L16.18 19L14.54 11.97L20 7.24L12.81 6.63L10 0L7.19 6.63L0 7.24L5.46 11.97L3.82 19L10 15.27Z%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+      
       {/* Navigation bar */}
       <NavigationBar 
         showBackButton={true} 
@@ -65,13 +69,13 @@ const GoldenYearsPortal: React.FC = () => {
         portalPath="/golden-years-welcome"
       />
       
-      <div className="container mx-auto px-4 py-8 pt-16">
+      <div className="container mx-auto px-4 py-8 pt-16 relative z-10">
         <PortalHeader 
           title={getTranslatedText('goldenYearsWelcome')}
           subtitle={getTranslatedText('goldenYearsSubtitle')}
         />
         
-        {/* Featured Content */}
+        {/* Featured Content - Legacy Journal */}
         <FeaturedContent onFeatureClick={handleFeatureClick} />
         
         {/* Main Resources */}

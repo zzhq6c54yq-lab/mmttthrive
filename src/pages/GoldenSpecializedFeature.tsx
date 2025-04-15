@@ -1,38 +1,89 @@
 
-import React from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import NavigationBar from "@/components/navigation/NavigationBar";
-import { ArrowLeft, Info, Book, Link2, Award, Trophy } from "lucide-react";
+import React, { useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-
-// This is a template page for Golden Years specialized features
-// It will dynamically load content based on the feature parameter
+import NavigationBar from "@/components/navigation/NavigationBar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Brain, Heart, Users, FileText, ArrowUpRight, ArrowLeft } from "lucide-react";
+import useTranslation from "@/hooks/useTranslation";
 
 const GoldenSpecializedFeature: React.FC = () => {
   const navigate = useNavigate();
+  const { feature } = useParams<{ feature: string }>();
   const location = useLocation();
   const { toast } = useToast();
-  const { feature } = useParams<{ feature: string }>();
+  const { getTranslatedText } = useTranslation();
   
-  // Extract feature name from URL for display
-  const getFeatureName = () => {
-    if (!feature) return "Feature";
+  // Extract the feature name from the URL parameter
+  const featureName = feature?.charAt(0).toUpperCase() + feature?.slice(1).replace(/-/g, ' ');
+  
+  const getFeatureIcon = (feature?: string) => {
+    if (!feature) return Heart;
     
-    // Remove "golden-" prefix if present
-    let featureName = feature.startsWith("golden-") ? feature.substring("golden-".length) : feature;
-    
-    // Convert kebab-case to Title Case
-    return featureName
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+    if (feature.includes('memory') || feature.includes('cognitive')) return Brain;
+    if (feature.includes('community') || feature.includes('family')) return Users;
+    if (feature.includes('planning') || feature.includes('transitions')) return FileText;
+    return Heart;
   };
   
-  // Handle navigation back to portal
-  const handleBack = () => {
-    navigate("/golden-years-portal", { 
+  const FeatureIcon = getFeatureIcon(feature);
+  
+  const getFeatureContent = () => {
+    if (!feature) return null;
+    
+    // Map of feature content
+    const featureContents: Record<string, { title: string; description: string }> = {
+      "years-memory": {
+        title: "Memory & Cognitive Health",
+        description: "Resources and exercises to help maintain and improve cognitive function, memory skills, and brain health as you age."
+      },
+      "years-planning": {
+        title: "End of Life Planning", 
+        description: "Comprehensive tools and guidance to help you create legal documents, make important healthcare decisions, and communicate your wishes to loved ones."
+      },
+      "years-transitions": {
+        title: "Life Transitions",
+        description: "Support and resources for navigating significant life changes such as retirement, moving, loss of a spouse, and other major transitions."
+      },
+      "years-community": {
+        title: "Community Connections",
+        description: "Tools and resources to help you stay connected with your community, find local senior activities, and build meaningful relationships."
+      },
+      "years-family": {
+        title: "Family Connection Tools",
+        description: "Resources to strengthen bonds with family members across generations, including communication guides, shared activities, and digital connection tools."
+      },
+      "years-wellness": {
+        title: "Wellness Resources",
+        description: "Holistic approaches to wellness including physical activity recommendations, nutrition guidance, and stress management techniques tailored for seniors."
+      },
+      "years-guide": {
+        title: "Legacy Journal Guide",
+        description: "Comprehensive guide on creating your legacy journal, including prompts, organization tips, and ways to share your story with future generations."
+      }
+    };
+    
+    // Find matching content
+    let content = {
+      title: featureName || "Feature",
+      description: "Resources and tools to support your golden years journey."
+    };
+    
+    // Look for matching content based on the feature URL parameter
+    Object.entries(featureContents).forEach(([key, value]) => {
+      if (feature.includes(key)) {
+        content = value;
+      }
+    });
+    
+    return content;
+  };
+  
+  const content = getFeatureContent();
+  
+  const handleBackToPortal = () => {
+    navigate('/golden-years-portal', { 
       state: { 
         stayInPortal: true,
         preventTutorial: true
@@ -40,118 +91,118 @@ const GoldenSpecializedFeature: React.FC = () => {
     });
   };
   
-  // Generate sample content based on feature name
-  const getFeatureContent = () => {
-    const featureName = getFeatureName().toLowerCase();
+  useEffect(() => {
+    // Check if we came from the portal
+    const fromPortal = location.state?.stayInPortal === true;
     
-    if (featureName.includes('wellness') || featureName.includes('health')) {
-      return {
-        title: `Senior ${getFeatureName()}`,
-        description: "Resources tailored to senior health and wellness needs.",
-        icon: <Trophy className="h-8 w-8 text-amber-300" />,
-        content: [
-          { title: "Age-Appropriate Exercise Guide", description: "Gentle exercises designed specifically for seniors to maintain mobility and strength." },
-          { title: "Nutrition for Seniors", description: "Dietary recommendations to support good health in your golden years." },
-          { title: "Mental Wellness Practices", description: "Techniques to maintain cognitive function and emotional wellbeing." },
-          { title: "Sleep Improvement Guide", description: "Tips to improve sleep quality, which often changes with age." }
-        ]
-      };
+    if (!fromPortal) {
+      // If not coming from the portal, redirect to welcome page
+      navigate('/golden-years-welcome');
     }
-    else if (featureName.includes('community') || featureName.includes('connection')) {
-      return {
-        title: getFeatureName(),
-        description: "Connect with peers and build meaningful relationships.",
-        icon: <Link2 className="h-8 w-8 text-amber-300" />,
-        content: [
-          { title: "Local Senior Groups", description: "Find community groups and activities in your area." },
-          { title: "Virtual Connections", description: "Online forums and video chats to connect with others from the comfort of home." },
-          { title: "Intergenerational Programs", description: "Activities that connect seniors with younger generations." },
-          { title: "Volunteer Opportunities", description: "Ways to give back to your community and share your skills." }
-        ]
-      };
-    }
-    else {
-      return {
-        title: getFeatureName(),
-        description: "Specialized resources for your golden years journey.",
-        icon: <Award className="h-8 w-8 text-amber-300" />,
-        content: [
-          { title: "Getting Started", description: "Introduction to this feature and how it can support your wellbeing." },
-          { title: "Key Resources", description: "Essential tools and information specific to this area." },
-          { title: "Expert Guidance", description: "Advice from professionals specializing in senior needs." },
-          { title: "Related Features", description: "Other Golden Years resources you might find helpful." }
-        ]
-      };
-    }
-  };
-  
-  const featureContent = getFeatureContent();
+  }, [location.state, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#8B6F1D] via-[#B89237] to-[#DAB258] text-white">
-      {/* Navigation bar */}
-      <NavigationBar 
-        showBackButton={true} 
+      {/* Enhanced metallic gold background effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-700/20 via-amber-500/10 to-amber-800/20 z-0"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M10 15.27L16.18 19L14.54 11.97L20 7.24L12.81 6.63L10 0L7.19 6.63L0 7.24L5.46 11.97L3.82 19L10 15.27Z%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+      
+      <NavigationBar
+        showBackButton={true}
         showHomeButton={false}
         showThriveButton={true}
-        title={featureContent.title}
+        title={content?.title || "Golden Years Feature"}
         portalMode={true}
         portalPath="/golden-years-portal"
-        backButtonAction={handleBack}
       />
       
-      <div className="container mx-auto px-4 py-8 pt-16">
-        <div className="mb-10">
-          <div className="flex items-center mb-6">
-            <div className="p-4 bg-amber-700/30 rounded-full mr-4">
-              {featureContent.icon}
+      <div className="container mx-auto px-4 py-16 pt-24 relative z-10">
+        <Card className="bg-gradient-to-br from-amber-900/30 to-amber-800/30 backdrop-blur-md border-2 border-amber-400/30 rounded-xl overflow-hidden shadow-xl">
+          <div className="bg-gradient-to-r from-amber-500/20 to-amber-700/20 p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-3 bg-amber-500/30 rounded-full">
+                <FeatureIcon className="h-8 w-8 text-amber-100" />
+              </div>
+              <h1 className="text-3xl font-semibold text-amber-50">{content?.title}</h1>
             </div>
-            <div>
-              <h1 className="text-3xl font-semibold text-white">{featureContent.title}</h1>
-              <p className="text-amber-100">{featureContent.description}</p>
-            </div>
+            <p className="text-amber-100 text-lg">{content?.description}</p>
           </div>
           
-          <Card className="bg-amber-900/30 backdrop-blur-md border-amber-200/30">
-            <CardContent className="p-6">
-              <p className="text-amber-100 mb-6">
-                This specialized content has been tailored specifically for seniors in their golden years.
-                Explore the resources below to enhance your wellbeing and make the most of this meaningful
-                time of life.
+          <CardContent className="p-6">
+            <div className="bg-amber-900/20 backdrop-blur-sm rounded-xl p-6 border border-amber-400/30 mb-6">
+              <h2 className="text-2xl font-semibold mb-4 text-amber-100">Welcome to {content?.title}</h2>
+              <p className="mb-4 text-white/90">
+                This section is designed specifically for seniors in their golden years, providing specialized resources and support.
               </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {featureContent.content.map((item, index) => (
-                  <div key={index} className="bg-amber-800/40 p-5 rounded-lg">
-                    <h3 className="text-xl font-medium mb-2 text-amber-200">{item.title}</h3>
-                    <p className="text-amber-100">{item.description}</p>
-                    <Button 
-                      className="mt-4 bg-amber-600 hover:bg-amber-700 text-white"
-                      onClick={() => {
-                        toast({
-                          title: "Resource Accessed",
-                          description: `Opening ${item.title}`,
-                          duration: 2000,
-                        });
-                      }}
-                    >
-                      View Resource
-                    </Button>
-                  </div>
-                ))}
+              <p className="text-white/90">
+                Our goal is to help you maintain independence, build connections, and find joy in every day. Browse through the 
+                resources below to find tools, guides, and activities tailored to your needs.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-amber-900/20 backdrop-blur-sm rounded-xl p-5 border border-amber-400/30">
+                <h3 className="text-xl font-medium mb-3 text-amber-100">Featured Resources</h3>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-amber-50">
+                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                    <span>Interactive guides and tutorials</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-amber-50">
+                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                    <span>Educational videos and articles</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-amber-50">
+                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                    <span>Downloadable worksheets and templates</span>
+                  </li>
+                </ul>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-        
-        <Button 
-          variant="outline" 
-          className="mb-8 border-amber-400/50 text-amber-100 hover:bg-amber-800/50"
-          onClick={handleBack}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Golden Years Portal
-        </Button>
+              
+              <div className="bg-amber-900/20 backdrop-blur-sm rounded-xl p-5 border border-amber-400/30">
+                <h3 className="text-xl font-medium mb-3 text-amber-100">Community Support</h3>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-amber-50">
+                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                    <span>Discussion forums and groups</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-amber-50">
+                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                    <span>Virtual events and meetups</span>
+                  </li>
+                  <li className="flex items-center gap-2 text-amber-50">
+                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                    <span>Expert Q&A sessions</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="flex justify-between">
+              <Button
+                className="bg-amber-800 hover:bg-amber-900 text-white border border-amber-400/30"
+                onClick={handleBackToPortal}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Golden Years Portal
+              </Button>
+              
+              <Button
+                className="bg-amber-600 hover:bg-amber-700 text-white border border-amber-400/30"
+                onClick={() => navigate('/golden-years-journal', { 
+                  state: { 
+                    stayInPortal: true,
+                    preventTutorial: true,
+                    portalPath: '/golden-years-portal'
+                  }
+                })}
+              >
+                Explore Legacy Journal
+                <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

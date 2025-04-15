@@ -83,7 +83,7 @@ const SpecializedPrograms: React.FC = () => {
       path: "/golden-years-welcome",
       gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
       borderColor: "#FFC000",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1540778324650-529f9f961133?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80") // Updated to show socially active senior citizens
     }
   ];
   
@@ -143,7 +143,7 @@ const SpecializedPrograms: React.FC = () => {
             {/* Bottom color section - 30% of card height */}
             <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
               program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-amber-500/90 to-yellow-700/90 shadow-inner"
+                ? "bg-gradient-to-br from-amber-500/90 via-amber-600/90 to-amber-700/90 shadow-inner"
                 : `bg-gradient-to-br ${program.gradient}`
             } flex items-center justify-center`}>
               <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
@@ -163,9 +163,13 @@ const SpecializedPrograms: React.FC = () => {
               </div>
             </div>
             
-            {/* Special metallic gold effect for Golden Years */}
+            {/* Enhanced metallic gold effect for Golden Years */}
             {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
-              <div className="absolute inset-0 bg-gradient-to-b from-amber-200/10 via-yellow-100/5 to-transparent pointer-events-none"></div>
+              <>
+                <div className="absolute inset-0 bg-gradient-to-b from-amber-200/15 via-yellow-100/10 to-transparent pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-yellow-200/20 to-amber-500/10 rounded-full blur-lg"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-yellow-200/20 to-amber-500/10 rounded-full blur-lg"></div>
+              </>
             )}
             
             {/* Subtle highlight effect on hover */}
