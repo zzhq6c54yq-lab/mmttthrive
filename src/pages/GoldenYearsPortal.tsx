@@ -19,34 +19,38 @@ const GoldenYearsPortal: React.FC = () => {
   const { getTranslatedText } = useTranslation();
   
   const handleFeatureClick = (feature: string) => {
-    // If it's the Legacy Journal, navigate directly to the journal page
-    if (feature === "Legacy Journal") {
-      navigate("/golden-years-journal", {
-        state: { 
-          stayInPortal: true,
-          preventTutorial: true,
-          portalPath: '/golden-years-portal'
-        }
-      });
-      return;
-    }
-    
-    // For other features, use the ActionConfig with proper configuration
-    const actionConfig: ActionButtonConfig = {
-      type: 'other',
-      title: feature,
-      path: `golden-${feature.toLowerCase().replace(/\s+/g, '-')}` // This creates paths like "golden-wellness-resources"
+    // Map of features to their respective paths
+    const featurePaths: Record<string, string> = {
+      "Legacy Journal": "/golden-years-journal",
+      "Legacy Journal Guide": "/golden-years-guide",
+      "Memory & Cognitive Health": "/golden-years-memory",
+      "End of Life Planning": "/golden-years-planning",
+      "Life Transitions": "/golden-years-transitions",
+      "Community Connections": "/golden-years-community",
+      "Family Connection Tools": "/golden-years-family",
+      "Wellness Resources": "/golden-years-wellness",
+      "Calendar": "/golden-years-calendar"
     };
 
+    // Default path if not found in the map
+    const path = featurePaths[feature] || `/golden-years-${feature.toLowerCase().replace(/\s+/g, '-')}`;
+    
     // Show a toast notification about the feature
     toast({
       title: `${getTranslatedText('accessing')} ${feature}`,
       description: getTranslatedText('loadingContent'),
       duration: 2000
     });
-    
-    // Use handleActionClick from useFeatureActions for consistent navigation behavior
-    handleActionClick(actionConfig);
+
+    // Navigate to the appropriate path with correct state
+    navigate(path, {
+      state: { 
+        stayInPortal: true,
+        preventTutorial: true,
+        portalPath: '/golden-years-portal',
+        featureName: feature
+      }
+    });
   };
 
   return (
@@ -56,7 +60,7 @@ const GoldenYearsPortal: React.FC = () => {
         showBackButton={true} 
         showHomeButton={false}
         showThriveButton={true}
-        title={getTranslatedText('goldenYears')}
+        title={getTranslatedText('goldenTitle')}
         portalMode={true}
         portalPath="/golden-years-welcome"
       />
