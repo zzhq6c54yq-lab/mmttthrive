@@ -12,7 +12,7 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
   const { getTranslatedText } = useTranslation();
   
   return (
-    <div className="bg-gradient-to-br from-[#1A1811]/90 to-[#2A2418]/90 backdrop-blur-md border-2 border-[#D4AF37]/40 rounded-xl p-6 mb-10 shadow-lg relative overflow-hidden">
+    <div className="bg-gradient-to-br from-[#1E1916]/90 to-[#2A2420]/90 backdrop-blur-md border-2 border-[#D4AF37]/40 rounded-xl p-6 mb-10 shadow-lg relative overflow-hidden">
       {/* Enhanced background effects */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M10 15.27L16.18 19L14.54 11.97L20 7.24L12.81 6.63L10 0L7.19 6.63L0 7.24L5.46 11.97L3.82 19L10 15.27Z%22 fill=%22%23D4AF37%22 fill-opacity=%220.05%22/></svg>')] opacity-30 pointer-events-none"></div>
       
@@ -28,7 +28,7 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
       <div className="relative z-10 grid md:grid-cols-5 gap-6">
         {/* Content Section: 3 columns */}
         <div className="md:col-span-3">
-          <h2 className="text-3xl font-bold mb-4 flex items-center text-[#F5DEB3]">
+          <h2 className="text-3xl font-bold mb-4 flex items-center text-[#D4AF37]">
             <Trophy className="mr-3 h-7 w-7 text-[#D4AF37]" />
             {getTranslatedText('legacyJournal')}
           </h2>
@@ -47,7 +47,7 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
             </Button>
             <Button 
               variant="outline" 
-              className="border-[#D4AF37]/40 text-[#F5DEB3] hover:bg-[#D4AF37]/20 px-6 py-5 text-lg transform transition-all duration-300 hover:-translate-y-1"
+              className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10 px-6 py-5 text-lg transform transition-all duration-300 hover:-translate-y-1"
               onClick={() => onFeatureClick("Legacy Journal Guide")}
             >
               {getTranslatedText('learnMore')}

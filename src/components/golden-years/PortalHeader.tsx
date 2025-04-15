@@ -12,7 +12,7 @@ const PortalHeader: React.FC<PortalHeaderProps> = ({ title, subtitle }) => {
   
   return (
     <div className="text-center mb-10 relative z-10">
-      <h1 className="text-4xl font-semibold mb-4 text-[#F5DEB3]">{title}</h1>
+      <h1 className="text-4xl font-semibold mb-4 text-[#D4AF37]">{title}</h1>
       <p className="text-xl text-white/90 max-w-2xl mx-auto">
         {subtitle}
       </p>
