@@ -8,6 +8,8 @@ interface PortalHeaderProps {
 }
 
 const PortalHeader: React.FC<PortalHeaderProps> = ({ title, subtitle }) => {
+  const { preferredLanguage } = useTranslation();
+  
   return (
     <div className="text-center mb-10">
       <h1 className="text-4xl font-semibold mb-4 text-amber-50">{title}</h1>

@@ -9,12 +9,14 @@ import FeaturedContent from "@/components/golden-years/FeaturedContent";
 import ResourcesSection from "@/components/golden-years/ResourcesSection";
 import CalendarSection from "@/components/golden-years/CalendarSection";
 import SupportResources from "@/components/golden-years/SupportResources";
+import useTranslation from "@/hooks/useTranslation";
 
 const GoldenYearsPortal: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const { handleActionClick } = useFeatureActions();
+  const { getTranslatedText } = useTranslation();
   
   const handleFeatureClick = (feature: string) => {
     // If it's the Legacy Journal, navigate directly to the journal page
@@ -38,8 +40,8 @@ const GoldenYearsPortal: React.FC = () => {
 
     // Show a toast notification about the feature
     toast({
-      title: `Accessing ${feature}`,
-      description: "Loading your specialized content...",
+      title: `${getTranslatedText('accessing')} ${feature}`,
+      description: getTranslatedText('loadingContent'),
       duration: 2000
     });
     
@@ -54,15 +56,15 @@ const GoldenYearsPortal: React.FC = () => {
         showBackButton={true} 
         showHomeButton={false}
         showThriveButton={true}
-        title="Golden Years Journey"
+        title={getTranslatedText('goldenYears')}
         portalMode={true}
         portalPath="/golden-years-welcome"
       />
       
       <div className="container mx-auto px-4 py-8 pt-16">
         <PortalHeader 
-          title="Welcome to Your Golden Years Journey"
-          subtitle="Explore resources designed to enhance your wellbeing, connect with others, and embrace this meaningful time of life."
+          title={getTranslatedText('goldenYearsWelcome')}
+          subtitle={getTranslatedText('goldenYearsSubtitle')}
         />
         
         {/* Featured Content */}

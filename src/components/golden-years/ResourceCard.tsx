@@ -18,7 +18,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   onResourceClick,
   buttonText
 }) => {
-  const { preferredLanguage, isSpanish, isPortuguese } = useTranslation();
+  const { preferredLanguage } = useTranslation();
   
   const defaultButtonTexts = {
     'English': 'Explore Resources',

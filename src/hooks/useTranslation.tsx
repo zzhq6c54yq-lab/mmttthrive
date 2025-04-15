@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 
 export const useTranslation = () => {
@@ -13,18 +12,30 @@ export const useTranslation = () => {
     const handleLanguageChange = () => {
       const updatedLanguage = localStorage.getItem('preferredLanguage') || 'English';
       setPreferredLanguage(updatedLanguage);
+      console.log("Language changed to:", updatedLanguage);
     };
     
     window.addEventListener('languageChange', handleLanguageChange);
     return () => window.removeEventListener('languageChange', handleLanguageChange);
   }, []);
 
-  // Expanded translation dictionary with more comprehensive entries and Portuguese support
+  // Comprehensive translation dictionary with Portuguese support
   const translations: Record<string, Record<string, string>> = {
+    // Welcome and Intro screens
     'welcomeTitle': {
       'English': 'Welcome to Thrive MT!',
       'Español': '¡Bienvenido a Thrive MT!',
       'Português': 'Bem-vindo ao Thrive MT!'
+    },
+    'welcomeTagline': {
+      'English': 'because life should be more than just surviving',
+      'Español': 'porque la vida debe ser más que solo sobrevivir',
+      'Português': 'porque a vida deve ser mais do que apenas sobreviver'
+    },
+    'beginJourney': {
+      'English': 'Begin Your Journey',
+      'Español': 'Comienza Tu Viaje',
+      'Português': 'Comece Sua Jornada'
     },
     'tourQuestion': {
       'English': 'Would you like a guided tour of the app\'s features?',
@@ -41,6 +52,8 @@ export const useTranslation = () => {
       'Español': 'Cada función tiene su propio tutorial al que puedes acceder en cualquier momento haciendo clic en el botón "Cómo usar esta función".',
       'Português': 'Cada recurso tem seu próprio tutorial que você pode acessar a qualquer momento clicando no botão "Como usar este recurso".'
     },
+    
+    // Common UI elements and buttons
     'skipForNow': {
       'English': 'Skip for now',
       'Español': 'Omitir por ahora',
@@ -52,9 +65,9 @@ export const useTranslation = () => {
       'Português': 'Próximo'
     },
     'welcomeMessage': {
-      'English': 'Let\'s explore the main features of Thrive MT together to help you start your mental',
+      'English': 'Let\'s explore the main features of Thrive MT together to help you start your mental wellness journey',
       'Español': 'Exploremos juntos las principales características de Thrive MT para ayudarte a comenzar tu salud mental',
-      'Português': 'Vamos explorar juntos os principais recursos do Thrive MT para ajudá-lo a iniciar sua saúde mental'
+      'Português': 'Vamos explorar juntos os principais recursos do Thrive MT para ajudá-lo a iniciar sua jornada de saúde mental'
     },
     'gotIt': {
       'English': 'Got it',
@@ -81,6 +94,72 @@ export const useTranslation = () => {
       'Español': 'Cerrar',
       'Português': 'Fechar'
     },
+    'back': {
+      'English': 'Back',
+      'Español': 'Atrás',
+      'Português': 'Voltar'
+    },
+    'next': {
+      'English': 'Next',
+      'Español': 'Siguiente',
+      'Português': 'Próximo'
+    },
+    'save': {
+      'English': 'Save',
+      'Español': 'Guardar',
+      'Português': 'Salvar'
+    },
+    'cancel': {
+      'English': 'Cancel',
+      'Español': 'Cancelar',
+      'Português': 'Cancelar'
+    },
+    'edit': {
+      'English': 'Edit',
+      'Español': 'Editar',
+      'Português': 'Editar'
+    },
+    'delete': {
+      'English': 'Delete',
+      'Español': 'Eliminar',
+      'Português': 'Excluir'
+    },
+    'search': {
+      'English': 'Search',
+      'Español': 'Buscar',
+      'Português': 'Pesquisar'
+    },
+    'submit': {
+      'English': 'Submit',
+      'Español': 'Enviar',
+      'Português': 'Enviar'
+    },
+    'loading': {
+      'English': 'Loading...',
+      'Español': 'Cargando...',
+      'Português': 'Carregando...'
+    },
+    'seeAll': {
+      'English': 'See All',
+      'Español': 'Ver Todo',
+      'Português': 'Ver Tudo'
+    },
+    'viewMore': {
+      'English': 'View More',
+      'Español': 'Ver Más',
+      'Português': 'Ver Mais'
+    },
+    'accessing': {
+      'English': 'Accessing',
+      'Español': 'Accediendo a',
+      'Português': 'Acessando'
+    },
+    'loadingContent': {
+      'English': 'Loading your specialized content...',
+      'Español': 'Cargando tu contenido especializado...',
+      'Português': 'Carregando seu conteúdo especializado...'
+    },
+    
     // Dashboard translations
     'welcome': {
       'English': 'Welcome to',
@@ -122,6 +201,32 @@ export const useTranslation = () => {
       'Español': 'Créditos de Copago',
       'Português': 'Créditos de Copagamento'
     },
+    'upcomingAppointments': {
+      'English': 'Upcoming Appointments',
+      'Español': 'Próximas Citas',
+      'Português': 'Consultas Agendadas'
+    },
+    'specializedPrograms': {
+      'English': 'Specialized Programs',
+      'Español': 'Programas Especializados',
+      'Português': 'Programas Especializados'
+    },
+    'moodInsights': {
+      'English': 'Mood Insights',
+      'Español': 'Análisis de Estado de Ánimo',
+      'Português': 'Insights de Humor'
+    },
+    'videoDiary': {
+      'English': 'Video Diary',
+      'Español': 'Diario en Video',
+      'Português': 'Diário em Vídeo'
+    },
+    'featuredWorkshops': {
+      'English': 'Featured Workshops',
+      'Español': 'Talleres Destacados',
+      'Português': 'Workshops em Destaque'
+    },
+    
     // Mood screen translations
     'howAreYouFeeling': {
       'English': 'How are you feeling today?',
@@ -163,6 +268,153 @@ export const useTranslation = () => {
       'Español': 'Abrumado',
       'Português': 'Sobrecarregado'
     },
+    
+    // Registration screen
+    'createAccount': {
+      'English': 'Create Your Account',
+      'Español': 'Crea Tu Cuenta',
+      'Português': 'Crie Sua Conta'
+    },
+    'joinThrive': {
+      'English': 'Join Thrive MT to start your mental wellness journey',
+      'Español': 'Únete a Thrive MT para comenzar tu viaje de bienestar mental',
+      'Português': 'Junte-se ao Thrive MT para iniciar sua jornada de bem-estar mental'
+    },
+    'fullName': {
+      'English': 'Full Name',
+      'Español': 'Nombre Completo',
+      'Português': 'Nome Completo'
+    },
+    'emailAddress': {
+      'English': 'Email Address',
+      'Español': 'Correo Electrónico',
+      'Português': 'Endereço de Email'
+    },
+    'password': {
+      'English': 'Password',
+      'Español': 'Contraseña',
+      'Português': 'Senha'
+    },
+    'register': {
+      'English': 'Register',
+      'Español': 'Registrarse',
+      'Português': 'Registrar'
+    },
+    'skipRegistration': {
+      'English': 'Continue Without Registration',
+      'Español': 'Continuar Sin Registro',
+      'Português': 'Continuar Sem Registro'
+    },
+    
+    // Golden Years Portal
+    'goldenYearsWelcome': {
+      'English': 'Welcome to Your Golden Years Journey',
+      'Español': 'Bienvenido a Tu Viaje de los Años Dorados',
+      'Português': 'Bem-vindo à Sua Jornada da Idade Dourada'
+    },
+    'goldenYearsSubtitle': {
+      'English': 'Explore resources designed to enhance your wellbeing, connect with others, and embrace this meaningful time of life.',
+      'Español': 'Explora recursos diseñados para mejorar tu bienestar, conectarte con otros y aprovechar esta etapa significativa de la vida.',
+      'Português': 'Explore recursos projetados para melhorar seu bem-estar, conectar-se com outros e abraçar este momento significativo da vida.'
+    },
+    'legacyJournal': {
+      'English': 'Featured: Legacy Journal',
+      'Español': 'Destacado: Diario de Legado',
+      'Português': 'Destaque: Diário de Legado'
+    },
+    'legacyJournalDesc': {
+      'English': 'Preserve your life story, wisdom, and memories for future generations. Our guided journaling experience helps you document your journey in a meaningful way that can be shared with loved ones.',
+      'Español': 'Preserva tu historia de vida, sabiduría y recuerdos para las futuras generaciones. Nuestra experiencia de diario guiado te ayuda a documentar tu viaje de una manera significativa que puede ser compartida con seres queridos.',
+      'Português': 'Preserve sua história de vida, sabedoria e memórias para as gerações futuras. Nossa experiência de diário guiado ajuda você a documentar sua jornada de uma forma significativa que pode ser compartilhada com entes queridos.'
+    },
+    'startJournal': {
+      'English': 'Start Your Journal',
+      'Español': 'Comienza Tu Diario',
+      'Português': 'Comece Seu Diário'
+    },
+    'upcomingEvents': {
+      'English': 'Upcoming Events',
+      'Español': 'Próximos Eventos',
+      'Português': 'Próximos Eventos'
+    },
+    'viewAllEvents': {
+      'English': 'View All Events',
+      'Español': 'Ver Todos los Eventos',
+      'Português': 'Ver Todos os Eventos'
+    },
+    'needAssistance': {
+      'English': 'Need Assistance?',
+      'Español': '¿Necesita Ayuda?',
+      'Português': 'Precisa de Ajuda?'
+    },
+    'resourcesFor': {
+      'English': 'Resources for emergency help, caregiver support, or technical assistance.',
+      'Español': 'Recursos para ayuda de emergencia, apoyo al cuidador o asistencia técnica.',
+      'Português': 'Recursos para ajuda de emergência, suporte ao cuidador ou assistência técnica.'
+    },
+    'emergencyResources': {
+      'English': 'Emergency Resources',
+      'Español': 'Recursos de Emergencia',
+      'Português': 'Recursos de Emergência'
+    },
+    'technicalSupport': {
+      'English': 'Technical Support',
+      'Español': 'Soporte Técnico',
+      'Português': 'Suporte Técnico'
+    },
+    
+    // Specialized Programs
+    'departmentOfDefense': {
+      'English': 'Department of Defense',
+      'Español': 'Departamento de Defensa',
+      'Português': 'Departamento de Defesa'
+    },
+    'militarySupport': {
+      'English': 'Resources and support for military personnel and veterans',
+      'Español': 'Recursos y apoyo para personal militar y veteranos',
+      'Português': 'Recursos e suporte para militares e veteranos'
+    },
+    'collegeExperience': {
+      'English': 'The College Experience',
+      'Español': 'La Experiencia Universitaria',
+      'Português': 'A Experiência Universitária'
+    },
+    'collegeSupport': {
+      'English': 'Mental health support for students navigating campus life',
+      'Español': 'Apoyo de salud mental para estudiantes en la vida universitaria',
+      'Português': 'Suporte de saúde mental para estudantes navegando na vida universitária'
+    },
+    'smallBusiness': {
+      'English': 'Small Business',
+      'Español': 'Pequeñas Empresas',
+      'Português': 'Pequenos Negócios'
+    },
+    'entrepreneurSupport': {
+      'English': 'Mental health resources for entrepreneurs and small business owners',
+      'Español': 'Recursos de salud mental para emprendedores y dueños de pequeñas empresas',
+      'Português': 'Recursos de saúde mental para empreendedores e proprietários de pequenos negócios'
+    },
+    'adolescentExperience': {
+      'English': 'Adolescent Experience',
+      'Español': 'La Experiencia Adolescente',
+      'Português': 'A Experiência Adolescente'
+    },
+    'youthSupport': {
+      'English': 'Age-appropriate mental health support for children and teens',
+      'Español': 'Apoyo de salud mental adaptado para niños y adolescentes de diferentes edades',
+      'Português': 'Suporte de saúde mental apropriado para crianças e adolescentes de diferentes idades'
+    },
+    'goldenYears': {
+      'English': 'The Golden Years',
+      'Español': 'Los Años Dorados',
+      'Português': 'A Idade Dourada'
+    },
+    'seniorSupport': {
+      'English': 'Mental wellness resources for seniors and elderly adults',
+      'Español': 'Recursos de bienestar mental para adultos mayores y personas de la tercera edad',
+      'Português': 'Recursos de bem-estar mental para idosos e adultos da terceira idade'
+    },
+
     // Tutorial translations
     'welcomeToThriveMT': {
       'English': 'Welcome to Thrive MT',
@@ -193,6 +445,23 @@ export const useTranslation = () => {
       'English': 'Look for this button in the top right corner for a full tutorial anytime.',
       'Español': 'Busque este botón en la esquina superior derecha para obtener ayuda en cualquier momento.',
       'Português': 'Procure este botão no canto superior direito para um tutorial completo a qualquer momento.'
+    },
+    
+    // Help and support
+    'getHelp': {
+      'English': 'Get Help',
+      'Español': 'Obtener Ayuda',
+      'Português': 'Obter Ajuda'
+    },
+    'chatWithHenry': {
+      'English': 'Chat with Henry',
+      'Español': 'Chatear con Henry',
+      'Português': 'Conversar com Henry'
+    },
+    'howCanIHelp': {
+      'English': 'How can I help you with mental wellness tools today?',
+      'Español': '¿Cómo puedo ayudarte con herramientas de bienestar mental hoy?',
+      'Português': 'Como posso ajudá-lo com ferramentas de bem-estar mental hoje?'
     }
   };
 
