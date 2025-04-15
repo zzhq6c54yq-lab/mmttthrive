@@ -81,9 +81,10 @@ const SpecializedPrograms: React.FC = () => {
         : "Mental wellness resources for seniors and elderly adults",
       icon: Sparkles,
       path: "/golden-years-welcome",
-      gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
-      borderColor: "#FFC000",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      gradient: "from-[#3A302A]/90 to-[#5D4C3B]/90",
+      borderColor: "#D4AF37",
+      // Updated senior citizens image - showing positive interaction
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1569677673307-0e56f3b3c58a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
     }
   ];
   
@@ -143,7 +144,7 @@ const SpecializedPrograms: React.FC = () => {
             {/* Bottom color section - 30% of card height */}
             <div className={`absolute bottom-0 left-0 right-0 h-[30%] ${
               program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                ? "bg-gradient-to-br from-amber-500/90 to-yellow-700/90 shadow-inner"
+                ? "bg-gradient-to-br from-[#3A302A]/90 to-[#5D4C3B]/90 shadow-inner"
                 : `bg-gradient-to-br ${program.gradient}`
             } flex items-center justify-center`}>
               <h3 className="text-xl font-semibold text-white truncate text-center w-full px-4">
@@ -155,7 +156,7 @@ const SpecializedPrograms: React.FC = () => {
               <div className="mb-auto">
                 <div className={`p-3 rounded-full ${
                   program.title === "The Golden Years" || program.title === "Los Años Dorados"
-                    ? "bg-amber-400/30 backdrop-blur-sm"
+                    ? "bg-[#D4AF37]/30 backdrop-blur-sm"
                     : "bg-white/20 backdrop-blur-sm"
                 } inline-flex`}>
                   <program.icon className="h-8 w-8 text-white" />
@@ -163,9 +164,13 @@ const SpecializedPrograms: React.FC = () => {
               </div>
             </div>
             
-            {/* Special metallic gold effect for Golden Years */}
+            {/* Enhanced metallic gold effect for Golden Years */}
             {(program.title === "The Golden Years" || program.title === "Los Años Dorados") && (
-              <div className="absolute inset-0 bg-gradient-to-b from-amber-200/10 via-yellow-100/5 to-transparent pointer-events-none"></div>
+              <>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/15 via-transparent to-transparent pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tl from-[#D4AF37]/20 to-transparent rounded-full blur-lg"></div>
+              </>
             )}
             
             {/* Subtle highlight effect on hover */}
@@ -173,7 +178,7 @@ const SpecializedPrograms: React.FC = () => {
               className="absolute inset-0 border-2 opacity-0 group-hover:opacity-100 transition-opacity"
               style={{ 
                 borderColor: (program.title === "The Golden Years" || program.title === "Los Años Dorados") 
-                  ? "#FFC000" 
+                  ? "#D4AF37" 
                   : program.borderColor 
               }}  
             ></div>

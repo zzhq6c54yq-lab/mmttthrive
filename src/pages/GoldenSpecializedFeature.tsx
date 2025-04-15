@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -112,14 +113,16 @@ const GoldenSpecializedFeature: React.FC = () => {
   }, [location.state, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#8B6F1D] via-[#B89237] to-[#DAB258] text-white">
-      {/* Enhanced metallic gold background effect with shimmer */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-700/20 via-amber-500/10 to-amber-800/20 z-0"></div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M10 15.27L16.18 19L14.54 11.97L20 7.24L12.81 6.63L10 0L7.19 6.63L0 7.24L5.46 11.97L3.82 19L10 15.27Z%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+    <div className="min-h-screen bg-gradient-to-b from-[#3A302A] via-[#4A3F36] to-[#5D4C3B] text-white">
+      {/* Classic background texture */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M1 1h2v2H1V1zm4 0h2v2H5V1zm4 0h2v2H9V1zm4 0h2v2h-2V1zm4 0h2v2h-2V1zm-16 4h2v2H1V5zm4 0h2v2H5V5zm4 0h2v2H9V5zm4 0h2v2h-2V5zm4 0h2v2h-2V5zm-16 4h2v2H1V9zm4 0h2v2H5V9zm4 0h2v2H9V9zm4 0h2v2h-2V9zm4 0h2v2h-2V9zm-16 4h2v2H1v-2zm4 0h2v2H5v-2zm4 0h2v2H9v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z%22 fill=%22%23C8C8C9%22 fill-opacity=%220.05%22/></svg>')] opacity-20 z-0"></div>
       
-      {/* Add animated shimmer effect */}
+      {/* Elegant metallic overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/10 via-transparent to-[#D4AF37]/5 z-0"></div>
+      
+      {/* Subtle shimmer effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -inset-[10%] w-[120%] h-[120%] bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 animate-[shimmer_8s_ease-in-out_infinite] opacity-30"></div>
+        <div className="absolute -inset-[10%] w-[120%] h-[120%] bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 animate-[shimmer_12s_ease-in-out_infinite] opacity-20"></div>
       </div>
       
       <NavigationBar
@@ -132,20 +135,20 @@ const GoldenSpecializedFeature: React.FC = () => {
       />
       
       <div className="container mx-auto px-4 py-16 pt-24 relative z-10">
-        <Card className="bg-gradient-to-br from-amber-900/30 to-amber-800/30 backdrop-blur-md border-2 border-amber-400/30 rounded-xl overflow-hidden shadow-xl">
-          <div className="bg-gradient-to-r from-amber-500/20 to-amber-700/20 p-6">
+        <Card className="bg-[#1A1811]/80 backdrop-blur-md border-2 border-[#D4AF37]/30 rounded-xl overflow-hidden shadow-xl">
+          <div className="bg-gradient-to-r from-[#1A1811]/80 to-[#2A2418]/80 p-6">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-3 bg-amber-500/30 rounded-full">
-                <FeatureIcon className="h-8 w-8 text-amber-100" />
+              <div className="p-3 bg-[#D4AF37]/30 rounded-full">
+                <FeatureIcon className="h-8 w-8 text-[#F5DEB3]" />
               </div>
-              <h1 className="text-3xl font-semibold text-amber-50">{content?.title}</h1>
+              <h1 className="text-3xl font-semibold text-[#F5DEB3]">{content?.title}</h1>
             </div>
-            <p className="text-amber-100 text-lg">{content?.description}</p>
+            <p className="text-[#F5DEB3]/90 text-lg">{content?.description}</p>
           </div>
           
           <CardContent className="p-6">
-            <div className="bg-amber-900/20 backdrop-blur-sm rounded-xl p-6 border border-amber-400/30 mb-6">
-              <h2 className="text-2xl font-semibold mb-4 text-amber-100">Welcome to {content?.title}</h2>
+            <div className="bg-[#1A1811]/60 backdrop-blur-sm rounded-xl p-6 border border-[#D4AF37]/30 mb-6">
+              <h2 className="text-2xl font-semibold mb-4 text-[#F5DEB3]">Welcome to {content?.title}</h2>
               <p className="mb-4 text-white/90">
                 This section is designed specifically for seniors in their golden years, providing specialized resources and support.
               </p>
@@ -156,37 +159,37 @@ const GoldenSpecializedFeature: React.FC = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-amber-900/20 backdrop-blur-sm rounded-xl p-5 border border-amber-400/30">
-                <h3 className="text-xl font-medium mb-3 text-amber-100">Featured Resources</h3>
+              <div className="bg-[#1A1811]/60 backdrop-blur-sm rounded-xl p-5 border border-[#D4AF37]/30">
+                <h3 className="text-xl font-medium mb-3 text-[#F5DEB3]">Featured Resources</h3>
                 <ul className="space-y-2">
-                  <li className="flex items-center gap-2 text-amber-50">
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <li className="flex items-center gap-2 text-[#F5DEB3]/90">
+                    <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
                     <span>Interactive guides and tutorials</span>
                   </li>
-                  <li className="flex items-center gap-2 text-amber-50">
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <li className="flex items-center gap-2 text-[#F5DEB3]/90">
+                    <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
                     <span>Educational videos and articles</span>
                   </li>
-                  <li className="flex items-center gap-2 text-amber-50">
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <li className="flex items-center gap-2 text-[#F5DEB3]/90">
+                    <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
                     <span>Downloadable worksheets and templates</span>
                   </li>
                 </ul>
               </div>
               
-              <div className="bg-amber-900/20 backdrop-blur-sm rounded-xl p-5 border border-amber-400/30">
-                <h3 className="text-xl font-medium mb-3 text-amber-100">Community Support</h3>
+              <div className="bg-[#1A1811]/60 backdrop-blur-sm rounded-xl p-5 border border-[#D4AF37]/30">
+                <h3 className="text-xl font-medium mb-3 text-[#F5DEB3]">Community Support</h3>
                 <ul className="space-y-2">
-                  <li className="flex items-center gap-2 text-amber-50">
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <li className="flex items-center gap-2 text-[#F5DEB3]/90">
+                    <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
                     <span>Discussion forums and groups</span>
                   </li>
-                  <li className="flex items-center gap-2 text-amber-50">
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <li className="flex items-center gap-2 text-[#F5DEB3]/90">
+                    <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
                     <span>Virtual events and meetups</span>
                   </li>
-                  <li className="flex items-center gap-2 text-amber-50">
-                    <div className="w-2 h-2 rounded-full bg-amber-400"></div>
+                  <li className="flex items-center gap-2 text-[#F5DEB3]/90">
+                    <div className="w-2 h-2 rounded-full bg-[#D4AF37]"></div>
                     <span>Expert Q&A sessions</span>
                   </li>
                 </ul>
@@ -195,7 +198,7 @@ const GoldenSpecializedFeature: React.FC = () => {
             
             <div className="flex justify-between">
               <Button
-                className="bg-amber-800 hover:bg-amber-900 text-white border border-amber-400/30"
+                className="bg-[#3A302A] hover:bg-[#2A2418] text-white border border-[#D4AF37]/30"
                 onClick={handleBackToPortal}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -203,7 +206,7 @@ const GoldenSpecializedFeature: React.FC = () => {
               </Button>
               
               <Button
-                className="bg-amber-600 hover:bg-amber-700 text-white border border-amber-400/30"
+                className="bg-[#D4AF37] hover:bg-[#B8860B] text-white border border-[#FFC000]/30"
                 onClick={() => navigate('/golden-years-journal', { 
                   state: { 
                     stayInPortal: true,

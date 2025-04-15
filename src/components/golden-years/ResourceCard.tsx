@@ -30,18 +30,18 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   const finalButtonText = buttonText || defaultButtonTexts[preferredLanguage as keyof typeof defaultButtonTexts] || defaultButtonTexts['English'];
 
   return (
-    <div className="bg-amber-900/20 backdrop-blur-sm border border-amber-200/20 rounded-xl p-6 hover:bg-amber-900/30 transition">
+    <div className="bg-[#1A1811]/70 backdrop-blur-sm border border-[#D4AF37]/20 rounded-xl p-6 hover:bg-[#1A1811]/80 hover:border-[#D4AF37]/40 transition-all">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-medium">{title}</h3>
-        <div className="p-2 bg-amber-600/40 rounded-full">
+        <h3 className="text-xl font-medium text-[#F5DEB3]">{title}</h3>
+        <div className="p-2 bg-[#D4AF37]/30 rounded-full">
           {icon}
         </div>
       </div>
-      <p className="mb-6 text-amber-100">
+      <p className="mb-6 text-white/90">
         {description}
       </p>
       <Button 
-        className="w-full bg-amber-700 hover:bg-amber-800 text-white flex items-center justify-center"
+        className="w-full bg-[#3A302A] hover:bg-[#5D4C3B] text-white flex items-center justify-center border border-[#D4AF37]/20"
         onClick={() => onResourceClick(title)}
       >
         {finalButtonText}
