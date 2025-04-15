@@ -1,3 +1,4 @@
+
 // Journal prompt categories and their corresponding prompts
 const journalPrompts = {
   childhood: [
@@ -33,7 +34,7 @@ const journalPrompts = {
     "What financial challenges did you face as a young adult? How did you overcome them?",
     "How did you establish your own home and family traditions distinct from your parents?",
     "What social and cultural events of your young adult years had the biggest impact on you?",
-    "Describe the moment when you felt like a "real adult" for the first time.",
+    "Describe the moment when you felt like a \"real adult\" for the first time.",
     "What advice would you give young adults today based on your experiences?"
   ],
   career: [
