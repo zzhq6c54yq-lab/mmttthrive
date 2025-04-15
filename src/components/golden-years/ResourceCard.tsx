@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 interface ResourceCardProps {
@@ -40,10 +41,11 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
         {description}
       </p>
       <Button 
-        className="w-full bg-amber-700 hover:bg-amber-800 text-white"
+        className="w-full bg-amber-700 hover:bg-amber-800 text-white flex items-center justify-center"
         onClick={() => onResourceClick(title)}
       >
         {finalButtonText}
+        <ArrowRight className="ml-2 h-4 w-4" />
       </Button>
     </div>
   );

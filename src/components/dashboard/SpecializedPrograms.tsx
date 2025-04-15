@@ -83,7 +83,8 @@ const SpecializedPrograms: React.FC = () => {
       path: "/golden-years-welcome",
       gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
       borderColor: "#FFC000",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1540778324650-529f9f961133?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80") // Updated to show socially active senior citizens
+      // Updated to show senior citizens interacting positively
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1540778324650-529f9f961133?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
   

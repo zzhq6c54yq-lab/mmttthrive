@@ -55,9 +55,14 @@ const GoldenYearsPortal: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#8B6F1D] via-[#B89237] to-[#DAB258] text-white relative">
-      {/* Enhanced metallic gold background effect */}
+      {/* Enhanced metallic gold background effect with shimmer */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-700/20 via-amber-500/10 to-amber-800/20 z-0"></div>
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M10 15.27L16.18 19L14.54 11.97L20 7.24L12.81 6.63L10 0L7.19 6.63L0 7.24L5.46 11.97L3.82 19L10 15.27Z%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
+      
+      {/* Add animated shimmer effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -inset-[10%] w-[120%] h-[120%] bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 animate-[shimmer_8s_ease-in-out_infinite] opacity-30"></div>
+      </div>
       
       {/* Navigation bar */}
       <NavigationBar 
@@ -75,7 +80,7 @@ const GoldenYearsPortal: React.FC = () => {
           subtitle={getTranslatedText('goldenYearsSubtitle')}
         />
         
-        {/* Featured Content - Legacy Journal */}
+        {/* Featured Content - Legacy Journal with enhanced visibility */}
         <FeaturedContent onFeatureClick={handleFeatureClick} />
         
         {/* Main Resources */}
