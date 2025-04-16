@@ -4,6 +4,7 @@ import ResourceCard from "./ResourceCard";
 import { HeartHandshake, BookOpen, Users, Lightbulb, Clock, Globe, Brain, UserRound } from "lucide-react";
 import useFeatureActions from "@/hooks/useFeatureActions";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ResourcesSectionProps {
   onResourceClick: (feature: string) => void;
@@ -12,6 +13,8 @@ interface ResourcesSectionProps {
 const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) => {
   const { handleActionClick } = useFeatureActions();
   const { toast } = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [loadingResource, setLoadingResource] = useState<string | null>(null);
   
   const resources = [
@@ -70,11 +73,28 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onResourceClick }) 
     });
     
     setTimeout(() => {
+      // Ensure we're using the correct navigation path and state
       if (resource.action) {
-        handleActionClick(resource.action);
+        // Fix: Ensure proper navigation state
+        if (resource.action.type === 'other' || resource.action.type === 'join') {
+          // For direct navigation to specific feature pages
+          navigate(`/${resource.action.path}`, {
+            state: { 
+              stayInPortal: true,
+              preventTutorial: true,
+              portalPath: '/golden-years-portal',
+              featureName: resource.title
+            }
+          });
+        } else {
+          // Use the feature actions handler for other action types
+          handleActionClick(resource.action);
+        }
       } else {
+        // Fallback to the parent component's click handler
         onResourceClick(resource.title);
       }
+      
       setLoadingResource(null);
     }, 500);
   };

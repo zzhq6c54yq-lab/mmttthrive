@@ -31,6 +31,13 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   
   const finalButtonText = buttonText || defaultButtonTexts[preferredLanguage as keyof typeof defaultButtonTexts] || defaultButtonTexts['English'];
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    // Prevent default behavior to ensure custom handler is used
+    e.preventDefault();
+    // Call the provided click handler
+    onResourceClick();
+  };
+
   return (
     <div className="bg-[#2A2420]/80 backdrop-blur-sm border border-[#D4AF37]/20 rounded-xl p-6 hover:bg-[#2A2420]/90 hover:border-[#D4AF37]/40 transition-all shadow-md">
       <div className="flex justify-between items-start mb-4">
@@ -44,7 +51,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       </p>
       <Button 
         className="w-full bg-[#4A3F36] hover:bg-[#5D4C3B] text-white flex items-center justify-center border border-[#D4AF37]/20"
-        onClick={onResourceClick}
+        onClick={handleButtonClick}
         disabled={isLoading}
       >
         {isLoading ? (
