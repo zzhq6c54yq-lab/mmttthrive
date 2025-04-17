@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
 import Home from "@/pages/Home";
 import ProgressReports from "@/pages/ProgressReports";
@@ -59,7 +59,6 @@ import GoldenEndOfLifePlanning from "@/pages/GoldenEndOfLifePlanning";
 import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
 import UserLead from "@/pages/UserLead";
 
-// Import placeholder pages for our new specialized programs
 import SocialWelcome from "@/pages/SocialWelcome";
 import SocialPortal from "@/pages/SocialPortal";
 import MentalHealthWelcome from "@/pages/MentalHealthWelcome";
@@ -121,14 +120,12 @@ function App() {
         <Route path="/adolescent-portal" element={<AdolescentPortal />} />
         <Route path="/adolescent-selection" element={<AdolescentSelection />} />
         
-        {/* Golden Years Routes */}
         <Route path="/golden-years-welcome" element={<GoldenYearsWelcome />} />
         <Route path="/golden-years-portal" element={<GoldenYearsPortal />} />
         <Route path="/golden-years-journal" element={<GoldenYearsJournal />} />
         <Route path="/golden-years-planning" element={<GoldenEndOfLifePlanning />} />
         <Route path="/golden-years-memory" element={<GoldenMemoryCognitive />} />
         
-        {/* Generic handler for other Golden Years features */}
         <Route path="/golden-years-guide" element={<GoldenSpecializedFeature />} />
         <Route path="/golden-years-transitions" element={<GoldenSpecializedFeature />} />
         <Route path="/golden-years-community" element={<GoldenSpecializedFeature />} />
@@ -136,24 +133,18 @@ function App() {
         <Route path="/golden-years-wellness" element={<GoldenSpecializedFeature />} />
         <Route path="/golden-years-calendar" element={<GoldenSpecializedFeature />} />
         
-        {/* New Specialized Programs Routes */}
-        {/* Social Connection */}
         <Route path="/social-welcome" element={<SocialWelcome />} />
         <Route path="/social-portal" element={<SocialPortal />} />
         
-        {/* Mental Health (Anxiety & Depression) */}
         <Route path="/mental-health-welcome" element={<MentalHealthWelcome />} />
         <Route path="/mental-health-portal" element={<MentalHealthPortal />} />
         
-        {/* Healthcare Workers */}
         <Route path="/healthcare-welcome" element={<HealthcareWelcome />} />
         <Route path="/healthcare-portal" element={<HealthcarePortal />} />
         
-        {/* First Responders */}
         <Route path="/first-responder-welcome" element={<FirstResponderWelcome />} />
         <Route path="/first-responder-portal" element={<FirstResponderPortal />} />
         
-        {/* Law Enforcement */}
         <Route path="/police-welcome" element={<PoliceWelcome />} />
         <Route path="/police-portal" element={<PolicePortal />} />
         
@@ -180,7 +171,6 @@ function App() {
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
         <Route path="/my-sponsor" element={<MySponsor />} />
         
-        {/* User Lead Route */}
         <Route path="/user-lead" element={<UserLead />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
