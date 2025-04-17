@@ -12,59 +12,21 @@ interface IntroScreenProps {
 type SupportedLanguage = 'English' | 'Español' | 'Português' | 'Русский' | 'Deutsch' | 'हिन्दी' | 'Français' | 'Filipino' | '中文' | 'العربية';
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("English");
-  const { getTranslatedText } = useTranslation();
+  const { preferredLanguage, changeLanguage, getTranslatedText } = useTranslation();
   
-  useEffect(() => {
-    // Load the saved language preference if available
-    const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage === 'Español') {
-      setSelectedLanguage('Español');
-    } else if (savedLanguage === 'Português') {
-      setSelectedLanguage('Português');
-    } else if (savedLanguage === 'Русский') {
-      setSelectedLanguage('Русский');
-    } else if (savedLanguage === 'Deutsch') {
-      setSelectedLanguage('Deutsch');
-    } else if (savedLanguage === 'हिन्दी') {
-      setSelectedLanguage('हिन्दी');
-    } else if (savedLanguage === 'Français') {
-      setSelectedLanguage('Français');
-    } else if (savedLanguage === 'Filipino') {
-      setSelectedLanguage('Filipino');
-    } else if (savedLanguage === '中文') {
-      setSelectedLanguage('中文');
-    } else if (savedLanguage === 'العربية') {
-      setSelectedLanguage('العربية');
-    }
-  }, []);
-  
-  const selectLanguage = (language: SupportedLanguage) => {
-    setSelectedLanguage(language);
-    
-    // Set language preference in localStorage
-    localStorage.setItem('preferredLanguage', language);
-    
-    // Force a re-render of the app to apply the language change immediately
-    window.dispatchEvent(new Event('languageChange'));
-
-    // Add a console log to verify the language change
-    console.log(`Language changed to: ${language}`);
-  };
-
   // Helper function to render language buttons
   const renderLanguageButton = (language: SupportedLanguage) => {
     return (
       <Button
         key={language}
         size="sm"
-        variant={selectedLanguage === language ? "gold" : "ghost"}
+        variant={preferredLanguage === language ? "gold" : "ghost"}
         className={`text-xs py-1 px-3 h-8 rounded-full transition-all duration-300 ${
-          selectedLanguage === language 
+          preferredLanguage === language 
             ? "bg-[#B87333] text-white shadow-[0_0_10px_rgba(184,115,51,0.5)]" 
             : "text-white/70 hover:text-white hover:bg-[#B87333]/20 border border-[#B87333]/30"
         }`}
-        onClick={() => selectLanguage(language)}
+        onClick={() => changeLanguage(language)}
       >
         <Languages className="h-4 w-4 mr-1.5" />
         {language}

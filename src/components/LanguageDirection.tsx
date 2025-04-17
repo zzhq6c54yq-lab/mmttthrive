@@ -20,20 +20,15 @@ const LanguageDirection: React.FC = () => {
     // Special font adjustments for specific languages
     if (preferredLanguage === '中文') {
       document.documentElement.classList.add('chinese');
-    } else {
-      document.documentElement.classList.remove('chinese');
-    }
-    
-    if (preferredLanguage === 'हिन्दी') {
+      document.documentElement.classList.remove('hindi', 'arabic');
+    } else if (preferredLanguage === 'हिन्दी') {
       document.documentElement.classList.add('hindi');
-    } else {
-      document.documentElement.classList.remove('hindi');
-    }
-    
-    if (preferredLanguage === 'العربية') {
+      document.documentElement.classList.remove('chinese', 'arabic');
+    } else if (preferredLanguage === 'العربية') {
       document.documentElement.classList.add('arabic');
+      document.documentElement.classList.remove('chinese', 'hindi');
     } else {
-      document.documentElement.classList.remove('arabic');
+      document.documentElement.classList.remove('chinese', 'hindi', 'arabic');
     }
     
   }, [preferredLanguage]);

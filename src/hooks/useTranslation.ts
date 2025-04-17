@@ -9,27 +9,22 @@ const useTranslation = () => {
   
   useEffect(() => {
     // Load the saved language preference if available
-    const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage === 'Español') {
-      setPreferredLanguage('Español');
-    } else if (savedLanguage === 'Português') {
-      setPreferredLanguage('Português');
-    } else if (savedLanguage === 'Русский') {
-      setPreferredLanguage('Русский');
-    } else if (savedLanguage === 'Deutsch') {
-      setPreferredLanguage('Deutsch');
-    } else if (savedLanguage === 'हिन्दी') {
-      setPreferredLanguage('हिन्दी');
-    } else if (savedLanguage === 'Français') {
-      setPreferredLanguage('Français');
-    } else if (savedLanguage === 'Filipino') {
-      setPreferredLanguage('Filipino');
-    } else if (savedLanguage === '中文') {
-      setPreferredLanguage('中文');
-    } else if (savedLanguage === 'العربية') {
-      setPreferredLanguage('العربية');
+    const savedLanguage = localStorage.getItem('preferredLanguage') as Language | null;
+    if (savedLanguage) {
+      setPreferredLanguage(savedLanguage);
     }
   }, []);
+
+  // Function to change language
+  const changeLanguage = (language: Language) => {
+    localStorage.setItem('preferredLanguage', language);
+    setPreferredLanguage(language);
+    
+    // Dispatch a custom event to notify other components of language change
+    window.dispatchEvent(new Event('languageChange'));
+    
+    console.log(`Language changed to: ${language}`);
+  };
   
   // Helper functions to check current language
   const isSpanish = preferredLanguage === 'Español';
@@ -59,6 +54,7 @@ const useTranslation = () => {
   
   return {
     preferredLanguage,
+    changeLanguage,
     isSpanish,
     isPortuguese,
     isRussian,

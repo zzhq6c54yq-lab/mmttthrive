@@ -14,4 +14,17 @@ html[dir="rtl"] .flip-in-rtl {
   transform: scaleX(-1);
 }
 
+/* Language-specific font styles */
+html.chinese * {
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+html.arabic * {
+  font-family: 'Noto Sans Arabic', 'Amiri', 'Scheherazade New', sans-serif;
+}
+
+html.hindi * {
+  font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+}
+
 /* Keep any existing global CSS */
