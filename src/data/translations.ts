@@ -1,3 +1,4 @@
+
 // Main translations system for the entire application
 const translations: Record<string, Record<string, string>> = {
   // Common UI elements
@@ -541,4 +542,10 @@ const translations: Record<string, Record<string, string>> = {
     'Deutsch': 'offnungsvolle Horizonte: Umfassen Sie eine Zukunft voller Möglichkeiten und den Glauben, dass Veränderung möglich ist.',
     'हिन्दी': 'ोपफुल होराइजन्स: संभावनाओं से भरे भविष्य और इस विश्वास को अपनाएं कि परिवर्तन संभव है।',
     'Français': 'orizons Pleins d\'Espoir : Embrassez un avenir rempli de possibilités et la conviction que le changement est réalisable.',
-    'Filipino': 'opeful na Horizons: Yakapin ang isang hinaharap na puno ng mga posibilidad at ang
+    'Filipino': 'opeful na Horizons: Yakapin ang isang hinaharap na puno ng mga posibilidad at ang paniniwala na ang pagbabago ay maaaring makamit.',
+    '中文': '希望的地平线：拥抱充满可能性的未来，相信变化是可以实现的。',
+    'العربية': 'آفاق مليئة بالأمل: احتضن مستقبلاً مليئًا بالإمكانيات والإيمان بأن التغيير ممكن.'
+  }
+};
+
+export default translations;
