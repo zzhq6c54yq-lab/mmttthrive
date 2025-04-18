@@ -1,4 +1,3 @@
-
 import { useState, useEffect, createContext, useContext } from 'react';
 
 // Define Translation Context
@@ -551,6 +550,44 @@ const translations: TranslationDictionary = {
     Español: "Cargando contenido...",
     Português: "Carregando conteúdo...",
     Filipino: "Naglo-load ng content..."
+  },
+
+  // Additional Filipino translations
+  welcomeGreeting: {
+    English: "Welcome to Thrive MT",
+    Español: "Bienvenido a Thrive MT",
+    Português: "Bem-vindo ao Thrive MT",
+    Filipino: "Maligayang pagdating sa Thrive MT"
+  },
+  startJourneyText: {
+    English: "Start your wellness journey today",
+    Español: "Comienza tu viaje de bienestar hoy",
+    Português: "Comece sua jornada de bem-estar hoje",
+    Filipino: "Simulan ang iyong paglalakbay sa kalusugan ngayon"
+  },
+  exploreFeatures: {
+    English: "Explore Features",
+    Español: "Explorar Funciones",
+    Português: "Explorar Recursos",
+    Filipino: "Tuklasin ang mga Feature"
+  },
+  moreOptions: {
+    English: "More Options",
+    Español: "Más Opciones",
+    Português: "Mais Opções",
+    Filipino: "Iba Pang mga Opsyon"
+  },
+  yourProgress: {
+    English: "Your Progress",
+    Español: "Tu Progreso",
+    Português: "Seu Progresso",
+    Filipino: "Ang Iyong Pag-unlad"
+  },
+  dailyInsights: {
+    English: "Daily Insights",
+    Español: "Ideas Diarias",
+    Português: "Insights Diários",
+    Filipino: "Pang-araw-araw na Pananaw"
   }
 };
 
