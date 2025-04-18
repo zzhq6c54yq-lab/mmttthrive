@@ -84,14 +84,14 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
             <Button
               variant={billingCycle === 'monthly' ? "default" : "outline"}
               onClick={() => setBillingCycle('monthly')}
-              className={billingCycle === 'monthly' ? 'bg-[#B87333]' : ''}
+              className={billingCycle === 'monthly' ? 'bg-purple-600 hover:bg-purple-700' : ''}
             >
               {getTranslatedText('monthly')}
             </Button>
             <Button
               variant={billingCycle === 'yearly' ? "default" : "outline"}
               onClick={() => setBillingCycle('yearly')}
-              className={billingCycle === 'yearly' ? 'bg-[#B87333]' : ''}
+              className={billingCycle === 'yearly' ? 'bg-purple-600 hover:bg-purple-700' : ''}
             >
               {getTranslatedText('yearly')} - 20% {getTranslatedText('off')}
             </Button>
@@ -104,8 +104,8 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
               key={plan.name}
               className={`bg-white/10 rounded-xl p-6 backdrop-blur-sm border-2 transition-all duration-300 ${
                 selectedPlan === plan.name
-                  ? 'border-[#B87333] transform scale-105'
-                  : 'border-transparent hover:border-[#B87333]/50'
+                  ? 'border-purple-500 transform scale-105'
+                  : 'border-transparent hover:border-purple-500/50'
               }`}
             >
               <div className="mb-4">
@@ -120,7 +120,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
                       <p className="text-3xl font-bold">
                         ${getDiscountedPrice(plan.monthlyPrice)}/year
                       </p>
-                      <p className="text-sm text-[#B87333]">
+                      <p className="text-sm text-purple-400">
                         {getTranslatedText('save20')}
                       </p>
                     </>
@@ -131,7 +131,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
               <div className="space-y-3 mb-6">
                 {plan.features.map((feature, index) => (
                   <div key={index} className="flex items-start">
-                    <Check className="h-5 w-5 text-[#B87333] mr-2 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-purple-400 mr-2 flex-shrink-0" />
                     <span className="text-sm">{feature}</span>
                   </div>
                 ))}
@@ -140,7 +140,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
               <Button
                 className={`w-full ${
                   selectedPlan === plan.name
-                    ? 'bg-[#B87333] hover:bg-[#B87333]/90'
+                    ? 'bg-purple-600 hover:bg-purple-700'
                     : 'bg-white/20 hover:bg-white/30'
                 }`}
                 onClick={() => onPlanSelect(plan.name)}
@@ -152,16 +152,16 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         </div>
 
         <div className="flex justify-center space-x-4">
-          <Button variant="outline" onClick={onPrevious}>
-            {getTranslatedText('previous')}
+          <Button variant="outline" onClick={onPrevious} className="border-white/20 text-white hover:bg-white/10">
+            <ArrowLeft className="mr-2 h-4 w-4" /> {getTranslatedText('previous')}
           </Button>
           <Button 
-            className="bg-[#B87333] hover:bg-[#B87333]/90"
+            className="bg-purple-600 hover:bg-purple-700"
             onClick={onContinue}
           >
-            {getTranslatedText('continue')}
+            {getTranslatedText('continue')} <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-          <Button variant="ghost" onClick={onSkip}>
+          <Button variant="ghost" onClick={onSkip} className="text-white/70 hover:text-white hover:bg-white/10">
             {getTranslatedText('skipForNow')}
           </Button>
         </div>
