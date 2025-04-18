@@ -133,5 +133,6 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   );
 };
 
-export default useTranslation = () => useContext(TranslationContext);
+const useTranslation = () => useContext(TranslationContext);
 
+export default useTranslation;
