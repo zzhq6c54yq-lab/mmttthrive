@@ -22,15 +22,12 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   const displayName = userName || "Friend";
   
   const handleHenryButtonClick = () => {
-    // Always show the intro dialog when the button is clicked
     setShowIntroDialog(true);
   };
 
   const handleIntroContinue = () => {
-    // Close the intro dialog and open the chat dialog
     setShowIntroDialog(false);
     setShowChatDialog(true);
-    // Only toggle Henry on if he's not already visible
     if (!showHenry) {
       onHenryToggle();
     }
@@ -89,7 +86,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
               <Button 
                 onClick={handleHenryButtonClick}
                 variant="outline"
-                className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden"
+                className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden w-[300px]"
               >
                 <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#B87333]/80 rounded-b-md"></div>
                 <div className="absolute top-1 left-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
