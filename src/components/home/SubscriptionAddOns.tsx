@@ -26,7 +26,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
     setExpandedAddon(expandedAddon === id ? null : id);
   };
 
-  const getPriceDisplay = (addOn: AddOn) => {
+  const getPriceDisplay = (addOn: AddOn): React.ReactNode => {
     let basePrice = 0;
     if (!selectedPlan || selectedPlan.toLowerCase() === 'basic') {
       basePrice = 3;
