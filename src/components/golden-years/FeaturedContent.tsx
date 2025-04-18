@@ -9,7 +9,47 @@ interface FeaturedContentProps {
 }
 
 const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => {
-  const { getTranslatedText } = useTranslation();
+  const { getTranslatedText, preferredLanguage } = useTranslation();
+  
+  // Content translations for the featured content
+  const contentTranslations = {
+    title: {
+      English: "Legacy Journal",
+      Español: "Diario de Legado",
+      Português: "Diário de Legado",
+      Filipino: "Legacy Journal"
+    },
+    description: {
+      English: "Preserve your life story, wisdom, and memories in our beautifully designed Legacy Journal. Create a meaningful keepsake that can be shared with your loved ones and future generations. Document your journey, experiences, and the lessons you've learned throughout your life.",
+      Español: "Conserva tu historia de vida, sabiduría y recuerdos en nuestro Diario de Legado bellamente diseñado. Crea un recuerdo significativo que puedes compartir con tus seres queridos y futuras generaciones. Documenta tu viaje, experiencias y las lecciones que has aprendido a lo largo de tu vida.",
+      Português: "Preserve a história da sua vida, sabedoria e memórias em nosso Diário de Legado lindamente projetado. Crie uma lembrança significativa que pode ser compartilhada com seus entes queridos e gerações futuras. Documente sua jornada, experiências e as lições que você aprendeu ao longo da vida.",
+      Filipino: "Panatilihin ang kwento ng iyong buhay, karunungan, at alaala sa aming magandang disenyo ng Legacy Journal. Lumikha ng makabuluhang alaala na maaaring ibahagi sa iyong mga mahal sa buhay at sa mga susunod na henerasyon. Idokumento ang iyong paglalakbay, mga karanasan, at ang mga aral na natutunan mo sa buong buhay mo."
+    },
+    buttonText: {
+      English: "Start Your Journal",
+      Español: "Comienza Tu Diario",
+      Português: "Inicie Seu Diário",
+      Filipino: "Simulan ang Iyong Journal"
+    },
+    learnMore: {
+      English: "Learn More",
+      Español: "Aprender Más",
+      Português: "Saiba Mais",
+      Filipino: "Alamin Pa"
+    },
+    preserveTag: {
+      English: "Preserve Your Story",
+      Español: "Preserva Tu Historia",
+      Português: "Preserve Sua História",
+      Filipino: "Panatilihin ang Iyong Kwento"
+    },
+    featuredResource: {
+      English: "Featured Resource",
+      Español: "Recurso Destacado",
+      Português: "Recurso em Destaque",
+      Filipino: "Featured na Resource"
+    }
+  };
   
   return (
     <div className="bg-gradient-to-br from-[#1E1916]/90 to-[#2A2420]/90 backdrop-blur-md border-2 border-[#D4AF37]/40 rounded-xl p-6 mb-10 shadow-lg relative overflow-hidden">
@@ -22,7 +62,7 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
       
       {/* Highlight badge */}
       <div className="absolute -top-1 -right-1 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] px-4 py-1 rounded-bl-xl rounded-tr-xl text-white font-semibold text-sm shadow-lg z-20 border border-[#FFC000]/40">
-        Featured Resource
+        {contentTranslations.featuredResource[preferredLanguage as keyof typeof contentTranslations.featuredResource]}
       </div>
       
       <div className="relative z-10 grid md:grid-cols-5 gap-6">
@@ -30,11 +70,11 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
         <div className="md:col-span-3">
           <h2 className="text-3xl font-bold mb-4 flex items-center text-[#D4AF37]">
             <Trophy className="mr-3 h-7 w-7 text-[#D4AF37]" />
-            Legacy Journal
+            {contentTranslations.title[preferredLanguage as keyof typeof contentTranslations.title]}
           </h2>
           
           <p className="mb-6 text-white text-lg leading-relaxed">
-            Preserve your life story, wisdom, and memories in our beautifully designed Legacy Journal. Create a meaningful keepsake that can be shared with your loved ones and future generations. Document your journey, experiences, and the lessons you've learned throughout your life.
+            {contentTranslations.description[preferredLanguage as keyof typeof contentTranslations.description]}
           </p>
           
           <div className="flex flex-wrap gap-4">
@@ -43,14 +83,14 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
               onClick={() => onFeatureClick("Legacy Journal")}
             >
               <BookOpen className="mr-2" />
-              Start Your Journal
+              {contentTranslations.buttonText[preferredLanguage as keyof typeof contentTranslations.buttonText]}
             </Button>
             <Button 
               variant="outline" 
               className="border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/10 px-6 py-5 text-lg transform transition-all duration-300 hover:-translate-y-1"
               onClick={() => onFeatureClick("Legacy Journal Guide")}
             >
-              Learn More
+              {contentTranslations.learnMore[preferredLanguage as keyof typeof contentTranslations.learnMore]}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -67,7 +107,7 @@ const FeaturedContent: React.FC<FeaturedContentProps> = ({ onFeatureClick }) => 
             <div className="absolute inset-0 bg-gradient-to-t from-[#1A1811]/70 to-transparent"></div>
             <div className="absolute bottom-4 left-4 right-4 text-center">
               <span className="px-3 py-1 bg-[#D4AF37]/80 text-white text-sm font-medium rounded-full">
-                Preserve Your Story
+                {contentTranslations.preserveTag[preferredLanguage as keyof typeof contentTranslations.preserveTag]}
               </span>
             </div>
           </div>

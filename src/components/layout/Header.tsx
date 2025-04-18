@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   User, Settings, LogOut, Calendar, LineChart, HelpCircle, 
-  Moon, Sun, Bell, Lock, MessageSquare
+  Moon, Sun, Bell, Lock, MessageSquare, Languages
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +29,7 @@ import useTranslation from "@/hooks/useTranslation";
 const Header = () => {
   const { toast } = useToast();
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false);
-  const { preferredLanguage, isSpanish, isPortuguese } = useTranslation();
+  const { preferredLanguage, setPreferredLanguage, isSpanish, isPortuguese, isFilipino } = useTranslation();
   
   const handleLogout = () => {
     const logoutMessages = {
@@ -44,6 +44,10 @@ const Header = () => {
       'Português': {
         title: "Desconectado",
         description: "Você foi desconectado com sucesso."
+      },
+      'Filipino': {
+        title: "Na-log out",
+        description: "Matagumpay kang na-log out."
       }
     };
     
@@ -68,6 +72,10 @@ const Header = () => {
       'Português': {
         title: "Configuração de tema",
         description: "O modo escuro ainda não foi implementado."
+      },
+      'Filipino': {
+        title: "Setting ng tema",
+        description: "Hindi pa naipapatupad ang dark mode."
       }
     };
     
@@ -78,9 +86,74 @@ const Header = () => {
       description: message.description,
     });
   };
+  
+  // Handle language change from header menu
+  const handleLanguageChange = (language: 'English' | 'Español' | 'Português' | 'Filipino') => {
+    setPreferredLanguage(language);
+    
+    const languageNames = {
+      'English': 'English',
+      'Español': 'Spanish',
+      'Português': 'Portuguese',
+      'Filipino': 'Filipino'
+    };
+    
+    toast({
+      title: "Language Changed",
+      description: `Language set to ${languageNames[language]}`,
+      duration: 2000
+    });
+  };
 
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
+      {/* Language selector */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="h-10 w-10 rounded-full border-2 border-[#B87333] bg-white shadow-lg hover:bg-[#B87333]/10 transition-all duration-300"
+            aria-label="Language selector"
+            title="Change language"
+          >
+            <Languages className="h-5 w-5 text-[#B87333]" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-40 mt-2 bg-white/95 backdrop-blur-sm border border-[#B87333]/20">
+          <DropdownMenuLabel>Language</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem 
+            className={`flex items-center ${preferredLanguage === 'English' ? 'bg-[#B87333]/10' : ''}`}
+            onClick={() => handleLanguageChange('English')}
+          >
+            <span className="mr-2">🇺🇸</span> English
+            {preferredLanguage === 'English' && <span className="ml-auto text-[#B87333]">✓</span>}
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className={`flex items-center ${preferredLanguage === 'Español' ? 'bg-[#B87333]/10' : ''}`}
+            onClick={() => handleLanguageChange('Español')}
+          >
+            <span className="mr-2">🇪🇸</span> Español
+            {preferredLanguage === 'Español' && <span className="ml-auto text-[#B87333]">✓</span>}
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className={`flex items-center ${preferredLanguage === 'Português' ? 'bg-[#B87333]/10' : ''}`}
+            onClick={() => handleLanguageChange('Português')}
+          >
+            <span className="mr-2">🇵🇹</span> Português
+            {preferredLanguage === 'Português' && <span className="ml-auto text-[#B87333]">✓</span>}
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className={`flex items-center ${preferredLanguage === 'Filipino' ? 'bg-[#B87333]/10' : ''}`}
+            onClick={() => handleLanguageChange('Filipino')}
+          >
+            <span className="mr-2">🇵🇭</span> Filipino
+            {preferredLanguage === 'Filipino' && <span className="ml-auto text-[#B87333]">✓</span>}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      
       {/* Enhanced Tutorial Button with animations and eye-catching design */}
       <TooltipProvider>
         <Tooltip>
@@ -92,6 +165,7 @@ const Header = () => {
               aria-label={
                 isSpanish ? "Tutorial de la Aplicación" : 
                 isPortuguese ? "Tutorial do Aplicativo" : 
+                isFilipino ? "Tutorial ng App" :
                 "App Tutorial"
               }
               onClick={() => setShowWelcomeTutorial(true)}
@@ -118,6 +192,7 @@ const Header = () => {
             <p>
               {isSpanish ? "Tutorial del sitio" : 
                isPortuguese ? "Tutorial do site" : 
+               isFilipino ? "Tutorial ng site" :
                "Site Tutorial"}
             </p>
           </TooltipContent>
@@ -134,11 +209,13 @@ const Header = () => {
             aria-label={
               isSpanish ? "Menú de usuario" : 
               isPortuguese ? "Menu do usuário" : 
+              isFilipino ? "Menu ng user" :
               "User menu"
             }
             title={
               isSpanish ? "Menú de usuario" : 
               isPortuguese ? "Menu do usuário" : 
+              isFilipino ? "Menu ng user" :
               "User menu"
             }
           >
@@ -151,11 +228,13 @@ const Header = () => {
               <p className="text-sm font-medium leading-none">
                 {isSpanish ? "Mi Perfil" : 
                  isPortuguese ? "Meu Perfil" : 
+                 isFilipino ? "Aking Profile" :
                  "My Profile"}
               </p>
               <p className="text-xs leading-none text-muted-foreground">
                 {isSpanish ? "Administra tu cuenta" : 
                  isPortuguese ? "Gerencie sua conta" : 
+                 isFilipino ? "Pamahalaan ang iyong account" :
                  "Manage your account"}
               </p>
             </div>
@@ -167,6 +246,7 @@ const Header = () => {
               <span>
                 {isSpanish ? "Perfil" : 
                  isPortuguese ? "Perfil" : 
+                 isFilipino ? "Profile" :
                  "Profile"}
               </span>
             </DropdownMenuItem>
@@ -175,6 +255,7 @@ const Header = () => {
               <span>
                 {isSpanish ? "Configuración" : 
                  isPortuguese ? "Configurações" : 
+                 isFilipino ? "Mga Setting" :
                  "Settings"}
               </span>
             </DropdownMenuItem>
@@ -183,6 +264,7 @@ const Header = () => {
               <span>
                 {isSpanish ? "Modo Oscuro" : 
                  isPortuguese ? "Modo Escuro" : 
+                 isFilipino ? "Dark Mode" :
                  "Dark Mode"}
               </span>
             </DropdownMenuItem>
@@ -194,6 +276,7 @@ const Header = () => {
               <span>
                 {isSpanish ? "Notificaciones" : 
                  isPortuguese ? "Notificações" : 
+                 isFilipino ? "Mga Notification" :
                  "Notifications"}
               </span>
             </DropdownMenuItem>
@@ -202,6 +285,7 @@ const Header = () => {
               <span>
                 {isSpanish ? "Configuración de Privacidad" : 
                  isPortuguese ? "Configurações de Privacidade" : 
+                 isFilipino ? "Mga Setting ng Privacy" :
                  "Privacy Settings"}
               </span>
             </DropdownMenuItem>
@@ -212,6 +296,7 @@ const Header = () => {
             <span>
               {isSpanish ? "Comentarios" : 
                isPortuguese ? "Feedback" : 
+               isFilipino ? "Feedback" :
                "Feedback"}
             </span>
           </DropdownMenuItem>
@@ -221,6 +306,7 @@ const Header = () => {
             <span>
               {isSpanish ? "Cerrar sesión" : 
                isPortuguese ? "Sair" : 
+               isFilipino ? "Mag-logout" :
                "Log out"}
             </span>
           </DropdownMenuItem>

@@ -14,7 +14,7 @@ import useTranslation from "@/hooks/useTranslation";
 const LanguageAwareNavMenu: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { preferredLanguage, isSpanish, isPortuguese } = useTranslation();
+  const { preferredLanguage, isSpanish, isPortuguese, isFilipino } = useTranslation();
 
   const handleNavigate = (path: string) => {
     const toastMessages = {
@@ -29,6 +29,10 @@ const LanguageAwareNavMenu: React.FC = () => {
       'Português': {
         title: "Navegando",
         description: "Mudando de página..."
+      },
+      'Filipino': {
+        title: "Nagna-navigate",
+        description: "Nagpapalit ng pahina..."
       }
     };
     
@@ -50,6 +54,7 @@ const LanguageAwareNavMenu: React.FC = () => {
           <NavigationMenuTrigger className="text-white/90 hover:text-white hover:bg-white/10">
             {isSpanish ? "Programas Especializados" : 
              isPortuguese ? "Programas Especializados" : 
+             isFilipino ? "Mga Espesyal na Programa" :
              "Specialized Programs"}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -59,11 +64,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Departamento de Defensa" :
                      isPortuguese ? "Departamento de Defesa" :
+                     isFilipino ? "Kagawaran ng Tanggulan" :
                      "Department of Defense"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Recursos para personal militar y veteranos" :
                      isPortuguese ? "Recursos para militares e veteranos" :
+                     isFilipino ? "Mga resources para sa mga sundalo at beterano" :
                      "Resources for military personnel and veterans"}
                   </p>
                 </div>
@@ -73,11 +80,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "La Experiencia Universitaria" :
                      isPortuguese ? "A Experiência Universitária" :
+                     isFilipino ? "Ang Karanasan sa Kolehiyo" :
                      "The College Experience"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Apoyo para estudiantes universitarios" :
                      isPortuguese ? "Apoio para estudantes universitários" :
+                     isFilipino ? "Suporta para sa mga estudyante sa kolehiyo" :
                      "Support for college students"}
                   </p>
                 </div>
@@ -87,11 +96,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Pequeñas Empresas" :
                      isPortuguese ? "Pequenas Empresas" :
+                     isFilipino ? "Maliit na Negosyo" :
                      "Small Business"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Recursos para emprendedores" :
                      isPortuguese ? "Recursos para empreendedores" :
+                     isFilipino ? "Mga resources para sa mga negosyante" :
                      "Resources for entrepreneurs"}
                   </p>
                 </div>
@@ -101,11 +112,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "La Experiencia Adolescente" :
                      isPortuguese ? "A Experiência Adolescente" :
+                     isFilipino ? "Karanasan ng Kabataan" :
                      "Adolescent Experience"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Apoyo para niños y adolescentes" :
                      isPortuguese ? "Apoio para crianças e adolescentes" :
+                     isFilipino ? "Suporta para sa mga bata at kabataan" :
                      "Support for children and teens"}
                   </p>
                 </div>
@@ -115,11 +128,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Los Años Dorados" :
                      isPortuguese ? "Anos Dourados" :
+                     isFilipino ? "Ang Mga Gintong Taon" :
                      "The Golden Years"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Bienestar para adultos mayores" :
                      isPortuguese ? "Bem-estar para idosos" :
+                     isFilipino ? "Kalusugan para sa mga nakatatanda" :
                      "Wellness for seniors"}
                   </p>
                 </div>
@@ -129,11 +144,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Portal para Empleados" :
                      isPortuguese ? "Portal do Funcionário" :
+                     isFilipino ? "Portal para sa mga Empleyado" :
                      "Employee Portal"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Bienestar y recursos para empleados" :
                      isPortuguese ? "Bem-estar e recursos para funcionários" :
+                     isFilipino ? "Kalusugan at resources para sa mga empleyado" :
                      "Wellness and resources for employees"}
                   </p>
                 </div>
@@ -146,6 +163,7 @@ const LanguageAwareNavMenu: React.FC = () => {
           <NavigationMenuTrigger className="text-white/90 hover:text-white hover:bg-white/10">
             {isSpanish ? "Recursos" : 
              isPortuguese ? "Recursos" : 
+             isFilipino ? "Mga Resources" :
              "Resources"}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -158,11 +176,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                     <div className="text-sm font-medium leading-none">
                       {isSpanish ? "Biblioteca de Recursos" :
                        isPortuguese ? "Biblioteca de Recursos" :
+                       isFilipino ? "Resource Library" :
                        "Resource Library"}
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       {isSpanish ? "Artículos, videos y guías" :
                        isPortuguese ? "Artigos, vídeos e guias" :
+                       isFilipino ? "Mga artikulo, video, at gabay" :
                        "Articles, videos, and guides"}
                     </p>
                   </div>
@@ -176,11 +196,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                     <div className="text-sm font-medium leading-none">
                       {isSpanish ? "Talleres" :
                        isPortuguese ? "Talleres" :
+                       isFilipino ? "Mga Workshop" :
                        "Workshops"}
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       {isSpanish ? "Experiencias interactivas de aprendizaje" :
                        isPortuguese ? "Experiências interativas de aprendizagem" :
+                       isFilipino ? "Mga interactive na karanasan sa pag-aaral" :
                        "Interactive learning experiences"}
                     </p>
                   </div>
@@ -194,11 +216,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                     <div className="text-sm font-medium leading-none">
                       {isSpanish ? "Autoayuda" :
                        isPortuguese ? "Autoajuda" :
+                       isFilipino ? "Self-Help" :
                        "Self-Help"}
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       {isSpanish ? "Estrategias y herramientas de autoayuda" :
                        isPortuguese ? "Estratégias e ferramentas de autoajuda" :
+                       isFilipino ? "Mga self-help na estratehiya at kagamitan" :
                        "Self-help strategies and tools"}
                     </p>
                   </div>
@@ -212,11 +236,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                     <div className="text-sm font-medium leading-none">
                       {isSpanish ? "Apoyo Comunitario" :
                        isPortuguese ? "Apoyo Comunitário" :
+                       isFilipino ? "Suporta sa Komunidad" :
                        "Community Support"}
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       {isSpanish ? "Conéctate con personas en viajes similares" :
                        isPortuguese ? "Conecte-se com pessoas em viagens semelhantes" :
+                       isFilipino ? "Kumonekta sa mga taong nasa parehong paglalakbay" :
                        "Connect with people on similar journeys"}
                     </p>
                   </div>
@@ -230,6 +256,7 @@ const LanguageAwareNavMenu: React.FC = () => {
           <NavigationMenuTrigger className="text-white/90 hover:text-white hover:bg-white/10">
             {isSpanish ? "Herramientas" : 
              isPortuguese ? "Ferramentas" : 
+             isFilipino ? "Mga Kagamitan" :
              "Tools"}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -239,11 +266,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Herramientas de Bienestar" :
                      isPortuguese ? "Ferramentas de Bem-Estar" :
+                     isFilipino ? "Mga Kagamitan sa Kalusugan" :
                      "Wellness Tools"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Seguimiento de bienestar" :
                      isPortuguese ? "Monitoramento de bem-estar" :
+                     isFilipino ? "Pagsubaybay sa kalusugan" :
                      "Wellness tracking"}
                   </p>
                 </div>
@@ -253,11 +282,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Diario Personal" :
                      isPortuguese ? "Diário Pessoal" :
+                     isFilipino ? "Pagdyadyornal" :
                      "Journaling"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Reflexiones y expresión emocional" :
                      isPortuguese ? "Reflexões e expressão emocional" :
+                     isFilipino ? "Mga repleksyon at emosyonal na pagpapahayag" :
                      "Reflections and emotional expression"}
                   </p>
                 </div>
@@ -267,11 +298,13 @@ const LanguageAwareNavMenu: React.FC = () => {
                   <div className="text-sm font-medium leading-none">
                     {isSpanish ? "Mindfulness y Sueño" :
                      isPortuguese ? "Mindfulness e Sono" :
+                     isFilipino ? "Mindfulness at Pagatulog" :
                      "Mindfulness & Sleep"}
                   </div>
                   <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {isSpanish ? "Meditación y ayuda para dormir" :
                      isPortuguese ? "Meditação e ajuda para dormir" :
+                     isFilipino ? "Meditation at tulong para sa pagtulog" :
                      "Meditation and sleep aid"}
                   </p>
                 </div>
