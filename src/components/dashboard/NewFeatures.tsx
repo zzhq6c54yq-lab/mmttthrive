@@ -47,7 +47,7 @@ const NewFeatures: React.FC = () => {
               <Handshake className="h-5 w-5 text-[#E5C5A1] group-hover:text-white transition-colors" />
             </div>
             <div className="flex flex-col items-start">
-              <span className="font-medium">Meet Henry</span>
+              <span className="font-medium">Barter System</span>
               <span className="text-xs opacity-80">Co-Pay Credit System</span>
             </div>
           </Button>

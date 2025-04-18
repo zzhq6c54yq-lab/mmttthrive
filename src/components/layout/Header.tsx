@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -87,7 +86,6 @@ const Header = () => {
     });
   };
   
-  // Handle language change from header menu
   const handleLanguageChange = (language: 'English' | 'Español' | 'Português' | 'Filipino') => {
     setPreferredLanguage(language);
     
@@ -107,7 +105,6 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 right-0 z-50 p-4 flex items-center justify-end gap-2">
-      {/* Language selector */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button 
@@ -154,7 +151,6 @@ const Header = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       
-      {/* Enhanced Tutorial Button with animations and eye-catching design */}
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -162,44 +158,29 @@ const Header = () => {
               variant="outline" 
               size="icon" 
               className="h-12 w-12 rounded-full border-2 border-[#B87333] bg-gradient-to-br from-[#181820] to-[#1f1a25] shadow-lg hover:shadow-[0_0_20px_rgba(184,115,51,0.6)] transition-all duration-500 group relative overflow-hidden"
-              aria-label={
-                isSpanish ? "Tutorial de la Aplicación" : 
-                isPortuguese ? "Tutorial do Aplicativo" : 
-                isFilipino ? "Tutorial ng App" :
-                "App Tutorial"
-              }
+              aria-label="Meet Henry"
               onClick={() => setShowWelcomeTutorial(true)}
             >
-              {/* Animated rings */}
               <div className="absolute inset-0 rounded-full border border-[#B87333]/20 animate-pulse"></div>
               <div className="absolute inset-[-3px] rounded-full border border-[#B87333]/30 animate-ping" style={{animationDuration: '3s'}}></div>
               
-              {/* Glowing background effects */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#B87333]/20 via-transparent to-[#B87333]/20 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" style={{animationDuration: '4s'}}></div>
               
-              {/* Logo with text */}
               <div className="relative z-10 text-[#B87333] font-bold text-lg leading-none tracking-tighter flex flex-col items-center group-hover:scale-110 transition-transform duration-300">
-                <span className="text-[7px] opacity-80 mb-0.5 bg-clip-text text-transparent bg-gradient-to-r from-[#E5C5A1] to-[#B87333] group-hover:from-[#B87333] group-hover:to-[#E5C5A1]">THRIVE</span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#B87333] to-[#E5C5A1] group-hover:from-[#E5C5A1] group-hover:to-[#B87333]">MT</span>
+                <span className="text-[7px] opacity-80 mb-0.5 bg-clip-text text-transparent bg-gradient-to-r from-[#E5C5A1] to-[#B87333] group-hover:from-[#B87333] group-hover:to-[#E5C5A1]">MEET</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#B87333] to-[#E5C5A1] group-hover:from-[#E5C5A1] group-hover:to-[#B87333]">HENRY</span>
               </div>
               
-              {/* Sparkle effects on hover */}
               <div className="absolute top-1 right-1 w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style={{animationDuration: '1.5s'}}></div>
               <div className="absolute bottom-2 left-2 w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style={{animationDuration: '1.8s', animationDelay: '0.2s'}}></div>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>
-              {isSpanish ? "Tutorial del sitio" : 
-               isPortuguese ? "Tutorial do site" : 
-               isFilipino ? "Tutorial ng site" :
-               "Site Tutorial"}
-            </p>
+            <p>Meet Henry</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       
-      {/* User Menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button 
@@ -313,7 +294,6 @@ const Header = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       
-      {/* Full Feature Tutorial Dialog */}
       <Dialog open={showWelcomeTutorial} onOpenChange={setShowWelcomeTutorial}>
         <DialogContent className="sm:max-w-md">
           <FeatureTutorial 
