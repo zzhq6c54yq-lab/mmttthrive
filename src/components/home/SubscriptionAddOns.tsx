@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ArrowLeft, ArrowRight, Users, Check } from "lucide-react";
@@ -256,6 +255,29 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       gradient: "from-[#F97316]/80 to-[#FB923C]/80",
       borderColor: "#F97316",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"),
+      price: {
+        basic: "$3/month",
+        gold: "$2/month",
+        platinum: "$1/month"
+      }
+    },
+    {
+      id: "firstResponders",
+      title: "First Responders Program",
+      description: "Supporting the mental health and wellbeing of our emergency service professionals.",
+      targetAudience: "Firefighters, police officers, paramedics, EMTs, and other emergency personnel",
+      features: [
+        "24/7 crisis support tailored for emergency service professionals",
+        "Peer support networks with other first responders",
+        "Stress management tools for high-pressure situations",
+        "Post-incident trauma and decompression resources",
+        "Work-life balance strategies for shift workers"
+      ],
+      icon: Shield,
+      path: "/first-responders-welcome",
+      gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
+      borderColor: "#DC2626",
+      imagePath: getImageUrl("/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"),
       price: {
         basic: "$3/month",
         gold: "$2/month",

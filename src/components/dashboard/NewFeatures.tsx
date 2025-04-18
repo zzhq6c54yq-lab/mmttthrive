@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles, Crown, Zap } from "lucide-react";
@@ -39,7 +40,7 @@ const NewFeatures: React.FC = () => {
         <div className="grid grid-cols-3 gap-4">
           <Button 
             variant="bronze"
-            className="flex items-center gap-2 px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            className="flex items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
             <span className="text-xs font-medium">Barter System</span>
@@ -47,7 +48,7 @@ const NewFeatures: React.FC = () => {
           
           <Button 
             variant="gold"
-            className="flex items-center gap-2 px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group relative overflow-hidden"
+            className="flex items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group mt-2"
             onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
             <span className="text-xs font-bold text-black">System Upgrade Plan</span>
@@ -55,7 +56,7 @@ const NewFeatures: React.FC = () => {
           
           <Button 
             variant="bronze"
-            className="flex items-center gap-2 px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            className="flex items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
             <span className="text-xs font-medium">Co-Pay Credits</span>
