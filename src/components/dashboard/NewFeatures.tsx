@@ -36,7 +36,7 @@ const NewFeatures: React.FC = () => {
           </span>
         </h3>
         
-        <div className="flex flex-wrap justify-center sm:justify-between gap-6">
+        <div className="grid grid-cols-3 gap-6">
           <Button 
             variant="bronze"
             className="flex items-center gap-2 px-6 py-6 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
