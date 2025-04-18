@@ -56,6 +56,9 @@ import GoldenYearsWelcome from "@/pages/GoldenYearsWelcome";
 import GoldenYearsPortal from "@/pages/GoldenYearsPortal";
 import GoldenYearsJournal from "@/pages/GoldenYearsJournal";
 import GoldenSpecializedFeature from "@/pages/GoldenSpecializedFeature";
+import GoldenEndOfLifePlanning from "@/pages/GoldenEndOfLifePlanning";
+import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
+import UserLead from "@/pages/UserLead";
 
 function App() {
   return (
@@ -105,12 +108,20 @@ function App() {
         <Route path="/adolescent-portal" element={<AdolescentPortal />} />
         <Route path="/adolescent-selection" element={<AdolescentSelection />} />
         
+        {/* Golden Years Routes */}
         <Route path="/golden-years-welcome" element={<GoldenYearsWelcome />} />
         <Route path="/golden-years-portal" element={<GoldenYearsPortal />} />
         <Route path="/golden-years-journal" element={<GoldenYearsJournal />} />
+        <Route path="/golden-years-planning" element={<GoldenEndOfLifePlanning />} />
+        <Route path="/golden-years-memory" element={<GoldenMemoryCognitive />} />
         
-        {/* New specialized routes for Golden Years features */}
-        <Route path="/golden-:feature" element={<GoldenSpecializedFeature />} />
+        {/* Generic handler for other Golden Years features */}
+        <Route path="/golden-years-guide" element={<GoldenSpecializedFeature />} />
+        <Route path="/golden-years-transitions" element={<GoldenSpecializedFeature />} />
+        <Route path="/golden-years-community" element={<GoldenSpecializedFeature />} />
+        <Route path="/golden-years-family" element={<GoldenSpecializedFeature />} />
+        <Route path="/golden-years-wellness" element={<GoldenSpecializedFeature />} />
+        <Route path="/golden-years-calendar" element={<GoldenSpecializedFeature />} />
         
         <Route path="/military-support" element={<MilitarySupport />} />
         <Route path="/military-resources" element={<MilitaryResources />} />
@@ -134,6 +145,9 @@ function App() {
         <Route path="/resource-library" element={<ResourceLibrary />} />
         <Route path="/wellness-challenges" element={<WellnessChallenges />} />
         <Route path="/my-sponsor" element={<MySponsor />} />
+        
+        {/* User Lead Route */}
+        <Route path="/user-lead" element={<UserLead />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
