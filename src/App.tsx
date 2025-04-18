@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -59,6 +58,8 @@ import GoldenSpecializedFeature from "@/pages/GoldenSpecializedFeature";
 import GoldenEndOfLifePlanning from "@/pages/GoldenEndOfLifePlanning";
 import GoldenMemoryCognitive from "@/pages/GoldenMemoryCognitive";
 import UserLead from "@/pages/UserLead";
+import FirstRespondersWelcome from "@/pages/FirstRespondersWelcome";
+import FirstRespondersPortal from "@/pages/FirstRespondersPortal";
 
 function App() {
   return (
@@ -148,6 +149,10 @@ function App() {
         
         {/* User Lead Route */}
         <Route path="/user-lead" element={<UserLead />} />
+        
+        {/* First Responders Routes */}
+        <Route path="/first-responders-welcome" element={<FirstRespondersWelcome />} />
+        <Route path="/first-responders-portal" element={<FirstRespondersPortal />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

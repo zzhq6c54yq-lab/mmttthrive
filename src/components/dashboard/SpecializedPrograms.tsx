@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -85,6 +84,17 @@ const SpecializedPrograms: React.FC = () => {
       borderColor: "#D4AF37",
       // Updated with a more appropriate senior citizens image showing positive interaction
       imagePath: getImageUrl("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80")
+    },
+    {
+      title: isSpanish ? "Servicios de Emergencia" : "First Responders",
+      description: isSpanish 
+        ? "Apoyo de salud mental para paramédicos, EMTs y personal de emergencia" 
+        : "Mental health support for paramedics, EMTs, and emergency personnel",
+      icon: Siren,
+      path: "/first-responders-welcome",
+      gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
+      borderColor: "#DC2626",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"),
     }
   ];
   
