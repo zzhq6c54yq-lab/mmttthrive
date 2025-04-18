@@ -1,4 +1,5 @@
-import { Shield, GraduationCap, Briefcase, Users, Sparkles } from "lucide-react";
+
+import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren } from "lucide-react";
 import { AddOn } from "./types";
 
 export const addOns: AddOn[] = [
@@ -111,6 +112,29 @@ export const addOns: AddOn[] = [
     gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
     borderColor: "#D4AF37",
     imagePath: "https://images.unsplash.com/photo-1447452001602-7090c7ab2db3",
+    price: {
+      basic: "$3/month",
+      gold: "$2/month",
+      platinum: "$1/month"
+    }
+  },
+  {
+    id: "firstResponders",
+    title: "First Responders Program",
+    description: "Supporting the mental health and wellbeing of our emergency service professionals",
+    targetAudience: "Firefighters, paramedics, police officers, and emergency service professionals",
+    features: [
+      "Crisis support for emergency service professionals",
+      "Peer support networks with other first responders",
+      "Stress management for high-pressure situations",
+      "Post-incident trauma resources",
+      "Family support services for emergency personnel"
+    ],
+    icon: Siren,
+    path: "/first-responders-welcome",
+    gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
+    borderColor: "#DC2626",
+    imagePath: "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png",
     price: {
       basic: "$3/month",
       gold: "$2/month",

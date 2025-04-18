@@ -40,26 +40,29 @@ const NewFeatures: React.FC = () => {
         <div className="grid grid-cols-3 gap-4">
           <Button 
             variant="bronze"
-            className="flex items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            className="flex flex-col items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
-            <span className="text-xs font-medium">Barter System</span>
-          </Button>
-          
-          <Button 
-            variant="gold"
-            className="flex items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group mt-2"
-            onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
-          >
-            <span className="text-xs font-bold text-black">System Upgrade Plan</span>
+            <span className="text-xs font-medium">Barter</span>
+            <span className="text-xs font-medium">System</span>
           </Button>
           
           <Button 
             variant="bronze"
-            className="flex items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            className="flex flex-col items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
             onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
-            <span className="text-xs font-medium">Co-Pay Credits</span>
+            <span className="text-xs font-medium">Co-Pay</span>
+            <span className="text-xs font-medium">Credits</span>
+          </Button>
+          
+          <Button 
+            variant="gold"
+            className="flex flex-col items-center justify-center px-4 py-2 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.25)] group"
+            onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
+          >
+            <span className="text-xs font-bold text-black">Plan</span>
+            <span className="text-xs font-bold text-black">Upgrade</span>
           </Button>
         </div>
       </div>
