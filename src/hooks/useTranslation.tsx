@@ -588,7 +588,15 @@ const translations: TranslationDictionary = {
     Español: "Ideas Diarias",
     Português: "Insights Diários",
     Filipino: "Pang-araw-araw na Pananaw"
-  }
+  },
+
+  // Meet Henry translation to Barter System
+  meetHenry: {
+    English: "Barter System",
+    Español: "Sistema de Trueque",
+    Português: "Sistema de Troca",
+    Filipino: "Sistema ng Palitan"
+  },
 };
 
 // Create the TranslationProvider component
