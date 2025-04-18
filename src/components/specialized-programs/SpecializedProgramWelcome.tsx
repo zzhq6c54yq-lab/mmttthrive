@@ -16,6 +16,7 @@ interface WelcomeScreenProps {
   borderColor: string;
   portalPath: string;
   icon: React.ReactNode;
+  coverImage?: string; // Added coverImage as optional property
 }
 
 const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
@@ -27,7 +28,8 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
   gradientTo,
   borderColor,
   portalPath,
-  icon
+  icon,
+  coverImage // Include coverImage in the component props
 }) => {
   const [screenState, setScreenState] = useState<'welcome' | 'what-to-expect'>('welcome');
   const navigate = useNavigate();
@@ -56,8 +58,15 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
     }
   };
 
+  // Add a background image if coverImage is provided
+  const backgroundImageStyle = coverImage ? {
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url(${coverImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  } : {};
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative">
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1a1f] via-[#242432] to-[#272730] text-white py-8 px-4 relative" style={backgroundImageStyle}>
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><circle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23FFFFFF%22 fill-opacity=%220.05%22/></svg>')] opacity-20"></div>
       
       <div className="max-w-5xl mx-auto bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-xl relative overflow-hidden">
