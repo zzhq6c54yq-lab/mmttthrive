@@ -12,10 +12,6 @@ const LanguageDirection: React.FC = () => {
   useEffect(() => {
     // All currently supported languages use LTR direction
     document.documentElement.setAttribute('dir', 'ltr');
-    
-    // Remove any language-specific classes that might have been added previously
-    document.documentElement.classList.remove('chinese', 'hindi', 'arabic');
-    
   }, [preferredLanguage]);
   
   return null; // This component doesn't render anything
