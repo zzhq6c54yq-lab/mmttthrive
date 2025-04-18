@@ -12,14 +12,14 @@ const MeetHenryButton: React.FC<MeetHenryButtonProps> = ({ onClick }) => {
     <Button 
       onClick={onClick}
       variant="outline"
-      className="relative px-10 py-3 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden w-[400px]"
+      className="relative px-8 py-2.5 bg-gradient-to-b from-[#222] to-[#111] border-[#B87333]/50 hover:border-[#B87333] group overflow-hidden w-[320px] h-[52px]"
     >
       <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#B87333]/80 rounded-b-md"></div>
       <div className="absolute top-1 left-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
       <div className="absolute top-1 right-1 w-2 h-2 rounded-full border border-[#B87333]/40"></div>
       <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-8 bg-[#B87333]/20 rounded-r-full"></div>
-      <div className="flex items-center gap-2">
-        <Avatar className="h-6 w-6 border border-[#B87333]/30">
+      <div className="flex items-center gap-3">
+        <Avatar className="h-7 w-7 border border-[#B87333]/30">
           <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
           <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white text-xs">H</AvatarFallback>
         </Avatar>
