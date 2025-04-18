@@ -2,23 +2,17 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import translations from '../data/translations';
 
-// Use standard language codes as the base type
-type Language = 
-  | 'en'    // English
-  | 'es'    // Spanish
-  | 'pt'    // Portuguese
-  | 'de'    // German
-  | 'fr'    // French
-  | 'fil';  // Filipino
+// Define supported languages
+export type Language = 'en' | 'es' | 'pt' | 'de' | 'fr' | 'fil';
 
-// Mapping for display names
+// Language display names mapping
 const languageDisplayNames: Record<Language, string> = {
-  'en': 'English',
-  'es': 'Español',
-  'pt': 'Português',
-  'de': 'Deutsch',
-  'fr': 'Français',
-  'fil': 'Filipino'
+  en: 'English',
+  es: 'Español',
+  pt: 'Português',
+  de: 'Deutsch',
+  fr: 'Français',
+  fil: 'Filipino'
 };
 
 interface TranslationContextType {
@@ -42,12 +36,12 @@ const TranslationContext = createContext<TranslationContextType>({
   isGerman: false,
   isFrench: false,
   isFilipino: false,
-  getTranslatedText: () => '',
+  getTranslatedText: () => ''
 });
 
 export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [preferredLanguage, setPreferredLanguage] = useState<Language>('en');
-  
+
   useEffect(() => {
     const savedLanguage = localStorage.getItem('preferredLanguage') as Language | null;
     if (savedLanguage && Object.keys(languageDisplayNames).includes(savedLanguage)) {
@@ -59,14 +53,12 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
     localStorage.setItem('preferredLanguage', language);
     setPreferredLanguage(language);
     window.dispatchEvent(new Event('languageChange'));
-    console.log(`Language changed to: ${languageDisplayNames[language]}`);
   };
 
   const getLanguageDisplay = (code: Language): string => {
     return languageDisplayNames[code];
   };
 
-  // Language check flags using strict equality
   const isSpanish = preferredLanguage === 'es';
   const isPortuguese = preferredLanguage === 'pt';
   const isGerman = preferredLanguage === 'de';
@@ -79,31 +71,30 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return key;
     }
 
-    const displayName = languageDisplayNames[preferredLanguage];
-    const translation = translations[key][displayName];
+    const translation = translations[key][languageDisplayNames[preferredLanguage]];
     
     if (translation) {
       return translation;
     }
 
-    console.warn(`Translation not available for key '${key}' in ${displayName}`);
+    console.warn(`Translation not available for key '${key}' in ${languageDisplayNames[preferredLanguage]}`);
     return translations[key]['English'] || key;
   };
 
-  const contextValue: TranslationContextType = {
-    preferredLanguage,
-    changeLanguage,
-    getLanguageDisplay,
-    isSpanish,
-    isPortuguese,
-    isGerman,
-    isFrench,
-    isFilipino,
-    getTranslatedText
-  };
-
   return (
-    <TranslationContext.Provider value={contextValue}>
+    <TranslationContext.Provider
+      value={{
+        preferredLanguage,
+        changeLanguage,
+        getLanguageDisplay,
+        isSpanish,
+        isPortuguese,
+        isGerman,
+        isFrench,
+        isFilipino,
+        getTranslatedText
+      }}
+    >
       {children}
     </TranslationContext.Provider>
   );
