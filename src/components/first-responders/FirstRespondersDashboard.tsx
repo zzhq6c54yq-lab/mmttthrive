@@ -1,10 +1,10 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Siren, ShieldAlert, Users, Calendar, Star, ChevronRight, Brain, AlertCircle, FileText, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ThriveButton from "@/components/navigation/ThriveButton";
 
 const FirstRespondersDashboard = () => {
   const navigate = useNavigate();
@@ -31,6 +31,11 @@ const FirstRespondersDashboard = () => {
 
   return (
     <div className="space-y-8">
+      {/* Add ThriveButton at the top */}
+      <div className="flex justify-end mb-4">
+        <ThriveButton variant="gold" className="shadow-lg" />
+      </div>
+
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-lg border border-red-900/30 bg-gradient-to-r from-red-950 to-red-900 p-6">
         <div className="relative z-10">
