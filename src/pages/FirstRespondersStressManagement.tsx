@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Brain, Lightbulb, Clock, Calendar, Play, FileText, Download } from "lucide-react";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import ActionButton from "@/components/navigation/ActionButton";
+import { useToast } from "@/components/ui/use-toast";
+import { saveAs } from "file-saver";
+import { downloadWorksheet } from "@/utils/worksheetUtils";
 
 const FirstRespondersStressManagement = () => {
+  const { toast } = useToast();
+
   const techniques = [
     {
       title: "Tactical Breathing",
@@ -36,7 +41,8 @@ const FirstRespondersStressManagement = () => {
     {
       title: "Stress Management Field Guide",
       description: "Pocket guide with quick-reference stress management techniques",
-      type: "download"
+      type: "download",
+      fileName: "stress-management-field-guide.pdf"
     },
     {
       title: "Stress Inoculation Training",
@@ -45,6 +51,43 @@ const FirstRespondersStressManagement = () => {
       id: "stress-inoculation"
     }
   ];
+
+  // Handle resource download
+  const handleDownload = (resource) => {
+    try {
+      // Create a blob with text content to simulate PDF download
+      const blob = new Blob(
+        [
+          `# ${resource.title}\n\n` +
+          `This is a simulated download of the ${resource.title}.\n\n` +
+          `Description: ${resource.description}\n\n` +
+          `For First Responders use only.\n\n` +
+          `© ${new Date().getFullYear()} Thrive Mental Health Platform`
+        ], 
+        { type: "application/pdf" }
+      );
+      
+      // Use file-saver to trigger download
+      saveAs(blob, resource.fileName);
+      
+      // Show success toast
+      toast({
+        title: "Download Started",
+        description: `${resource.title} is being downloaded.`,
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      
+      // Show error toast
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading the resource. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
 
   return (
     <Page title="Stress Management for First Responders" showBackButton={false}>
@@ -110,6 +153,13 @@ const FirstRespondersStressManagement = () => {
               variant="outline" 
               size="sm" 
               className="border-red-500 text-red-300 hover:bg-red-900/50"
+              onClick={() => {
+                toast({
+                  title: "Workshop Registration",
+                  description: "You've registered for the Stress in Emergency Response workshop.",
+                  duration: 3000,
+                });
+              }}
             >
               Register
             </Button>
@@ -130,6 +180,13 @@ const FirstRespondersStressManagement = () => {
               variant="outline" 
               size="sm" 
               className="border-red-500 text-red-300 hover:bg-red-900/50"
+              onClick={() => {
+                toast({
+                  title: "Workshop Registration",
+                  description: "You've registered for the Building Resilience on Duty workshop.",
+                  duration: 3000,
+                });
+              }}
             >
               Register
             </Button>
@@ -153,7 +210,10 @@ const FirstRespondersStressManagement = () => {
             </CardHeader>
             <CardFooter>
               {resource.type === "download" ? (
-                <Button className="w-full bg-red-700 hover:bg-red-800 text-white">
+                <Button 
+                  className="w-full bg-red-700 hover:bg-red-800 text-white"
+                  onClick={() => handleDownload(resource)}
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Download Resource
                 </Button>

@@ -3,11 +3,15 @@ import React from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, MessageSquare, Video } from "lucide-react";
+import { Calendar, Users, MessageSquare, Video, Download, FileText } from "lucide-react";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import ActionButton from "@/components/navigation/ActionButton";
+import { useToast } from "@/components/ui/use-toast";
+import { saveAs } from "file-saver";
 
 const FirstRespondersPeerSupport = () => {
+  const { toast } = useToast();
+  
   const supportGroups = [
     {
       title: "Fire Service Support Group",
@@ -39,6 +43,51 @@ const FirstRespondersPeerSupport = () => {
     }
   ];
 
+  // Handle new group request
+  const handleNewGroupRequest = () => {
+    toast({
+      title: "Request Received",
+      description: "Your request to start a new support group has been submitted. A coordinator will contact you to discuss details.",
+      duration: 3000,
+    });
+  };
+
+  // Handle resource download
+  const handleResourceDownload = (title) => {
+    try {
+      // Create a blob with text content to simulate PDF download
+      const blob = new Blob(
+        [
+          `# ${title}\n\n` +
+          `This is a simulated download of the ${title} resource.\n\n` +
+          `For First Responders use only.\n\n` +
+          `© ${new Date().getFullYear()} Thrive Mental Health Platform`
+        ], 
+        { type: "application/pdf" }
+      );
+      
+      // Use file-saver to trigger download
+      saveAs(blob, `${title.toLowerCase().replace(/\s+/g, '-')}.pdf`);
+      
+      // Show success toast
+      toast({
+        title: "Download Started",
+        description: `${title} is being downloaded.`,
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      
+      // Show error toast
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading the resource. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <Page title="Peer Support Network" showBackButton={false}>
       <div className="mb-4">
@@ -50,6 +99,17 @@ const FirstRespondersPeerSupport = () => {
         <p className="text-red-200">
           Connect with fellow emergency service professionals who understand your unique challenges and experiences.
         </p>
+      </div>
+
+      <div className="flex justify-end mb-4">
+        <Button 
+          variant="outline"
+          className="border-red-500 text-red-300 hover:bg-red-900/50 flex items-center gap-2"
+          onClick={() => handleResourceDownload("Peer Support Best Practices Guide")}
+        >
+          <Download className="h-4 w-4" />
+          Download Peer Support Guide
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -102,9 +162,22 @@ const FirstRespondersPeerSupport = () => {
         <p className="text-white/80 mb-4">
           If you're interested in starting a new peer support group for your specific service area or region, we can help you get started.
         </p>
-        <Button className="bg-red-700 hover:bg-red-800 text-white">
-          Request New Group
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button 
+            className="bg-red-700 hover:bg-red-800 text-white"
+            onClick={handleNewGroupRequest}
+          >
+            Request New Group
+          </Button>
+          <Button 
+            variant="outline"
+            className="border-red-500 text-red-300 hover:bg-red-900/50 flex items-center gap-2"
+            onClick={() => handleResourceDownload("Peer Support Group Guidelines")}
+          >
+            <FileText className="h-4 w-4" />
+            Download Guidelines
+          </Button>
+        </div>
       </div>
     </Page>
   );

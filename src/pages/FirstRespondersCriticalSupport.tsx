@@ -3,11 +3,60 @@ import React from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, Check, HeartPulse, Brain, Shield, Activity } from "lucide-react";
+import { AlertCircle, Check, HeartPulse, Brain, Shield, Activity, Download } from "lucide-react";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import ActionButton from "@/components/navigation/ActionButton";
+import { useToast } from "@/components/ui/use-toast";
+import { saveAs } from "file-saver";
 
 const FirstRespondersCriticalSupport = () => {
+  const { toast } = useToast();
+  
+  // Handle team debriefing request
+  const handleDebriefingRequest = () => {
+    toast({
+      title: "Request Submitted",
+      description: "Your request for a Critical Incident Stress Debriefing has been submitted. A coordinator will contact you shortly.",
+      duration: 3000,
+    });
+  };
+  
+  // Handle resource download
+  const handleResourceDownload = (title) => {
+    try {
+      // Create a blob with text content to simulate PDF download
+      const blob = new Blob(
+        [
+          `# ${title}\n\n` +
+          `This is a simulated download of the ${title} resource.\n\n` +
+          `For First Responders use only.\n\n` +
+          `© ${new Date().getFullYear()} Thrive Mental Health Platform`
+        ], 
+        { type: "application/pdf" }
+      );
+      
+      // Use file-saver to trigger download
+      saveAs(blob, `${title.toLowerCase().replace(/\s+/g, '-')}.pdf`);
+      
+      // Show success toast
+      toast({
+        title: "Download Started",
+        description: `${title} is being downloaded.`,
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      
+      // Show error toast
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading the resource. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <Page title="Critical Incident Support" showBackButton={false}>
       <div className="mb-4">
@@ -39,7 +88,17 @@ const FirstRespondersCriticalSupport = () => {
             variant="default"
             className="bg-red-700 hover:bg-red-800 text-white"
           />
-          <Button variant="outline" className="border-red-500 text-red-300 hover:bg-red-900/50">
+          <Button 
+            variant="outline" 
+            className="border-red-500 text-red-300 hover:bg-red-900/50"
+            onClick={() => {
+              toast({
+                title: "Support Line",
+                description: "Connecting you to the First Responder Crisis Line: 1-888-555-HELP",
+                duration: 5000,
+              });
+            }}
+          >
             Call Support Line
           </Button>
         </div>
@@ -59,7 +118,7 @@ const FirstRespondersCriticalSupport = () => {
               Learn evidence-based approaches to supporting yourself and colleagues following traumatic incidents.
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2 w-full">
             <ActionButton
               type="workshop"
               id="psych-first-aid"
@@ -67,6 +126,14 @@ const FirstRespondersCriticalSupport = () => {
               variant="default"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
             />
+            <Button 
+              variant="outline" 
+              className="w-full border-red-500 text-red-300 hover:bg-red-900/50"
+              onClick={() => handleResourceDownload("Psychological First Aid Guide")}
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Download Guide
+            </Button>
           </CardFooter>
         </Card>
         
@@ -83,7 +150,7 @@ const FirstRespondersCriticalSupport = () => {
               Recognize common trauma responses and learn healthy coping strategies for processing difficult experiences.
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2 w-full">
             <ActionButton
               type="assessment"
               id="trauma-response"
@@ -91,6 +158,14 @@ const FirstRespondersCriticalSupport = () => {
               variant="default"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
             />
+            <Button 
+              variant="outline" 
+              className="w-full border-red-500 text-red-300 hover:bg-red-900/50"
+              onClick={() => handleResourceDownload("Trauma Response Toolkit")}
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Download Toolkit
+            </Button>
           </CardFooter>
         </Card>
         
@@ -107,7 +182,7 @@ const FirstRespondersCriticalSupport = () => {
               Develop practical skills to build resilience and protect your mental wellbeing during and after critical incidents.
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2 w-full">
             <ActionButton
               type="practice"
               id="resilience"
@@ -115,6 +190,14 @@ const FirstRespondersCriticalSupport = () => {
               variant="default"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
             />
+            <Button 
+              variant="outline" 
+              className="w-full border-red-500 text-red-300 hover:bg-red-900/50"
+              onClick={() => handleResourceDownload("Resilience Building Workbook")}
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Download Workbook
+            </Button>
           </CardFooter>
         </Card>
       </div>
@@ -147,7 +230,10 @@ const FirstRespondersCriticalSupport = () => {
           </div>
         </div>
         
-        <Button className="bg-red-700 hover:bg-red-800 text-white">
+        <Button 
+          className="bg-red-700 hover:bg-red-800 text-white"
+          onClick={handleDebriefingRequest}
+        >
           Request Team Debriefing
         </Button>
       </div>

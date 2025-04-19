@@ -3,13 +3,16 @@ import React from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Download, ExternalLink, Phone, Brain, ShieldAlert } from "lucide-react";
+import { FileText, Download, ExternalLink, Phone, Brain, ShieldAlert, FileDown } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import ActionButton from "@/components/navigation/ActionButton";
+import { useToast } from "@/components/ui/use-toast";
+import { saveAs } from "file-saver";
 
 const FirstRespondersResources = () => {
   const location = useLocation();
+  const { toast } = useToast();
   
   const resources = [
     {
@@ -18,7 +21,8 @@ const FirstRespondersResources = () => {
       icon: <Brain className="h-5 w-5 text-red-500" />,
       type: "pdf",
       action: "download",
-      actionText: "Download PDF"
+      actionText: "Download PDF",
+      fileName: "critical-incident-stress-management-guide.pdf"
     },
     {
       title: "Trauma Response Protocol",
@@ -26,7 +30,8 @@ const FirstRespondersResources = () => {
       icon: <ShieldAlert className="h-5 w-5 text-red-500" />,
       type: "pdf",
       action: "download",
-      actionText: "Download Guide"
+      actionText: "Download Guide",
+      fileName: "trauma-response-protocol.pdf"
     },
     {
       title: "First Responder Peer Support Manual",
@@ -34,7 +39,8 @@ const FirstRespondersResources = () => {
       icon: <FileText className="h-5 w-5 text-red-500" />,
       type: "pdf",
       action: "download",
-      actionText: "Download Manual"
+      actionText: "Download Manual",
+      fileName: "first-responder-peer-support-manual.pdf"
     },
     {
       title: "Emergency Services Crisis Line",
@@ -46,6 +52,44 @@ const FirstRespondersResources = () => {
       actionText: "Get Support"
     }
   ];
+
+  // Handle resource download - in a real app, these would be actual file downloads
+  const handleDownload = (resource) => {
+    try {
+      // Create a blob with text content to simulate PDF download
+      // In a real app, this would be the actual file content fetched from a server
+      const blob = new Blob(
+        [
+          `# ${resource.title}\n\n` +
+          `This is a simulated download of ${resource.title}.\n\n` +
+          `Description: ${resource.description}\n\n` +
+          `For First Responders use only.\n\n` +
+          `© ${new Date().getFullYear()} Thrive Mental Health Platform`
+        ], 
+        { type: "application/pdf" }
+      );
+      
+      // Use file-saver to trigger download
+      saveAs(blob, resource.fileName);
+      
+      // Show success toast
+      toast({
+        title: "Download Started",
+        description: `${resource.title} is being downloaded.`,
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      
+      // Show error toast
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading the resource. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
 
   return (
     <Page title="First Responders Resources" showBackButton={false}>
@@ -74,12 +118,7 @@ const FirstRespondersResources = () => {
               {resource.action === "download" ? (
                 <Button 
                   className="bg-red-700 hover:bg-red-800 text-white"
-                  onClick={() => {
-                    // This would download the resource in a real app
-                    setTimeout(() => {
-                      alert(`Downloading ${resource.title}`);
-                    }, 500);
-                  }}
+                  onClick={() => handleDownload(resource)}
                 >
                   <Download className="mr-2 h-4 w-4" />
                   {resource.actionText}
