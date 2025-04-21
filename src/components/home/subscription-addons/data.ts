@@ -1,4 +1,3 @@
-
 import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren } from "lucide-react";
 import { AddOn } from "./types";
 
@@ -135,6 +134,29 @@ export const addOns: AddOn[] = [
     gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
     borderColor: "#DC2626",
     imagePath: "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png",
+    price: {
+      basic: "$3/month",
+      gold: "$2/month",
+      platinum: "$1/month"
+    }
+  },
+  {
+    id: "policeOfficers",
+    title: "Police Officers Program",
+    description: "Supporting mental health and wellbeing of law enforcement professionals",
+    targetAudience: "Police officers, detectives, and law enforcement professionals",
+    features: [
+      "Stress management for law enforcement",
+      "Critical incident debriefing support",
+      "Police-specific peer support networks",
+      "Family support for law enforcement",
+      "Police wellness resources and tools"
+    ],
+    icon: Shield,
+    path: "/police-officers-welcome",
+    gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
+    borderColor: "#1E40AF",
+    imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png",
     price: {
       basic: "$3/month",
       gold: "$2/month",

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -65,6 +64,8 @@ import FirstRespondersResources from "@/pages/FirstRespondersResources";
 import FirstRespondersPeerSupport from "@/pages/FirstRespondersPeerSupport";
 import FirstRespondersCriticalSupport from "@/pages/FirstRespondersCriticalSupport";
 import FirstRespondersStressManagement from "@/pages/FirstRespondersStressManagement";
+import PoliceOfficersWelcome from "@/pages/PoliceOfficersWelcome";
+import PoliceOfficersPortal from "@/pages/PoliceOfficersPortal";
 
 function App() {
   return (
@@ -162,6 +163,9 @@ function App() {
         
         {/* User Lead Route */}
         <Route path="/user-lead" element={<UserLead />} />
+        
+        <Route path="/police-officers-welcome" element={<PoliceOfficersWelcome />} />
+        <Route path="/police-officers-portal" element={<PoliceOfficersPortal />} />
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
