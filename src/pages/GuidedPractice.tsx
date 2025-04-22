@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCw, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -14,17 +13,27 @@ interface PracticeStep {
   duration: number; // in seconds
 }
 
+interface LocationState {
+  therapyId?: string;
+  therapyName?: string;
+  returnPath?: string;
+}
+
 const GuidedPractice = () => {
   const { therapyId } = useParams();
+  const location = useLocation();
   const { toast } = useToast();
   
+  const locationState = location.state as LocationState;
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [progress, setProgress] = useState(0);
   
-  // This data would typically come from an API based on the therapyId
+  const returnPath = locationState?.returnPath || "/alternative-therapies";
+
   const practices: Record<string, {
     title: string;
     description: string;
@@ -263,7 +272,6 @@ const GuidedPractice = () => {
 
   const practice = therapyId ? practices[therapyId] : null;
 
-  // Set up the current step when practice or step index changes
   useEffect(() => {
     if (!practice) return;
     
@@ -273,7 +281,6 @@ const GuidedPractice = () => {
     }
   }, [practice, currentStepIndex]);
 
-  // Timer effect
   useEffect(() => {
     let timer: NodeJS.Timeout;
     
@@ -282,7 +289,6 @@ const GuidedPractice = () => {
         setTimeRemaining(prev => prev - 1);
       }, 1000);
     } else if (isPlaying && timeRemaining === 0) {
-      // Move to next step or complete the practice
       if (practice && currentStepIndex < practice.steps.length - 1) {
         setCurrentStepIndex(prevIndex => prevIndex + 1);
       } else {
@@ -298,7 +304,6 @@ const GuidedPractice = () => {
     return () => clearInterval(timer);
   }, [isPlaying, timeRemaining, currentStepIndex, practice, toast]);
 
-  // Calculate overall progress
   useEffect(() => {
     if (!practice) return;
     
@@ -353,7 +358,7 @@ const GuidedPractice = () => {
       
       <div className="container px-4 mx-auto py-12 relative z-10">
         <div className="flex justify-between items-center mb-8">
-          <Link to="/alternative-therapies" className="inline-flex items-center text-white/90 hover:text-white transition-colors">
+          <Link to={returnPath} className="inline-flex items-center text-white/90 hover:text-white transition-colors">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Alternative Therapies
           </Link>
@@ -364,7 +369,6 @@ const GuidedPractice = () => {
           <h1 className="text-4xl font-light mb-2">{practice.title}</h1>
           <p className="text-white/80 mb-8">{practice.description}</p>
           
-          {/* Progress bar */}
           <div className="mb-10">
             <div className="flex justify-between text-sm mb-2">
               <span>Progress</span>

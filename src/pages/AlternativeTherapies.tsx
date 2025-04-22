@@ -56,8 +56,13 @@ const AlternativeTherapies = () => {
       duration: 2000,
     });
     
+    // Fix: Only pass serializable data in the navigation state
     navigate(`/guided-practice/${therapyId}`, {
-      state: { therapy: therapies.find(therapy => therapy.id === therapyId) }
+      state: { 
+        therapyId,
+        therapyName,
+        returnPath: location.pathname
+      }
     });
   };
   
