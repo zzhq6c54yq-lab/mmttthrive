@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -65,8 +66,8 @@ import FirstRespondersResources from "@/pages/FirstRespondersResources";
 import FirstRespondersPeerSupport from "@/pages/FirstRespondersPeerSupport";
 import FirstRespondersCriticalSupport from "@/pages/FirstRespondersCriticalSupport";
 import FirstRespondersStressManagement from "@/pages/FirstRespondersStressManagement";
-import PoliceOfficersWelcome from "@/pages/PoliceOfficersWelcome";
-import PoliceOfficersPortal from "@/pages/PoliceOfficersPortal";
+import LawEnforcementWelcome from "@/pages/LawEnforcementWelcome";
+import LawEnforcementPortal from "@/pages/LawEnforcementPortal";
 import NotFound from "@/pages/NotFound";
 import GenerativeVideo from "@/pages/GenerativeVideo";
 
@@ -168,8 +169,9 @@ function App() {
         {/* User Lead Route */}
         <Route path="/user-lead" element={<UserLead />} />
         
-        <Route path="/police-officers-welcome" element={<PoliceOfficersWelcome />} />
-        <Route path="/police-officers-portal" element={<PoliceOfficersPortal />} />
+        {/* Law Enforcement Routes */}
+        <Route path="/law-enforcement-welcome" element={<LawEnforcementWelcome />} />
+        <Route path="/law-enforcement-portal" element={<LawEnforcementPortal />} />
         
         <Route path="/generative-video" element={<GenerativeVideo />} />
         
