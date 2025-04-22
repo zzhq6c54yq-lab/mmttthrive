@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -69,6 +68,7 @@ import FirstRespondersStressManagement from "@/pages/FirstRespondersStressManage
 import PoliceOfficersWelcome from "@/pages/PoliceOfficersWelcome";
 import PoliceOfficersPortal from "@/pages/PoliceOfficersPortal";
 import NotFound from "@/pages/NotFound";
+import GenerativeVideo from "@/pages/GenerativeVideo";
 
 function App() {
   return (
@@ -171,7 +171,8 @@ function App() {
         <Route path="/police-officers-welcome" element={<PoliceOfficersWelcome />} />
         <Route path="/police-officers-portal" element={<PoliceOfficersPortal />} />
         
-        {/* Catch-all 404 route */}
+        <Route path="/generative-video" element={<GenerativeVideo />} />
+        
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
