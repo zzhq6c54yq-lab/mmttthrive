@@ -155,6 +155,22 @@ const LanguageAwareNavMenu: React.FC = () => {
                   </p>
                 </div>
               </li>
+              <li onClick={() => handleNavigate("/police-officers-welcome")} className="cursor-pointer">
+                <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  <div className="text-sm font-medium leading-none">
+                    {isSpanish ? "Programa para Oficiales de Policía" :
+                     isPortuguese ? "Programa para Policiais" :
+                     isFilipino ? "Programa para sa mga Pulis" :
+                     "Police Officers Program"}
+                  </div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {isSpanish ? "Recursos para oficiales de policía" :
+                     isPortuguese ? "Recursos para policiais" :
+                     isFilipino ? "Mga resources para sa mga pulis" :
+                     "Resources for law enforcement"}
+                  </p>
+                </div>
+              </li>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
