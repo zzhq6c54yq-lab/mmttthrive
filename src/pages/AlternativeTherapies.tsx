@@ -300,15 +300,11 @@ const AlternativeTherapies = () => {
                   
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Button 
-                      className="flex-1 flex items-center justify-center gap-2 hover:shadow-md"
-                      style={{ 
-                        backgroundColor: therapy.accentColor,
-                        color: '#fff'
-                      }}
+                      className="flex-1 flex items-center justify-center gap-2 bg-white text-gray-800 hover:bg-gray-100 shadow-md"
                       onClick={() => handleGuidedPractice(therapy.id, therapy.name)}
                     >
                       <Play className="h-4 w-4" />
-                      Start Practice
+                      <span className="font-medium">Start Practice</span>
                     </Button>
                     
                     <Button 
@@ -317,7 +313,7 @@ const AlternativeTherapies = () => {
                       onClick={() => handleViewDetails(therapy.id)}
                     >
                       <BookOpen className="h-4 w-4" />
-                      Learn More
+                      <span className="font-medium">Learn More</span>
                     </Button>
                   </div>
                 </div>
