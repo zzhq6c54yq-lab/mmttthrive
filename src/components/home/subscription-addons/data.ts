@@ -141,8 +141,8 @@ export const addOns: AddOn[] = [
     }
   },
   {
-    id: "policeOfficers",
-    title: "Police Officers Program",
+    id: "lawEnforcement",
+    title: "Law Enforcement Program",
     description: "Supporting mental health and wellbeing of law enforcement professionals",
     targetAudience: "Police officers, detectives, and law enforcement professionals",
     features: [
@@ -150,10 +150,10 @@ export const addOns: AddOn[] = [
       "Critical incident debriefing support",
       "Police-specific peer support networks",
       "Family support for law enforcement",
-      "Police wellness resources and tools"
+      "Law enforcement wellness resources and tools"
     ],
     icon: Shield,
-    path: "/police-officers-welcome",
+    path: "/law-enforcement-welcome",
     gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
     borderColor: "#1E40AF",
     imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png",
