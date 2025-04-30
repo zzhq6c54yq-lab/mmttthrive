@@ -31,7 +31,7 @@ const EducatorsDashboard: React.FC = () => {
               id="educator-burnout"
               path="/educators-assessments/educator-burnout"
               title="Take Assessment"
-              variant="purple"
+              variant="default" /* Changed from "purple" to "default" */
               className="bg-purple-600 hover:bg-purple-700 text-white w-full"
             />
           </CardContent>

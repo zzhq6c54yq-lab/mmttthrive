@@ -17,8 +17,9 @@ interface ActionButtonProps {
   title: string;
   path?: string;
   className?: string;
-  variant?: ButtonVariant | "amber" | "amber-outline"; // Allow our custom variants
+  variant?: ButtonVariant;
   size?: "default" | "sm" | "lg" | "icon";
+  state?: Record<string, any>; // Add state prop to pass router state
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({ 
@@ -28,7 +29,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   path,
   className = "", 
   variant = "default",
-  size = "default"
+  size = "default",
+  state // Add state to destructuring
 }) => {
   const { handleActionClick } = useFeatureActions();
   
@@ -53,6 +55,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       id,
       title,
       path,
+      // Pass the state to handleActionClick
+      state,
       // This allows custom handlers to be injected if needed
       action: undefined
     });

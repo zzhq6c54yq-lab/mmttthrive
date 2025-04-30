@@ -10,6 +10,7 @@ export interface ActionButtonConfig {
   title: string;
   path?: string; // Optional path if navigating to a specific route
   action?: () => void; // Optional custom action function
+  state?: Record<string, any>; // Add state type to pass to router
 }
 
 export const useFeatureActions = () => {
@@ -55,7 +56,7 @@ export const useFeatureActions = () => {
 
   // Generic function to handle action button clicks
   const handleActionClick = (config: ActionButtonConfig) => {
-    const { type, id, title, path, action } = config;
+    const { type, id, title, path, action, state } = config;
     
     // Display toast notification for the action
     toast({
@@ -76,20 +77,22 @@ export const useFeatureActions = () => {
     const portalPrefix = portalPath.replace('/', '').replace('-portal', '');
     
     // Important fix: Always maintain portal context
-    const stateParams = inPortal ? 
-      { 
+    const stateParams = {
+      ...(inPortal ? {
         ...location.state,
         stayInPortal: true,
         preventTutorial: true,
         portalPath,
-        fromPortal: true, // Add flag to indicate we're coming from a portal
-        portalType: portalPath.replace('/', '').replace('-portal', '') // Store portal type (e.g. "golden-years")
-      } : 
-      {
+        fromPortal: true,
+        portalType: portalPath.replace('/', '').replace('-portal', '')
+      } : {
         preventTutorial: true,
         fromFeature: location.pathname,
         returnToFeature: true
-      };
+      }),
+      // Merge any custom state that was passed
+      ...(state || {})
+    };
     
     // If path is provided directly, use it instead of constructing from type
     let navigationPath = path;
