@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, GraduationCap, Briefcase, Sparkles, ChevronRight, Users, Siren, BookUser, UtensilsCrossed, Truck } from "lucide-react";
@@ -130,9 +129,9 @@ const SpecializedPrograms: React.FC = () => {
       path: "/hospitality-welcome",
       gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
       borderColor: "#9b87f5",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     },
-    // Transport Industry Add-On
+    // Transport Industry Add-On with updated truck image
     {
       title: isSpanish ? "Industria del Transporte" : "Transport Industry",
       description: isSpanish 
@@ -142,7 +141,7 @@ const SpecializedPrograms: React.FC = () => {
       path: "/transport-welcome",
       gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
       borderColor: "#3B82F6",
-      imagePath: getImageUrl("https://images.unsplash.com/photo-1576267423048-15c0040fec78?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
   
