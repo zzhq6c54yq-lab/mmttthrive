@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -6,12 +5,20 @@ import { useNavigate } from "react-router-dom";
 
 interface PortalBackButtonProps {
   returnPath: string;
+  onClick?: () => void; // Added optional onClick prop
 }
 
-const PortalBackButton: React.FC<PortalBackButtonProps> = ({ returnPath }) => {
+const PortalBackButton: React.FC<PortalBackButtonProps> = ({ returnPath, onClick }) => {
   const navigate = useNavigate();
   
   const handleBackNavigation = () => {
+    // If onClick is provided, call it first
+    if (onClick) {
+      onClick();
+      return;
+    }
+    
+    // Otherwise use default navigation behavior
     navigate(returnPath, { 
       state: { 
         stayInPortal: true,
