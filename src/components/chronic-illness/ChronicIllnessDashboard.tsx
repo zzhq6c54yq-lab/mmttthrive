@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BookOpen, Heart, Activity, Users, HeadphonesIcon, MedkitIcon, Yoga, TargetIcon, Family, BarChart2, Feedback } from "lucide-react";
+import { BookOpen, Heart, Activity, Users, Headphones, Stethoscope, Dumbbell, Target, User, BarChart2, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useFeatureActions from "@/hooks/useFeatureActions";
@@ -16,8 +16,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: BookOpen,
       color: "bg-blue-500",
       actions: [
-        { type: "workshop", id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" },
-        { type: "other", title: "Personal Stories", path: "/chronic-illness/stories" }
+        { type: "workshop" as const, id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" },
+        { type: "other" as const, title: "Personal Stories", path: "/chronic-illness/stories" }
       ]
     },
     {
@@ -27,8 +27,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Heart,
       color: "bg-pink-500",
       actions: [
-        { type: "assessment", id: "mood-tracking", title: "Mood Tracker", path: "/chronic-illness/mood" },
-        { type: "practice", id: "coping", title: "Coping Techniques", path: "/chronic-illness/coping" }
+        { type: "assessment" as const, id: "mood-tracking", title: "Mood Tracker", path: "/chronic-illness/mood" },
+        { type: "practice" as const, id: "coping", title: "Coping Techniques", path: "/chronic-illness/coping" }
       ]
     },
     {
@@ -38,8 +38,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Activity,
       color: "bg-purple-500",
       actions: [
-        { type: "other", title: "Symptom Tracker", path: "/chronic-illness/symptoms" },
-        { type: "other", title: "Medication Reminders", path: "/chronic-illness/medications" }
+        { type: "other" as const, title: "Symptom Tracker", path: "/chronic-illness/symptoms" },
+        { type: "other" as const, title: "Medication Reminders", path: "/chronic-illness/medications" }
       ]
     },
     {
@@ -49,52 +49,52 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Users,
       color: "bg-yellow-500",
       actions: [
-        { type: "discussion", title: "Community Forums", path: "/chronic-illness/community" },
-        { type: "join", title: "Support Groups", path: "/chronic-illness/groups" }
+        { type: "discussion" as const, title: "Community Forums", path: "/chronic-illness/community" },
+        { type: "join" as const, title: "Support Groups", path: "/chronic-illness/groups" }
       ]
     },
     {
       id: "professionals",
       title: "Access to Professionals",
       description: "Connect with specialists and find resources",
-      icon: HeadphonesIcon,
+      icon: Headphones,
       color: "bg-indigo-500",
       actions: [
-        { type: "other", title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
-        { type: "other", title: "Resource Directory", path: "/chronic-illness/resources" }
+        { type: "other" as const, title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
+        { type: "other" as const, title: "Resource Directory", path: "/chronic-illness/resources" }
       ]
     },
     {
       id: "mindfulness",
       title: "Mindfulness & Relaxation",
       description: "Guided practices for pain and stress management",
-      icon: Yoga,
+      icon: Dumbbell,
       color: "bg-teal-500",
       actions: [
-        { type: "practice", id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
-        { type: "practice", id: "movement", title: "Gentle Movement", path: "/chronic-illness/movement" }
+        { type: "practice" as const, id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
+        { type: "practice" as const, id: "movement", title: "Gentle Movement", path: "/chronic-illness/movement" }
       ]
     },
     {
       id: "goals",
       title: "Goal Setting & Motivation",
       description: "Set personalized health goals and track progress",
-      icon: TargetIcon,
+      icon: Target,
       color: "bg-orange-500",
       actions: [
-        { type: "other", title: "Set Health Goals", path: "/chronic-illness/goals" },
-        { type: "other", title: "Track Progress", path: "/chronic-illness/progress" }
+        { type: "other" as const, title: "Set Health Goals", path: "/chronic-illness/goals" },
+        { type: "other" as const, title: "Track Progress", path: "/chronic-illness/progress" }
       ]
     },
     {
       id: "caregivers",
       title: "Family & Caregiver Resources",
       description: "Support for those who support you",
-      icon: Family,
+      icon: User,
       color: "bg-green-500",
       actions: [
-        { type: "workshop", id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
-        { type: "other", title: "Communication Tools", path: "/chronic-illness/communication" }
+        { type: "workshop" as const, id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
+        { type: "other" as const, title: "Communication Tools", path: "/chronic-illness/communication" }
       ]
     },
     {
@@ -104,19 +104,19 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: BarChart2,
       color: "bg-cyan-500",
       actions: [
-        { type: "other", title: "Connect Devices", path: "/chronic-illness/connect" },
-        { type: "other", title: "View Health Data", path: "/chronic-illness/health-data" }
+        { type: "other" as const, title: "Connect Devices", path: "/chronic-illness/connect" },
+        { type: "other" as const, title: "View Health Data", path: "/chronic-illness/health-data" }
       ]
     },
     {
       id: "feedback",
       title: "Feedback & Improvements",
       description: "Help us better support your needs",
-      icon: Feedback,
+      icon: MessageSquare,
       color: "bg-rose-500",
       actions: [
-        { type: "other", title: "Share Feedback", path: "/chronic-illness/feedback" },
-        { type: "assessment", id: "needs", title: "Needs Assessment", path: "/chronic-illness/assess-needs" }
+        { type: "other" as const, title: "Share Feedback", path: "/chronic-illness/feedback" },
+        { type: "assessment" as const, id: "needs", title: "Needs Assessment", path: "/chronic-illness/assess-needs" }
       ]
     }
   ];
