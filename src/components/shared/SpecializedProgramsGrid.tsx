@@ -1,6 +1,5 @@
-
 import React from "react";
-import { Shield, GraduationCap, Briefcase, Sparkles, Users, Siren, BookUser, UtensilsCrossed, Truck } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Sparkles, Users, Siren, BookUser, UtensilsCrossed, Truck, Stethoscope } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -139,6 +138,17 @@ export const useSpecializedPrograms = () => {
       gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
       borderColor: "#3B82F6",
       imagePath: getImageUrl("https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
+    },
+    {
+      title: isSpanish ? "Enfermedades Crónicas" : "Chronic Illness",
+      description: isSpanish 
+        ? "Apoyo de salud mental para personas con enfermedades crónicas" 
+        : "Mental health support for those managing chronic conditions",
+      icon: Stethoscope,
+      path: "/chronic-illness-welcome",
+      gradient: "from-[#10B981]/80 to-[#059669]/80",
+      borderColor: "#10B981",
+      imagePath: getImageUrl("https://images.unsplash.com/photo-1587854080572-cfd5e3f5d60c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80")
     }
   ];
   

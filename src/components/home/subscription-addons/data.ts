@@ -1,5 +1,4 @@
-
-import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren, BookUser, UtensilsCrossed, Truck } from "lucide-react";
+import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren, BookUser, UtensilsCrossed, Truck, Stethoscope } from "lucide-react";
 import { AddOn } from "./types";
 
 export const addOns: AddOn[] = [
@@ -227,6 +226,29 @@ export const addOns: AddOn[] = [
     gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
     borderColor: "#3B82F6",
     imagePath: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f",
+    price: {
+      basic: "$3/month",
+      gold: "$2/month",
+      platinum: "$1/month"
+    }
+  },
+  {
+    id: "chronicIllness",
+    title: "Chronic Illness Support",
+    description: "Mental wellness resources for individuals managing chronic health conditions",
+    targetAudience: "People living with chronic illnesses, ongoing medical conditions, and their caregivers",
+    features: [
+      "Symptom and medication tracking tools",
+      "Emotional coping strategies for chronic conditions",
+      "Community support with others facing similar challenges",
+      "Resources for caregivers and family members",
+      "Integration with health tracking applications"
+    ],
+    icon: Stethoscope,
+    path: "/chronic-illness-welcome",
+    gradient: "from-[#10B981]/80 to-[#059669]/80",
+    borderColor: "#10B981",
+    imagePath: "https://images.unsplash.com/photo-1587854080572-cfd5e3f5d60c",
     price: {
       basic: "$3/month",
       gold: "$2/month",

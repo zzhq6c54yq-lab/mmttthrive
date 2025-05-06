@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -85,6 +84,8 @@ import TransportPortal from "@/pages/TransportPortal";
 import TransportStressAssessment from "@/pages/TransportStressAssessment";
 import TransportBurnoutAssessment from "@/pages/TransportBurnoutAssessment";
 import TransportWorkLifeBalanceAssessment from "@/pages/TransportWorkLifeBalanceAssessment";
+import ChronicIllnessWelcome from "@/pages/ChronicIllnessWelcome";
+import ChronicIllnessPortal from "@/pages/ChronicIllnessPortal";
 
 function App() {
   return (
@@ -227,6 +228,10 @@ function App() {
         <Route path="/law-enforcement-portal" element={<LawEnforcementPortal />} />
         
         <Route path="/generative-video" element={<GenerativeVideo />} />
+        
+        {/* Chronic Illness Routes */}
+        <Route path="/chronic-illness-welcome" element={<ChronicIllnessWelcome />} />
+        <Route path="/chronic-illness-portal" element={<ChronicIllnessPortal />} />
         
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
