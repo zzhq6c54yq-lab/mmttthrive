@@ -30,6 +30,16 @@ export const getImageUrl = (
     return fallbackImage;
   }
   
+  // Always create a fresh URL with timestamp for specialized program images
+  // to completely avoid browser caching
+  if (componentId.includes("specialized") || imagePath.includes("unsplash")) {
+    const timestamp = Date.now();
+    const separator = imagePath.includes('?') ? '&' : '?';
+    const forcedUrl = `${imagePath}${separator}bust=${timestamp}&t=${timestamp}`;
+    console.log(`[${componentId}] Adding cache busting to image: ${forcedUrl}`);
+    return forcedUrl;
+  }
+  
   // Check if we already processed this URL
   if (processedImageCache.has(imagePath)) {
     return processedImageCache.get(imagePath)!;
@@ -76,13 +86,21 @@ export const handleImageError = (
     failedImageUrls.add(originalSrc);
   }
   
+  // If the source already came from our getImageUrl function and still failed,
+  // go straight to the fallback image
+  if (originalSrc.includes('bust=')) {
+    console.log(`[${componentId}] Using fallback image:`, fallbackImage);
+    return fallbackImage;
+  }
+  
   // Try to generate a new cache-busting URL for the original source
   const originalUrlWithoutParams = originalSrc.split('?')[0];
   
   if (!failedImageUrls.has(originalUrlWithoutParams)) {
     // This is the first failure for this base URL, try again with a new timestamp
     failedImageUrls.add(originalUrlWithoutParams);
-    const newBustedUrl = `${originalUrlWithoutParams}?bust=${Date.now()}`;
+    const timestamp = Date.now();
+    const newBustedUrl = `${originalUrlWithoutParams}?bust=${timestamp}&t=${timestamp}`;
     
     console.log(`[${componentId}] Attempting to reload with new URL:`, newBustedUrl);
     return newBustedUrl;

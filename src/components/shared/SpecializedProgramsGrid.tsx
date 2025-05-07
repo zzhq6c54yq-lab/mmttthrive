@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { addOns } from "@/components/home/subscription-addons/data";
 import useTranslation from "@/hooks/useTranslation";
 import BaseCard from "./BaseCard";
+import { clearImageCache, getImageUrl } from "@/utils/imageUtils";
 
 interface SpecializedProgramsGridProps {
   onProgramClick: (path: string) => void;
@@ -15,6 +16,9 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
   
   useEffect(() => {
     console.log("SpecializedProgramsGrid mounted/updated, refreshKey:", refreshKey);
+    
+    // Clear image cache on component mount
+    clearImageCache();
     
     // Force refresh after a short delay to ensure images are properly loaded
     const refreshTimer = setTimeout(() => {
@@ -53,16 +57,18 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
             </span>
           ) : null;
           
-          // Add timestamp to imagePath to prevent caching
-          const imageWithCacheBust = `${addon.imagePath}${addon.imagePath.includes('?') ? '&' : '?'}bust=${refreshKey}`;
-          console.log(`[SpecializedProgramsGrid] Rendering ${addon.id} with image: ${imageWithCacheBust}`);
+          // Process image URL with our utility function to prevent caching issues
+          const processedImageUrl = getImageUrl(addon.imagePath, `specialized-grid-${addon.id}`, 
+            `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${refreshKey}`);
+          
+          console.log(`[SpecializedProgramsGrid] Rendering ${addon.id} with image: ${processedImageUrl}`);
           
           return (
             <BaseCard
               key={`${addon.id}-${refreshKey}`}
               id={addon.id}
               title={addon.title}
-              imagePath={imageWithCacheBust}
+              imagePath={processedImageUrl}
               path={addon.path}
               gradient={addon.gradient}
               icon={<Icon className="h-4 w-4 text-white" />}
