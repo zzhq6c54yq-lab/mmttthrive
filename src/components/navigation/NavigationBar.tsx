@@ -60,7 +60,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
             <Home className="h-4 w-4" />
           </Button>
         )}
-        {title && <h1 className="text-lg font-medium text-white ml-2">{title}</h1>}
+        {title && <h1 className="text-lg font-medium text-white ml-2 drop-shadow-md">{title}</h1>}
       </div>
       
       <div>

@@ -4,9 +4,11 @@ import { BookOpen, Heart, Activity, Users, Headphones, Stethoscope, Dumbbell, Ta
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useFeatureActions from "@/hooks/useFeatureActions";
+import { useToast } from "@/hooks/use-toast";
 
 const ChronicIllnessDashboard: React.FC = () => {
   const { handleActionClick } = useFeatureActions();
+  const { toast } = useToast();
   
   const sections = [
     {
@@ -120,25 +122,36 @@ const ChronicIllnessDashboard: React.FC = () => {
       ]
     }
   ];
+
+  // Handle button clicks with confirmation toast
+  const handleButtonClick = (action: any) => {
+    toast({
+      title: `Accessing ${action.title}`,
+      description: "Loading resource...",
+      duration: 1500,
+    });
+    
+    handleActionClick(action);
+  };
   
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold mb-4">Chronic Illness Support Portal</h1>
-        <p className="text-lg max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 text-purple-800 dark:text-purple-200">Chronic Illness Support Portal</h1>
+        <p className="text-lg max-w-3xl mx-auto text-purple-700 dark:text-purple-300">
           Tools and resources to support your mental and emotional wellbeing while managing chronic health conditions.
         </p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sections.map((section) => (
-          <Card key={section.id} className="transition-all hover:shadow-lg dark:bg-gray-800/50 backdrop-blur-sm border border-purple-200 dark:border-purple-900/50">
+          <Card key={section.id} className="transition-all hover:shadow-lg bg-white dark:bg-gray-800/50 backdrop-blur-sm border border-purple-200 dark:border-purple-900/50">
             <CardHeader className="flex flex-row items-center gap-4">
               <div className={`p-2 rounded-full ${section.color}`}>
                 <section.icon className="h-5 w-5 text-white" />
               </div>
               <div>
-                <CardTitle>{section.title}</CardTitle>
+                <CardTitle className="text-purple-800 dark:text-purple-200">{section.title}</CardTitle>
                 <CardDescription>{section.description}</CardDescription>
               </div>
             </CardHeader>
@@ -148,8 +161,8 @@ const ChronicIllnessDashboard: React.FC = () => {
                   <Button
                     key={idx}
                     variant="outline"
-                    className="justify-start hover:bg-purple-50 dark:hover:bg-purple-900/20"
-                    onClick={() => handleActionClick(action)}
+                    className="justify-start hover:bg-purple-50 dark:hover:bg-purple-900/20 border-purple-200 dark:border-purple-800/30"
+                    onClick={() => handleButtonClick(action)}
                   >
                     {action.title}
                   </Button>

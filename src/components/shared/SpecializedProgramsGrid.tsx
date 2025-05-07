@@ -45,6 +45,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         {addOns.map((addon) => {
           const Icon = addon.icon;
           const hasImageError = imageErrors[addon.id] || false;
+          const fallbackImage = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80";
           
           return (
             <motion.div
@@ -56,27 +57,29 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
               onClick={() => onProgramClick(addon.path)}
             >
               <div className="h-48 relative">
-                <div className="absolute inset-0">
+                {/* Image Section (3/4 of height) */}
+                <div className="absolute inset-0 h-[75%] overflow-hidden">
                   <img
-                    src={hasImageError ? "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" : addon.imagePath}
+                    src={hasImageError ? fallbackImage : addon.imagePath}
                     alt={addon.title}
                     className="w-full h-full object-cover"
                     onError={() => handleImageError(addon.id)}
                     loading="eager"
                   />
-                  <div className={`absolute inset-0 bg-gradient-to-b ${addon.gradient}`}></div>
+                  <div className="absolute inset-0 bg-black/30"></div>
                 </div>
                 
-                <div className="relative z-10 h-full flex flex-col justify-between p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm">
-                      <Icon className="h-6 w-6 text-white" />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-1">{addon.title}</h3>
-                    <p className="text-sm text-white/80 line-clamp-2">{addon.description}</p>
+                {/* Color Section (1/4 of height) */}
+                <div className={`absolute bottom-0 left-0 right-0 h-[25%] ${addon.gradient} flex items-center justify-center`}>
+                  <h3 className="text-lg font-semibold text-white text-center px-2 truncate w-full">
+                    {addon.title}
+                  </h3>
+                </div>
+                
+                {/* Icon overlay in top corner */}
+                <div className="absolute top-2 left-2 z-10">
+                  <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm">
+                    <Icon className="h-5 w-5 text-white" />
                   </div>
                 </div>
               </div>
