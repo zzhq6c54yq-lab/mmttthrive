@@ -1,12 +1,14 @@
+
 import React from "react";
 import { BookOpen, Heart, Activity, Users, Headphones, Stethoscope, Dumbbell, Target, User, BarChart2, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import useFeatureActions from "@/hooks/useFeatureActions";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const ChronicIllnessDashboard: React.FC = () => {
-  const { handleActionClick } = useFeatureActions();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   
   const sections = [
@@ -17,8 +19,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: BookOpen,
       color: "bg-purple-500",
       actions: [
-        { type: "workshop" as const, id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" },
-        { type: "other" as const, title: "Personal Stories", path: "/chronic-illness/stories" }
+        { id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" },
+        { title: "Personal Stories", path: "/chronic-illness/stories" }
       ]
     },
     {
@@ -28,8 +30,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Heart,
       color: "bg-purple-600",
       actions: [
-        { type: "assessment" as const, id: "mood-tracking", title: "Mood Tracker", path: "/chronic-illness/mood" },
-        { type: "practice" as const, id: "coping", title: "Coping Techniques", path: "/chronic-illness/coping" }
+        { id: "mood-tracking", title: "Mood Tracker", path: "/chronic-illness/mood" },
+        { id: "coping", title: "Coping Techniques", path: "/chronic-illness/coping" }
       ]
     },
     {
@@ -39,8 +41,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Activity,
       color: "bg-purple-500",
       actions: [
-        { type: "other" as const, title: "Symptom Tracker", path: "/chronic-illness/symptoms" },
-        { type: "other" as const, title: "Medication Reminders", path: "/chronic-illness/medications" }
+        { title: "Symptom Tracker", path: "/chronic-illness/symptoms" },
+        { title: "Medication Reminders", path: "/chronic-illness/medications" }
       ]
     },
     {
@@ -50,8 +52,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Users,
       color: "bg-purple-400",
       actions: [
-        { type: "discussion" as const, title: "Community Forums", path: "/chronic-illness/community" },
-        { type: "join" as const, title: "Support Groups", path: "/chronic-illness/groups" }
+        { title: "Community Forums", path: "/chronic-illness/community" },
+        { title: "Support Groups", path: "/chronic-illness/groups" }
       ]
     },
     {
@@ -61,8 +63,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Headphones,
       color: "bg-purple-600",
       actions: [
-        { type: "other" as const, title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
-        { type: "other" as const, title: "Resource Directory", path: "/chronic-illness/resources" }
+        { title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
+        { title: "Resource Directory", path: "/chronic-illness/resources" }
       ]
     },
     {
@@ -72,8 +74,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Dumbbell,
       color: "bg-purple-500",
       actions: [
-        { type: "practice" as const, id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
-        { type: "practice" as const, id: "movement", title: "Gentle Movement", path: "/chronic-illness/movement" }
+        { id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
+        { id: "movement", title: "Gentle Movement", path: "/chronic-illness/movement" }
       ]
     },
     {
@@ -83,8 +85,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: Target,
       color: "bg-purple-400",
       actions: [
-        { type: "other" as const, title: "Set Health Goals", path: "/chronic-illness/goals" },
-        { type: "other" as const, title: "Track Progress", path: "/chronic-illness/progress" }
+        { title: "Set Health Goals", path: "/chronic-illness/goals" },
+        { title: "Track Progress", path: "/chronic-illness/progress" }
       ]
     },
     {
@@ -94,8 +96,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: User,
       color: "bg-purple-500",
       actions: [
-        { type: "workshop" as const, id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
-        { type: "other" as const, title: "Communication Tools", path: "/chronic-illness/communication" }
+        { id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
+        { title: "Communication Tools", path: "/chronic-illness/communication" }
       ]
     },
     {
@@ -105,8 +107,8 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: BarChart2,
       color: "bg-purple-600",
       actions: [
-        { type: "other" as const, title: "Connect Devices", path: "/chronic-illness/connect" },
-        { type: "other" as const, title: "View Health Data", path: "/chronic-illness/health-data" }
+        { title: "Connect Devices", path: "/chronic-illness/connect" },
+        { title: "View Health Data", path: "/chronic-illness/health-data" }
       ]
     },
     {
@@ -116,22 +118,28 @@ const ChronicIllnessDashboard: React.FC = () => {
       icon: MessageSquare,
       color: "bg-purple-500",
       actions: [
-        { type: "other" as const, title: "Share Feedback", path: "/chronic-illness/feedback" },
-        { type: "assessment" as const, id: "needs", title: "Needs Assessment", path: "/chronic-illness/assess-needs" }
+        { title: "Share Feedback", path: "/chronic-illness/feedback" },
+        { id: "needs", title: "Needs Assessment", path: "/chronic-illness/assess-needs" }
       ]
     }
   ];
 
-  // Handle button clicks using the standardized action handler
-  const handleButtonClick = (action: any) => {
-    handleActionClick({
-      ...action, 
-      // Add specific state to maintain context within chronic illness portal
+  // Handle button clicks - now directly using navigate
+  const handleButtonClick = (path: string, title: string) => {
+    toast({
+      title: `Accessing ${title}`,
+      description: "Loading content...",
+      duration: 1500,
+    });
+    
+    // Navigate with state to maintain portal context
+    navigate(path, {
       state: {
         fromChronicIllness: true,
         stayInPortal: true,
         portalPath: "/chronic-illness-portal",
-        preventTutorial: true
+        preventTutorial: true,
+        title: title
       }
     });
   };
@@ -157,7 +165,7 @@ const ChronicIllnessDashboard: React.FC = () => {
                     key={idx}
                     variant="outline"
                     className="justify-start hover:bg-purple-50 dark:hover:bg-purple-900/20 border-purple-200 dark:border-purple-800/30"
-                    onClick={() => handleButtonClick(action)}
+                    onClick={() => handleButtonClick(action.path, action.title)}
                   >
                     {action.title}
                   </Button>

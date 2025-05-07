@@ -26,6 +26,8 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
     show: { y: 0, opacity: 1, transition: { duration: 0.5 } }
   };
   
+  const fallbackImage = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1000";
+  
   return (
     <div className="py-6">
       <motion.div
@@ -55,7 +57,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       console.error(`Failed to load image for ${addon.id}`, e);
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1000";
+                      (e.target as HTMLImageElement).src = fallbackImage;
                     }}
                     loading="eager"
                   />

@@ -4,10 +4,12 @@ import { Users, MessageSquare, Video, Calendar, Globe, UserPlus } from "lucide-r
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import useFeatureActions from "@/hooks/useFeatureActions";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const ChronicIllnessCommunity: React.FC = () => {
-  const { handleActionClick } = useFeatureActions();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const supportGroups = [
     {
@@ -67,18 +69,40 @@ const ChronicIllnessCommunity: React.FC = () => {
   ];
 
   const handleJoinGroup = (group: any) => {
-    handleActionClick({
-      type: "join",
-      title: group.title,
-      path: group.path
+    toast({
+      title: `Joining ${group.title}`,
+      description: "Loading group details...",
+      duration: 1500,
+    });
+    
+    navigate(group.path, {
+      state: {
+        fromChronicIllness: true,
+        stayInPortal: true,
+        portalPath: "/chronic-illness-portal",
+        preventTutorial: true,
+        groupId: group.id,
+        groupTitle: group.title
+      }
     });
   };
   
   const handleViewForum = (forum: any) => {
-    handleActionClick({
-      type: "discussion",
-      title: forum.title,
-      path: forum.path
+    toast({
+      title: `Viewing ${forum.title}`,
+      description: "Loading discussion forum...",
+      duration: 1500,
+    });
+    
+    navigate(forum.path, {
+      state: {
+        fromChronicIllness: true,
+        stayInPortal: true,
+        portalPath: "/chronic-illness-portal",
+        preventTutorial: true,
+        forumId: forum.id,
+        forumTitle: forum.title
+      }
     });
   };
   
@@ -176,36 +200,6 @@ const ChronicIllnessCommunity: React.FC = () => {
             </Card>
           ))}
         </div>
-      </div>
-      
-      {/* Virtual Events Section */}
-      <div className="pt-4">
-        <Card className="bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/40 dark:to-purple-800/30 border-purple-300 dark:border-purple-700/50">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-purple-800 dark:text-purple-200 flex items-center gap-2">
-                  <Video className="h-5 w-5" />
-                  Virtual Meet-ups & Events
-                </h3>
-                <p className="text-purple-700 dark:text-purple-300">
-                  Join online events dedicated to specific chronic conditions or general wellness topics.
-                </p>
-              </div>
-              <Button 
-                onClick={() => handleActionClick({
-                  type: "join",
-                  title: "Virtual Meet-ups",
-                  path: "/chronic-illness/groups"
-                })}
-                className="bg-purple-600 hover:bg-purple-700 text-white md:self-center"
-              >
-                <Calendar className="h-4 w-4 mr-2" />
-                View Calendar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

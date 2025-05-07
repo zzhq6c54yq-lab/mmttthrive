@@ -3,10 +3,12 @@ import React from "react";
 import { BookOpen, Heart, Activity, Stethoscope, Dumbbell, Target, User, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import useFeatureActions from "@/hooks/useFeatureActions";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const ChronicIllnessResources: React.FC = () => {
-  const { handleActionClick } = useFeatureActions();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const resources = [
     {
@@ -16,9 +18,9 @@ const ChronicIllnessResources: React.FC = () => {
       icon: BookOpen,
       color: "bg-purple-500",
       actions: [
-        { type: "other" as const, title: "Medical Information", path: "/chronic-illness/resources" },
-        { type: "other" as const, title: "Personal Stories", path: "/chronic-illness/stories" },
-        { type: "workshop" as const, id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" }
+        { title: "Medical Information", path: "/chronic-illness/resources" },
+        { title: "Personal Stories", path: "/chronic-illness/stories" },
+        { id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" }
       ]
     },
     {
@@ -28,9 +30,9 @@ const ChronicIllnessResources: React.FC = () => {
       icon: Activity,
       color: "bg-purple-600",
       actions: [
-        { type: "other" as const, title: "Symptom Tracking Guide", path: "/chronic-illness/symptoms" },
-        { type: "other" as const, title: "Medication Management", path: "/chronic-illness/medications" },
-        { type: "other" as const, title: "Pain Management Resources", path: "/chronic-illness/pain-management" }
+        { title: "Symptom Tracking Guide", path: "/chronic-illness/symptoms" },
+        { title: "Medication Management", path: "/chronic-illness/medications" },
+        { title: "Pain Management Resources", path: "/chronic-illness/pain-management" }
       ]
     },
     {
@@ -40,9 +42,9 @@ const ChronicIllnessResources: React.FC = () => {
       icon: Stethoscope,
       color: "bg-purple-500",
       actions: [
-        { type: "other" as const, title: "Find Specialists", path: "/chronic-illness/specialists" },
-        { type: "other" as const, title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
-        { type: "other" as const, title: "Resource Directory", path: "/chronic-illness/resources" }
+        { title: "Find Specialists", path: "/chronic-illness/specialists" },
+        { title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
+        { title: "Resource Directory", path: "/chronic-illness/resources" }
       ]
     },
     {
@@ -52,9 +54,9 @@ const ChronicIllnessResources: React.FC = () => {
       icon: Heart,
       color: "bg-purple-400",
       actions: [
-        { type: "practice" as const, id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
-        { type: "practice" as const, id: "movement", title: "Adaptive Exercise", path: "/chronic-illness/movement" },
-        { type: "other" as const, title: "Nutrition Resources", path: "/chronic-illness/nutrition" }
+        { id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
+        { id: "movement", title: "Adaptive Exercise", path: "/chronic-illness/movement" },
+        { title: "Nutrition Resources", path: "/chronic-illness/nutrition" }
       ]
     },
     {
@@ -64,16 +66,31 @@ const ChronicIllnessResources: React.FC = () => {
       icon: User,
       color: "bg-purple-500",
       actions: [
-        { type: "workshop" as const, id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
-        { type: "other" as const, title: "Communication Tools", path: "/chronic-illness/communication" },
-        { type: "other" as const, title: "Respite Care Information", path: "/chronic-illness/respite" }
+        { id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
+        { title: "Communication Tools", path: "/chronic-illness/communication" },
+        { title: "Respite Care Information", path: "/chronic-illness/respite" }
       ]
     }
   ];
 
-  // Handle button clicks
-  const handleButtonClick = (action: any) => {
-    handleActionClick(action);
+  // Handle button clicks with direct navigation
+  const handleButtonClick = (path: string, title: string, id?: string) => {
+    toast({
+      title: `Accessing ${title}`,
+      description: "Loading content...",
+      duration: 1500,
+    });
+    
+    navigate(path, {
+      state: {
+        fromChronicIllness: true,
+        stayInPortal: true,
+        portalPath: "/chronic-illness-portal",
+        preventTutorial: true,
+        title: title,
+        resourceId: id
+      }
+    });
   };
   
   return (
@@ -104,7 +121,7 @@ const ChronicIllnessResources: React.FC = () => {
                     key={idx}
                     variant="outline"
                     className="justify-start hover:bg-purple-50 dark:hover:bg-purple-900/20 border-purple-200 dark:border-purple-800/30"
-                    onClick={() => handleButtonClick(action)}
+                    onClick={() => handleButtonClick(action.path, action.title, action.id)}
                   >
                     {action.title}
                   </Button>
