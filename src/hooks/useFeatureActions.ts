@@ -29,7 +29,10 @@ export const useFeatureActions = () => {
       path.includes("small-business") ||
       path.includes("law-enforcement") ||
       path.includes("first-responders") ||
-      path.includes("educators")
+      path.includes("educators") ||
+      path.includes("hospitality") ||
+      path.includes("transport") ||
+      path.includes("chronic-illness")
     );
   };
   
@@ -49,6 +52,9 @@ export const useFeatureActions = () => {
     if (path.includes("law-enforcement")) return "/law-enforcement-portal";
     if (path.includes("first-responders")) return "/first-responders-portal";
     if (path.includes("educators")) return "/educators-portal";
+    if (path.includes("hospitality")) return "/hospitality-portal";
+    if (path.includes("transport")) return "/transport-portal";
+    if (path.includes("chronic-illness")) return "/chronic-illness-portal";
     
     // Default to main app
     return "/";

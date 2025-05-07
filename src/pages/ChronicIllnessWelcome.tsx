@@ -22,13 +22,13 @@ const ChronicIllnessWelcome: React.FC = () => {
       title="Chronic Illness Support Program"
       description="A specialized program designed to support your mental health and wellbeing while living with chronic health conditions."
       whatToExpect={whatToExpect}
-      color="emerald"
-      gradientFrom="emerald"
-      gradientTo="green"
-      borderColor="emerald"
+      color="purple"
+      gradientFrom="purple"
+      gradientTo="violet"
+      borderColor="purple"
       portalPath="/chronic-illness-portal"
       icon={<Stethoscope className="w-8 h-8 text-white" />}
-      coverImage="https://images.unsplash.com/photo-1587854080572-cfd5e3f5d60c"
+      coverImage="https://images.unsplash.com/photo-1631549916768-8c5befe19a2c"
       motivationalMessage="Living with chronic illness can be challenging, but you don't have to face it alone. This program offers tools, support, and community to help you thrive despite your health challenges."
     />
   );

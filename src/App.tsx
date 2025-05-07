@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -232,6 +233,26 @@ function App() {
         {/* Chronic Illness Routes */}
         <Route path="/chronic-illness-welcome" element={<ChronicIllnessWelcome />} />
         <Route path="/chronic-illness-portal" element={<ChronicIllnessPortal />} />
+        <Route path="/chronic-illness/education" element={<WorkshopDetail />} />
+        <Route path="/chronic-illness/stories" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/mood" element={<MentalWellnessTools />} />
+        <Route path="/chronic-illness/coping" element={<GuidedPractice />} />
+        <Route path="/chronic-illness/symptoms" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/medications" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/community" element={<CommunitySupport />} />
+        <Route path="/chronic-illness/groups" element={<VirtualMeetings />} />
+        <Route path="/chronic-illness/teletherapy" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/resources" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/meditations" element={<GuidedPractice />} />
+        <Route path="/chronic-illness/movement" element={<GuidedPractice />} />
+        <Route path="/chronic-illness/goals" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/progress" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/caregivers" element={<WorkshopDetail />} />
+        <Route path="/chronic-illness/communication" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/connect" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/health-data" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/feedback" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/assess-needs" element={<MentalWellnessTools />} />
         
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />

@@ -14,7 +14,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Understanding Chronic Illness",
       description: "Educational resources and personal stories",
       icon: BookOpen,
-      color: "bg-blue-500",
+      color: "bg-purple-500",
       actions: [
         { type: "workshop" as const, id: "chronic101", title: "Chronic Illness 101", path: "/chronic-illness/education" },
         { type: "other" as const, title: "Personal Stories", path: "/chronic-illness/stories" }
@@ -25,7 +25,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Emotional Support & Coping",
       description: "Track your mood and learn coping strategies",
       icon: Heart,
-      color: "bg-pink-500",
+      color: "bg-purple-600",
       actions: [
         { type: "assessment" as const, id: "mood-tracking", title: "Mood Tracker", path: "/chronic-illness/mood" },
         { type: "practice" as const, id: "coping", title: "Coping Techniques", path: "/chronic-illness/coping" }
@@ -47,7 +47,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Community Support",
       description: "Connect with others on similar journeys",
       icon: Users,
-      color: "bg-yellow-500",
+      color: "bg-purple-400",
       actions: [
         { type: "discussion" as const, title: "Community Forums", path: "/chronic-illness/community" },
         { type: "join" as const, title: "Support Groups", path: "/chronic-illness/groups" }
@@ -58,7 +58,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Access to Professionals",
       description: "Connect with specialists and find resources",
       icon: Headphones,
-      color: "bg-indigo-500",
+      color: "bg-purple-600",
       actions: [
         { type: "other" as const, title: "Teletherapy Options", path: "/chronic-illness/teletherapy" },
         { type: "other" as const, title: "Resource Directory", path: "/chronic-illness/resources" }
@@ -69,7 +69,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Mindfulness & Relaxation",
       description: "Guided practices for pain and stress management",
       icon: Dumbbell,
-      color: "bg-teal-500",
+      color: "bg-purple-500",
       actions: [
         { type: "practice" as const, id: "meditation", title: "Guided Meditations", path: "/chronic-illness/meditations" },
         { type: "practice" as const, id: "movement", title: "Gentle Movement", path: "/chronic-illness/movement" }
@@ -80,7 +80,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Goal Setting & Motivation",
       description: "Set personalized health goals and track progress",
       icon: Target,
-      color: "bg-orange-500",
+      color: "bg-purple-400",
       actions: [
         { type: "other" as const, title: "Set Health Goals", path: "/chronic-illness/goals" },
         { type: "other" as const, title: "Track Progress", path: "/chronic-illness/progress" }
@@ -91,7 +91,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Family & Caregiver Resources",
       description: "Support for those who support you",
       icon: User,
-      color: "bg-green-500",
+      color: "bg-purple-500",
       actions: [
         { type: "workshop" as const, id: "caregiver", title: "Caregiver Support", path: "/chronic-illness/caregivers" },
         { type: "other" as const, title: "Communication Tools", path: "/chronic-illness/communication" }
@@ -102,7 +102,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Health App Integration",
       description: "Connect your health tracking apps",
       icon: BarChart2,
-      color: "bg-cyan-500",
+      color: "bg-purple-600",
       actions: [
         { type: "other" as const, title: "Connect Devices", path: "/chronic-illness/connect" },
         { type: "other" as const, title: "View Health Data", path: "/chronic-illness/health-data" }
@@ -113,7 +113,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       title: "Feedback & Improvements",
       description: "Help us better support your needs",
       icon: MessageSquare,
-      color: "bg-rose-500",
+      color: "bg-purple-500",
       actions: [
         { type: "other" as const, title: "Share Feedback", path: "/chronic-illness/feedback" },
         { type: "assessment" as const, id: "needs", title: "Needs Assessment", path: "/chronic-illness/assess-needs" }
@@ -132,7 +132,7 @@ const ChronicIllnessDashboard: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sections.map((section) => (
-          <Card key={section.id} className="transition-all hover:shadow-lg dark:bg-gray-800/50 backdrop-blur-sm border border-emerald-200 dark:border-emerald-900/50">
+          <Card key={section.id} className="transition-all hover:shadow-lg dark:bg-gray-800/50 backdrop-blur-sm border border-purple-200 dark:border-purple-900/50">
             <CardHeader className="flex flex-row items-center gap-4">
               <div className={`p-2 rounded-full ${section.color}`}>
                 <section.icon className="h-5 w-5 text-white" />
@@ -148,7 +148,7 @@ const ChronicIllnessDashboard: React.FC = () => {
                   <Button
                     key={idx}
                     variant="outline"
-                    className="justify-start"
+                    className="justify-start hover:bg-purple-50 dark:hover:bg-purple-900/20"
                     onClick={() => handleActionClick(action)}
                   >
                     {action.title}

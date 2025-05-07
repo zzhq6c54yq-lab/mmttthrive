@@ -246,9 +246,9 @@ export const addOns: AddOn[] = [
     ],
     icon: Stethoscope,
     path: "/chronic-illness-welcome",
-    gradient: "from-[#10B981]/80 to-[#059669]/80",
-    borderColor: "#10B981",
-    imagePath: "https://images.unsplash.com/photo-1587854080572-cfd5e3f5d60c",
+    gradient: "from-[#8B5CF6]/80 to-[#7E69AB]/80",
+    borderColor: "#8B5CF6",
+    imagePath: "https://images.unsplash.com/photo-1631549916768-8c5befe19a2c",
     price: {
       basic: "$3/month",
       gold: "$2/month",
