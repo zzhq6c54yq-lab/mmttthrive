@@ -45,7 +45,7 @@ export const addOns = [
       monthly: 0,
       yearly: 0
     },
-    imagePath: "https://images.unsplash.com/photo-1500045592466-f97413ebebc3?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1579965342575-16428a7c8881?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-blue-900 to-blue-700",
     borderColor: "#1E3A8A",
     icon: Shield,
@@ -62,7 +62,7 @@ export const addOns = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1532188363366-3a1b2ac4a97d?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-green-500 to-emerald-400",
     borderColor: "#10B981",
     icon: UserRound,
@@ -78,7 +78,7 @@ export const addOns = [
       monthly: 3.99,
       yearly: 39.99
     },
-    imagePath: "https://images.unsplash.com/photo-1447195922075-0e3a910cbf0a?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-yellow-600 to-yellow-400",
     borderColor: "#D97706",
     icon: PersonStanding,
@@ -94,7 +94,7 @@ export const addOns = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1542332213-31f87348057f?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-red-600 to-red-400",
     borderColor: "#DC2626",
     icon: Activity,
@@ -110,7 +110,7 @@ export const addOns = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1604375858939-970daf29c218?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1557830387-4d785bb45a26?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-blue-800 to-blue-600",
     borderColor: "#1E40AF",
     icon: Shield,
@@ -126,7 +126,7 @@ export const addOns = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-cyan-600 to-cyan-400",
     borderColor: "#0891B2",
     icon: BookOpen,
@@ -142,7 +142,7 @@ export const addOns = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1590073242678-70ee3fc28f8a?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-orange-500 to-orange-300",
     borderColor: "#F97316",
     icon: Hotel,
@@ -158,7 +158,7 @@ export const addOns = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1577933932917-7328c7871fba?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1506306160726-5121aad62fdf?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-sky-600 to-sky-400",
     borderColor: "#0284C7",
     icon: Bus,
