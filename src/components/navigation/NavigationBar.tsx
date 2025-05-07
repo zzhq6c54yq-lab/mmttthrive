@@ -15,7 +15,7 @@ interface NavigationBarProps {
   title?: string;
   portalMode?: boolean;
   portalPath?: string;
-  backButtonAction?: () => void;  // Added backButtonAction prop
+  backButtonAction?: () => void;
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({
@@ -42,7 +42,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 flex items-center justify-between p-4 z-50 bg-black/20 backdrop-blur-sm">
+    <div className="fixed top-0 left-0 right-0 flex items-center justify-between p-4 z-50 bg-black/20 backdrop-blur-sm shadow-md">
       <div className="flex items-center space-x-2">
         {showBackButton && (
           <PortalBackButton 

@@ -1,258 +1,204 @@
-import { Shield, GraduationCap, Briefcase, Users, Sparkles, Siren, BookUser, UtensilsCrossed, Truck, Stethoscope } from "lucide-react";
-import { AddOn } from "./types";
 
-export const addOns: AddOn[] = [
+import { Activity, BookOpen, Briefcase, Bus, Dumbbell, GraduationCap, Heart, Hotel, PersonStanding, Shield, Stethoscope, UserRound } from "lucide-react";
+
+export const addOns = [
+  {
+    id: "small-business",
+    title: "Small Business Support",
+    description: "Mental health resources tailored to small business owners and employees.",
+    price: {
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-amber-600 to-amber-400",
+    icon: Briefcase,
+    path: "/small-business-welcome",
+    recommended: true
+  },
+  {
+    id: "colleges",
+    title: "College Student Resources",
+    description: "Support for the unique mental health challenges of college students.",
+    price: {
+      monthly: 3.99,
+      yearly: 39.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-blue-600 to-blue-400",
+    icon: GraduationCap,
+    path: "/college-welcome"
+  },
   {
     id: "dod",
-    title: "Department of Defense Program",
-    description: "Specialized mental health support for military personnel and veterans",
-    targetAudience: "Active duty military personnel, veterans, and their families",
-    features: [
-      "Combat-related stress management tools",
-      "Transition assistance resources",
-      "Specialized military mental health content",
-      "Connection with other veterans and military families",
-      "Department of Defense approved resources"
-    ],
+    title: "Military & Veteran Support",
+    description: "Specialized mental health resources for active duty, veterans, and families.",
+    price: {
+      monthly: 0,
+      yearly: 0
+    },
+    imagePath: "https://images.unsplash.com/photo-1500045592466-f97413ebebc3?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-blue-900 to-blue-700",
     icon: Shield,
     path: "/dod-welcome",
-    gradient: "from-[#0EA5E9]/80 to-[#2563EB]/80",
-    borderColor: "#0EA5E9",
-    imagePath: "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3",
-    price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
-  },
-  {
-    id: "college",
-    title: "The College Experience",
-    description: "Resources and support for college students and young adults",
-    targetAudience: "College students, graduate students, and young adults in academic settings",
-    features: [
-      "Study-life balance resources",
-      "Academic stress management",
-      "Social anxiety in college settings",
-      "Campus mental health resources directory",
-      "Career transition guidance"
-    ],
-    icon: GraduationCap,
-    path: "/college-welcome",
-    gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
-    borderColor: "#8B5CF6",
-    imagePath: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
-    price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
-  },
-  {
-    id: "business",
-    title: "Small Business Program",
-    description: "Mental wellness resources for small business owners and employees",
-    targetAudience: "Small business owners, entrepreneurs, and their employees",
-    features: [
-      "Workplace stress management",
-      "Leadership mental wellness",
-      "Work-life balance strategies",
-      "Team mental health resources",
-      "Business growth without burnout"
-    ],
-    icon: Briefcase,
-    path: "/small-business-selection",
-    gradient: "from-[#F97316]/80 to-[#FB923C]/80",
-    borderColor: "#F97316",
-    imagePath: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf",
-    price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+    free: true
   },
   {
     id: "adolescent",
-    title: "Adolescent Experience",
-    description: "Age-specific mental wellness content for teenagers and young adults",
-    targetAudience: "Teenagers, young adults, and their parents or guardians",
-    features: [
-      "Age-specific mental wellness content",
-      "Social media and digital wellness",
-      "Identity development resources",
-      "Parent-teen communication tools",
-      "School stress management"
-    ],
-    icon: Users,
-    path: "/adolescent-selection",
-    gradient: "from-[#D946EF]/80 to-[#EC4899]/80",
-    borderColor: "#D946EF",
-    imagePath: "https://images.unsplash.com/photo-1516627145497-ae6968895b74",
+    title: "Adolescent Support",
+    description: "Mental wellbeing resources specifically designed for teenagers and adolescents.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1532188363366-3a1b2ac4a97d?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-green-500 to-emerald-400",
+    icon: UserRound,
+    path: "/adolescent-welcome"
   },
   {
-    id: "golden",
-    title: "The Golden Years",
-    description: "Resources for seniors, retirees, and older adults focusing on life's golden years",
-    targetAudience: "Seniors, retirees, and older adults focusing on life's golden years",
-    features: [
-      "Legacy journal and life story preservation",
-      "Memory and cognitive exercises",
-      "End-of-life planning resources",
-      "Retirement transition support",
-      "Intergenerational connection tools"
-    ],
-    icon: Sparkles,
-    path: "/golden-years-welcome",
-    gradient: "from-[#D4AF37]/80 to-[#B8860B]/80",
-    borderColor: "#D4AF37",
-    imagePath: "https://images.unsplash.com/photo-1447452001602-7090c7ab2db3",
+    id: "golden-years",
+    title: "Golden Years Program",
+    description: "Mental wellness resources tailored to seniors and aging individuals.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 3.99,
+      yearly: 39.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1447195922075-0e3a910cbf0a?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-yellow-600 to-yellow-400",
+    icon: PersonStanding,
+    path: "/golden-years-welcome"
   },
   {
-    id: "firstResponders",
-    title: "First Responders Program",
-    description: "Supporting the mental health and wellbeing of our emergency service professionals",
-    targetAudience: "Firefighters, paramedics, police officers, and emergency service professionals",
-    features: [
-      "Crisis support for emergency service professionals",
-      "Peer support networks with other first responders",
-      "Stress management for high-pressure situations",
-      "Post-incident trauma resources",
-      "Family support services for emergency personnel"
-    ],
-    icon: Siren,
-    path: "/first-responders-welcome",
-    gradient: "from-[#DC2626]/80 to-[#EF4444]/80",
-    borderColor: "#DC2626",
-    imagePath: "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png",
+    id: "first-responders",
+    title: "First Responder Support",
+    description: "Resources for the mental health needs of emergency service personnel.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1542332213-31f87348057f?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-red-600 to-red-400",
+    icon: Activity,
+    path: "/first-responders-welcome"
   },
   {
-    id: "lawEnforcement",
+    id: "law-enforcement",
     title: "Law Enforcement Program",
-    description: "Supporting mental health and wellbeing of law enforcement professionals",
-    targetAudience: "Police officers, detectives, and law enforcement professionals",
-    features: [
-      "Stress management for law enforcement",
-      "Critical incident debriefing support",
-      "Police-specific peer support networks",
-      "Family support for law enforcement",
-      "Law enforcement wellness resources and tools"
-    ],
-    icon: Shield,
-    path: "/law-enforcement-welcome",
-    gradient: "from-[#1E40AF]/80 to-[#1E3A8A]/80",
-    borderColor: "#1E40AF",
-    imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png",
+    description: "Mental health support tailored to the needs of law enforcement professionals.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1604375858939-970daf29c218?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-blue-800 to-blue-600",
+    icon: Shield,
+    path: "/law-enforcement-welcome"
   },
   {
     id: "educators",
-    title: "Esteemed Educators Program",
-    description: "Mental health support for teachers and education professionals",
-    targetAudience: "Teachers, professors, administrators, and education support staff",
-    features: [
-      "Classroom stress management techniques",
-      "Work-life balance for educators",
-      "Dealing with difficult classroom situations",
-      "Educator burnout prevention resources",
-      "Teacher-specific wellness practices"
-    ],
-    icon: BookUser,
-    path: "/educators-welcome",
-    gradient: "from-[#8B5CF6]/80 to-[#6366F1]/80",
-    borderColor: "#8B5CF6",
-    imagePath: "https://images.unsplash.com/photo-1580582932707-520aed937b7b",
+    title: "Educators Support",
+    description: "Mental wellness resources designed specifically for teachers and educators.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-cyan-600 to-cyan-400",
+    icon: BookOpen,
+    path: "/educators-welcome"
   },
   {
     id: "hospitality",
-    title: "Hospitality Industry Program",
-    description: "Mental wellness support for restaurant and hospitality workers",
-    targetAudience: "Restaurant staff, hotel employees, and service industry professionals",
-    features: [
-      "Service industry stress management",
-      "Work-life balance for irregular schedules",
-      "Managing customer service pressure",
-      "Restaurant-specific mental health resources",
-      "Peer support for service professionals"
-    ],
-    icon: UtensilsCrossed,
-    path: "/hospitality-welcome",
-    gradient: "from-[#9b87f5]/80 to-[#7E69AB]/80",
-    borderColor: "#9b87f5",
-    imagePath: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
+    title: "Hospitality Industry",
+    description: "Mental health tools for those working in restaurants, hotels, and tourism.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1590073242678-70ee3fc28f8a?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-orange-500 to-orange-300",
+    icon: Hotel,
+    path: "/hospitality-welcome"
   },
   {
-    id: "transport",
-    title: "Transport Industry Program",
-    description: "Mental wellness resources for truck drivers and transportation workers",
-    targetAudience: "Truck drivers, delivery personnel, and transportation professionals",
-    features: [
-      "Road stress management techniques",
-      "Long-haul driver wellness tools",
-      "Sleep hygiene for irregular schedules",
-      "Isolation and loneliness coping strategies",
-      "Work-life balance for drivers"
-    ],
-    icon: Truck,
-    path: "/transport-welcome",
-    gradient: "from-[#3B82F6]/80 to-[#1E40AF]/80",
-    borderColor: "#3B82F6",
-    imagePath: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f",
+    id: "transportation",
+    title: "Transportation Workers",
+    description: "Mental wellness for drivers, pilots, conductors, and transportation staff.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1577933932917-7328c7871fba?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-sky-600 to-sky-400",
+    icon: Bus,
+    path: "/transport-welcome"
   },
   {
-    id: "chronicIllness",
+    id: "chronic-illness",
     title: "Chronic Illness Support",
-    description: "Mental wellness resources for individuals managing chronic health conditions",
-    targetAudience: "People living with chronic illnesses, ongoing medical conditions, and their caregivers",
-    features: [
-      "Symptom and medication tracking tools",
-      "Emotional coping strategies for chronic conditions",
-      "Community support with others facing similar challenges",
-      "Resources for caregivers and family members",
-      "Integration with health tracking applications"
-    ],
+    description: "Mental health resources for those managing chronic health conditions.",
+    price: {
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-purple-600 to-purple-400",
     icon: Stethoscope,
     path: "/chronic-illness-welcome",
-    gradient: "from-[#8B5CF6]/80 to-[#7E69AB]/80",
-    borderColor: "#8B5CF6",
-    imagePath: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1280&q=80",
+    recommended: true
+  },
+  {
+    id: "fitness",
+    title: "Fitness Professionals",
+    description: "Mental wellness for personal trainers and fitness instructors.",
     price: {
-      basic: "$3/month",
-      gold: "$2/month",
-      platinum: "$1/month"
-    }
+      monthly: 4.99,
+      yearly: 49.99
+    },
+    imagePath: "https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&q=80&w=1000",
+    gradient: "bg-gradient-to-r from-green-600 to-green-400",
+    icon: Dumbbell,
+    path: "/fitness-welcome"
   }
 ];
+
+// Types of addons
+export const addonTypes = [
+  { id: "profession", name: "Profession-Based", description: "Support tailored to specific career challenges" },
+  { id: "demographic", name: "Demographic-Based", description: "Resources designed for specific age groups and life stages" },
+  { id: "condition", name: "Condition-Based", description: "Support for specific health concerns or situations" }
+];
+
+// Categorize add-ons by type
+export const categorizedAddOns = {
+  profession: [
+    "small-business",
+    "first-responders",
+    "law-enforcement",
+    "educators",
+    "hospitality",
+    "transportation",
+    "fitness"
+  ],
+  demographic: [
+    "colleges",
+    "dod",
+    "adolescent",
+    "golden-years"
+  ],
+  condition: [
+    "chronic-illness"
+  ]
+};
+
+// Helper function to get add-ons by category
+export const getAddOnsByCategory = (categoryId: string) => {
+  const addOnIds = categorizedAddOns[categoryId as keyof typeof categorizedAddOns] || [];
+  return addOns.filter(addon => addOnIds.includes(addon.id));
+};
+
+// Helper to get addon by id
+export const getAddOnById = (id: string) => {
+  return addOns.find(addon => addon.id === id);
+};

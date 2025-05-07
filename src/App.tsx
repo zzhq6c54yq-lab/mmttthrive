@@ -88,6 +88,9 @@ import TransportWorkLifeBalanceAssessment from "@/pages/TransportWorkLifeBalance
 import ChronicIllnessWelcome from "@/pages/ChronicIllnessWelcome";
 import ChronicIllnessPortal from "@/pages/ChronicIllnessPortal";
 
+// Import additional routes for specific chronic illness pages if needed
+// These can be added as the specific content pages are built
+
 function App() {
   return (
     <>
@@ -253,6 +256,14 @@ function App() {
         <Route path="/chronic-illness/health-data" element={<ResourceLibrary />} />
         <Route path="/chronic-illness/feedback" element={<ResourceLibrary />} />
         <Route path="/chronic-illness/assess-needs" element={<MentalWellnessTools />} />
+        <Route path="/chronic-illness/pain-management" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/specialists" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/nutrition" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/respite" element={<ResourceLibrary />} />
+        <Route path="/chronic-illness/live-workshops" element={<VirtualMeetings />} />
+        <Route path="/chronic-illness/assess-a1" element={<MentalWellnessTools />} />
+        <Route path="/chronic-illness/assess-a2" element={<MentalWellnessTools />} />
+        <Route path="/chronic-illness/assess-a3" element={<MentalWellnessTools />} />
         
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />

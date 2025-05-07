@@ -123,26 +123,22 @@ const ChronicIllnessDashboard: React.FC = () => {
     }
   ];
 
-  // Handle button clicks with confirmation toast
+  // Handle button clicks using the standardized action handler
   const handleButtonClick = (action: any) => {
-    toast({
-      title: `Accessing ${action.title}`,
-      description: "Loading resource...",
-      duration: 1500,
+    handleActionClick({
+      ...action, 
+      // Add specific state to maintain context within chronic illness portal
+      state: {
+        fromChronicIllness: true,
+        stayInPortal: true,
+        portalPath: "/chronic-illness-portal",
+        preventTutorial: true
+      }
     });
-    
-    handleActionClick(action);
   };
   
   return (
     <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold mb-4 text-purple-800 dark:text-purple-200">Chronic Illness Support Portal</h1>
-        <p className="text-lg max-w-3xl mx-auto text-purple-700 dark:text-purple-300">
-          Tools and resources to support your mental and emotional wellbeing while managing chronic health conditions.
-        </p>
-      </div>
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sections.map((section) => (
           <Card key={section.id} className="transition-all hover:shadow-lg bg-white dark:bg-gray-800/50 backdrop-blur-sm border border-purple-200 dark:border-purple-900/50">
