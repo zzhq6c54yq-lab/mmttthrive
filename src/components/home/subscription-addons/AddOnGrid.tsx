@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { containerVariants, cardVariants } from './AnimationVariants';
 import AddOnCard from './AddOnCard';
-import { AddOn } from './types';
+import { AddOn } from './data';
 import { PriceDisplayWithStrikethrough } from './PriceDisplay';
 import { getPriceDisplay } from './PriceCalculator';
 

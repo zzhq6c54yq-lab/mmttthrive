@@ -1,6 +1,5 @@
-
 import React from "react";
-import { AddOn } from "./types";
+import { AddOn } from "./data";
 
 interface SelectedAddOnsProps {
   selectedAddOns: string[];
