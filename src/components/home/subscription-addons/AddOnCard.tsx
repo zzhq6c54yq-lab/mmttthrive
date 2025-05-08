@@ -1,10 +1,10 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddOn } from "./types";
-import { getImageUrl, handleImageError } from "@/utils/imageUtils";
+import { getImageUrl, handleImageError, getProgramFallbackImage } from "@/utils/imageUtils";
 
 interface AddOnCardProps {
   addOn: AddOn;
@@ -24,7 +24,31 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
   onToggle,
 }) => {
   const Icon = addOn.icon;
-  const processedImageUrl = getImageUrl(addOn.imagePath, `addon-card-${addOn.id}`);
+  const [imageSrc, setImageSrc] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Initialize image source with proper cache busting
+  useEffect(() => {
+    const processedUrl = getImageUrl(
+      addOn.imagePath, 
+      `addon-card-${addOn.id}`,
+      getProgramFallbackImage(addOn.id)
+    );
+    setImageSrc(processedUrl);
+    setImageLoaded(false);
+  }, [addOn.id, addOn.imagePath]);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    const fallbackSrc = getProgramFallbackImage(addOn.id);
+    
+    console.error(`Failed to load image for ${addOn.id}, using fallback`);
+    setImageSrc(fallbackSrc);
+  };
 
   return (
     <motion.div 
@@ -34,14 +58,15 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
       onClick={() => onToggle(addOn.id)}
     >
       <div className="absolute inset-0 h-[60%] z-0">
+        {/* Show skeleton loader until image loads */}
+        <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
+        
         <img 
-          src={processedImageUrl} 
+          src={imageSrc} 
           alt={addOn.title}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = handleImageError(e, `addon-card-${addOn.id}`);
-          }}
+          className={`w-full h-full object-cover transition-opacity ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onError={handleImageError}
+          onLoad={handleImageLoad}
         />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>

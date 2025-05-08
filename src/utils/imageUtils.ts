@@ -36,19 +36,24 @@ export const getImageUrl = (
     return fallbackImage;
   }
   
-  // Force new URL with stronger cache busting for specialized program images
+  // Check if this is a specialized program image that needs special handling
   const isSpecializedProgram = specializedProgramIds.some(id => 
     componentId.includes(id) || imagePath.includes(id)
   );
   
-  if (componentId.includes("specialized") || 
+  // Force strong cache busting for specialized program images or Unsplash images
+  // These are critical UI elements that must load properly
+  if (componentId.includes("base-card") || 
       isSpecializedProgram || 
       imagePath.includes("unsplash")) {
     const timestamp = Date.now();
     const randomSuffix = Math.floor(Math.random() * 10000);
+    
+    // If URL already has parameters, append to them; otherwise, add new parameters
     const separator = imagePath.includes('?') ? '&' : '?';
-    const forcedUrl = `${imagePath}${separator}bust=${timestamp}&t=${timestamp}&r=${randomSuffix}&nocache=true`;
-    console.log(`[${componentId}] Adding strong cache busting to image: ${forcedUrl}`);
+    const forcedUrl = `${imagePath}${separator}t=${timestamp}&r=${randomSuffix}&nocache=true`;
+    
+    console.log(`[${componentId}] Using strong cache busting for image: ${forcedUrl.substring(0, 100)}...`);
     return forcedUrl;
   }
   
@@ -84,26 +89,28 @@ export const clearImageCache = () => {
  * @returns An appropriate fallback image URL
  */
 export const getProgramFallbackImage = (id: string): string => {
+  const timestamp = Date.now();
+  
   if (id.includes("military") || id.includes("dod")) {
-    return "https://images.unsplash.com/photo-1551702600-493e4d0ea256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1551702600-493e4d0ea256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("golden") || id.includes("senior")) {
-    return "https://images.unsplash.com/photo-1447069387593-a5de0862481e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1447069387593-a5de0862481e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("adolescent") || id.includes("teen")) {
-    return "https://images.unsplash.com/photo-1518101645466-7795885ff8b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1518101645466-7795885ff8b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("responder") || id.includes("emergency")) {
-    return "https://images.unsplash.com/photo-1633270216455-4fe3ee093bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1633270216455-4fe3ee093bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("law") || id.includes("enforcement")) {
-    return "https://images.unsplash.com/photo-1551732998-9573f695fdbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1551732998-9573f695fdbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("small-business")) {
-    return "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1542744173-05336fcc7ad4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("college")) {
-    return "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("chronic") || id.includes("illness")) {
-    return "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+    return `https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   }
   
-  // General fallback
-  return "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  // General fallback - always include timestamp to prevent caching
+  return `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
 };
 
 /**
@@ -145,7 +152,7 @@ export const handleImageError = (
     failedImageUrls.add(originalUrlWithoutParams);
     const timestamp = Date.now();
     const randomSuffix = Math.floor(Math.random() * 10000);
-    const newBustedUrl = `${originalUrlWithoutParams}?bust=${timestamp}&t=${timestamp}&r=${randomSuffix}&nocache=true`;
+    const newBustedUrl = `${originalUrlWithoutParams}?t=${timestamp}&r=${randomSuffix}&nocache=true`;
     
     console.log(`[${componentId}] Attempting to reload with new URL:`, newBustedUrl);
     return newBustedUrl;

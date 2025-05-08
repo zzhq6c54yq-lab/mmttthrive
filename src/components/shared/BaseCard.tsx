@@ -26,30 +26,17 @@ const BaseCard: React.FC<BaseCardProps> = ({
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(Date.now());
-  const [currentSrc, setCurrentSrc] = useState(() => {
-    // Process the image URL immediately with our utility to ensure cache busting
-    return getImageUrl(imagePath, `base-card-${id}-init`, getProgramFallbackImage(id));
-  });
+  const [currentSrc, setCurrentSrc] = useState("");
   
-  // Add effect to reset state when imagePath changes or on forced refresh
+  // Initialize and reset image source when component mounts or props change
   useEffect(() => {
-    const processedUrl = getImageUrl(imagePath, `base-card-${id}-${refreshKey}`, getProgramFallbackImage(id));
+    // Process the image URL with our utility to ensure cache busting
+    const processedUrl = getImageUrl(imagePath, `base-card-${id}`, getProgramFallbackImage(id));
     setImageLoaded(false);
     setImageError(false);
     setCurrentSrc(processedUrl);
     console.log(`[BaseCard-${id}] Setting image: ${processedUrl}`);
-    
-    // Set up a retry mechanism for critical images
-    const retryTimeout = setTimeout(() => {
-      if (!imageLoaded && !imageError) {
-        console.log(`[BaseCard-${id}] Image still not loaded, forcing refresh`);
-        setRefreshKey(Date.now());
-      }
-    }, 3000);
-    
-    return () => clearTimeout(retryTimeout);
-  }, [imagePath, id, refreshKey]);
+  }, [imagePath, id]);
 
   const handleClick = () => {
     if (onClick) {
@@ -74,7 +61,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
       console.log(`[BaseCard-${id}] Trying new image source: ${newSrc}`);
       setCurrentSrc(newSrc);
     } else {
-      console.warn(`[BaseCard-${id}] Fallback matches current source, may enter loop. Using program fallback.`);
+      console.warn(`[BaseCard-${id}] Fallback matches current source, using program fallback.`);
       setCurrentSrc(getProgramFallbackImage(id));
     }
   };
@@ -87,7 +74,6 @@ const BaseCard: React.FC<BaseCardProps> = ({
 
   return (
     <motion.div
-      key={`${id}-${refreshKey}`}
       variants={item}
       className="relative"
       whileHover={{ y: -5, scale: 1.02 }}
@@ -104,17 +90,18 @@ const BaseCard: React.FC<BaseCardProps> = ({
             {/* Loading placeholder shown until image loads */}
             <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
             
-            <img 
-              src={currentSrc}
-              alt={title}
-              className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-              onError={handleImageErrorEvent}
-              onLoad={handleImageLoad}
-              loading="eager"
-              data-card-id={id}
-              key={`${id}-img-${refreshKey}`}
-              crossOrigin="anonymous"
-            />
+            {currentSrc && (
+              <img 
+                src={currentSrc}
+                alt={title}
+                className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                onError={handleImageErrorEvent}
+                onLoad={handleImageLoad}
+                loading="eager"
+                data-card-id={id}
+                crossOrigin="anonymous"
+              />
+            )}
             
             <div className="absolute inset-0 bg-black/30"></div>
             
