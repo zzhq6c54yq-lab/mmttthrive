@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddOn } from "./types";
+import { getImageUrl, handleImageError } from "@/utils/imageUtils";
 
 interface AddOnCardProps {
   addOn: AddOn;
@@ -23,6 +24,7 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
   onToggle,
 }) => {
   const Icon = addOn.icon;
+  const processedImageUrl = getImageUrl(addOn.imagePath, `addon-card-${addOn.id}`);
 
   return (
     <motion.div 
@@ -33,11 +35,12 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
     >
       <div className="absolute inset-0 h-[60%] z-0">
         <img 
-          src={addOn.imagePath} 
+          src={processedImageUrl} 
           alt={addOn.title}
           className="w-full h-full object-cover"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1506726446959-adfa26e7aea0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+            const target = e.target as HTMLImageElement;
+            target.src = handleImageError(e, `addon-card-${addOn.id}`);
           }}
         />
         <div className="absolute inset-0 bg-black/30"></div>
@@ -89,7 +92,7 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
               >
                 <h4 className="font-medium text-sm mb-1">Key Features:</h4>
                 <ul className="text-xs">
-                  {addOn.features.map((feature, idx) => (
+                  {addOn.features?.map((feature, idx) => (
                     <li key={idx} className="flex items-center gap-1 mb-1">
                       <span className="h-1 w-1 bg-[#B87333] rounded-full"></span>
                       {feature}

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { handleImageError } from "@/utils/imageUtils";
+import { handleImageError, getImageUrl, getProgramFallbackImage } from "@/utils/imageUtils";
 
 export interface BaseCardProps {
   id: string;
@@ -26,15 +26,30 @@ const BaseCard: React.FC<BaseCardProps> = ({
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState(imagePath);
+  const [refreshKey, setRefreshKey] = useState(Date.now());
+  const [currentSrc, setCurrentSrc] = useState(() => {
+    // Process the image URL immediately with our utility to ensure cache busting
+    return getImageUrl(imagePath, `base-card-${id}-init`, getProgramFallbackImage(id));
+  });
   
-  // Add effect to reset state when imagePath changes
+  // Add effect to reset state when imagePath changes or on forced refresh
   useEffect(() => {
+    const processedUrl = getImageUrl(imagePath, `base-card-${id}-${refreshKey}`, getProgramFallbackImage(id));
     setImageLoaded(false);
     setImageError(false);
-    setCurrentSrc(imagePath);
-    console.log(`[BaseCard-${id}] Setting image: ${imagePath}`);
-  }, [imagePath, id]);
+    setCurrentSrc(processedUrl);
+    console.log(`[BaseCard-${id}] Setting image: ${processedUrl}`);
+    
+    // Set up a retry mechanism for critical images
+    const retryTimeout = setTimeout(() => {
+      if (!imageLoaded && !imageError) {
+        console.log(`[BaseCard-${id}] Image still not loaded, forcing refresh`);
+        setRefreshKey(Date.now());
+      }
+    }, 3000);
+    
+    return () => clearTimeout(retryTimeout);
+  }, [imagePath, id, refreshKey]);
 
   const handleClick = () => {
     if (onClick) {
@@ -50,25 +65,18 @@ const BaseCard: React.FC<BaseCardProps> = ({
 
   const handleImageErrorEvent = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     console.error(`[BaseCard-${id}] Image failed to load: ${currentSrc}`);
-    // Choose a fallback based on the card type to match theme
-    let fallbackImage = "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    
-    // Select theme-appropriate fallbacks based on card ID
-    if (id.includes("military") || id.includes("dod")) {
-      fallbackImage = "https://images.unsplash.com/photo-1551702600-493e4d0ea256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    } else if (id.includes("golden") || id.includes("senior")) {
-      fallbackImage = "https://images.unsplash.com/photo-1447069387593-a5de0862481e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    } else if (id.includes("adolescent") || id.includes("teen")) {
-      fallbackImage = "https://images.unsplash.com/photo-1518101645466-7795885ff8b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    } else if (id.includes("responder") || id.includes("emergency")) {
-      fallbackImage = "https://images.unsplash.com/photo-1633270216455-4fe3ee093bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    } else if (id.includes("law") || id.includes("enforcement")) {
-      fallbackImage = "https://images.unsplash.com/photo-1551732998-9573f695fdbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-    }
-    
     setImageError(true);
-    const newSrc = handleImageError(e, `base-card-${id}`, fallbackImage);
-    setCurrentSrc(newSrc);
+    
+    // Use the enhanced error handling function to get a program-specific fallback
+    const newSrc = handleImageError(e, `base-card-${id}`);
+    
+    if (newSrc !== currentSrc) {
+      console.log(`[BaseCard-${id}] Trying new image source: ${newSrc}`);
+      setCurrentSrc(newSrc);
+    } else {
+      console.warn(`[BaseCard-${id}] Fallback matches current source, may enter loop. Using program fallback.`);
+      setCurrentSrc(getProgramFallbackImage(id));
+    }
   };
 
   // Animation variants
@@ -79,7 +87,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
 
   return (
     <motion.div
-      key={id}
+      key={`${id}-${refreshKey}`}
       variants={item}
       className="relative"
       whileHover={{ y: -5, scale: 1.02 }}
@@ -93,6 +101,9 @@ const BaseCard: React.FC<BaseCardProps> = ({
         <div className="relative rounded-xl overflow-hidden h-44 shadow-lg hover:shadow-xl transition-all duration-300">
           {/* Image Section (3/4 of height) */}
           <div className="absolute inset-0 h-[75%] overflow-hidden">
+            {/* Loading placeholder shown until image loads */}
+            <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
+            
             <img 
               src={currentSrc}
               alt={title}
@@ -101,14 +112,9 @@ const BaseCard: React.FC<BaseCardProps> = ({
               onLoad={handleImageLoad}
               loading="eager"
               data-card-id={id}
-              key={`${id}-img-${currentSrc}`} // Force re-render when src changes
-              crossOrigin="anonymous" // Add this to prevent CORS issues
+              key={`${id}-img-${refreshKey}`}
+              crossOrigin="anonymous"
             />
-            
-            {/* Show a loading state while image loads */}
-            {!imageLoaded && !imageError && (
-              <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
-            )}
             
             <div className="absolute inset-0 bg-black/30"></div>
             

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { addOns } from "@/components/home/subscription-addons/data";
 import useTranslation from "@/hooks/useTranslation";
 import BaseCard from "./BaseCard";
-import { clearImageCache, getImageUrl } from "@/utils/imageUtils";
+import { clearImageCache, getImageUrl, getProgramFallbackImage } from "@/utils/imageUtils";
 
 interface SpecializedProgramsGridProps {
   onProgramClick: (path: string) => void;
@@ -17,16 +17,24 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
   useEffect(() => {
     console.log("SpecializedProgramsGrid mounted/updated, refreshKey:", refreshKey);
     
-    // Clear image cache on component mount
+    // Clear image cache on component mount to force fresh loading
     clearImageCache();
     
-    // Force refresh after a short delay to ensure images are properly loaded
-    const refreshTimer = setTimeout(() => {
+    // Force refresh after mount and then again after a delay
+    const initialRefreshTimer = setTimeout(() => {
       setRefreshKey(Date.now());
-      console.log("Forcing refresh of SpecializedProgramsGrid");
-    }, 500);
+      console.log("Forcing first refresh of SpecializedProgramsGrid");
+    }, 200);
     
-    return () => clearTimeout(refreshTimer);
+    const secondRefreshTimer = setTimeout(() => {
+      setRefreshKey(prev => prev + 1);
+      console.log("Forcing second refresh of SpecializedProgramsGrid");
+    }, 2000);
+    
+    return () => {
+      clearTimeout(initialRefreshTimer);
+      clearTimeout(secondRefreshTimer);
+    };
   }, []);
   
   const container = {
@@ -57,15 +65,20 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
             </span>
           ) : null;
           
-          // Process image URL with our utility function to prevent caching issues
-          const processedImageUrl = getImageUrl(addon.imagePath, `specialized-grid-${addon.id}`, 
-            `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${refreshKey}`);
+          // Process image URL with strong cache busting
+          const timestamp = Date.now();
+          const randomId = Math.floor(Math.random() * 10000);
+          const processedImageUrl = getImageUrl(
+            addon.imagePath, 
+            `specialized-grid-${addon.id}-${refreshKey}-${randomId}`, 
+            getProgramFallbackImage(addon.id)
+          );
           
           console.log(`[SpecializedProgramsGrid] Rendering ${addon.id} with image: ${processedImageUrl}`);
           
           return (
             <BaseCard
-              key={`${addon.id}-${refreshKey}`}
+              key={`${addon.id}-${refreshKey}-${randomId}`}
               id={addon.id}
               title={addon.title}
               imagePath={processedImageUrl}

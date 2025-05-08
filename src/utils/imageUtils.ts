@@ -9,6 +9,12 @@ const failedImageUrls = new Set<string>();
 // Create an in-memory cache of processed image URLs
 const processedImageCache = new Map<string, string>();
 
+// List of specialized program IDs for special handling
+const specializedProgramIds = [
+  "dod", "military", "golden-years", "adolescent", "first-responders", 
+  "law-enforcement", "small-business", "chronic-illness", "colleges"
+];
+
 /**
  * Helper function to get the correct image URL, with proper fallback handling
  * @param imagePath The original image path
@@ -30,13 +36,19 @@ export const getImageUrl = (
     return fallbackImage;
   }
   
-  // Always create a fresh URL with timestamp for specialized program images
-  // to completely avoid browser caching
-  if (componentId.includes("specialized") || imagePath.includes("unsplash")) {
+  // Force new URL with stronger cache busting for specialized program images
+  const isSpecializedProgram = specializedProgramIds.some(id => 
+    componentId.includes(id) || imagePath.includes(id)
+  );
+  
+  if (componentId.includes("specialized") || 
+      isSpecializedProgram || 
+      imagePath.includes("unsplash")) {
     const timestamp = Date.now();
+    const randomSuffix = Math.floor(Math.random() * 10000);
     const separator = imagePath.includes('?') ? '&' : '?';
-    const forcedUrl = `${imagePath}${separator}bust=${timestamp}&t=${timestamp}`;
-    console.log(`[${componentId}] Adding cache busting to image: ${forcedUrl}`);
+    const forcedUrl = `${imagePath}${separator}bust=${timestamp}&t=${timestamp}&r=${randomSuffix}&nocache=true`;
+    console.log(`[${componentId}] Adding strong cache busting to image: ${forcedUrl}`);
     return forcedUrl;
   }
   
@@ -67,6 +79,34 @@ export const clearImageCache = () => {
 };
 
 /**
+ * Get program-specific fallback image based on program ID
+ * @param id The program ID or component ID
+ * @returns An appropriate fallback image URL
+ */
+export const getProgramFallbackImage = (id: string): string => {
+  if (id.includes("military") || id.includes("dod")) {
+    return "https://images.unsplash.com/photo-1551702600-493e4d0ea256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("golden") || id.includes("senior")) {
+    return "https://images.unsplash.com/photo-1447069387593-a5de0862481e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("adolescent") || id.includes("teen")) {
+    return "https://images.unsplash.com/photo-1518101645466-7795885ff8b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("responder") || id.includes("emergency")) {
+    return "https://images.unsplash.com/photo-1633270216455-4fe3ee093bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("law") || id.includes("enforcement")) {
+    return "https://images.unsplash.com/photo-1551732998-9573f695fdbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("small-business")) {
+    return "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("college")) {
+    return "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  } else if (id.includes("chronic") || id.includes("illness")) {
+    return "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+  }
+  
+  // General fallback
+  return "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=" + Date.now();
+};
+
+/**
  * Handle image loading errors
  * @param event The error event
  * @param componentId Identifier for the component
@@ -76,7 +116,7 @@ export const clearImageCache = () => {
 export const handleImageError = (
   event: React.SyntheticEvent<HTMLImageElement, Event>, 
   componentId: string, 
-  fallbackImage: string = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+  fallbackImage?: string
 ): string => {
   const target = event.target as HTMLImageElement;
   const originalSrc = target.src;
@@ -86,11 +126,15 @@ export const handleImageError = (
     failedImageUrls.add(originalSrc);
   }
   
+  // Use program-specific fallback images
+  const programSpecificFallback = getProgramFallbackImage(componentId);
+  const finalFallback = fallbackImage || programSpecificFallback;
+  
   // If the source already came from our getImageUrl function and still failed,
   // go straight to the fallback image
-  if (originalSrc.includes('bust=')) {
-    console.log(`[${componentId}] Using fallback image:`, fallbackImage);
-    return fallbackImage;
+  if (originalSrc.includes('bust=') || originalSrc.includes('nocache=true')) {
+    console.log(`[${componentId}] Using fallback image:`, finalFallback);
+    return finalFallback;
   }
   
   // Try to generate a new cache-busting URL for the original source
@@ -100,12 +144,13 @@ export const handleImageError = (
     // This is the first failure for this base URL, try again with a new timestamp
     failedImageUrls.add(originalUrlWithoutParams);
     const timestamp = Date.now();
-    const newBustedUrl = `${originalUrlWithoutParams}?bust=${timestamp}&t=${timestamp}`;
+    const randomSuffix = Math.floor(Math.random() * 10000);
+    const newBustedUrl = `${originalUrlWithoutParams}?bust=${timestamp}&t=${timestamp}&r=${randomSuffix}&nocache=true`;
     
     console.log(`[${componentId}] Attempting to reload with new URL:`, newBustedUrl);
     return newBustedUrl;
   }
   
   // If we've already tried reloading, use the fallback
-  return fallbackImage;
+  return finalFallback;
 };
