@@ -55,7 +55,6 @@ const CancerSupportWelcome: React.FC = () => {
   return (
     <SpecializedProgramWelcome
       title="Cancer Support Community"
-      subtitle="Together on the journey of hope, healing, and connection"
       description="Welcome to a compassionate space designed specifically for cancer patients, survivors, caregivers, and families. Here, you'll find resources, support communities, and tools to help navigate the challenges of cancer - whether you're facing a diagnosis, supporting a loved one, or honoring someone's memory."
       imagePath="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"
       imageAlt="People supporting each other in a cancer support group setting"
