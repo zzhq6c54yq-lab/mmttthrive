@@ -28,12 +28,12 @@ export const getImageUrl = (
   fallbackImage: string = "https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
 ): string => {
   // Only use fallback if the path is truly invalid or empty
-  if (!imagePath || imagePath === "undefined" || imagePath === "null") {
-    if (!failedImageUrls.has(imagePath)) {
+  if (!imagePath || imagePath === "undefined" || imagePath === "null" || imagePath === "") {
+    if (!failedImageUrls.has(`empty-${componentId}`)) {
       console.warn(`[${componentId}] Invalid image path detected, using fallback:`, imagePath);
-      failedImageUrls.add(imagePath);
+      failedImageUrls.add(`empty-${componentId}`);
     }
-    return fallbackImage;
+    return addCacheBusting(fallbackImage);
   }
   
   // Check if this is a specialized program image that needs special handling
@@ -53,7 +53,7 @@ export const getImageUrl = (
     const separator = imagePath.includes('?') ? '&' : '?';
     const forcedUrl = `${imagePath}${separator}t=${timestamp}&r=${randomSuffix}&nocache=true`;
     
-    console.log(`[${componentId}] Using strong cache busting for image: ${forcedUrl.substring(0, 100)}...`);
+    console.log(`[${componentId}] Using strong cache busting for image: ${imagePath.substring(0, 100)}...`);
     return forcedUrl;
   }
   
@@ -63,15 +63,22 @@ export const getImageUrl = (
   }
   
   // Add cache-busting parameter if needed
-  let processedUrl = imagePath;
-  if (!imagePath.includes('bust=')) {
-    const separator = imagePath.includes('?') ? '&' : '?';
-    processedUrl = `${imagePath}${separator}bust=${Date.now()}`;
-  }
+  const processedUrl = addCacheBusting(imagePath);
   
   // Store in cache and return
   processedImageCache.set(imagePath, processedUrl);
   return processedUrl;
+};
+
+/**
+ * Add cache busting to URL
+ */
+const addCacheBusting = (url: string): string => {
+  if (!url.includes('bust=')) {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}bust=${Date.now()}`;
+  }
+  return url;
 };
 
 /**

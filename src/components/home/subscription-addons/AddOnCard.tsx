@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AddOn } from "./types";
+import type { AddOn } from "./data";
 import { getImageUrl, handleImageError, getProgramFallbackImage } from "@/utils/imageUtils";
 
 interface AddOnCardProps {
@@ -26,6 +26,7 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
   const Icon = addOn.icon;
   const [imageSrc, setImageSrc] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageAttempts, setImageAttempts] = useState(0);
 
   // Initialize image source with proper cache busting
   useEffect(() => {
@@ -42,12 +43,20 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
     setImageLoaded(true);
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const target = e.target as HTMLImageElement;
-    const fallbackSrc = getProgramFallbackImage(addOn.id);
-    
-    console.error(`Failed to load image for ${addOn.id}, using fallback`);
-    setImageSrc(fallbackSrc);
+  const handleImageErrorEvent = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    // Limit retry attempts to prevent infinite loops
+    if (imageAttempts < 2) {
+      const fallbackSrc = handleImageError(e, `addon-card-${addOn.id}`);
+      
+      console.error(`Failed to load image for ${addOn.id}, using fallback`);
+      setImageSrc(fallbackSrc);
+      setImageAttempts(prev => prev + 1);
+    } else {
+      // After multiple failures, use a guaranteed working fallback
+      const emergencyFallback = getProgramFallbackImage(addOn.id);
+      console.warn(`Multiple attempts failed for ${addOn.id}, using emergency fallback`);
+      setImageSrc(emergencyFallback);
+    }
   };
 
   return (
@@ -62,10 +71,10 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
         <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
         
         <img 
-          src={imageSrc} 
+          src={imageSrc || getProgramFallbackImage(addOn.id)} 
           alt={addOn.title}
           className={`w-full h-full object-cover transition-opacity ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onError={handleImageError}
+          onError={handleImageErrorEvent}
           onLoad={handleImageLoad}
         />
         <div className="absolute inset-0 bg-black/30"></div>

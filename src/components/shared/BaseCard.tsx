@@ -27,6 +27,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState("");
+  const [imageAttempts, setImageAttempts] = useState(0);
   
   // Initialize and reset image source when component mounts or props change
   useEffect(() => {
@@ -54,15 +55,24 @@ const BaseCard: React.FC<BaseCardProps> = ({
     console.error(`[BaseCard-${id}] Image failed to load: ${currentSrc}`);
     setImageError(true);
     
-    // Use the enhanced error handling function to get a program-specific fallback
-    const newSrc = handleImageError(e, `base-card-${id}`);
-    
-    if (newSrc !== currentSrc) {
-      console.log(`[BaseCard-${id}] Trying new image source: ${newSrc}`);
-      setCurrentSrc(newSrc);
+    // Limit retry attempts to prevent infinite loops
+    if (imageAttempts < 2) {
+      // Use the enhanced error handling function to get a program-specific fallback
+      const newSrc = handleImageError(e, `base-card-${id}`);
+      
+      if (newSrc !== currentSrc) {
+        console.log(`[BaseCard-${id}] Trying new image source: ${newSrc}`);
+        setCurrentSrc(newSrc);
+        setImageAttempts(prev => prev + 1);
+      } else {
+        console.warn(`[BaseCard-${id}] Fallback matches current source, using program fallback.`);
+        setCurrentSrc(getProgramFallbackImage(id));
+      }
     } else {
-      console.warn(`[BaseCard-${id}] Fallback matches current source, using program fallback.`);
-      setCurrentSrc(getProgramFallbackImage(id));
+      // After multiple failures, use a guaranteed working fallback
+      const emergencyFallback = `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${Date.now()}`;
+      console.warn(`[BaseCard-${id}] Multiple failures, using emergency fallback.`);
+      setCurrentSrc(emergencyFallback);
     }
   };
 
@@ -90,18 +100,15 @@ const BaseCard: React.FC<BaseCardProps> = ({
             {/* Loading placeholder shown until image loads */}
             <div className={`absolute inset-0 bg-gray-800 animate-pulse transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}></div>
             
-            {currentSrc && (
-              <img 
-                src={currentSrc}
-                alt={title}
-                className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                onError={handleImageErrorEvent}
-                onLoad={handleImageLoad}
-                loading="eager"
-                data-card-id={id}
-                crossOrigin="anonymous"
-              />
-            )}
+            <img 
+              src={currentSrc || getProgramFallbackImage(id)}
+              alt={title}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              onError={handleImageErrorEvent}
+              onLoad={handleImageLoad}
+              loading="eager"
+              data-card-id={id}
+            />
             
             <div className="absolute inset-0 bg-black/30"></div>
             

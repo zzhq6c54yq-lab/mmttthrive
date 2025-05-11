@@ -13,6 +13,7 @@ interface SpecializedProgramsGridProps {
 const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onProgramClick }) => {
   const { isSpanish } = useTranslation();
   const [loaded, setLoaded] = useState(false);
+  const [addOnsData, setAddOnsData] = useState(addOns);
   
   // Clear image cache and set up a delayed rendering to ensure proper image loading
   useEffect(() => {
@@ -20,6 +21,14 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
     
     // Clear image cache on component mount to force fresh loading
     clearImageCache();
+    
+    // Pre-process data to ensure all necessary fields are present
+    const processedAddOns = addOns.map(addon => ({
+      ...addon,
+      imagePath: addon.imagePath || getProgramFallbackImage(addon.id)
+    }));
+    
+    setAddOnsData(processedAddOns);
     
     // Small delay to ensure DOM is ready before showing content
     const timer = setTimeout(() => {
@@ -42,6 +51,32 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
     }
   };
   
+  // Function to get fallback image based on addon ID
+  const getProgramFallbackImage = (id: string): string => {
+    const timestamp = Date.now();
+    
+    if (id.includes("military") || id.includes("dod")) {
+      return `https://images.unsplash.com/photo-1551702600-493e4d0ea256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("golden") || id.includes("senior")) {
+      return `https://images.unsplash.com/photo-1447069387593-a5de0862481e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("adolescent") || id.includes("teen")) {
+      return `https://images.unsplash.com/photo-1518101645466-7795885ff8b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("responder") || id.includes("emergency")) {
+      return `https://images.unsplash.com/photo-1633270216455-4fe3ee093bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("law") || id.includes("enforcement")) {
+      return `https://images.unsplash.com/photo-1551732998-9573f695fdbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("small-business")) {
+      return `https://images.unsplash.com/photo-1542744173-05336fcc7ad4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("college")) {
+      return `https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    } else if (id.includes("chronic") || id.includes("illness")) {
+      return `https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    }
+    
+    // General fallback
+    return `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+  };
+  
   return (
     <div className="py-6">
       {loaded ? (
@@ -51,7 +86,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
           variants={container}
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
         >
-          {addOns.map((addon) => {
+          {addOnsData.map((addon) => {
             const Icon = addon.icon;
             
             // Create badge for recommended programs
