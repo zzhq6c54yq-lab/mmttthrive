@@ -6,15 +6,41 @@
 // Track failed images to avoid repeated console logs
 const failedImageUrls = new Set<string>();
 
-// Create an in-memory cache of processed image URLs
-const processedImageCache = new Map<string, string>();
+// Create an in-memory cache of processed image URLs with a longer expiration
+const processedImageCache = new Map<string, { url: string, timestamp: number }>();
+const CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // List of specialized program IDs for special handling
 const specializedProgramIds = [
   "dod", "military", "golden-years", "adolescent", "first-responders", 
   "law-enforcement", "small-business", "chronic-illness", "colleges", 
-  "cancer-support" // Add cancer support to the list
+  "cancer-support" 
 ];
+
+// Preload critical images for smoother experience
+const preloadCriticalImages = () => {
+  const criticalImagePaths = specializedProgramIds.map(id => 
+    `/assets/${id}-cover.jpg`
+  );
+  
+  criticalImagePaths.forEach(path => {
+    try {
+      const img = new Image();
+      img.src = path;
+    } catch (error) {
+      // Silently fail - preloading is just an optimization
+    }
+  });
+};
+
+// Try to preload on module initialization
+try {
+  if (typeof window !== 'undefined') {
+    preloadCriticalImages();
+  }
+} catch (e) {
+  console.log("Image preloading skipped");
+}
 
 /**
  * Helper function to get the correct image URL, with proper fallback handling
@@ -41,33 +67,47 @@ export const getImageUrl = (
   const isSpecializedProgram = specializedProgramIds.some(id => 
     componentId.includes(id) || imagePath.includes(id)
   );
-  
-  // Force strong cache busting for specialized program images or Unsplash images
-  // These are critical UI elements that must load properly
-  if (componentId.includes("base-card") || 
-      isSpecializedProgram || 
-      imagePath.includes("unsplash")) {
-    const timestamp = Date.now();
-    const randomSuffix = Math.floor(Math.random() * 10000);
-    
-    // If URL already has parameters, append to them; otherwise, add new parameters
-    const separator = imagePath.includes('?') ? '&' : '?';
-    const forcedUrl = `${imagePath}${separator}t=${timestamp}&r=${randomSuffix}&nocache=true`;
-    
-    console.log(`[${componentId}] Using strong cache busting for image: ${imagePath.substring(0, 100)}...`);
-    return forcedUrl;
+
+  // First check our cache
+  const isCriticalUI = componentId.includes("base-card") || 
+                      componentId.includes("card") ||
+                      componentId.includes("cover") ||
+                      componentId.includes("portal") ||
+                      isSpecializedProgram;
+
+  // Less aggressive cache busting for most images
+  if (!isCriticalUI && processedImageCache.has(imagePath)) {
+    const cached = processedImageCache.get(imagePath)!;
+    // Use cached URL if it hasn't expired
+    if (Date.now() - cached.timestamp < CACHE_EXPIRATION) {
+      return cached.url;
+    }
+  }
+
+  // Force strong cache busting only for critical UI elements
+  if (isCriticalUI) {
+    // For specialized program images, be more moderate with cache busting
+    // to prevent excessive flashing while maintaining freshness
+    if (isSpecializedProgram || imagePath.includes("unsplash")) {
+      // Use a stable cache-busting parameter for the session to prevent flashing
+      // but still avoid browser cache between sessions
+      const sessionId = Math.floor(Date.now() / 3600000); // Changes hourly
+      
+      // If URL already has parameters, append to them; otherwise, add new parameters
+      const separator = imagePath.includes('?') ? '&' : '?';
+      const stableUrl = `${imagePath}${separator}s=${sessionId}`;
+      
+      // Store in cache to ensure consistency within the session
+      processedImageCache.set(imagePath, { url: stableUrl, timestamp: Date.now() });
+      return stableUrl;
+    }
   }
   
-  // Check if we already processed this URL
-  if (processedImageCache.has(imagePath)) {
-    return processedImageCache.get(imagePath)!;
-  }
-  
-  // Add cache-busting parameter if needed
+  // Add cache-busting parameter for other images
   const processedUrl = addCacheBusting(imagePath);
   
   // Store in cache and return
-  processedImageCache.set(imagePath, processedUrl);
+  processedImageCache.set(imagePath, { url: processedUrl, timestamp: Date.now() });
   return processedUrl;
 };
 
@@ -119,8 +159,9 @@ export const getProgramFallbackImage = (id: string): string => {
     return `https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   }
   
-  // General fallback - always include timestamp to prevent caching
-  return `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+  // General fallback - use a stable timestamp to prevent flashing
+  const hour = Math.floor(Date.now() / 3600000);
+  return `https://images.unsplash.com/photo-1506057527569-d23d4eb7c5a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${hour}`;
 };
 
 /**
@@ -160,9 +201,8 @@ export const handleImageError = (
   if (!failedImageUrls.has(originalUrlWithoutParams)) {
     // This is the first failure for this base URL, try again with a new timestamp
     failedImageUrls.add(originalUrlWithoutParams);
-    const timestamp = Date.now();
-    const randomSuffix = Math.floor(Math.random() * 10000);
-    const newBustedUrl = `${originalUrlWithoutParams}?t=${timestamp}&r=${randomSuffix}&nocache=true`;
+    const sessionId = Math.floor(Date.now() / 3600000); // Changes hourly for stability
+    const newBustedUrl = `${originalUrlWithoutParams}?s=${sessionId}`;
     
     console.log(`[${componentId}] Attempting to reload with new URL:`, newBustedUrl);
     return newBustedUrl;
