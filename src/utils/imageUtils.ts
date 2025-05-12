@@ -12,7 +12,8 @@ const processedImageCache = new Map<string, string>();
 // List of specialized program IDs for special handling
 const specializedProgramIds = [
   "dod", "military", "golden-years", "adolescent", "first-responders", 
-  "law-enforcement", "small-business", "chronic-illness", "colleges"
+  "law-enforcement", "small-business", "chronic-illness", "colleges", 
+  "cancer-support" // Add cancer support to the list
 ];
 
 /**
@@ -114,6 +115,8 @@ export const getProgramFallbackImage = (id: string): string => {
     return `https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("chronic") || id.includes("illness")) {
     return `https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+  } else if (id.includes("cancer")) {
+    return `https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   }
   
   // General fallback - always include timestamp to prevent caching

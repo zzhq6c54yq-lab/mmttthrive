@@ -1,74 +1,40 @@
 
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface TabNavigationProps {
   activeTab: 'patients' | 'caregivers' | 'resources' | 'communities' | 'remembrance' | 'children';
   onTabChange: (tab: 'patients' | 'caregivers' | 'resources' | 'communities' | 'remembrance' | 'children') => void;
 }
 
-const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => (
-  <div className="flex overflow-x-auto scrollbar-hide">
-    <button
-      className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
-        activeTab === 'patients' 
-          ? 'border-rose-500 text-rose-500 dark:text-rose-400' 
-          : 'border-transparent text-gray-600 dark:text-gray-300/60 hover:text-gray-900 dark:hover:text-white'
-      }`}
-      onClick={() => onTabChange('patients')}
-    >
-      Patient Resources
-    </button>
-    <button
-      className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
-        activeTab === 'caregivers' 
-          ? 'border-rose-500 text-rose-500 dark:text-rose-400' 
-          : 'border-transparent text-gray-600 dark:text-gray-300/60 hover:text-gray-900 dark:hover:text-white'
-      }`}
-      onClick={() => onTabChange('caregivers')}
-    >
-      Caregivers
-    </button>
-    <button
-      className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
-        activeTab === 'children' 
-          ? 'border-rose-500 text-rose-500 dark:text-rose-400' 
-          : 'border-transparent text-gray-600 dark:text-gray-300/60 hover:text-gray-900 dark:hover:text-white'
-      }`}
-      onClick={() => onTabChange('children')}
-    >
-      Children & Parents
-    </button>
-    <button
-      className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
-        activeTab === 'resources' 
-          ? 'border-rose-500 text-rose-500 dark:text-rose-400' 
-          : 'border-transparent text-gray-600 dark:text-gray-300/60 hover:text-gray-900 dark:hover:text-white'
-      }`}
-      onClick={() => onTabChange('resources')}
-    >
-      Educational Hub
-    </button>
-    <button
-      className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
-        activeTab === 'communities' 
-          ? 'border-rose-500 text-rose-500 dark:text-rose-400' 
-          : 'border-transparent text-gray-600 dark:text-gray-300/60 hover:text-gray-900 dark:hover:text-white'
-      }`}
-      onClick={() => onTabChange('communities')}
-    >
-      Support Groups
-    </button>
-    <button
-      className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
-        activeTab === 'remembrance' 
-          ? 'border-rose-500 text-rose-500 dark:text-rose-400' 
-          : 'border-transparent text-gray-600 dark:text-gray-300/60 hover:text-gray-900 dark:hover:text-white'
-      }`}
-      onClick={() => onTabChange('remembrance')}
-    >
-      Remembrance
-    </button>
-  </div>
-);
+const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
+  const tabs = [
+    { id: 'patients', label: 'For Patients' },
+    { id: 'caregivers', label: 'For Caregivers' },
+    { id: 'children', label: 'For Children & Parents' },
+    { id: 'resources', label: 'Resources' },
+    { id: 'communities', label: 'Communities' },
+    { id: 'remembrance', label: 'Remembrance' },
+  ];
+
+  return (
+    <div className="flex overflow-x-auto bg-rose-50/70 dark:bg-rose-900/20 p-1 rounded-t-lg">
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => onTabChange(tab.id as any)}
+          className={cn(
+            "px-4 py-3 text-sm font-medium rounded-md whitespace-nowrap transition-colors",
+            activeTab === tab.id
+              ? "bg-rose-500 text-white shadow-sm"
+              : "text-gray-700 dark:text-gray-200 hover:bg-rose-400/30 dark:hover:bg-rose-800/30"
+          )}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 export default TabNavigation;

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Index from "@/pages/Index";
@@ -87,6 +86,8 @@ import TransportBurnoutAssessment from "@/pages/TransportBurnoutAssessment";
 import TransportWorkLifeBalanceAssessment from "@/pages/TransportWorkLifeBalanceAssessment";
 import ChronicIllnessWelcome from "@/pages/ChronicIllnessWelcome";
 import ChronicIllnessPortal from "@/pages/ChronicIllnessPortal";
+import CancerSupportWelcome from "@/pages/CancerSupportWelcome";
+import CancerSupportPortal from "@/pages/CancerSupportPortal";
 
 // Import additional routes for specific chronic illness pages if needed
 // These can be added as the specific content pages are built
@@ -264,6 +265,73 @@ function App() {
         <Route path="/chronic-illness/assess-a1" element={<MentalWellnessTools />} />
         <Route path="/chronic-illness/assess-a2" element={<MentalWellnessTools />} />
         <Route path="/chronic-illness/assess-a3" element={<MentalWellnessTools />} />
+        
+        {/* Cancer Support Routes */}
+        <Route path="/cancer-support-welcome" element={<CancerSupportWelcome />} />
+        <Route path="/cancer-support-portal" element={<CancerSupportPortal />} />
+        <Route path="/cancer-support/newly-diagnosed" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/treatment" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/stages" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/survivorship" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/peer-connect" element={<CommunitySupport />} />
+        <Route path="/cancer-support/events" element={<VirtualMeetings />} />
+        <Route path="/cancer-support/types/:cancerType" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/immediate-support" element={<RealTimeTherapy />} />
+        
+        {/* Caregiver Routes */}
+        <Route path="/cancer-support/caregiver-basics" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/caregiver-selfcare" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/caregiver-communication" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/financial-navigation" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/caregiver-workshops" element={<Workshops />} />
+        <Route path="/cancer-support/caregiver-stories" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/caregiver-forum" element={<CommunitySupport />} />
+        <Route path="/cancer-support/caregiver-groups" element={<CommunitySupport />} />
+        
+        {/* Children & Parents Routes */}
+        <Route path="/cancer-support/talking-to-children" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/children-emotions" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/parenting-through-treatment" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/family-activities" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/pediatric-cancer" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/family-support" element={<CommunitySupport />} />
+        <Route path="/cancer-support/hospital-school" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/parent-connect" element={<CommunitySupport />} />
+        <Route path="/cancer-support/kids-connect" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/teen-programs" element={<ResourceLibrary />} />
+        
+        {/* Resources Routes */}
+        <Route path="/cancer-support/cancer-types" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/treatment-options" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/side-effects" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/nutrition" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/clinical-trials" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/research-updates" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/financial-resources" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/healthcare-navigation" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/legal-resources" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/survivor-stories" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/daily-inspiration" element={<ResourceLibrary />} />
+        
+        {/* Communities Routes */}
+        <Route path="/cancer-support/general-community" element={<CommunitySupport />} />
+        <Route path="/cancer-support/cancer-type-communities" element={<CommunitySupport />} />
+        <Route path="/cancer-support/virtual-meetings" element={<VirtualMeetings />} />
+        <Route path="/cancer-support/one-on-one" element={<CommunitySupport />} />
+        <Route path="/cancer-support/young-adults" element={<CommunitySupport />} />
+        <Route path="/cancer-support/metastatic" element={<CommunitySupport />} />
+        <Route path="/cancer-support/caregivers-circle" element={<CommunitySupport />} />
+        <Route path="/cancer-support/survivorship-community" element={<CommunitySupport />} />
+        <Route path="/cancer-support/create-group" element={<CommunitySupport />} />
+        
+        {/* Remembrance Routes */}
+        <Route path="/cancer-support/memorial-garden" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/grief-resources" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/legacy-projects" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/bereavement-community" element={<CommunitySupport />} />
+        <Route path="/cancer-support/memorial-wall" element={<ResourceLibrary />} />
+        <Route path="/cancer-support/grief-groups" element={<CommunitySupport />} />
+        <Route path="/cancer-support/honoring-action" element={<ResourceLibrary />} />
         
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
