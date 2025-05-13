@@ -1,3 +1,4 @@
+
 import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
 import { useToast } from "@/hooks/use-toast";
@@ -736,4 +737,43 @@ export const generateWorksheetPDF = (workshopId: string): void => {
     yPosition += promptText.length * 6;
     
     doc.setDrawColor(200);
-    doc.line(20, yPosition,
+    doc.line(20, yPosition, 190, yPosition);
+    yPosition += 8;
+    doc.line(20, yPosition, 190, yPosition);
+    yPosition += 8;
+    doc.line(20, yPosition, 190, yPosition);
+    yPosition += 15;
+  });
+  
+  // Add commitment section
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text("My Commitment", 20, yPosition);
+  yPosition += 8;
+  
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.text("I commit to implementing these practices because:", 20, yPosition);
+  yPosition += 8;
+  
+  doc.setDrawColor(200);
+  doc.line(20, yPosition, 190, yPosition);
+  yPosition += 8;
+  doc.line(20, yPosition, 190, yPosition);
+  yPosition += 8;
+  
+  // Signature line
+  yPosition += 15;
+  doc.text("Signature: _______________________     Date: _____________", 20, yPosition);
+  
+  // Save the PDF with workshop title
+  saveAs(doc.output('blob'), `${content.title.replace(/\s+/g, '_')}.pdf`);
+  
+  // Show success toast
+  const toast = useToast();
+  toast({
+    title: "Worksheet Downloaded",
+    description: "Your worksheet has been downloaded successfully.",
+    duration: 5000,
+  });
+};
