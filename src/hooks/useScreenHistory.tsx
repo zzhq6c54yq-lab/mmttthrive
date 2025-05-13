@@ -64,18 +64,21 @@ export const useScreenHistory = (
         setScreenState('intro');
         return;
       }
-    } 
+    }
     
-    // When returning without state (like browser back button or initial load)
+    // Fix: Simplify the screen state management logic for the root path
     if (location.pathname === '/') {
-      // If onboarding wasn't completed, start from the beginning
-      if (!hasCompletedOnboarding && screenState !== 'main') {
-        console.log("[useScreenHistory] Starting onboarding from beginning - no completion record found");
-        setScreenState('intro');
-      } else if (hasCompletedOnboarding && screenState === 'intro') {
-        // If onboarding is completed but we're somehow in intro, go to main
-        console.log("[useScreenHistory] Onboarding already completed, going to main dashboard");
+      // If user has previously completed onboarding, go to main dashboard
+      if (hasCompletedOnboarding === 'true') {
+        console.log("[useScreenHistory] Onboarding previously completed, going to main");
         setScreenState('main');
+      }
+      // If onboarding is not completed and we're not already on intro, start from intro
+      else if (hasCompletedOnboarding !== 'true' && screenState !== 'mood' && screenState !== 'moodResponse' && 
+              screenState !== 'register' && screenState !== 'subscription' && screenState !== 'subscriptionAddOns' && 
+              screenState !== 'visionBoard') {
+        console.log("[useScreenHistory] Starting onboarding from beginning");
+        setScreenState('intro');
       }
     }
   }, [location, setScreenState, screenState]);

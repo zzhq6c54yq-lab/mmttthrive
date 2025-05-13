@@ -45,6 +45,9 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
     console.log("[IntroScreen] Begin journey button clicked");
     // Reset any potentially problematic localStorage items
     localStorage.removeItem('prevScreenState');
+    // Force remove any transition barriers
+    localStorage.removeItem('transitionBlocked');
+    // Explicitly call the onContinue function to move to the next screen
     onContinue();
   };
   
