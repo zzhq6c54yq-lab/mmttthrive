@@ -1,6 +1,7 @@
 
 import React, { useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 interface EscapeHatchManagerProps {
   screenState: string;
@@ -34,16 +35,19 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({ screenState, se
             toast({
               title: "Having trouble?",
               description: "Tap here to continue to the next screen",
-              action: {
-                label: "Continue",
-                onClick: () => {
-                  console.log("[EscapeHatchManager] Manual escape activated");
-                  localStorage.removeItem('introLoaded');
-                  localStorage.removeItem('stuckDetected');
-                  localStorage.removeItem('prevScreenState');
-                  setScreenState('mood');
-                }
-              },
+              action: (
+                <ToastAction 
+                  onClick={() => {
+                    console.log("[EscapeHatchManager] Manual escape activated");
+                    localStorage.removeItem('introLoaded');
+                    localStorage.removeItem('stuckDetected');
+                    localStorage.removeItem('prevScreenState');
+                    setScreenState('mood');
+                  }}
+                >
+                  Continue
+                </ToastAction>
+              ),
               duration: 10000,
             });
           }, 10000);
