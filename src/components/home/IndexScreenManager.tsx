@@ -66,6 +66,12 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   // Use the screen debugger hook for logging
   useScreenDebugger(screenState);
   
+  console.log("[IndexScreenManager] Rendering screen:", screenState);
+  
+  if (screenState === 'intro') {
+    console.log("[IndexScreenManager] Starting new session from intro screen");
+  }
+  
   // Use our custom navigation hook instead of a component
   const { 
     handleContinueToMood, 

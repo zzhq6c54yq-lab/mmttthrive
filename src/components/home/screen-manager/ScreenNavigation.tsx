@@ -11,6 +11,8 @@ export const useScreenNavigation = ({ screenState, setScreenState }: ScreenNavig
   
   const handleContinueToMood = () => {
     console.log("[ScreenNavigation] Continuing from intro to mood");
+    // Force a proper transition to mood
+    localStorage.removeItem('prevScreenState');
     setScreenState('mood');
     toast({
       title: "Welcome to Thrive MT",

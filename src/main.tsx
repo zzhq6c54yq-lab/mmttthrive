@@ -10,6 +10,8 @@ if (urlParams.get('forceReset') === 'true' || urlParams.get('resetOnboarding') =
   console.log("[main] Resetting onboarding state due to URL parameter");
   localStorage.removeItem('hasCompletedOnboarding');
   localStorage.removeItem('prevScreenState');
+  localStorage.removeItem('introLoaded');
+  localStorage.removeItem('stuckDetected');
 }
 
 // Clear any potentially problematic localStorage items on fresh load
@@ -19,6 +21,8 @@ if (!localStorage.getItem('appInitialized') || window.location.pathname === '/' 
   // Only clear these if we're not in the middle of onboarding
   if (!localStorage.getItem('prevScreenState') || localStorage.getItem('prevScreenState') === 'intro') {
     localStorage.removeItem('prevScreenState');
+    localStorage.removeItem('introLoaded');
+    localStorage.removeItem('stuckDetected');
   }
 }
 
@@ -33,14 +37,7 @@ if (localStorage.getItem('stuckDetected') === 'true') {
   localStorage.removeItem('hasCompletedOnboarding');
   localStorage.removeItem('prevScreenState');
   localStorage.removeItem('stuckDetected');
-}
-
-// Set a flag to detect if app gets stuck on intro screen
-if (localStorage.getItem('prevScreenState') === 'intro' && !localStorage.getItem('introLoaded')) {
-  localStorage.setItem('introLoaded', 'true');
-} else if (localStorage.getItem('prevScreenState') === 'intro' && localStorage.getItem('introLoaded')) {
-  // If we're still on intro screen after a reload, we might be stuck
-  localStorage.setItem('stuckDetected', 'true');
+  localStorage.removeItem('introLoaded');
 }
 
 createRoot(document.getElementById("root")!).render(

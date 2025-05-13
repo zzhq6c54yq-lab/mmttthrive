@@ -43,12 +43,19 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   
   const handleBeginJourney = () => {
     console.log("[IntroScreen] Begin journey button clicked");
-    // Reset any potentially problematic localStorage items
+    // Clear any potentially problematic localStorage items
     localStorage.removeItem('prevScreenState');
-    // Force remove any transition barriers
     localStorage.removeItem('transitionBlocked');
+    localStorage.removeItem('stuckDetected');
+    localStorage.removeItem('introLoaded');
+    
     // Explicitly call the onContinue function to move to the next screen
-    onContinue();
+    if (typeof onContinue === 'function') {
+      console.log("[IntroScreen] Calling onContinue function");
+      onContinue();
+    } else {
+      console.error("[IntroScreen] onContinue is not a function:", onContinue);
+    }
   };
   
   return (
