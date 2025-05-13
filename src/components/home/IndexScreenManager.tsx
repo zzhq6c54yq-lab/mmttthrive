@@ -1,15 +1,11 @@
 
 import React, { useEffect } from "react";
-import IntroScreen from "@/components/home/IntroScreen";
-import MoodScreen from "@/components/home/MoodScreen";
-import MoodResponse from "@/components/home/MoodResponse";
-import RegistrationScreen from "@/components/home/RegistrationScreen";
-import SubscriptionScreen from "@/components/home/SubscriptionScreen";
-import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
-import VisionBoard from "@/components/home/VisionBoard";
-import MainDashboard from "@/components/home/MainDashboard";
-import useTranslation from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
+import { ScreenNavigation } from "./screen-manager/ScreenNavigation";
+import EscapeHatchManager from "./screen-manager/EscapeHatchManager";
+import useScreenDebugger from "./screen-manager/useScreenDebugger";
+import ScreenRenderer from "./screen-manager/ScreenRenderer";
 
 interface IndexScreenManagerProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
@@ -67,200 +63,54 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   const { isSpanish } = useTranslation();
   const { toast } = useToast();
   
-  useEffect(() => {
-    console.log("[IndexScreenManager] Current screen state:", screenState);
-  }, [screenState]);
-
-  useEffect(() => {
-    if (screenState === 'intro') {
-      console.log("[IndexScreenManager] Starting new session from intro screen");
-    }
-  }, [screenState]);
-
-  // Detect if we might be stuck and allow a way to progress
-  useEffect(() => {
-    const stuckTimer = setTimeout(() => {
-      if (screenState === 'intro') {
-        console.log("[IndexScreenManager] Still on intro screen after delay, setting up escape hatch");
-        const escapeHatch = document.createElement('div');
-        escapeHatch.id = 'escape-hatch';
-        escapeHatch.style.position = 'fixed';
-        escapeHatch.style.bottom = '10px';
-        escapeHatch.style.left = '10px';
-        escapeHatch.style.padding = '5px';
-        escapeHatch.style.background = 'rgba(0,0,0,0.5)';
-        escapeHatch.style.color = 'white';
-        escapeHatch.style.cursor = 'pointer';
-        escapeHatch.style.zIndex = '9999';
-        escapeHatch.innerText = 'Force Next Screen';
-        escapeHatch.onclick = () => {
-          console.log("[IndexScreenManager] Escape hatch clicked, forcing next screen");
-          setScreenState('mood');
-        };
-        
-        // Only add if it doesn't exist yet
-        if (!document.getElementById('escape-hatch')) {
-          document.body.appendChild(escapeHatch);
-        }
-      } else {
-        // Remove the escape hatch if we're no longer on intro
-        const existingHatch = document.getElementById('escape-hatch');
-        if (existingHatch) {
-          existingHatch.remove();
-        }
-      }
-    }, 5000);
-    
-    return () => {
-      clearTimeout(stuckTimer);
-      const existingHatch = document.getElementById('escape-hatch');
-      if (existingHatch) {
-        existingHatch.remove();
-      }
-    };
-  }, [screenState, setScreenState]);
-
-  const handleContinueToMood = () => {
-    console.log("[IndexScreenManager] Continuing from intro to mood");
-    setScreenState('mood');
-    toast({
-      title: "Welcome to Thrive MT",
-      description: "Let's start by checking in with your mood today",
-    });
-  };
-
-  const handlePrevious = () => {
-    console.log("[IndexScreenManager] Moving to previous screen from", screenState);
-    
-    switch (screenState) {
-      case 'mood':
-        setScreenState('intro');
-        break;
-      case 'moodResponse':
-        setScreenState('mood');
-        break;
-      case 'register':
-        setScreenState('moodResponse');
-        break;
-      case 'subscription':
-        setScreenState('register');
-        break;
-      case 'subscriptionAddOns':
-        setScreenState('subscription');
-        break;
-      case 'visionBoard':
-        setScreenState('subscriptionAddOns');
-        break;
-      case 'main':
-        setScreenState('visionBoard');
-        break;
-      default:
-        setScreenState('intro');
-    }
-  };
-
-  const handleSkip = () => {
-    console.log("[IndexScreenManager] Skipping to main screen from", screenState);
-    setScreenState('main');
-    // Mark onboarding as completed when skipping to main
-    localStorage.setItem('hasCompletedOnboarding', 'true');
-  };
-
-  // Debug render
-  console.log("[IndexScreenManager] Rendering screen:", screenState);
+  // Use the screen debugger hook for logging
+  useScreenDebugger(screenState);
   
-  // Render the appropriate screen based on the current state
-  switch (screenState) {
-    case 'intro':
-      return <IntroScreen onContinue={handleContinueToMood} />;
-    case 'mood':
-      return (
-        <MoodScreen
-          onMoodSelect={onMoodSelect}
-        />
-      );
-    case 'moodResponse':
-      return (
-        <MoodResponse
-          selectedMood={selectedMood}
-          onContinue={() => setScreenState('register')}
-          onPrevious={handlePrevious}
-        />
-      );
-    case 'register':
-      return (
-        <RegistrationScreen
-          userInfo={userInfo}
-          onUserInfoChange={onUserInfoChange}
-          onSubmit={handleRegister}
-          onPrevious={handlePrevious}
-          onSkip={() => setScreenState('subscription')}
-        />
-      );
-    case 'subscription':
-      return (
-        <SubscriptionScreen
-          selectedPlan={selectedPlan}
-          onPlanSelect={onPlanSelect}
-          onContinue={handleSubscriptionContinue}
-          onPrevious={handlePrevious}
-          onSkip={() => setScreenState('subscriptionAddOns')}
-        />
-      );
-    case 'subscriptionAddOns':
-      return (
-        <SubscriptionAddOns
-          selectedPlan={selectedPlan}
-          selectedAddOns={selectedAddOns}
-          onAddOnToggle={onAddOnToggle}
-          onContinue={handleAddOnsContinue}
-          onPrevious={handlePrevious}
-          onSkip={() => setScreenState('visionBoard')}
-        />
-      );
-    case 'visionBoard':
-      return (
-        <VisionBoard
-          selectedQualities={selectedQualities}
-          selectedGoals={selectedGoals}
-          onQualityToggle={onQualityToggle}
-          onGoalToggle={onGoalToggle}
-          onContinue={handleVisionBoardContinue}
-          onPrevious={handlePrevious}
-          onSkip={handleSkip}
-        />
-      );
-    case 'main':
-      return (
-        <MainDashboard
-          userName={userInfo.name}
-          showHenry={showHenry}
-          onHenryToggle={onHenryToggle}
-          selectedQualities={selectedQualities}
-          selectedGoals={selectedGoals}
-          navigateToFeature={navigateToFeature}
-          markTutorialCompleted={markTutorialCompleted}
-        />
-      );
-    default:
-      console.error("[IndexScreenManager] Unknown screen state:", screenState);
-      return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] text-white">
-          <h2 className="text-2xl mb-4">Something went wrong</h2>
-          <p className="mb-6">We couldn't load the correct screen.</p>
-          <button 
-            className="bg-[#B87333] hover:bg-[#B87333]/80 px-6 py-3 rounded-md"
-            onClick={() => {
-              localStorage.removeItem('hasCompletedOnboarding');
-              localStorage.removeItem('prevScreenState');
-              setScreenState('intro');
-            }}
-          >
-            Restart
-          </button>
-        </div>
-      );
-  }
+  // Get navigation handlers from the ScreenNavigation hook
+  const { 
+    handleContinueToMood, 
+    handlePrevious, 
+    handleSkip 
+  } = ScreenNavigation({ screenState, setScreenState });
+  
+  return (
+    <>
+      {/* Escape hatch for recovery from potential stuck states */}
+      <EscapeHatchManager 
+        screenState={screenState} 
+        setScreenState={setScreenState} 
+      />
+      
+      {/* Render the appropriate screen based on state */}
+      <ScreenRenderer
+        screenState={screenState}
+        selectedMood={selectedMood}
+        userInfo={userInfo}
+        selectedPlan={selectedPlan}
+        selectedAddOns={selectedAddOns}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+        showHenry={showHenry}
+        onMoodSelect={onMoodSelect}
+        onUserInfoChange={onUserInfoChange}
+        onQualityToggle={onQualityToggle}
+        onGoalToggle={onGoalToggle}
+        onPlanSelect={onPlanSelect}
+        onAddOnToggle={onAddOnToggle}
+        onHenryToggle={onHenryToggle}
+        navigateToFeature={navigateToFeature}
+        handleSubscriptionContinue={handleSubscriptionContinue}
+        handleAddOnsContinue={handleAddOnsContinue}
+        handleVisionBoardContinue={handleVisionBoardContinue}
+        handleRegister={handleRegister}
+        setScreenState={setScreenState}
+        markTutorialCompleted={markTutorialCompleted}
+        handleContinueToMood={handleContinueToMood}
+        handlePrevious={handlePrevious}
+        handleSkip={handleSkip}
+      />
+    </>
+  );
 };
 
 export default IndexScreenManager;
