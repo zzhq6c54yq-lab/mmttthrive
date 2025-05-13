@@ -1,120 +1,145 @@
 
 import React from "react";
-import { BookHeart, Users, Star, Calendar, Heart, MessageCircle, StarHalf } from "lucide-react";
-import FeatureCard from "./FeatureCard";
-import { Separator } from "@/components/ui/separator";
+import { Info, Calendar, Users, FileText, MessageSquare, BookOpen, PanelTop, ArrowRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import useTranslation from "@/hooks/useTranslation";
 
 interface PatientsTabProps {
   onFeatureClick: (path: string) => void;
 }
 
-const cancerTypes = [
-  { id: 'breast', name: 'Breast Cancer' },
-  { id: 'lung', name: 'Lung Cancer' },
-  { id: 'colorectal', name: 'Colorectal Cancer' },
-  { id: 'prostate', name: 'Prostate Cancer' },
-  { id: 'skin', name: 'Skin Cancer' },
-  { id: 'lymphoma', name: 'Lymphoma' },
-  { id: 'leukemia', name: 'Leukemia' },
-  { id: 'pancreatic', name: 'Pancreatic Cancer' },
-  { id: 'ovarian', name: 'Ovarian Cancer' },
-  { id: 'brain', name: 'Brain Cancer' },
-  { id: 'thyroid', name: 'Thyroid Cancer' },
-  { id: 'kidney', name: 'Kidney Cancer' }
-];
-
-const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => (
-  <div className="space-y-6">
-    <div>
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Patient Support</h3>
-      <p className="text-gray-600 dark:text-white/70 mb-6">
-        Resources specifically designed for individuals diagnosed with cancer at any stage of their journey - from newly diagnosed to long-term survivorship.
-      </p>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <FeatureCard 
-          title="Newly Diagnosed"
-          description="Essential information and support for those recently diagnosed with cancer"
-          icon={Heart}
-          color="bg-rose-500"
-          onClick={() => onFeatureClick("cancer-support/newly-diagnosed")}
-        />
-        <FeatureCard 
-          title="Treatment Resources"
-          description="Information about different treatment options, side effects, and management strategies"
-          icon={Star}
-          color="bg-amber-500"
-          onClick={() => onFeatureClick("cancer-support/treatment")}
-        />
-        <FeatureCard 
-          title="Cancer Stages"
-          description="Understanding cancer stages and what they mean for treatment and prognosis"
-          icon={StarHalf}
-          color="bg-emerald-500"
-          onClick={() => onFeatureClick("cancer-support/stages")}
-        />
-        <FeatureCard 
-          title="Survivorship"
-          description="Resources for life after treatment, including follow-up care and emotional support"
-          icon={BookHeart}
-          color="bg-blue-500"
-          onClick={() => onFeatureClick("cancer-support/survivorship")}
-        />
-        <FeatureCard 
-          title="Peer Connect"
-          description="Connect with others who understand what you're going through"
-          icon={Users}
-          color="bg-indigo-500"
-          onClick={() => onFeatureClick("cancer-support/peer-connect")}
-        />
-        <FeatureCard 
-          title="Support Events"
-          description="Virtual and in-person events specifically for cancer patients"
-          icon={Calendar}
-          color="bg-purple-500"
-          onClick={() => onFeatureClick("cancer-support/events")}
-        />
+const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
+  const { isSpanish } = useTranslation();
+  
+  const patientResources = [
+    {
+      id: "newly-diagnosed",
+      title: isSpanish ? "Recién Diagnosticado" : "Newly Diagnosed",
+      icon: <Info className="h-5 w-5 text-rose-500" />,
+      description: isSpanish 
+        ? "Recursos para pacientes que recientemente han sido diagnosticados con cáncer"
+        : "Resources for patients who have recently been diagnosed with cancer",
+      path: "cancer-support/newly-diagnosed"
+    },
+    {
+      id: "treatment",
+      title: isSpanish ? "Durante el Tratamiento" : "During Treatment",
+      icon: <Calendar className="h-5 w-5 text-rose-500" />,
+      description: isSpanish 
+        ? "Apoyo durante el proceso de tratamiento y citas médicas"
+        : "Support through the treatment process and medical appointments",
+      path: "cancer-support/treatment"
+    },
+    {
+      id: "stages",
+      title: isSpanish ? "Etapas del Cáncer" : "Cancer Stages",
+      icon: <PanelTop className="h-5 w-5 text-rose-500" />,
+      description: isSpanish 
+        ? "Información sobre las diferentes etapas del cáncer y qué esperar"
+        : "Information about different cancer stages and what to expect",
+      path: "cancer-support/stages"
+    },
+    {
+      id: "survivorship",
+      title: isSpanish ? "Supervivencia" : "Survivorship",
+      icon: <Users className="h-5 w-5 text-rose-500" />,
+      description: isSpanish 
+        ? "Recursos para la vida después del tratamiento del cáncer"
+        : "Resources for life after cancer treatment",
+      path: "cancer-support/survivorship"
+    },
+    {
+      id: "peer-connect",
+      title: isSpanish ? "Conectar con Otros Pacientes" : "Connect with Fellow Patients",
+      icon: <MessageSquare className="h-5 w-5 text-rose-500" />,
+      description: isSpanish 
+        ? "Conéctate con otros pacientes para compartir experiencias"
+        : "Connect with other patients to share experiences",
+      path: "cancer-support/peer-connect"
+    },
+    {
+      id: "events",
+      title: isSpanish ? "Eventos y Talleres" : "Events & Workshops",
+      icon: <Calendar className="h-5 w-5 text-rose-500" />,
+      description: isSpanish 
+        ? "Eventos virtuales y presenciales para pacientes"
+        : "Virtual and in-person events for patients",
+      path: "cancer-support/events"
+    }
+  ];
+  
+  return (
+    <div className="space-y-6">
+      <div className="prose dark:prose-invert max-w-none">
+        <h2 className="text-2xl font-semibold text-rose-600 dark:text-rose-400">
+          {isSpanish ? "Recursos para Pacientes" : "Patient Resources"}
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300">
+          {isSpanish 
+            ? "Apoyo especializado para personas que están navegando su diagnóstico y tratamiento de cáncer." 
+            : "Specialized support for individuals navigating cancer diagnosis and treatment."}
+        </p>
       </div>
-    </div>
-    
-    <Separator className="my-8" />
-    
-    <div>
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Cancer Type Resources</h3>
-      <p className="text-gray-600 dark:text-white/70 mb-6">
-        Explore specialized information, support groups, and resources for specific cancer types.
-      </p>
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        {cancerTypes.map((type) => (
-          <button 
-            key={type.id}
-            onClick={() => onFeatureClick(`cancer-support/types/${type.id}`)}
-            className="p-3 bg-white dark:bg-[#1A1616] border border-rose-200/30 dark:border-rose-800/30 rounded-md hover:border-rose-400/50 dark:hover:border-rose-600/50 text-gray-800 dark:text-white text-sm font-medium text-center transition-colors"
-          >
-            {type.name}
-          </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {patientResources.map(resource => (
+          <Card key={resource.id} className="border-rose-200 dark:border-rose-900/30 hover:shadow-md transition-shadow">
+            <CardContent className="p-4">
+              <div className="flex items-start space-x-4">
+                <div className="bg-rose-100 dark:bg-rose-900/20 p-2 rounded-full">
+                  {resource.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-rose-600 dark:text-rose-400 mb-1">{resource.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{resource.description}</p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 p-0 h-auto hover:bg-transparent"
+                    onClick={() => onFeatureClick(resource.path)}
+                  >
+                    {isSpanish ? "Explorar" : "Explore"}
+                    <ArrowRight className="ml-1 h-3 w-3" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
+      
+      <div className="bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-800/30 p-4 rounded-lg">
+        <div className="flex items-center space-x-3">
+          <BookOpen className="h-5 w-5 text-rose-500" />
+          <h3 className="font-medium text-rose-600 dark:text-rose-400">
+            {isSpanish ? "Tipos de Cáncer" : "Cancer Types"}
+          </h3>
+        </div>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          {isSpanish 
+            ? "Información específica sobre diferentes tipos de cáncer, tratamientos y recursos." 
+            : "Find specific information about different types of cancer, treatments, and resources."}
+        </p>
+        <Button 
+          className="mt-3 bg-rose-500 hover:bg-rose-600 text-white"
+          onClick={() => onFeatureClick("cancer-support/types/general")}
+        >
+          {isSpanish ? "Ver Todos los Tipos" : "View All Types"}
+        </Button>
+      </div>
+      
+      <div className="flex justify-center">
+        <Button 
+          variant="outline" 
+          className="border-rose-300 text-rose-600 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:hover:bg-rose-900/20"
+          onClick={() => onFeatureClick("cancer-support/immediate-support")}
+        >
+          {isSpanish ? "Necesito Apoyo Inmediato" : "I Need Immediate Support"}
+        </Button>
+      </div>
     </div>
-    
-    <div className="mt-8 p-6 bg-rose-50 dark:bg-rose-900/20 rounded-lg border border-rose-200 dark:border-rose-800/30">
-      <h4 className="font-medium text-rose-900 dark:text-rose-300 flex items-center gap-2 mb-2">
-        <MessageCircle className="h-4 w-4" />
-        Need Immediate Support?
-      </h4>
-      <p className="text-rose-800 dark:text-rose-200 text-sm">
-        Connect with a support specialist or join a live virtual support group. 
-        Available 24/7 for anyone affected by cancer.
-      </p>
-      <button
-        onClick={() => onFeatureClick("cancer-support/immediate-support")}
-        className="mt-4 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-md text-sm font-medium"
-      >
-        Connect Now
-      </button>
-    </div>
-  </div>
-);
+  );
+};
 
 export default PatientsTab;

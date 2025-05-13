@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -8,66 +8,51 @@ interface EscapeHatchManagerProps {
   setScreenState: (state: any) => void;
 }
 
-/**
- * Component to detect and recover from stuck states in the onboarding flow
- */
-const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({ screenState, setScreenState }) => {
-  // Monitor the intro screen for potential stuck state
+// This component provides an escape hatch for users who might get stuck
+// in the onboarding flow due to bugs, errors, or other issues
+const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
+  screenState,
+  setScreenState
+}) => {
+  const [showEscapeHatch, setShowEscapeHatch] = useState(false);
+  
+  // We don't need an escape hatch for the main dashboard
+  if (screenState === 'main') {
+    return null;
+  }
+  
+  // Monitor for potential stuck states
   useEffect(() => {
-    let escapeHatchTimer: NodeJS.Timeout | null = null;
+    let escapeHatchTimeout: ReturnType<typeof setTimeout>;
     
-    // Only set up escape hatch for intro screen
-    if (screenState === 'intro') {
-      // Wait a reasonable time to see if user progresses naturally
-      escapeHatchTimer = setTimeout(() => {
-        console.log("[EscapeHatchManager] Still on intro screen after delay, setting up escape hatch");
+    // If the user has been on the same screen for over 60 seconds, show escape hatch
+    if (screenState !== 'main') {
+      escapeHatchTimeout = setTimeout(() => {
+        setShowEscapeHatch(true);
         
-        // Check if we've been stuck on intro for too long
-        const introLoaded = localStorage.getItem('introLoaded');
-        const stuckDetection = localStorage.getItem('stuckDetected');
-        
-        if (introLoaded && !stuckDetection) {
-          // Set up escape hatch after another interval if we're still stuck
-          const finalEscapeTimer = setTimeout(() => {
-            console.log("[EscapeHatchManager] Potential stuck state detected, offering manual escape");
-            localStorage.setItem('stuckDetected', 'true');
-            
-            toast({
-              title: "Having trouble?",
-              description: "Tap here to continue to the next screen",
-              action: (
-                <ToastAction 
-                  altText="Continue to next screen"
-                  onClick={() => {
-                    console.log("[EscapeHatchManager] Manual escape activated");
-                    localStorage.removeItem('introLoaded');
-                    localStorage.removeItem('stuckDetected');
-                    localStorage.removeItem('prevScreenState');
-                    setScreenState('mood');
-                  }}
-                >
-                  Continue
-                </ToastAction>
-              ),
-              duration: 10000,
-            });
-          }, 10000);
-          
-          // Clean up the final escape timer
-          return () => {
-            if (finalEscapeTimer) clearTimeout(finalEscapeTimer);
-          };
-        }
-      }, 5000);
+        toast({
+          title: "Need help?",
+          description: "It looks like you might be stuck. Do you want to skip to the main dashboard?",
+          duration: 10000,
+          action: (
+            <ToastAction 
+              onClick={() => setScreenState('main')}
+              altText="Skip to main dashboard"
+            >
+              Skip to Dashboard
+            </ToastAction>
+          ),
+        });
+      }, 60000); // 60 second timeout
     }
     
-    // Clean up the main escape hatch timer
     return () => {
-      if (escapeHatchTimer) clearTimeout(escapeHatchTimer);
+      clearTimeout(escapeHatchTimeout);
     };
   }, [screenState, setScreenState]);
-  
-  // This component doesn't render anything
+
+  // This component doesn't render anything visible
+  // It just sets up the timeout to show the toast
   return null;
 };
 
