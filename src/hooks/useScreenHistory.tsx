@@ -17,6 +17,27 @@ export const useScreenHistory = (
     console.log("Completed onboarding:", hasCompletedOnboarding);
     console.log("Current location:", location.pathname);
     
+    // Handle special program paths
+    const isSpecialProgramPath = location.pathname.includes('cancer-support') || 
+                                location.pathname.includes('chronic-illness') ||
+                                location.pathname.includes('golden-years') ||
+                                location.pathname.includes('small-business');
+    
+    if (isSpecialProgramPath) {
+      console.log("Detected special program path:", location.pathname);
+      // For specialized programs, ensure we're in main state to render properly
+      if (screenState !== 'main') {
+        console.log("Setting screen state to main for specialized program");
+        setScreenState('main');
+        
+        window.history.replaceState(
+          { ...window.history.state, screenState: 'main' }, 
+          document.title
+        );
+      }
+      return;
+    }
+    
     // Handle incoming state from navigation
     if (location.state) {
       console.log("Navigation state:", location.state);
@@ -76,7 +97,7 @@ export const useScreenHistory = (
         }
       }
     }
-  }, [location, setScreenState]);
+  }, [location, setScreenState, screenState]);
 
   useEffect(() => {
     console.log("Screen state changed to:", screenState);

@@ -82,6 +82,13 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => (
           color="bg-emerald-500"
           onClick={() => onFeatureClick("cancer-support/survivorship-community")}
         />
+        <FeatureCard 
+          title="Caregivers Support"
+          description="Resources and guidance specifically for caregivers of cancer patients"
+          icon={Heart}
+          color="bg-indigo-500"
+          onClick={() => onFeatureClick("cancer-support/caregivers-support")}
+        />
       </div>
     </div>
     
@@ -92,7 +99,7 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => (
       </p>
       <button
         onClick={() => onFeatureClick("cancer-support/create-group")}
-        className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium"
+        className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium transition-colors"
       >
         Start a Group
       </button>

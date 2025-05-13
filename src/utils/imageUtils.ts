@@ -19,9 +19,12 @@ const specializedProgramIds = [
 
 // Preload critical images for smoother experience
 const preloadCriticalImages = () => {
-  const criticalImagePaths = specializedProgramIds.map(id => 
-    `/assets/${id}-cover.jpg`
-  );
+  const criticalImagePaths = [
+    ...specializedProgramIds.map(id => `/assets/${id}-cover.jpg`),
+    // Add specific cancer support images to preload
+    "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png", // Lavender ribbon image
+    "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"  // Original cancer support image
+  ];
   
   criticalImagePaths.forEach(path => {
     try {
@@ -63,6 +66,11 @@ export const getImageUrl = (
     return addCacheBusting(fallbackImage);
   }
   
+  // Special handling for cancer support components to ensure the lavender ribbon displays correctly
+  const isCancerSupport = componentId.includes("cancer") || 
+                          imagePath.includes("cancer") || 
+                          componentId.includes("lavender");
+  
   // Check if this is a specialized program image that needs special handling
   const isSpecializedProgram = specializedProgramIds.some(id => 
     componentId.includes(id) || imagePath.includes(id)
@@ -74,6 +82,23 @@ export const getImageUrl = (
                       componentId.includes("cover") ||
                       componentId.includes("portal") ||
                       isSpecializedProgram;
+
+  // For cancer support components, use stable caching
+  if (isCancerSupport) {
+    // Use a very stable cache for cancer support images to prevent flashing
+    const hour = Math.floor(Date.now() / 3600000); // Changes hourly
+    
+    // If URL already has parameters, append to them; otherwise, add new parameters
+    const separator = imagePath.includes('?') ? '&' : '?';
+    const stableUrl = `${imagePath}${separator}h=${hour}`;
+    
+    // Store in cache with long expiration
+    processedImageCache.set(imagePath, { 
+      url: stableUrl, 
+      timestamp: Date.now() + 30 * 60 * 1000 // 30 minutes for cancer support images
+    });
+    return stableUrl;
+  }
 
   // Less aggressive cache busting for most images
   if (!isCriticalUI && processedImageCache.has(imagePath)) {
@@ -156,7 +181,8 @@ export const getProgramFallbackImage = (id: string): string => {
   } else if (id.includes("chronic") || id.includes("illness")) {
     return `https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
   } else if (id.includes("cancer")) {
-    return `https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&t=${timestamp}`;
+    // Specific fallback for cancer support - use lavender ribbon image
+    return `/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png?t=${timestamp}`;
   }
   
   // General fallback - use a stable timestamp to prevent flashing
@@ -182,6 +208,13 @@ export const handleImageError = (
   if (!failedImageUrls.has(originalSrc)) {
     console.error(`[${componentId}] Image failed to load:`, originalSrc);
     failedImageUrls.add(originalSrc);
+  }
+  
+  // Special case for cancer support images
+  if (componentId.includes("cancer") || originalSrc.includes("cancer") || componentId.includes("addon-card-cancer")) {
+    const cancerFallback = `/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png?t=${Date.now()}`;
+    console.log(`[${componentId}] Using cancer support fallback image:`, cancerFallback);
+    return cancerFallback;
   }
   
   // Use program-specific fallback images

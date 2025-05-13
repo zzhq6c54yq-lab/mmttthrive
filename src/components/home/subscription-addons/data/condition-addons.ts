@@ -43,9 +43,9 @@ export const conditionAddOns: AddOn[] = [
     ],
     icon: Heart,
     path: "cancer-support-welcome",
-    gradient: "from-rose-600 to-amber-600",
-    borderColor: "#e11d48",
-    imagePath: "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png",
+    gradient: "from-purple-600 to-rose-600",
+    borderColor: "#9b87f5",
+    imagePath: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png", // Updated to lavender ribbon image
     price: {
       basic: "Add-on",
       gold: "Included",

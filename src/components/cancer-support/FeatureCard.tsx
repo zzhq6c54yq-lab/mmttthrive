@@ -19,7 +19,10 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 }) => (
   <Card 
     onClick={onClick}
-    className="bg-white dark:bg-[#1A1616] border-rose-200/30 dark:border-rose-900/30 hover:border-rose-300/50 dark:hover:border-rose-700/50 transition-colors shadow-md cursor-pointer hover:shadow-lg"
+    className="bg-white dark:bg-[#1A1616] border-rose-200/30 dark:border-rose-900/30 
+              hover:border-rose-300/50 dark:hover:border-rose-700/50 transition-colors 
+              shadow-md cursor-pointer hover:shadow-lg transform hover:-translate-y-1 
+              transition-transform duration-200"
   >
     <CardContent className="p-6">
       <div className="flex items-center gap-3 mb-4">

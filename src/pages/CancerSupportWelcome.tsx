@@ -3,7 +3,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, Users, BookHeart, Calendar, MessageCircle, StarHalf } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 import SpecializedProgramWelcome from "@/components/specialized-programs/SpecializedProgramWelcome";
 
 const CancerSupportWelcome: React.FC = () => {
@@ -18,39 +17,6 @@ const CancerSupportWelcome: React.FC = () => {
     });
     navigate("/cancer-support-portal");
   };
-
-  const features = [
-    {
-      icon: <Heart className="h-5 w-5 text-rose-500" />,
-      title: "Personalized Support",
-      description: "Resources tailored to specific cancer types and stages"
-    },
-    {
-      icon: <Users className="h-5 w-5 text-indigo-500" />,
-      title: "Support Communities",
-      description: "Connect with others on similar journeys through virtual support groups"
-    },
-    {
-      icon: <BookHeart className="h-5 w-5 text-emerald-500" />,
-      title: "Educational Resources",
-      description: "Access to the latest information, treatment options, and research"
-    },
-    {
-      icon: <Calendar className="h-5 w-5 text-amber-500" />,
-      title: "Support Events",
-      description: "Workshops, webinars, and community gatherings specifically for cancer support"
-    },
-    {
-      icon: <MessageCircle className="h-5 w-5 text-sky-500" />,
-      title: "Caregiver Resources",
-      description: "Special section dedicated to those supporting loved ones through cancer"
-    },
-    {
-      icon: <StarHalf className="h-5 w-5 text-purple-500" />,
-      title: "Remembrance & Celebration",
-      description: "Supportive community for those who have lost loved ones to cancer"
-    }
-  ];
 
   // Define what users can expect from this program
   const whatToExpect = [
@@ -71,13 +37,13 @@ const CancerSupportWelcome: React.FC = () => {
       title="Cancer Support Community"
       description="Welcome to a compassionate space designed specifically for cancer patients, survivors, caregivers, and families. Here, you'll find resources, support communities, and tools to help navigate the challenges of cancer - whether you're facing a diagnosis, supporting a loved one, or honoring someone's memory."
       whatToExpect={whatToExpect}
-      color="rose-500"
-      gradientFrom="rose-500"
-      gradientTo="amber-500"
-      borderColor="#e11d48"
+      color="purple-500"
+      gradientFrom="purple-500"
+      gradientTo="rose-500"
+      borderColor="#9b87f5"
       portalPath="/cancer-support-portal"
-      icon={<Heart className="h-8 w-8 text-rose-500" />}
-      coverImage="/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png"
+      icon={<Heart className="h-8 w-8 text-purple-500" />}
+      coverImage="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
       motivationalMessage={motivationalMessage}
     />
   );
