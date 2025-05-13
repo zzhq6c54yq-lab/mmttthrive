@@ -37,6 +37,7 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({ screenState, se
               description: "Tap here to continue to the next screen",
               action: (
                 <ToastAction 
+                  altText="Continue to next screen"
                   onClick={() => {
                     console.log("[EscapeHatchManager] Manual escape activated");
                     localStorage.removeItem('introLoaded');
