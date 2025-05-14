@@ -24,7 +24,14 @@ export function Toaster() {
                 <ToastDescription>{description}</ToastDescription>
               )}
             </div>
-            {action}
+            {action && (
+              <ToastAction
+                altText={action.altText || "Action"}
+                onClick={action.onClick}
+              >
+                {action.label}
+              </ToastAction>
+            )}
             <ToastClose />
           </Toast>
         )

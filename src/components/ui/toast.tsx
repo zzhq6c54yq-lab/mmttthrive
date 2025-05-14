@@ -54,11 +54,14 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
+// Update the ToastAction interface to properly include the altText property
+interface ToastActionProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> {
+  altText: string;
+}
+
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
-    altText: string;
-  }
+  ToastActionProps
 >(({ className, altText, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}

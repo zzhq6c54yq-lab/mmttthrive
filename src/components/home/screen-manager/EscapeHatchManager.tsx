@@ -34,14 +34,11 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
           title: "Need help?",
           description: "It looks like you might be stuck. Do you want to skip to the main dashboard?",
           duration: 10000,
-          action: (
-            <ToastAction 
-              altText="Skip to main dashboard"
-              onClick={() => setScreenState('main')}
-            >
-              Skip to Dashboard
-            </ToastAction>
-          ),
+          action: {
+            label: "Skip to Dashboard",
+            onClick: () => setScreenState('main'),
+            altText: "Skip to main dashboard",
+          },
         });
       }, 60000); // 60 second timeout
     }

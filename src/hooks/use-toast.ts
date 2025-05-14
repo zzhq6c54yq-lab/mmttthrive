@@ -9,7 +9,6 @@ import {
   ToastViewport,
   ToastAction,
 } from "@/components/ui/toast";
-import { useToast as useToastPrimitive } from "@/components/ui/use-toast";
 
 export type ToasterToast = React.ComponentPropsWithoutRef<typeof Toast> & {
   id: string;
