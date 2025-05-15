@@ -17,8 +17,9 @@ export interface ToastActionElementType {
 }
 
 // Action component props with required altText
-export interface ToastActionProps extends ToastActionPrimitiveProps {
+export interface ToastActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   altText: string;
+  className?: string;
 }
 
 // The toast element type
