@@ -61,10 +61,6 @@ Toast.displayName = ToastPrimitives.Root.displayName
 // Fixed ToastAction component that correctly handles the altText prop
 const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
   ({ className, altText, children, ...props }, ref) => {
-    // Extract all props except altText to pass to ToastPrimitives.Action
-    // We need to do this because ToastPrimitives.Action doesn't accept altText prop
-    const { altText: _, ...actionProps } = { altText, ...props };
-    
     return (
       <ToastPrimitives.Action
         ref={ref}
@@ -72,8 +68,8 @@ const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
           "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
           className
         )}
-        aria-label={altText || "Toast action"}
-        {...actionProps}
+        aria-label={altText}
+        {...props}
       >
         {children}
       </ToastPrimitives.Action>
