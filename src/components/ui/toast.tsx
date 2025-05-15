@@ -54,13 +54,13 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Define the ToastActionElement type without referencing ToastAction
+// Define a simple interface for ToastAction elements without circular reference
 interface ToastActionElementType {
   altText?: string;
 }
 
-// Define ToastActionProps without circular reference
-interface ToastActionProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> {
+// Define ToastActionProps directly without extending itself
+type ToastActionProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
   altText?: string;
 }
 
