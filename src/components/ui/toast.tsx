@@ -54,11 +54,13 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Define a separate type for the altText property to avoid circular references
-type ToastActionElement = React.ReactElement<typeof ToastAction>
+// Define the ToastActionElement type without referencing ToastAction
+interface ToastActionElementType {
+  altText?: string;
+}
 
-// Define ToastActionProps directly without extending to avoid circular references
-type ToastActionProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
+// Define ToastActionProps without circular reference
+interface ToastActionProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> {
   altText?: string;
 }
 
@@ -120,6 +122,9 @@ const ToastDescription = React.forwardRef<
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
 type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+
+// Define ToastActionElement type using ToastActionElementType
+type ToastActionElement = React.ReactElement<ToastActionElementType>
 
 export {
   type ToastProps,
