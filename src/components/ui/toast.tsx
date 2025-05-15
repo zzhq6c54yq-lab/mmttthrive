@@ -1,5 +1,4 @@
 
-
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -59,12 +58,12 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Using a properly typed approach for ToastAction that handles the type mismatch
+// Fixed ToastAction component that correctly handles the altText prop
 const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
   ({ className, altText, children, ...props }, ref) => {
-    // Create a properly typed object for ToastPrimitives.Action that doesn't include altText
-    // which is not expected by the Radix UI component
-    const actionProps: React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> = props;
+    // Extract all props except altText to pass to ToastPrimitives.Action
+    // We need to do this because ToastPrimitives.Action doesn't accept altText prop
+    const { altText: _, ...actionProps } = { altText, ...props };
     
     return (
       <ToastPrimitives.Action
@@ -134,4 +133,3 @@ export {
   ToastClose,
   ToastAction,
 }
-
