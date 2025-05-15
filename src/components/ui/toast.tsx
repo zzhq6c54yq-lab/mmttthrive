@@ -54,9 +54,12 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Explicitly define the type for ToastAction props to include altText as optional
-interface ToastActionProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> {
-  altText?: string;  // Making it explicitly optional with '?'
+// Define a separate type for the altText property to avoid circular references
+type ToastActionElement = React.ReactElement<typeof ToastAction>
+
+// Define ToastActionProps directly without extending to avoid circular references
+type ToastActionProps = React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> & {
+  altText?: string;
 }
 
 const ToastAction = React.forwardRef<
@@ -117,8 +120,6 @@ const ToastDescription = React.forwardRef<
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
 type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
-
-type ToastActionElement = React.ReactElement<typeof ToastAction>
 
 export {
   type ToastProps,
