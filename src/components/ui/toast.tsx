@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -57,23 +58,28 @@ const Toast = React.forwardRef<
 })
 Toast.displayName = ToastPrimitives.Root.displayName
 
-// Completely revised approach: Use a clean and simple ToastActionProps interface
-// This no longer extends Radix Primitive types to avoid type conflicts
+// Using a simpler approach with HTMLButtonElement instead of ToastPrimitives.Action element ref
 const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
-  ({ className, altText, children, ...props }, ref) => (
-    <ToastPrimitives.Action
-      ref={ref}
-      className={cn(
-        "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
-        className
-      )}
-      // This ensures the altText is available for accessibility
-      aria-label={altText}
-      {...props}
-    >
-      {children}
-    </ToastPrimitives.Action>
-  )
+  ({ className, altText, children, ...props }, ref) => {
+    // Ensure altText is always available
+    if (!altText) {
+      console.warn("ToastAction: altText prop is required for accessibility");
+    }
+    
+    return (
+      <ToastPrimitives.Action
+        ref={ref}
+        className={cn(
+          "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
+          className
+        )}
+        aria-label={altText || "Toast action"}
+        {...props}
+      >
+        {children}
+      </ToastPrimitives.Action>
+    );
+  }
 )
 ToastAction.displayName = "ToastAction"
 
