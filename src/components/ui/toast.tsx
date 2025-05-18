@@ -61,7 +61,8 @@ Toast.displayName = ToastPrimitives.Root.displayName
 // Fixed ToastAction component that correctly handles the altText prop
 const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
   ({ className, altText, children, ...props }, ref) => {
-    // Pass the altText to aria-label but don't include it in props spread
+    // Extract altText from props to avoid passing it to the underlying Radix component
+    // This is because Radix ToastPrimitives.Action doesn't expect an altText prop
     return (
       <ToastPrimitives.Action
         ref={ref}
