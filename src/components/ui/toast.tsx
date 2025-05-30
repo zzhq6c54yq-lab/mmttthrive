@@ -58,22 +58,16 @@ const Toast = React.forwardRef<
 Toast.displayName = ToastPrimitives.Root.displayName
 
 const ToastAction = React.forwardRef<HTMLButtonElement, ToastActionProps>(
-  ({ className, altText, children, ...restProps }, ref) => {
-    // Create props object that matches what ToastPrimitives.Action expects
-    // by explicitly omitting altText and using it only for aria-label
-    const actionProps: React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action> = {
-      ...restProps,
-      className: cn(
-        "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
-        className
-      )
-    };
-    
+  ({ className, altText, children, onClick }, ref) => {
     return (
       <ToastPrimitives.Action
         ref={ref}
+        className={cn(
+          "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
+          className
+        )}
         aria-label={altText}
-        {...actionProps}
+        onClick={onClick}
       >
         {children}
       </ToastPrimitives.Action>

@@ -16,10 +16,12 @@ export interface ToastActionElementType {
   altText: string;
 }
 
-// Action component props - properly separate altText from button attributes
-export interface ToastActionProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
+// Action component props - clean interface without inheritance conflicts
+export interface ToastActionProps {
   altText: string;
   className?: string;
+  onClick?: () => void;
+  children?: React.ReactNode;
 }
 
 // The toast element type
@@ -33,7 +35,7 @@ export interface ToasterToast {
   action?: {
     label: string;
     onClick: () => void;
-    altText: string;  // Make altText required here too
+    altText: string;
   };
   variant?: "default" | "destructive";
   open?: boolean;
