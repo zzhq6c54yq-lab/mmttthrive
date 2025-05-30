@@ -30,7 +30,7 @@ export const demographicAddOns: AddOn[] = [
       monthly: 0,
       yearly: 0
     },
-    imagePath: "https://images.unsplash.com/photo-1509475826633-fed577a2c71b?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1607456634979-3e8c48b0ece5?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-blue-900 to-blue-700",
     borderColor: "#1E3A8A",
     icon: Shield,
@@ -47,7 +47,7 @@ export const demographicAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-green-500 to-emerald-400",
     borderColor: "#10B981",
     icon: UserRound,
@@ -63,7 +63,7 @@ export const demographicAddOns: AddOn[] = [
       monthly: 3.99,
       yearly: 39.99
     },
-    imagePath: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1594736797933-d0fce9f17fbc?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-yellow-600 to-yellow-400",
     borderColor: "#D97706",
     icon: PersonStanding,

@@ -31,7 +31,7 @@ export const professionAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1571167090894-2f4eaa2e3166?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-blue-800 to-blue-600",
     borderColor: "#1E40AF",
     icon: Shield,
@@ -79,7 +79,7 @@ export const professionAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-sky-600 to-sky-400",
     borderColor: "#0284C7",
     icon: Bus,
