@@ -31,7 +31,7 @@ export const professionAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1551732998-9573f695fdbb?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-blue-800 to-blue-600",
     borderColor: "#1E40AF",
     icon: Shield,
@@ -47,7 +47,7 @@ export const professionAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-cyan-600 to-cyan-400",
     borderColor: "#0891B2",
     icon: BookOpen,
@@ -79,7 +79,7 @@ export const professionAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&q=80&w=1000",
     gradient: "bg-gradient-to-r from-sky-600 to-sky-400",
     borderColor: "#0284C7",
     icon: Bus,
