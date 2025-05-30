@@ -16,8 +16,8 @@ export interface ToastActionElementType {
   altText: string;
 }
 
-// Action component props with required altText
-export interface ToastActionProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+// Action component props - properly separate altText from button attributes
+export interface ToastActionProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   altText: string;
   className?: string;
 }
