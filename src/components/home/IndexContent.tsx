@@ -5,6 +5,13 @@ import IndexScreenManager from "@/components/home/IndexScreenManager";
 import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
 import { useToast } from "@/hooks/use-toast";
 
+interface PopupState {
+  coPayCredit: boolean;
+  henryIntro: boolean;
+  mainTutorial: boolean;
+  transitionTutorial: boolean;
+}
+
 interface IndexContentProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
   selectedMood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed' | null;
@@ -22,7 +29,7 @@ interface IndexContentProps {
   setIsFirstVisit: (value: boolean) => void;
   showCoPayCredit: boolean;
   setShowCoPayCredit: (value: boolean) => void;
-  popupsShown: any;
+  popupsShown: PopupState;
   getTranslatedText: (key: string) => string;
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
   onUserInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

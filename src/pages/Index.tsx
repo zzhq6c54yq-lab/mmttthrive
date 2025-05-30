@@ -1,7 +1,6 @@
 
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import useMousePosition from "@/hooks/useMousePosition";
 import useScreenHistory from "@/hooks/useScreenHistory";
 import usePopupManagement from "@/hooks/usePopupManagement";
 import useTranslation from "@/hooks/useTranslation";
@@ -34,7 +33,6 @@ const Index = () => {
     handleMoodSelect
   } = useIndexState();
   
-  const mousePosition = useMousePosition();
   const navigate = useNavigate();
   const location = useLocation();
   const { getTranslatedText } = useTranslation();
@@ -71,7 +69,7 @@ const Index = () => {
 
   // Show Henry if coming from a location that requested it
   useEffect(() => {
-    if (location.state && location.state.showHenry) {
+    if (location.state?.showHenry) {
       setShowHenry(true);
     }
   }, [location.state, setShowHenry]);
@@ -84,31 +82,14 @@ const Index = () => {
     if (path.startsWith('/')) {
       console.log("[Index] Navigating to feature:", path);
       
-      if (path === '/small-business-portal') {
-        navigate(path, { 
-          state: { 
-            qualities: selectedQualities, 
-            goals: selectedGoals,
-            fromMainMenu: true 
-          }
-        });
-      } else {
-        navigate(path, { 
-          state: { 
-            qualities: selectedQualities, 
-            goals: selectedGoals 
-          }
-        });
-      }
+      const state = {
+        qualities: selectedQualities, 
+        goals: selectedGoals,
+        ...(path === '/small-business-portal' ? { fromMainMenu: true } : {})
+      };
+      
+      navigate(path, { state });
     }
-  };
-
-  // Helper function to reset onboarding - can be called from external links or buttons
-  const resetOnboarding = () => {
-    localStorage.removeItem('hasCompletedOnboarding');
-    localStorage.removeItem('prevScreenState');
-    setScreenState('intro');
-    console.log("[Index] Onboarding reset manually");
   };
 
   // Log current state for debugging
