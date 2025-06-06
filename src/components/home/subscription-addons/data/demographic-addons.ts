@@ -30,7 +30,7 @@ export const demographicAddOns: AddOn[] = [
       monthly: 0,
       yearly: 0
     },
-    imagePath: "https://images.unsplash.com/photo-1607456634979-3e8c48b0ece5?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "/lovable-uploads/be94c6a8-cafa-4153-8712-3da52ecae458.png",
     gradient: "bg-gradient-to-r from-blue-900 to-blue-700",
     borderColor: "#1E3A8A",
     icon: Shield,
@@ -63,7 +63,7 @@ export const demographicAddOns: AddOn[] = [
       monthly: 3.99,
       yearly: 39.99
     },
-    imagePath: "https://images.unsplash.com/photo-1594736797933-d0fce9f17fbc?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "/lovable-uploads/60ce1c67-dca5-47f8-beca-020b806fd6f1.png",
     gradient: "bg-gradient-to-r from-yellow-600 to-yellow-400",
     borderColor: "#D97706",
     icon: PersonStanding,

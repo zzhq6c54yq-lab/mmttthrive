@@ -18,7 +18,7 @@ export const conditionAddOns: AddOn[] = [
     path: "chronic-illness-welcome",
     gradient: "from-emerald-700 to-blue-700",
     borderColor: "#065f46",
-    imagePath: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "/lovable-uploads/21b45268-36e0-4167-8f07-3f4dbcd35acb.png",
     price: {
       basic: "Add-on",
       gold: "Included",
@@ -45,7 +45,7 @@ export const conditionAddOns: AddOn[] = [
     path: "cancer-support-welcome",
     gradient: "from-purple-600 to-rose-600",
     borderColor: "#9b87f5",
-    imagePath: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "/lovable-uploads/e4e48c6f-2732-42e5-b8b2-2afb861877fd.png",
     price: {
       basic: "Add-on",
       gold: "Included",

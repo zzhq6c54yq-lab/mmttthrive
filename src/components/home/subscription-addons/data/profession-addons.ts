@@ -31,7 +31,7 @@ export const professionAddOns: AddOn[] = [
       monthly: 4.99,
       yearly: 49.99
     },
-    imagePath: "https://images.unsplash.com/photo-1571167090894-2f4eaa2e3166?auto=format&fit=crop&q=80&w=1000",
+    imagePath: "/lovable-uploads/dabf768c-c116-4d0d-a23b-149cc6d35a6e.png",
     gradient: "bg-gradient-to-r from-blue-800 to-blue-600",
     borderColor: "#1E40AF",
     icon: Shield,
