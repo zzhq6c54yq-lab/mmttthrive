@@ -58,12 +58,12 @@ export const useScreenHistory = (
     // For the root path, respect the onboarding completion status
     if (location.pathname === '/') {
       // If onboarding is completed, only then go to main
-      if (hasCompletedOnboarding === 'true' && screenState !== 'main') {
+      if (hasCompletedOnboarding && screenState !== 'main') {
         console.log("[useScreenHistory] Onboarding completed, navigating to main");
         setScreenState('main');
       }
       // If onboarding is not completed, ensure we start from intro
-      else if (hasCompletedOnboarding !== 'true' && screenState === 'main') {
+      else if (!hasCompletedOnboarding && screenState === 'main') {
         console.log("[useScreenHistory] Onboarding not completed, resetting to intro");
         setScreenState('intro');
       }
