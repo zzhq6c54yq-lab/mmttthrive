@@ -18,6 +18,7 @@ import { Calendar, HelpCircle, ChevronUp, ChevronDown, Sparkles, Award, Users, H
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import PlaceholderMiniGame from "@/components/dashboard/PlaceholderMiniGame";
+import DashboardMiniGamesGrid from "@/components/dashboard/DashboardMiniGamesGrid";
 
 interface DashboardContentProps {
   navigate: NavigateFunction;
@@ -220,11 +221,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         </AccordionItem>
       </Accordion>
       
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <PlaceholderMiniGame title="Sleep Tracker" />
-        <PlaceholderMiniGame title="Career Coaching" />
-        <PlaceholderMiniGame title="Meditation Studio" />
-      </div>
+      <DashboardMiniGamesGrid />
     </div>
   );
 };
