@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Handshake, Award, WalletCards, Sparkles } from "lucide-react";
@@ -28,7 +29,12 @@ const NewFeatures: React.FC = () => {
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#B87333]/10 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#8B5CF6]/10 to-transparent rounded-full blur-3xl"></div>
       
-      <div className="container mx-auto max-w-6xl relative">
+      {/* Star icon positioned on top with high z-index */}
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50">
+        <Sparkles className="h-6 w-6 text-[#B87333] animate-pulse" />
+      </div>
+      
+      <div className="container mx-auto max-w-6xl relative z-20">
         <h3 className="text-xl font-semibold text-white mb-8 flex items-center">
           <Sparkles className="h-5 w-5 text-[#B87333] mr-2" />
           <span className="gradient-heading text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333]">
@@ -36,10 +42,10 @@ const NewFeatures: React.FC = () => {
           </span>
         </h3>
         
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-8 relative z-10">
           <Button 
             variant="bronze"
-            className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-105 bg-gradient-to-br from-zinc-900 to-zinc-800 border-2 border-[#B87333]/30 hover:border-[#B87333] shadow-[0_8px_32px_rgba(184,115,51,0.2)] group backdrop-blur-sm"
+            className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-105 bg-gradient-to-br from-zinc-900 to-zinc-800 border-2 border-[#B87333]/30 hover:border-[#B87333] shadow-[0_8px_32px_rgba(184,115,51,0.2)] group backdrop-blur-sm relative z-10"
             onClick={() => handleNavigation("/barter-system", "Barter System")}
           >
             <span className="text-base font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Barter</span>
@@ -48,17 +54,17 @@ const NewFeatures: React.FC = () => {
           
           <Button 
             variant="gold"
-            className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-110 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] shadow-[0_8px_32px_rgba(184,115,51,0.4)] hover:shadow-[0_12px_40px_rgba(184,115,51,0.6)] group backdrop-blur-sm relative overflow-hidden"
+            className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-110 bg-gradient-to-br from-[#B87333] to-[#E5C5A1] shadow-[0_8px_32px_rgba(184,115,51,0.4)] hover:shadow-[0_12px_40px_rgba(184,115,51,0.6)] group backdrop-blur-sm relative overflow-hidden z-10"
             onClick={() => handleNavigation("/subscription-plans", "System Upgrade Plan")}
           >
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M0 10 L20 10%22 stroke=%22%23000%22 stroke-opacity=%220.1%22/></svg>')] opacity-20"></div>
-            <span className="text-base font-bold text-black mb-1">Plan</span>
-            <span className="text-base font-bold text-black">Upgrade</span>
+            <span className="text-base font-bold text-black mb-1 relative z-10">Plan</span>
+            <span className="text-base font-bold text-black relative z-10">Upgrade</span>
           </Button>
           
           <Button 
             variant="bronze"
-            className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-105 bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-[#B87333]/30 hover:border-[#B87333] shadow-[0_8px_32px_rgba(184,115,51,0.2)] group backdrop-blur-sm"
+            className="flex flex-col items-center justify-center p-6 rounded-2xl transform transition-all duration-300 hover:scale-105 bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-[#B87333]/30 hover:border-[#B87333] shadow-[0_8px_32px_rgba(184,115,51,0.2)] group backdrop-blur-sm relative z-10"
             onClick={() => handleNavigation("/copay-credits", "Co-Pay Credits")}
           >
             <span className="text-base font-semibold mb-1 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Co-Pay</span>
