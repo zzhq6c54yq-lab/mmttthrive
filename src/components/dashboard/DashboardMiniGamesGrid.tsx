@@ -6,14 +6,15 @@ import useTranslation from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 
 /**
- * Upgraded grid: now five playable games/components.
+ * Only Mini Sudoku is now playable. Others show "Coming Soon."
  */
 const MINI_GAME_FEATURES = [
-  { title: "Memory Match", playable: true, route: "/games/memory-match" },
-  { title: "Word Unscramble", playable: true, route: "/games/word-scramble" },
-  { title: "Sleep Tracker", playable: true, route: "/games/sleep-tracker" },
-  { title: "Career Coaching", playable: true, route: "/games/career-coaching" },
-  { title: "Meditation Studio", playable: true, route: "/games/meditation-studio" }
+  { title: "Mini Sudoku", playable: true, route: "/games/mini-sudoku" },
+  { title: "Memory Match", playable: false, route: "/games/memory-match" },
+  { title: "Word Unscramble", playable: false, route: "/games/word-scramble" },
+  { title: "Sleep Tracker", playable: false, route: "/games/sleep-tracker" },
+  { title: "Career Coaching", playable: false, route: "/games/career-coaching" },
+  { title: "Meditation Studio", playable: false, route: "/games/meditation-studio" }
 ];
 
 const DashboardMiniGamesGrid: React.FC = () => {

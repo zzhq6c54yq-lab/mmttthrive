@@ -92,6 +92,9 @@ import CancerSupportPortal from "@/pages/CancerSupportPortal";
 // Import additional routes for specific chronic illness pages if needed
 // These can be added as the specific content pages are built
 
+import GameMiniSudoku from "@/components/games/GameMiniSudoku";
+import GameUnavailable from "@/components/games/GameUnavailable";
+
 function App() {
   return (
     <>
@@ -110,6 +113,12 @@ function App() {
         <Route path="/cosmic-games" element={<CosmicGames />} />
         <Route path="/game-play/:gameId" element={<GamePage />} />
         <Route path="/games/:gameId" element={<GamePage />} />
+        <Route path="/games/mini-sudoku" element={<GameMiniSudoku />} />
+        <Route path="/games/memory-match" element={<GameUnavailable />} />
+        <Route path="/games/word-scramble" element={<GameUnavailable />} />
+        <Route path="/games/sleep-tracker" element={<GameUnavailable />} />
+        <Route path="/games/career-coaching" element={<GameUnavailable />} />
+        <Route path="/games/meditation-studio" element={<GameUnavailable />} />
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
         <Route path="/small-business-selection" element={<SmallBusinessSelection />} />
