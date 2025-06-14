@@ -1,73 +1,129 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Game } from "@/data/gamesData";
-import { useToast } from "@/hooks/use-toast";
 
-interface GameMemoryMatchProps {
-  game: Game;
-  onComplete: (score: number) => void;
+type CardType = {
+  id: number;
+  symbol: string;
+  isFlipped: boolean;
+  isMatched: boolean;
+};
+
+const SYMBOLS = ["🦄", "🌟", "🍀", "🌈", "🔥", "🎩"];
+
+function shuffle(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
-const GameMemoryMatch: React.FC<GameMemoryMatchProps> = ({ game, onComplete }) => {
-  const { toast } = useToast();
-  const [score, setScore] = useState(0);
+const generateCards = (): CardType[] => {
+  const allSymbols = [...SYMBOLS, ...SYMBOLS];
+  return shuffle(allSymbols).map((symbol, idx) => ({
+    id: idx,
+    symbol,
+    isFlipped: false,
+    isMatched: false
+  }));
+};
+
+interface GameMemoryMatchProps {
+  onComplete?: (score: number) => void;
+}
+
+const GameMemoryMatch: React.FC<GameMemoryMatchProps> = ({ onComplete }) => {
+  const [cards, setCards] = useState<CardType[]>(generateCards());
+  const [flipped, setFlipped] = useState<number[]>([]);
+  const [matchedCount, setMatchedCount] = useState(0);
   const [moves, setMoves] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  
-  // This is a simplified placeholder. In a real implementation, the game would have more logic.
-  const startGame = () => {
-    setGameStarted(true);
-    toast({
-      title: "Game Started",
-      description: "Match the cards by flipping them to reveal their contents!",
-    });
+  const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    if (flipped.length === 2) {
+      const [firstIdx, secondIdx] = flipped;
+      if (cards[firstIdx].symbol === cards[secondIdx].symbol) {
+        setTimeout(() => {
+          setCards(prev =>
+            prev.map((card, idx) =>
+              idx === firstIdx || idx === secondIdx
+                ? { ...card, isMatched: true }
+                : card
+            )
+          );
+          setMatchedCount(count => count + 1);
+          setFlipped([]);
+        }, 700);
+      } else {
+        setTimeout(() => {
+          setCards(prev =>
+            prev.map((card, idx) =>
+              idx === firstIdx || idx === secondIdx
+                ? { ...card, isFlipped: false }
+                : card
+            )
+          );
+          setFlipped([]);
+        }, 900);
+      }
+      setMoves(m => m + 1);
+    }
+  }, [flipped, cards]);
+
+  useEffect(() => {
+    if (matchedCount === SYMBOLS.length) {
+      setFinished(true);
+      if (onComplete) {
+        // Lower moves is higher score (simple scoring logic)
+        onComplete(Math.max(0, 100 - moves * 5));
+      }
+    }
+  }, [matchedCount, moves, onComplete]);
+
+  const handleFlip = (idx: number) => {
+    if (flipped.length === 2 || cards[idx].isFlipped || cards[idx].isMatched) return;
+    setCards(prev => prev.map((card, i) => i === idx ? { ...card, isFlipped: true } : card));
+    setFlipped(prev => [...prev, idx]);
   };
 
-  const completeGame = () => {
-    onComplete(score);
+  const handleRestart = () => {
+    setCards(generateCards());
+    setFlipped([]);
+    setMatchedCount(0);
+    setMoves(0);
+    setFinished(false);
   };
 
   return (
-    <div className="w-full text-center">
-      {!gameStarted ? (
-        <div className="space-y-4">
-          <p className="text-lg font-medium">Ready to test your memory?</p>
-          <Button 
-            onClick={startGame}
-            style={{ backgroundColor: game.color, color: "#fff" }}
+    <div className="flex flex-col items-center">
+      <h2 className="text-lg font-semibold mb-4">Memory Match</h2>
+      <div className="grid grid-cols-4 gap-4 mb-4">
+        {cards.map((card, idx) => (
+          <button
+            key={card.id}
+            className={`w-16 h-20 text-2xl rounded shadow-md transition bg-white
+              ${card.isMatched ? "bg-green-200 text-green-700" : ""}
+              ${card.isFlipped && !card.isMatched ? "bg-blue-100" : ""}
+              `}
+            onClick={() => handleFlip(idx)}
+            disabled={card.isMatched || card.isFlipped || finished || flipped.length === 2}
+            aria-label={card.isFlipped || card.isMatched ? card.symbol : "Hidden card"}
           >
-            Start Game
-          </Button>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">This is a placeholder for the Memory Match game.</p>
-            <p className="text-sm text-gray-600">In a full implementation, cards would appear here for you to match.</p>
-          </div>
-          
-          <div className="flex justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Moves</p>
-              <p className="text-lg font-bold">{moves}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Score</p>
-              <p className="text-lg font-bold">{score}</p>
-            </div>
-          </div>
-          
-          <Button 
-            onClick={completeGame}
-            style={{ backgroundColor: game.color, color: "#fff" }}
-          >
-            Complete Game (Demo)
-          </Button>
-        </div>
+            {card.isFlipped || card.isMatched ? card.symbol : "❓"}
+          </button>
+        ))}
+      </div>
+      <div className="mb-2">Moves: <span className="font-bold">{moves}</span></div>
+      {finished && (
+        <div className="mb-4 text-green-600 font-bold">You win! 🎉</div>
       )}
+      <Button onClick={handleRestart} className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white">
+        {finished ? "Play Again" : "Restart"}
+      </Button>
     </div>
   );
 };
 
 export default GameMemoryMatch;
+
