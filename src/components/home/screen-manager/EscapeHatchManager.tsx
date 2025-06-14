@@ -6,13 +6,15 @@ import { ToastAction } from "@/components/ui/toast";
 interface EscapeHatchManagerProps {
   screenState: string;
   setScreenState: (state: any) => void;
+  isInOnboarding?: boolean;
 }
 
 // This component provides an escape hatch for users who might get stuck
 // in the onboarding flow due to bugs, errors, or other issues
 const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
   screenState,
-  setScreenState
+  setScreenState,
+  isInOnboarding = false
 }) => {
   const [showEscapeHatch, setShowEscapeHatch] = useState(false);
   
@@ -20,8 +22,8 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
   useEffect(() => {
     let escapeHatchTimeout: ReturnType<typeof setTimeout>;
     
-    // If the user has been on the same screen for over 60 seconds, show escape hatch
-    if (screenState !== 'main') {
+    // Only show escape hatch if not in onboarding and user has been on the same screen for over 60 seconds
+    if (screenState !== 'main' && !isInOnboarding) {
       escapeHatchTimeout = setTimeout(() => {
         setShowEscapeHatch(true);
         
@@ -41,7 +43,7 @@ const EscapeHatchManager: React.FC<EscapeHatchManagerProps> = ({
     return () => {
       clearTimeout(escapeHatchTimeout);
     };
-  }, [screenState, setScreenState]);
+  }, [screenState, setScreenState, isInOnboarding]);
 
   // This component doesn't render anything visible
   // It just sets up the timeout to show the toast

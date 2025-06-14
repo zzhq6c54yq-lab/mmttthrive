@@ -47,6 +47,9 @@ const Index = () => {
     markTutorialCompleted
   } = usePopupManagement(screenState);
 
+  // Check if we're in onboarding mode
+  const isInOnboarding = screenState !== 'main';
+
   // Check for URL parameters to handle onboarding control
   useEffect(() => {
     // Check if there's a URL parameter to force reset onboarding
@@ -57,12 +60,15 @@ const Index = () => {
       localStorage.removeItem('prevScreenState');
       setScreenState('intro');
       
-      toast({
-        title: "Onboarding Reset",
-        description: "Starting from the beginning",
-      });
+      // Only show toast if not in onboarding mode
+      if (!isInOnboarding) {
+        toast({
+          title: "Onboarding Reset",
+          description: "Starting from the beginning",
+        });
+      }
     }
-  }, [location.search, setScreenState, toast]);
+  }, [location.search, setScreenState, toast, isInOnboarding]);
   
   // Use the screen history hook
   useScreenHistory(screenState, setScreenState);
@@ -129,6 +135,7 @@ const Index = () => {
       handleRegister={handleRegister}
       setScreenState={setScreenState}
       markTutorialCompleted={markTutorialCompleted}
+      isInOnboarding={isInOnboarding}
     />
   );
 };

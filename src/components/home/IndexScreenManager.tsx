@@ -34,6 +34,7 @@ interface IndexScreenManagerProps {
   handleRegister: (e: React.FormEvent) => void;
   setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main') => void;
   markTutorialCompleted?: () => void;
+  isInOnboarding?: boolean;
 }
 
 const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
@@ -58,7 +59,8 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   handleVisionBoardContinue,
   handleRegister,
   setScreenState,
-  markTutorialCompleted
+  markTutorialCompleted,
+  isInOnboarding = false
 }) => {
   const { isSpanish } = useTranslation();
   const { toast } = useToast();
@@ -81,10 +83,11 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   
   return (
     <>
-      {/* Escape hatch for recovery from potential stuck states */}
+      {/* Escape hatch for recovery from potential stuck states - disabled during onboarding */}
       <EscapeHatchManager 
         screenState={screenState} 
         setScreenState={setScreenState} 
+        isInOnboarding={isInOnboarding}
       />
       
       {/* Render the appropriate screen based on state */}

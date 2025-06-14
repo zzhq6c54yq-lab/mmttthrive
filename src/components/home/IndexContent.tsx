@@ -45,6 +45,7 @@ interface IndexContentProps {
   handleRegister: (e: React.FormEvent) => void;
   setScreenState: (state: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main') => void;
   markTutorialCompleted: () => void;
+  isInOnboarding?: boolean;
 }
 
 const IndexContent: React.FC<IndexContentProps> = ({
@@ -75,7 +76,8 @@ const IndexContent: React.FC<IndexContentProps> = ({
   handleVisionBoardContinue,
   handleRegister,
   setScreenState,
-  markTutorialCompleted
+  markTutorialCompleted,
+  isInOnboarding = false
 }) => {
   const { toast } = useToast();
 
@@ -85,10 +87,13 @@ const IndexContent: React.FC<IndexContentProps> = ({
   const handleSkipTutorial = () => {
     setIsFirstVisit(false);
     markTutorialCompleted();
-    toast({
-      title: getTranslatedText('skipForNow'),
-      description: getTranslatedText('tutorialAccess'),
-    });
+    // Only show toast if not in onboarding
+    if (!isInOnboarding) {
+      toast({
+        title: getTranslatedText('skipForNow'),
+        description: getTranslatedText('tutorialAccess'),
+      });
+    }
   };
 
   const handleCloseTutorial = () => {
@@ -98,7 +103,8 @@ const IndexContent: React.FC<IndexContentProps> = ({
 
   return (
     <div className="relative">
-      {showCoPayCredit && !popupsShown.coPayCredit && 
+      {/* Only show CoPayCredit popup if not in onboarding */}
+      {showCoPayCredit && !popupsShown.coPayCredit && !isInOnboarding && 
         <CoPayCreditPopup 
           open={showCoPayCredit} 
           onOpenChange={setShowCoPayCredit} 
@@ -128,10 +134,11 @@ const IndexContent: React.FC<IndexContentProps> = ({
         handleRegister={handleRegister}
         setScreenState={setScreenState}
         markTutorialCompleted={markTutorialCompleted}
+        isInOnboarding={isInOnboarding}
       />
       
       {/* Only show welcome tutorial for tutorial button clicks, not during onboarding */}
-      {shouldShowTutorial && 
+      {shouldShowTutorial && !isInOnboarding && 
         <WelcomeTutorial
           isOpen={shouldShowTutorial}
           onClose={handleCloseTutorial}
