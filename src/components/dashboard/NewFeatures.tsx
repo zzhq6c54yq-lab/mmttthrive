@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
 
+/**
+ * Announcement block for new and upcoming features on dashboard & home.
+ * Handles navigation with toast feedback and Spanish/English localization.
+ */
 const NewFeatures: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();

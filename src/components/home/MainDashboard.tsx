@@ -1,11 +1,11 @@
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
-import NewFeatures from "@/components/dashboard/NewFeatures";
+import NewFeatures from "@/components/home/NewFeatures";
 import DashboardBackground from "@/components/dashboard/DashboardBackground";
 import DashboardContent from "@/components/dashboard/DashboardContent";
+import DashboardMiniGamesGrid from "@/components/dashboard/DashboardMiniGamesGrid";
 import { useWorkshopNavigation } from "@/components/dashboard/useWorkshopNavigation";
 import useTranslation from "@/hooks/useTranslation";
 import DashboardTutorial from "@/components/dashboard/DashboardTutorial";
@@ -14,8 +14,8 @@ interface MainDashboardProps {
   userName: string;
   showHenry: boolean;
   onHenryToggle: () => void;
-  selectedQualities: string[];
-  selectedGoals: string[];
+  selectedQualities?: string[];
+  selectedGoals?: string[];
   navigateToFeature: (path: string) => void;
   markTutorialCompleted?: () => void;
 }
@@ -79,8 +79,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
         onHenryToggle={onHenryToggle}
       />
 
+      {/* New Features section - shared component for both dashboard and home */}
       <NewFeatures />
-      
+
+      {/* "Coming Soon" Mini Games grid - shared component */}
+      <DashboardMiniGamesGrid />
+
       <DashboardContent 
         navigate={navigate}
         onWorkshopClick={handleWorkshopClick}
