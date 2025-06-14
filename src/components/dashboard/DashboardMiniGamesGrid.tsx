@@ -6,14 +6,14 @@ import useTranslation from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 
 /**
- * Upgraded grid: two playable, rest still "coming soon".
+ * Upgraded grid: now five playable games/components.
  */
 const MINI_GAME_FEATURES = [
   { title: "Memory Match", playable: true, route: "/games/memory-match" },
   { title: "Word Unscramble", playable: true, route: "/games/word-scramble" },
-  { title: "Sleep Tracker", playable: false },
-  { title: "Career Coaching", playable: false },
-  { title: "Meditation Studio", playable: false }
+  { title: "Sleep Tracker", playable: true, route: "/games/sleep-tracker" },
+  { title: "Career Coaching", playable: true, route: "/games/career-coaching" },
+  { title: "Meditation Studio", playable: true, route: "/games/meditation-studio" }
 ];
 
 const DashboardMiniGamesGrid: React.FC = () => {
