@@ -88,6 +88,7 @@ import ChronicIllnessWelcome from "@/pages/ChronicIllnessWelcome";
 import ChronicIllnessPortal from "@/pages/ChronicIllnessPortal";
 import CancerSupportWelcome from "@/pages/CancerSupportWelcome";
 import CancerSupportPortal from "@/pages/CancerSupportPortal";
+import AllWorkshopsPage from "@/pages/AllWorkshops";
 
 // Import additional routes for specific chronic illness pages if needed
 // These can be added as the specific content pages are built
@@ -342,6 +343,7 @@ function App() {
         <Route path="/cancer-support/grief-groups" element={<CommunitySupport />} />
         <Route path="/cancer-support/honoring-action" element={<ResourceLibrary />} />
         
+        <Route path="/all-workshops" element={<AllWorkshopsPage />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>

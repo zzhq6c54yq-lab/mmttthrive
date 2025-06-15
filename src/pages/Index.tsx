@@ -1,143 +1,21 @@
+import React from "react";
+import { Button } from "@/components/ui/button";
+import Dashboard from "@/components/dashboard/Dashboard";
 
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import useScreenHistory from "@/hooks/useScreenHistory";
-import usePopupManagement from "@/hooks/usePopupManagement";
-import useTranslation from "@/hooks/useTranslation";
-import useIndexState from "@/hooks/useIndexState";
-import IndexContent from "@/components/home/IndexContent";
-import { useToast } from "@/hooks/use-toast";
-
-const Index = () => {
-  // Custom hooks
-  const { 
-    screenState, 
-    setScreenState,
-    selectedMood,
-    userInfo,
-    selectedPlan,
-    selectedAddOns,
-    selectedQualities,
-    selectedGoals,
-    isFirstVisit,
-    setIsFirstVisit,
-    handleUserInfoChange,
-    handleRegister,
-    handleSubscriptionSelect: onPlanSelect,
-    toggleQuality,
-    toggleGoal,
-    toggleAddOn,
-    handleSubscriptionContinue,
-    handleAddOnsContinue,
-    handleVisionBoardContinue,
-    handleMoodSelect
-  } = useIndexState();
-  
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { getTranslatedText } = useTranslation();
-  const { toast } = useToast();
-  
-  const { 
-    showCoPayCredit, 
-    setShowCoPayCredit, 
-    showHenry, 
-    setShowHenry,
-    popupsShown,
-    markTutorialCompleted
-  } = usePopupManagement(screenState);
-
-  // Check if we're in onboarding mode
-  const isInOnboarding = screenState !== 'main';
-
-  // Check for URL parameters to handle onboarding control
-  useEffect(() => {
-    // Check if there's a URL parameter to force reset onboarding
-    const searchParams = new URLSearchParams(location.search);
-    if (searchParams.get('resetOnboarding') === 'true' || searchParams.get('forceReset') === 'true') {
-      console.log("[Index] Resetting onboarding due to URL parameter");
-      localStorage.removeItem('hasCompletedOnboarding');
-      localStorage.removeItem('prevScreenState');
-      setScreenState('intro');
-      
-      // Only show toast if not in onboarding mode
-      if (!isInOnboarding) {
-        toast({
-          title: "Onboarding Reset",
-          description: "Starting from the beginning",
-        });
-      }
-    }
-  }, [location.search, setScreenState, toast, isInOnboarding]);
-  
-  // Use the screen history hook
-  useScreenHistory(screenState, setScreenState);
-
-  // Show Henry if coming from a location that requested it
-  useEffect(() => {
-    if (location.state?.showHenry) {
-      setShowHenry(true);
-    }
-  }, [location.state, setShowHenry]);
-
-  const toggleHenry = () => {
-    setShowHenry(!showHenry);
-  };
-
-  const navigateToFeature = (path: string) => {
-    if (path.startsWith('/')) {
-      console.log("[Index] Navigating to feature:", path);
-      
-      const state = {
-        qualities: selectedQualities, 
-        goals: selectedGoals,
-        ...(path === '/small-business-portal' ? { fromMainMenu: true } : {})
-      };
-      
-      navigate(path, { state });
-    }
-  };
-
-  // Log current state for debugging
-  useEffect(() => {
-    console.log("[Index] Rendered with screenState:", screenState);
-    console.log("[Index] Onboarding completed status:", localStorage.getItem('hasCompletedOnboarding'));
-    console.log("[Index] Selected mood:", selectedMood);
-  }, [screenState, selectedMood]);
-
+export default function Index() {
   return (
-    <IndexContent
-      screenState={screenState}
-      selectedMood={selectedMood}
-      userInfo={userInfo}
-      selectedPlan={selectedPlan}
-      selectedAddOns={selectedAddOns}
-      selectedQualities={selectedQualities}
-      selectedGoals={selectedGoals}
-      showHenry={showHenry}
-      isFirstVisit={isFirstVisit}
-      setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={showCoPayCredit}
-      setShowCoPayCredit={setShowCoPayCredit}
-      popupsShown={popupsShown}
-      getTranslatedText={getTranslatedText}
-      onMoodSelect={handleMoodSelect}
-      onUserInfoChange={handleUserInfoChange}
-      onQualityToggle={toggleQuality}
-      onGoalToggle={toggleGoal}
-      onPlanSelect={onPlanSelect}
-      onAddOnToggle={toggleAddOn}
-      onHenryToggle={toggleHenry}
-      navigateToFeature={navigateToFeature}
-      handleSubscriptionContinue={handleSubscriptionContinue}
-      handleAddOnsContinue={handleAddOnsContinue}
-      handleVisionBoardContinue={handleVisionBoardContinue}
-      handleRegister={handleRegister}
-      setScreenState={setScreenState}
-      markTutorialCompleted={markTutorialCompleted}
-      isInOnboarding={isInOnboarding}
-    />
+    <div>
+      <div className="mb-6 flex justify-center">
+        <Button 
+          asChild 
+          className="bg-gradient-to-r from-blue-700 to-indigo-400 text-white rounded-lg shadow-lg"
+        >
+          <a href="/all-workshops">
+            View All Workshops
+          </a>
+        </Button>
+      </div>
+      <Dashboard />
+    </div>
   );
-};
-
-export default Index;
+}
