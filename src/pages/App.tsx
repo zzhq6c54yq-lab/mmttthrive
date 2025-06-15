@@ -96,11 +96,16 @@ import AllWorkshopsPage from "@/pages/AllWorkshops";
 import GameMiniSudoku from "@/components/games/GameMiniSudoku";
 import GameUnavailable from "@/components/games/GameUnavailable";
 
+import Auth from "@/pages/Auth";
+import JournalApp from "@/pages/JournalApp";
+
 function App() {
   return (
     <>
       <HelpNavButton />
       <Routes>
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/journal" element={<JournalApp />} />
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
