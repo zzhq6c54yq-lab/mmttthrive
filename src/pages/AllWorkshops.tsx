@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, User } from "lucide-react";
 
 // Import all workshop data from various categories:
-import { default as workshopData } from "@/data/workshopData";
+// (Removed broken import of workshopData)
 
 // Educators workshops (copied from EducatorsWorkshops.tsx)
 const EDU_WORKSHOPS = [

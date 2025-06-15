@@ -1,8 +1,13 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
-import Dashboard from "@/components/dashboard/Dashboard";
+import DashboardContent from "@/components/dashboard/DashboardContent";
+import { useNavigate } from "react-router-dom";
 
 export default function Index() {
+  const navigate = useNavigate();
+
+  // Provide minimal required props to DashboardContent
   return (
     <div>
       <div className="mb-6 flex justify-center">
@@ -15,7 +20,12 @@ export default function Index() {
           </a>
         </Button>
       </div>
-      <Dashboard />
+      <DashboardContent 
+        navigate={navigate}
+        onWorkshopClick={() => {}}
+        selectedQualities={[]}
+        selectedGoals={[]}
+      />
     </div>
   );
 }
