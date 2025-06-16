@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import HelpDialog from "@/components/help/HelpDialog";
-import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
 import { useLocation } from "react-router-dom";
 import { useButtonVisibility } from "./RouteVisibility";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -10,20 +9,13 @@ import useTranslation from "@/hooks/useTranslation";
 
 const HelpNavButton: React.FC = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const [showIntroDialog, setShowIntroDialog] = useState(false);
   const location = useLocation();
   const isButtonVisible = useButtonVisibility();
   const { getTranslatedText, isSpanish, isPortuguese } = useTranslation();
   
-  // Handle opening the help dialog
+  // Handle opening the help dialog directly
   const openHelp = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Show Henry's intro first
-    setShowIntroDialog(true);
-  };
-
-  const handleIntroContinue = () => {
-    setShowIntroDialog(false);
     setShowHelpDialog(true);
   };
 
@@ -51,12 +43,6 @@ const HelpNavButton: React.FC = () => {
           </Avatar>
         </Button>
       </div>
-      
-      <HenryIntroDialog 
-        open={showIntroDialog} 
-        onOpenChange={setShowIntroDialog}
-        onContinue={handleIntroContinue}
-      />
       
       <HelpDialog 
         isOpen={showHelpDialog} 

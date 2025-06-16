@@ -44,14 +44,14 @@ export default function Index() {
   // Handle screen history
   useScreenHistory(screenState, setScreenState);
 
-  // Popup state management
+  // Popup state management (disabled to prevent white popups)
   const [showCoPayCredit, setShowCoPayCredit] = React.useState(false);
   const [showHenry, setShowHenry] = React.useState(false);
   const [popupsShown, setPopupsShown] = React.useState<PopupState>({
-    coPayCredit: false,
-    henryIntro: false,
-    mainTutorial: false,
-    transitionTutorial: false,
+    coPayCredit: true, // Mark as already shown to prevent popup
+    henryIntro: true, // Mark as already shown to prevent popup
+    mainTutorial: true, // Mark as already shown to prevent popup
+    transitionTutorial: true, // Mark as already shown to prevent popup
   });
 
   // Debug logging for onboarding state
@@ -114,8 +114,8 @@ export default function Index() {
       showHenry={showHenry}
       isFirstVisit={isFirstVisit}
       setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={showCoPayCredit}
-      setShowCoPayCredit={setShowCoPayCredit}
+      showCoPayCredit={false} // Force disable co-pay popup
+      setShowCoPayCredit={() => {}} // Disable function
       popupsShown={popupsShown}
       getTranslatedText={getTranslatedText}
       onMoodSelect={handleMoodSelect}

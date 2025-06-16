@@ -1,8 +1,6 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import HenryIntroDialog from "../henry/HenryIntroDialog";
-import HelpDialog from "../help/HelpDialog";
 import SpinningLogo from "./header/SpinningLogo";
 import WelcomeText from "./header/WelcomeText";
 import MeetHenryButton from "./header/MeetHenryButton";
@@ -22,19 +20,10 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
 }) => {
   const navigate = useNavigate();
   const { isSpanish } = useTranslation();
-  const [showIntroDialog, setShowIntroDialog] = useState(false);
-  const [showChatDialog, setShowChatDialog] = useState(false);
   
   const handleHenryButtonClick = () => {
-    setShowIntroDialog(true);
-  };
-
-  const handleIntroContinue = () => {
-    setShowIntroDialog(false);
-    setShowChatDialog(true);
-    if (!showHenry) {
-      onHenryToggle();
-    }
+    // Just toggle Henry without showing intro dialog
+    onHenryToggle();
   };
 
   const handleWorkshopsClick = () => {
@@ -69,17 +58,6 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
           </div>
         </div>
       </div>
-      
-      <HenryIntroDialog 
-        open={showIntroDialog} 
-        onOpenChange={setShowIntroDialog} 
-        onContinue={handleIntroContinue}
-      />
-      
-      <HelpDialog 
-        isOpen={showChatDialog} 
-        onOpenChange={setShowChatDialog} 
-      />
     </div>
   );
 };
