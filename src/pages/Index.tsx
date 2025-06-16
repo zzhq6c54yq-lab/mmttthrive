@@ -54,6 +54,12 @@ export default function Index() {
     transitionTutorial: false,
   });
 
+  // Debug logging for onboarding state
+  React.useEffect(() => {
+    console.log("[Index] Current screen state:", screenState);
+    console.log("[Index] Has completed onboarding:", localStorage.getItem('hasCompletedOnboarding'));
+  }, [screenState]);
+
   const handleHenryToggle = () => {
     setShowHenry(!showHenry);
   };

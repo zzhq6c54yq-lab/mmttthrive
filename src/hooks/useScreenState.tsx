@@ -1,34 +1,32 @@
+
 import { useState, useEffect } from "react";
 
 export type ScreenStateType = 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
 
 export const useScreenState = () => {
-  // Initialize screenState as 'intro' initially
+  // Initialize screenState properly
   const [screenState, setScreenState] = useState<ScreenStateType>('intro');
   
   // Initialize state based on onboarding completion
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
-    const prevScreenState = localStorage.getItem('prevScreenState');
+    const prevScreenState = localStorage.getItem('prevScreenState') as ScreenStateType;
 
-    console.log("[useScreenState] Initial render, hasCompletedOnboarding:", hasCompletedOnboarding);
+    console.log("[useScreenState] Initialization - hasCompletedOnboarding:", hasCompletedOnboarding);
+    console.log("[useScreenState] Previous screen state:", prevScreenState);
     
     if (hasCompletedOnboarding) {
-      console.log("[useScreenState] Onboarding already completed, initializing to main dashboard");
+      console.log("[useScreenState] Onboarding completed, setting to main dashboard");
       setScreenState('main');
     } else {
+      // If there's a valid previous screen state and it's not main, use it
       if (prevScreenState && prevScreenState !== 'main') {
-        setScreenState(prevScreenState as ScreenStateType);
+        console.log("[useScreenState] Resuming onboarding at screen:", prevScreenState);
+        setScreenState(prevScreenState);
       } else {
-        console.log("[useScreenState] No onboarding record, starting from intro screen");
+        console.log("[useScreenState] Starting fresh onboarding from intro");
         setScreenState('intro');
       }
-      
-      // Clear the localStorage items that might conflict
-      localStorage.removeItem('prevScreenState');
-      
-      // Log that we're properly starting the onboarding
-      console.log("[useScreenState] Initializing new onboarding flow");
     }
   }, []);
 

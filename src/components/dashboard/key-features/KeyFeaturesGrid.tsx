@@ -37,7 +37,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
 
   return (
     <motion.div 
-      className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"
+      className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
       variants={container}
       initial="hidden"
       animate="show"
@@ -52,7 +52,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
             className="group cursor-pointer"
             onClick={() => handleNavigate(feature.path)}
           >
-            <div className="relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="relative bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
               {/* Coming Soon Badge */}
               {feature.comingSoon && (
                 <div className="absolute top-2 right-2 z-10 bg-amber-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
@@ -61,7 +61,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
               )}
               
               {/* Popular Badge */}
-              {feature.popular && (
+              {feature.popular && !recommended && (
                 <div className="absolute top-2 left-2 z-10 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
                   {isSpanish ? "Popular" : "Popular"}
                 </div>
@@ -75,7 +75,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
               )}
 
               {/* Feature Image */}
-              <div className="relative h-32 sm:h-36 md:h-40 overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
                 <img 
                   src={feature.image} 
                   alt={feature.title}
@@ -85,18 +85,18 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
               </div>
 
               {/* Feature Content */}
-              <div className="p-3 sm:p-4">
-                <div className="flex items-center gap-2 mb-2">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-3">
                   {feature.icon}
-                  <h3 className="font-semibold text-sm sm:text-base text-gray-800 line-clamp-1">
+                  <h3 className="font-bold text-lg text-gray-800 line-clamp-1">
                     {feature.title}
                   </h3>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-3">
+                <p className="text-sm text-gray-600 line-clamp-2 mb-4">
                   {feature.description}
                 </p>
                 <button 
-                  className={`w-full px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors duration-200 ${
+                  className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                     feature.comingSoon 
                       ? 'bg-gray-100 text-gray-500 cursor-not-allowed' 
                       : `bg-${feature.color}-100 text-${feature.color}-700 hover:bg-${feature.color}-200`

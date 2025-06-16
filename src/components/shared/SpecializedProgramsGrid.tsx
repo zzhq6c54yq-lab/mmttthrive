@@ -19,7 +19,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Recursos especializados para miembros del servicio militar activo y veteranos."
         : "Specialized resources for active military service members and veterans.",
       path: "/dod-welcome",
-      image: "/lovable-uploads/1e0f4e37-5045-4a32-9e7a-2b6a8e5a9d84.png",
+      image: "/lovable-uploads/military-flag-badges.jpg", // Replace with your uploaded military image
       gradient: "from-green-600 to-emerald-800"
     },
     {
@@ -29,7 +29,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Apoyo integral para oficiales de policía y personal de aplicación de la ley."
         : "Comprehensive support for police officers and law enforcement personnel.",
       path: "/law-enforcement-welcome",
-      image: "/lovable-uploads/a8b3c2d1-4e5f-6g7h-8i9j-0k1l2m3n4o5p.png",
+      image: "/lovable-uploads/police-badge.jpg", // Replace with your uploaded police badge image
       gradient: "from-blue-700 to-indigo-900"
     },
     {
@@ -39,7 +39,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Bienestar y apoyo especializado para adultos mayores y sus familias."
         : "Specialized wellness and support for older adults and their families.",
       path: "/golden-years-welcome",
-      image: "/lovable-uploads/b9c4d3e2-5f6g-7h8i-9j0k-1l2m3n4o5p6q.png",
+      image: "/lovable-uploads/elderly-musicians.jpg", // Replace with your uploaded elderly musicians image
       gradient: "from-amber-500 to-orange-700"
     },
     {
@@ -49,7 +49,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Recursos para personas que viven con enfermedades crónicas y sus cuidadores."
         : "Resources for individuals living with chronic illnesses and their caregivers.",
       path: "/chronic-illness-welcome",
-      image: "/lovable-uploads/c0d5e4f3-6g7h-8i9j-0k1l-2m3n4o5p6q7r.png",
+      image: "/lovable-uploads/medicine-bottles.jpg", // Replace with your uploaded medicine bottles image
       gradient: "from-teal-600 to-cyan-800"
     },
     {
@@ -59,7 +59,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
         ? "Apoyo integral para pacientes con cáncer, sobrevivientes y sus familias."
         : "Comprehensive support for cancer patients, survivors, and their families.",
       path: "/cancer-support-welcome",
-      image: "/lovable-uploads/d1e6f5g4-7h8i-9j0k-1l2m-3n4o5p6q7r8s.png",
+      image: "/lovable-uploads/awareness-ribbons.jpg", // Replace with your uploaded awareness ribbons image
       gradient: "from-pink-600 to-rose-800"
     }
   ];
@@ -80,6 +80,11 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
                 src={program.image} 
                 alt={program.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                onError={(e) => {
+                  // Fallback to placeholder if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.src = "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=500&q=80";
+                }}
               />
               <div className={`absolute inset-0 bg-gradient-to-t ${program.gradient} opacity-70`}></div>
               <div className="absolute inset-0 flex items-end p-4">

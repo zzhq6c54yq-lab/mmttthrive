@@ -18,17 +18,14 @@ if (urlParams.get('forceReset') === 'true' || urlParams.get('resetOnboarding') =
 if (!localStorage.getItem('appInitialized') || window.location.pathname === '/' && urlParams.has('fresh')) {
   console.log("[main] Fresh initialization, clearing potential state conflicts");
   localStorage.setItem('appInitialized', 'true');
+  
   // Only clear these if we're not in the middle of onboarding
-  if (!localStorage.getItem('prevScreenState') || localStorage.getItem('prevScreenState') === 'intro') {
+  const prevScreenState = localStorage.getItem('prevScreenState');
+  if (!prevScreenState || prevScreenState === 'intro' || prevScreenState === 'main') {
     localStorage.removeItem('prevScreenState');
     localStorage.removeItem('introLoaded');
     localStorage.removeItem('stuckDetected');
   }
-}
-
-// Debug any URL parameters that might be affecting onboarding
-if (urlParams.has('forceHideBadge')) {
-  console.log("[main] Note: forceHideBadge parameter detected. This does not affect onboarding flow.");
 }
 
 // Add a force reset mechanism for when the app gets stuck
@@ -40,7 +37,13 @@ if (localStorage.getItem('stuckDetected') === 'true') {
   localStorage.removeItem('introLoaded');
 }
 
-createRoot(document.getElementById("root")!).render(
+// Ensure the root element exists
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+createRoot(rootElement).render(
   <BrowserRouter>
     <App />
   </BrowserRouter>

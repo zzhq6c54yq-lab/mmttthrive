@@ -38,6 +38,7 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   };
 
   const handleWorkshopsClick = () => {
+    console.log("[ThriveHeader] Navigating to workshops");
     navigate("/workshops");
   };
   
