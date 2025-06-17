@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SpinningLogo from "./header/SpinningLogo";
@@ -20,16 +21,12 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   const navigate = useNavigate();
   const { isSpanish } = useTranslation();
   
-  const handleHenryButtonClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleHenryButtonClick = () => {
     console.log("[ThriveHeader] Henry button clicked - toggling Henry");
     onHenryToggle();
   };
 
-  const handleWorkshopsClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleWorkshopsClick = () => {
     console.log("[ThriveHeader] Navigating to workshops");
     navigate("/workshops");
   };

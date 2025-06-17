@@ -1,104 +1,55 @@
 
-import React, { useRef, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import HenryDialog from "@/components/henry/HenryDialog";
-import HenryIntroDialog from "@/components/henry/HenryIntroDialog";
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { X } from "lucide-react";
 
 interface HenryFloatingElementProps {
   showHenry: boolean;
-  mousePosition: { x: number; y: number };
-  henryPosition: { x: number; y: number };
-  setHenryPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
-  userName?: string;
+  onHenryToggle: () => void;
 }
 
 const HenryFloatingElement: React.FC<HenryFloatingElementProps> = ({
   showHenry,
-  mousePosition,
-  henryPosition,
-  setHenryPosition,
-  userName = ""
+  onHenryToggle
 }) => {
-  const henryRef = useRef<HTMLDivElement>(null);
-  const [showIntroDialog, setShowIntroDialog] = useState(false);
-  const [showConversationDialog, setShowConversationDialog] = useState(false);
-
-  // Only show the intro dialog if it hasn't been shown before
-  useEffect(() => {
-    if (showHenry) {
-      const henryIntroShown = localStorage.getItem('henryIntroShown') === 'true';
-      if (!henryIntroShown) {
-        setShowIntroDialog(true);
-        localStorage.setItem('henryIntroShown', 'true');
-      }
-    }
-  }, [showHenry]);
-
-  useEffect(() => {
-    if (showHenry && henryRef.current) {
-      const henryWidth = henryRef.current.offsetWidth;
-      const henryHeight = henryRef.current.offsetHeight;
-      
-      const targetX = Math.max(20, Math.min(mousePosition.x - henryWidth/2, window.innerWidth - henryWidth - 20));
-      const targetY = Math.max(20, Math.min(mousePosition.y + 100, window.innerHeight - henryHeight - 20));
-      
-      const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
-      
-      // Update with the correct type for the state setter function
-      setHenryPosition(prev => ({
-        x: lerp(prev.x, targetX, 0.05),
-        y: lerp(prev.y, targetY, 0.05)
-      }));
-    }
-  }, [mousePosition, showHenry, setHenryPosition]);
-
-  if (!showHenry) return null;
-
-  const handleHenryClick = () => {
-    // Show intro dialog first
-    setShowIntroDialog(true);
-  };
-
-  const handleIntroDialogContinue = () => {
-    setShowIntroDialog(false);
-    setShowConversationDialog(true);
-  };
-
   return (
-    <>
-      <div 
-        ref={henryRef}
-        style={{
-          position: 'fixed',
-          left: `${henryPosition.x}px`,
-          top: `${henryPosition.y}px`,
-          zIndex: 50,
-        }}
-      >
-        <Button
-          onClick={handleHenryClick}
-          className="h-12 w-12 rounded-full bg-gradient-to-br from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white shadow-lg flex items-center justify-center"
+    <AnimatePresence>
+      {showHenry && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0, x: 100, y: 100 }}
+          animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+          exit={{ opacity: 0, scale: 0, x: 100, y: 100 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          className="fixed bottom-6 right-6 z-50"
         >
-          <Avatar className="h-10 w-10 border-2 border-white/30">
-            <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
-            <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold">H</AvatarFallback>
-          </Avatar>
-        </Button>
-      </div>
-
-      <HenryIntroDialog 
-        open={showIntroDialog} 
-        onOpenChange={setShowIntroDialog}
-        onContinue={handleIntroDialogContinue}
-      />
-
-      <HenryDialog 
-        isOpen={showConversationDialog} 
-        onOpenChange={setShowConversationDialog}
-        userName={userName}
-      />
-    </>
+          <div className="relative bg-gradient-to-br from-[#B87333] to-[#E5C5A1] p-4 rounded-full shadow-2xl">
+            <button
+              onClick={onHenryToggle}
+              className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 transition-colors duration-200"
+              aria-label="Close Henry"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            
+            <Avatar className="h-16 w-16 border-4 border-white/30">
+              <AvatarImage src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png" alt="Henry" />
+              <AvatarFallback className="bg-gradient-to-br from-[#B87333] to-[#E5C5A1] text-white font-semibold text-xl">H</AvatarFallback>
+            </Avatar>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="absolute -top-16 -left-8 bg-white text-gray-800 px-3 py-2 rounded-lg shadow-lg text-sm whitespace-nowrap"
+            >
+              Hi! I'm Henry, your companion
+              <div className="absolute top-full left-8 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
