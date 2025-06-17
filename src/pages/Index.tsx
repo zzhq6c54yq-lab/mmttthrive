@@ -17,7 +17,6 @@ export default function Index() {
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
   
-  // Use the index state hook
   const {
     screenState,
     setScreenState,
@@ -41,44 +40,49 @@ export default function Index() {
     handleMoodSelect
   } = useIndexState();
 
-  // Handle screen history
   useScreenHistory(screenState, setScreenState);
 
-  // Popup state management (disabled to prevent white popups)
+  // Disable all popups to prevent white popup issues
   const [showCoPayCredit, setShowCoPayCredit] = React.useState(false);
   const [showHenry, setShowHenry] = React.useState(false);
   const [popupsShown, setPopupsShown] = React.useState<PopupState>({
-    coPayCredit: true, // Mark as already shown to prevent popup
-    henryIntro: true, // Mark as already shown to prevent popup
-    mainTutorial: true, // Mark as already shown to prevent popup
-    transitionTutorial: true, // Mark as already shown to prevent popup
+    coPayCredit: true, // Always mark as shown to prevent popup
+    henryIntro: true, // Always mark as shown to prevent popup
+    mainTutorial: true, // Always mark as shown to prevent popup
+    transitionTutorial: true, // Always mark as shown to prevent popup
   });
 
-  // Debug logging for onboarding state
   React.useEffect(() => {
     console.log("[Index] Current screen state:", screenState);
     console.log("[Index] Has completed onboarding:", localStorage.getItem('hasCompletedOnboarding'));
   }, [screenState]);
 
-  const handleHenryToggle = () => {
+  const handleHenryToggle = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    console.log("[Index] Toggling Henry display");
     setShowHenry(!showHenry);
   };
 
   const markTutorialCompleted = () => {
+    console.log("[Index] Tutorial marked as completed");
     setPopupsShown(prev => ({
       ...prev,
-      mainTutorial: true
+      mainTutorial: true,
+      transitionTutorial: true
     }));
   };
 
   const navigateToFeature = (path: string) => {
+    console.log("[Index] Navigating to feature:", path);
     toast({
       title: isSpanish ? "Navegando..." : "Navigating...",
       description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
       duration: 1500,
     });
     
-    // For features that require assessment
     const isAssessmentPath = path.includes('/mental-wellness') || path.includes('/games-and-quizzes');
     
     window.history.pushState(
@@ -114,7 +118,7 @@ export default function Index() {
       showHenry={showHenry}
       isFirstVisit={isFirstVisit}
       setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={false} // Force disable co-pay popup
+      showCoPayCredit={false} // Force disable
       setShowCoPayCredit={() => {}} // Disable function
       popupsShown={popupsShown}
       getTranslatedText={getTranslatedText}

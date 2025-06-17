@@ -1,217 +1,186 @@
 
-import {
-  BarChart4,
-  Brain,
-  CalendarClock,
-  Gamepad2,
-  HeartHandshake,
-  ListChecks,
-  MessageSquare,
-  Settings,
-  SlidersHorizontal,
-  UserCog,
-  Users2,
-  MoonStar,
-  Sparkles,
-  Award
-} from "lucide-react";
 import React from "react";
+import { 
+  BarChart3, 
+  Brain, 
+  Heart, 
+  BookOpen, 
+  Headphones, 
+  GraduationCap,
+  Video,
+  MessageCircle,
+  Leaf,
+  Stethoscope,
+  Users,
+  Briefcase,
+  Smile,
+  TrendingUp,
+  Home,
+  Trophy,
+  Clock,
+  Target,
+  Award,
+  Activity
+} from "lucide-react";
 
 export interface FeatureItem {
   id: string;
-  icon: React.ReactNode;
-  color: string;
   title: string;
   description: string;
-  path: string;
+  icon: React.ReactNode;
   image: string;
-  popular: boolean;
-  comingSoon: boolean;
+  path: string;
+  color: string;
+  comingSoon?: boolean;
+  popular?: boolean;
 }
 
-export function getFeatures(isSpanish: boolean): FeatureItem[] {
-  return [
-    {
-      id: "mental-wellness",
-      icon: <Brain className="h-5 w-5 text-violet-400" />,
-      color: "purple",
-      title: isSpanish ? "Bienestar mental" : "Mental Wellness",
-      description: isSpanish
-        ? "Herramientas y recursos para mejorar tu salud mental y emocional."
-        : "Tools and resources to improve your mental and emotional health.",
-      path: "/mental-wellness",
-      image: "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png",
-      popular: true,
-      comingSoon: false,
-    },
-    {
-      id: "community-support",
-      icon: <Users2 className="h-5 w-5 text-sky-400" />,
-      color: "sky",
-      title: isSpanish ? "Apoyo comunitario" : "Community Support",
-      description: isSpanish
-        ? "Conéctate con otros, comparte experiencias y encuentra apoyo en nuestra comunidad."
-        : "Connect with others, share experiences, and find support in our community.",
-      path: "/community-support",
-      image: "/lovable-uploads/bce2b3d1-dbc0-4e7c-a7d1-98811182fe0a.png",
-      popular: true,
-      comingSoon: false,
-    },
-    {
-      id: "progress-reports",
-      icon: <BarChart4 className="h-5 w-5 text-emerald-400" />,
-      color: "emerald",
-      title: isSpanish ? "Informes de progreso" : "Progress Reports",
-      description: isSpanish
-        ? "Realiza un seguimiento de tu progreso y observa cómo estás mejorando con el tiempo."
-        : "Track your progress and see how you're improving over time.",
-      path: "/progress-reports",
-      image: "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png",
-      popular: true,
-      comingSoon: false,
-    },
-    {
-      id: "workshops",
-      icon: <CalendarClock className="h-5 w-5 text-amber-400" />,
-      color: "amber",
-      title: isSpanish ? "Talleres" : "Workshops",
-      description: isSpanish
-        ? "Participa en talleres interactivos para aprender nuevas habilidades y estrategias."
-        : "Participate in interactive workshops to learn new skills and strategies.",
-      path: "/workshops",
-      image: "/lovable-uploads/54e4d3e9-8aa5-46b2-a8e6-42fb0ba8128b.png",
-      popular: true,
-      comingSoon: false,
-    },
-    {
-      id: "real-time-therapy",
-      icon: <HeartHandshake className="h-5 w-5 text-rose-400" />,
-      color: "rose",
-      title: isSpanish ? "Terapia en tiempo real" : "Real-Time Therapy",
-      description: isSpanish
-        ? "Obtén apoyo personalizado de terapeutas licenciados en tiempo real."
-        : "Get personalized support from licensed therapists in real-time.",
-      path: "/real-time-therapy",
-      image: "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png",
-      popular: false,
-      comingSoon: false,
-    },
-    {
-      id: "resource-library",
-      icon: <ListChecks className="h-5 w-5 text-violet-400" />,
-      color: "violet",
-      title: isSpanish ? "Biblioteca de recursos" : "Resource Library",
-      description: isSpanish
-        ? "Accede a una amplia biblioteca de artículos, guías y herramientas útiles."
-        : "Access a vast library of articles, guides, and helpful tools.",
-      path: "/resource-library",
-      image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
-      popular: false,
-      comingSoon: false,
-    },
-    {
-      id: "mini-games",
-      icon: <Gamepad2 className="h-5 w-5 text-indigo-400" />,
-      color: "indigo",
-      title: isSpanish ? "Mini juegos" : "Mini Games",
-      description: isSpanish
-        ? "Entrena tu mente con divertidos mini juegos cognitivos y de destreza mental."
-        : "Train your mind with fun mini games for cognitive and mental skill-building.",
-      path: "/games-and-quizzes",
-      image: "/lovable-uploads/776b4638-0382-4cd8-bb25-0a7e36accaf1.png",
-      popular: true,
-      comingSoon: false,
-    },
-    {
-      id: "sleep-tracker",
-      icon: <MoonStar className="h-5 w-5 text-sky-600" />,
-      color: "cyan",
-      title: isSpanish ? "Sleep Tracker" : "Sleep Tracker",
-      description: isSpanish
-        ? "Registra tus horas de sueño cada noche y mejora tus hábitos de descanso."
-        : "Log your nightly sleep and improve your rest habits.",
-      path: "/games/sleep-tracker",
-      image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=500&q=80",
-      popular: false,
-      comingSoon: false,
-    },
-    {
-      id: "meditation-studio",
-      icon: <Sparkles className="h-5 w-5 text-purple-500" />,
-      color: "purple",
-      title: isSpanish ? "Meditation Studio" : "Meditation Studio",
-      description: isSpanish
-        ? "Relájate y medita con sesiones guiadas y ejercicios de respiración."
-        : "Relax and meditate with guided sessions and breathing exercises.",
-      path: "/games/meditation-studio",
-      image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=500&q=80",
-      popular: false,
-      comingSoon: false,
-    },
-    {
-      id: "career-coaching",
-      icon: <Award className="h-5 w-5 text-amber-500" />,
-      color: "amber",
-      title: isSpanish ? "Career Coaching" : "Career Coaching",
-      description: isSpanish
-        ? "Mejora tu carrera con consejos, pruebas rápidas y orientación personalizada."
-        : "Boost your career with advice, quizzes, and coaching.",
-      path: "/games/career-coaching",
-      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=500&q=80",
-      popular: false,
-      comingSoon: false,
-    },
-    {
-      id: "settings",
-      icon: <Settings className="h-5 w-5 text-zinc-400" />,
-      color: "zinc",
-      title: isSpanish ? "Ajustes" : "Settings",
-      description: isSpanish
-        ? "Configura tu perfil y preferencias para personalizar tu experiencia."
-        : "Configure your profile and preferences to personalize your experience.",
-      path: "/settings",
-      image: "/lovable-uploads/d2ecdcd2-9a78-40ea-8a8a-ef13092b5ea1.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
-      id: "admin-tools",
-      icon: <UserCog className="h-5 w-5 text-stone-400" />,
-      color: "stone",
-      title: isSpanish ? "Herramientas de administrador" : "Admin Tools",
-      description: isSpanish
-        ? "Gestiona usuarios, contenido y configuraciones del sistema."
-        : "Manage users, content, and system configurations.",
-      path: "/admin-tools",
-      image: "/lovable-uploads/10d9c6f1-9335-46e4-8942-4d4c198d3f5b.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
-      id: "integrations",
-      icon: <SlidersHorizontal className="h-5 w-5 text-orange-400" />,
-      color: "orange",
-      title: isSpanish ? "Integraciones" : "Integrations",
-      description: isSpanish
-        ? "Conecta Thrive con otras herramientas y plataformas que utilizas."
-        : "Connect Thrive with other tools and platforms you use.",
-      path: "/integrations",
-      image: "/lovable-uploads/11170587-bb45-4563-93d6-add9916cea87.png",
-      popular: false,
-      comingSoon: true,
-    },
-    {
-      id: "feedback",
-      icon: <MessageSquare className="h-5 w-5 text-lime-400" />,
-      color: "lime",
-      title: isSpanish ? "Comentarios" : "Feedback",
-      description: isSpanish
-        ? "Envíanos tus comentarios y sugerencias para mejorar Thrive."
-        : "Send us your feedback and suggestions to improve Thrive.",
-      path: "/feedback",
-      image: "/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
-      popular: false,
-      comingSoon: true,
-    },
-  ];
-}
+export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
+  {
+    id: "progress-reports",
+    title: isSpanish ? "Informes de Progreso" : "User-led Progress",
+    description: isSpanish ? "Rastrea tu progreso y alcanza tus objetivos de bienestar." : "Track your progress and reach your wellness goals.",
+    icon: <BarChart3 className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80",
+    path: "/progress-analytics",
+    color: "blue"
+  },
+  {
+    id: "family-resources",
+    title: isSpanish ? "Recursos Familiares" : "Family Resources",
+    description: isSpanish ? "Apoyo y recursos para toda la familia." : "Support and resources for the whole family.",
+    icon: <Home className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80",
+    path: "/family-resources",
+    color: "green"
+  },
+  {
+    id: "mental-wellness",
+    title: isSpanish ? "Biblioteca de Bienestar Mental" : "Mental Wellness Library",
+    description: isSpanish ? "Herramientas y recursos para el bienestar mental." : "Tools and resources for mental wellness.",
+    icon: <Brain className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=500&q=80",
+    path: "/mental-wellness-tools",
+    color: "purple"
+  },
+  {
+    id: "lois-challenge",
+    title: isSpanish ? "Desafío Lois" : "Lois Challenge",
+    description: isSpanish ? "Participa en desafíos diarios de bienestar." : "Participate in daily wellness challenges.",
+    icon: <Trophy className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=500&q=80",
+    path: "/wellness-challenges",
+    color: "yellow",
+    popular: true
+  },
+  {
+    id: "journaling",
+    title: isSpanish ? "Diario Personal" : "Journaling",
+    description: isSpanish ? "Herramientas de diario para reflexión y crecimiento." : "Journaling tools for reflection and growth.",
+    icon: <BookOpen className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=500&q=80",
+    path: "/journaling",
+    color: "indigo"
+  },
+  {
+    id: "binaural-beats",
+    title: isSpanish ? "Ritmos Binaurales" : "Binaural Beats",
+    description: isSpanish ? "Música terapéutica para relajación y concentración." : "Therapeutic music for relaxation and focus.",
+    icon: <Headphones className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=500&q=80",
+    path: "/binaural-beats",
+    color: "teal"
+  },
+  {
+    id: "workshops",
+    title: isSpanish ? "Talleres" : "Workshops",
+    description: isSpanish ? "Talleres interactivos sobre bienestar y crecimiento personal." : "Interactive workshops on wellness and personal growth.",
+    icon: <GraduationCap className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=500&q=80",
+    path: "/workshops",
+    color: "orange"
+  },
+  {
+    id: "video-journaling",
+    title: isSpanish ? "Diario en Video" : "Video Journaling",
+    description: isSpanish ? "Crea entradas de diario en video personales." : "Create personal video diary entries.",
+    icon: <Video className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=500&q=80",
+    path: "/video-diary",
+    color: "red"
+  },
+  {
+    id: "real-time-therapy",
+    title: isSpanish ? "Terapia en Tiempo Real" : "Real-time Therapy",
+    description: isSpanish ? "Conecta con terapeutas profesionales al instante." : "Connect with professional therapists instantly.",
+    icon: <MessageCircle className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=500&q=80",
+    path: "/real-time-therapy",
+    color: "emerald"
+  },
+  {
+    id: "holistic-wellness",
+    title: isSpanish ? "Bienestar Holístico" : "Holistic Wellness",
+    description: isSpanish ? "Enfoque integral del bienestar físico y mental." : "Comprehensive approach to physical and mental wellness.",
+    icon: <Leaf className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=500&q=80",
+    path: "/holistic-wellness",
+    color: "green"
+  },
+  {
+    id: "alternative-therapy",
+    title: isSpanish ? "Terapia Alternativa" : "Alternative Therapy",
+    description: isSpanish ? "Explora terapias alternativas y complementarias." : "Explore alternative and complementary therapies.",
+    icon: <Stethoscope className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=500&q=80",
+    path: "/alternative-therapies",
+    color: "violet"
+  },
+  {
+    id: "community-support",
+    title: isSpanish ? "Apoyo Comunitario" : "Community Support",
+    description: isSpanish ? "Conecta con una comunidad solidaria de apoyo." : "Connect with a supportive community network.",
+    icon: <Users className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=500&q=80",
+    path: "/community-support",
+    color: "pink"
+  },
+  {
+    id: "career-counseling",
+    title: isSpanish ? "Orientación Profesional" : "Career Counseling",
+    description: isSpanish ? "Orientación profesional y desarrollo de carrera." : "Professional guidance and career development.",
+    icon: <Briefcase className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80",
+    path: "/career-counseling",
+    color: "slate",
+    comingSoon: true
+  },
+  {
+    id: "meditation",
+    title: isSpanish ? "Meditación" : "Meditation",
+    description: isSpanish ? "Prácticas de meditación guiada para la paz interior." : "Guided meditation practices for inner peace.",
+    icon: <Smile className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=500&q=80",
+    path: "/mindfulness",
+    color: "cyan"
+  },
+  {
+    id: "mood-tracking",
+    title: isSpanish ? "Seguimiento del Estado de Ánimo" : "Mood Tracking",
+    description: isSpanish ? "Rastrea y analiza tus patrones de estado de ánimo." : "Track and analyze your mood patterns.",
+    icon: <Activity className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=500&q=80",
+    path: "/mood-tracker",
+    color: "amber",
+    comingSoon: true
+  },
+  {
+    id: "games-quizzes",
+    title: isSpanish ? "Juegos y Cuestionarios" : "Brain Games & Quizzes",
+    description: isSpanish ? "Juegos cognitivos y cuestionarios para el bienestar mental." : "Cognitive games and quizzes for mental wellness.",
+    icon: <Brain className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?auto=format&fit=crop&w=500&q=80",
+    path: "/games-and-quizzes",
+    color: "rose"
+  }
+];
