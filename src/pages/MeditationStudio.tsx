@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Lotus, Play, Pause, Clock, Heart, Brain, Leaf } from "lucide-react";
+import { Flower2, Play, Pause, Clock, Heart, Brain, Leaf } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 
 const MeditationStudio = () => {
@@ -69,7 +69,7 @@ const MeditationStudio = () => {
     <Page title={isSpanish ? "Estudio de Meditación" : "Meditation Studio"}>
       <div className="container mx-auto px-6 py-8">
         <div className="text-center mb-8">
-          <Lotus className="w-16 h-16 text-purple-500 mx-auto mb-4" />
+          <Flower2 className="w-16 h-16 text-purple-500 mx-auto mb-4" />
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
             {isSpanish ? "Estudio de Meditación" : "Meditation Studio"}
           </h1>

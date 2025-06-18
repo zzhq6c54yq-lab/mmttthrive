@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   BarChart3, 
@@ -22,7 +21,7 @@ import {
   Award,
   Activity,
   Moon,
-  Lotus,
+  Flower2,
   TrendingUp as CareerIcon
 } from "lucide-react";
 
@@ -161,7 +160,7 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     id: "meditation",
     title: isSpanish ? "Meditación" : "Meditation Studio",
     description: isSpanish ? "Estudio de meditación con prácticas guiadas." : "Comprehensive meditation studio with guided practices.",
-    icon: <Lotus className="w-6 h-6" />,
+    icon: <Flower2 className="w-6 h-6" />,
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=500&q=80",
     path: "/meditation-studio",
     color: "cyan"
