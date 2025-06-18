@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import SpinningLogo from "./header/SpinningLogo";
 import WelcomeText from "./header/WelcomeText";
 import MeetHenryButton from "./header/MeetHenryButton";
-import { Button } from "@/components/ui/button";
 import useTranslation from "@/hooks/useTranslation";
 
 interface ThriveHeaderProps {
@@ -25,11 +24,6 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
     console.log("[ThriveHeader] Henry button clicked - toggling Henry");
     onHenryToggle();
   };
-
-  const handleWorkshopsClick = () => {
-    console.log("[ThriveHeader] Navigating to workshops");
-    navigate("/workshops");
-  };
   
   return (
     <div className="w-full relative overflow-hidden py-0 z-10">
@@ -48,12 +42,6 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
             <WelcomeText userName={userName} />
             <div className="flex flex-col sm:flex-row gap-4 items-center">
               <MeetHenryButton onClick={handleHenryButtonClick} />
-              <Button 
-                onClick={handleWorkshopsClick}
-                className="bg-gradient-to-r from-blue-700 to-indigo-400 text-white rounded-lg shadow-lg hover:from-blue-800 hover:to-indigo-500 transition-all duration-200 px-6 py-3 text-lg font-semibold"
-              >
-                {isSpanish ? "Ver Todos los Talleres" : "View All Workshops"}
-              </Button>
             </div>
           </div>
         </div>

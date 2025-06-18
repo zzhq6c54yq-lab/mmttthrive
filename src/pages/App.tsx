@@ -89,6 +89,9 @@ import ChronicIllnessPortal from "@/pages/ChronicIllnessPortal";
 import CancerSupportWelcome from "@/pages/CancerSupportWelcome";
 import CancerSupportPortal from "@/pages/CancerSupportPortal";
 import AllWorkshopsPage from "@/pages/AllWorkshops";
+import SleepTracker from "@/pages/SleepTracker";
+import MeditationStudio from "@/pages/MeditationStudio";
+import CareerCoaching from "@/pages/CareerCoaching";
 
 // Import additional routes for specific chronic illness pages if needed
 // These can be added as the specific content pages are built
@@ -130,6 +133,12 @@ function App() {
         <Route path="/games/sleep-tracker" element={<GameSleepTracker />} />
         <Route path="/games/career-coaching" element={<GameCareerCoaching />} />
         <Route path="/games/meditation-studio" element={<GameMeditationStudio />} />
+        
+        {/* New standalone feature pages */}
+        <Route path="/sleep-tracker" element={<SleepTracker />} />
+        <Route path="/meditation-studio" element={<MeditationStudio />} />
+        <Route path="/career-coaching" element={<CareerCoaching />} />
+        
         <Route path="/small-business-portal" element={<SmallBusinessPortal />} />
         <Route path="/small-business-welcome" element={<SmallBusinessWelcome />} />
         <Route path="/small-business-selection" element={<SmallBusinessSelection />} />

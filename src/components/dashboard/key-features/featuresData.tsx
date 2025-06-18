@@ -20,7 +20,10 @@ import {
   Clock,
   Target,
   Award,
-  Activity
+  Activity,
+  Moon,
+  Lotus,
+  TrendingUp as CareerIcon
 } from "lucide-react";
 
 export interface FeatureItem {
@@ -147,32 +150,30 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
   },
   {
     id: "career-counseling",
-    title: isSpanish ? "Orientación Profesional" : "Career Counseling",
+    title: isSpanish ? "Orientación Profesional" : "Career Coaching",
     description: isSpanish ? "Orientación profesional y desarrollo de carrera." : "Professional guidance and career development.",
-    icon: <Briefcase className="w-6 h-6" />,
+    icon: <CareerIcon className="w-6 h-6" />,
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80",
-    path: "/career-counseling",
-    color: "slate",
-    comingSoon: true
+    path: "/career-coaching",
+    color: "slate"
   },
   {
     id: "meditation",
-    title: isSpanish ? "Meditación" : "Meditation",
-    description: isSpanish ? "Prácticas de meditación guiada para la paz interior." : "Guided meditation practices for inner peace.",
-    icon: <Smile className="w-6 h-6" />,
+    title: isSpanish ? "Meditación" : "Meditation Studio",
+    description: isSpanish ? "Estudio de meditación con prácticas guiadas." : "Comprehensive meditation studio with guided practices.",
+    icon: <Lotus className="w-6 h-6" />,
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=500&q=80",
-    path: "/mindfulness",
+    path: "/meditation-studio",
     color: "cyan"
   },
   {
-    id: "mood-tracking",
-    title: isSpanish ? "Seguimiento del Estado de Ánimo" : "Mood Tracking",
-    description: isSpanish ? "Rastrea y analiza tus patrones de estado de ánimo." : "Track and analyze your mood patterns.",
-    icon: <Activity className="w-6 h-6" />,
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=500&q=80",
-    path: "/mood-tracker",
-    color: "amber",
-    comingSoon: true
+    id: "sleep-tracking",
+    title: isSpanish ? "Seguimiento del Sueño" : "Sleep Tracker",
+    description: isSpanish ? "Rastrea y mejora tus patrones de sueño." : "Track and improve your sleep patterns.",
+    icon: <Moon className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=500&q=80",
+    path: "/sleep-tracker",
+    color: "indigo"
   },
   {
     id: "games-quizzes",

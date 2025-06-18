@@ -8,9 +8,9 @@ const InfoButtons: React.FC = () => {
   const navigate = useNavigate();
   const { isSpanish } = useTranslation();
 
-  const handleWaterSystem = () => {
-    console.log("Water System clicked");
-    navigate("/water-system");
+  const handleBarterSystem = () => {
+    console.log("Barter System clicked");
+    navigate("/barter-system");
   };
 
   const handleUpgradePlan = () => {
@@ -27,21 +27,21 @@ const InfoButtons: React.FC = () => {
     <div className="flex justify-center gap-4 mt-4 mb-6">
       <Button
         onClick={handleUpgradePlan}
-        className="text-xs px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 border border-blue-300 rounded-md transition-colors"
+        className="text-xs px-3 py-1 bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-black font-semibold border border-[#B87333] rounded-md transition-all duration-200 hover:shadow-lg"
         size="sm"
       >
         {isSpanish ? "Actualizar Plan" : "Upgrade Plan"}
       </Button>
       <Button
-        onClick={handleWaterSystem}
-        className="text-xs px-3 py-1 bg-green-100 hover:bg-green-200 text-green-700 border border-green-300 rounded-md transition-colors"
+        onClick={handleBarterSystem}
+        className="text-xs px-3 py-1 bg-black/80 hover:bg-black/90 text-white border border-gray-600 rounded-md transition-colors"
         size="sm"
       >
-        {isSpanish ? "Sistema de Agua" : "Water System"}
+        {isSpanish ? "Sistema de Trueque" : "Barter System"}
       </Button>
       <Button
         onClick={handleOmniCredits}
-        className="text-xs px-3 py-1 bg-purple-100 hover:bg-purple-200 text-purple-700 border border-purple-300 rounded-md transition-colors"
+        className="text-xs px-3 py-1 bg-black/80 hover:bg-black/90 text-white border border-gray-600 rounded-md transition-colors"
         size="sm"
       >
         {isSpanish ? "Créditos Omni" : "Omni Credits"}

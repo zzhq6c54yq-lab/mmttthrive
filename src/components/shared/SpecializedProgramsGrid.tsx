@@ -83,6 +83,16 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       gradient: "from-teal-600 to-cyan-800"
     },
     {
+      id: "transportation",
+      title: isSpanish ? "Industria de Transporte" : "Transportation Industry",
+      description: isSpanish 
+        ? "Apoyo para conductores, pilotos y trabajadores del transporte."
+        : "Support for drivers, pilots, and transportation workers.",
+      path: "/transport-welcome",
+      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=500&q=80",
+      gradient: "from-gray-600 to-slate-800"
+    },
+    {
       id: "law-enforcement",
       title: isSpanish ? "Aplicación de la Ley" : "Law Enforcement",
       description: isSpanish 
@@ -103,12 +113,22 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
       gradient: "from-indigo-600 to-purple-800"
     },
     {
-      id: "chronic-cancer",
-      title: isSpanish ? "Enfermedades Crónicas y Cáncer" : "Chronic Illness & Cancer",
+      id: "chronic-illness",
+      title: isSpanish ? "Enfermedades Crónicas" : "Chronic Illness",
       description: isSpanish 
-        ? "Apoyo para pacientes con enfermedades crónicas y cáncer."
-        : "Support for patients with chronic illnesses and cancer.",
+        ? "Apoyo para pacientes con enfermedades crónicas y sus familias."
+        : "Support for patients with chronic illnesses and their families.",
       path: "/chronic-illness-welcome",
+      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=500&q=80",
+      gradient: "from-purple-600 to-violet-800"
+    },
+    {
+      id: "cancer-support",
+      title: isSpanish ? "Apoyo para el Cáncer" : "Cancer Support",
+      description: isSpanish 
+        ? "Apoyo especializado para pacientes con cáncer y sus familias."
+        : "Specialized support for cancer patients and their families.",
+      path: "/cancer-support-welcome",
       image: "/lovable-uploads/awareness-ribbons.jpg",
       gradient: "from-pink-600 to-rose-800"
     }
@@ -126,7 +146,7 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
           onClick={() => onProgramClick(program.path)}
         >
           <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative h-32 overflow-hidden">
               <img 
                 src={program.image} 
                 alt={program.title}
@@ -137,9 +157,9 @@ const SpecializedProgramsGrid: React.FC<SpecializedProgramsGridProps> = ({ onPro
                 }}
               />
               <div className={`absolute inset-0 bg-gradient-to-t ${program.gradient} opacity-70`}></div>
-              <div className="absolute inset-0 flex items-end p-4">
-                <h3 className="text-white text-lg font-bold leading-tight">{program.title}</h3>
-              </div>
+            </div>
+            <div className={`h-16 bg-gradient-to-r ${program.gradient} flex items-end p-4`}>
+              <h3 className="text-white text-lg font-bold leading-tight">{program.title}</h3>
             </div>
             <div className="p-4">
               <p className="text-gray-600 text-sm mb-4 line-clamp-3">
