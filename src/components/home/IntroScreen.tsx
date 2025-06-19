@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Languages, ChevronDown } from "lucide-react";
+import { ArrowRight, Languages, ChevronDown, RotateCcw } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +17,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<'English' | 'Español' | 'Português' | 'Filipino'>("English");
   
   useEffect(() => {
+    console.log("[IntroScreen] Component mounted - onboarding screen is showing");
     // Load the saved language preference if available
     const savedLanguage = localStorage.getItem('preferredLanguage');
     if (savedLanguage === 'Español') {
@@ -57,10 +58,29 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
       console.error("[IntroScreen] onContinue is not a function:", onContinue);
     }
   };
+
+  const handleResetDemo = () => {
+    console.log("[IntroScreen] Demo reset requested");
+    localStorage.removeItem('hasCompletedOnboarding');
+    window.location.reload();
+  };
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
       <div className="floating-bg"></div>
+      
+      {/* Demo reset button - top left */}
+      <div className="absolute top-6 left-6 z-20">
+        <Button 
+          onClick={handleResetDemo}
+          size="sm"
+          variant="ghost"
+          className="flex items-center gap-2 py-2 px-3 h-9 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 transition-all duration-300"
+        >
+          <RotateCcw className="h-4 w-4" />
+          Reset Demo
+        </Button>
+      </div>
       
       {/* Language dropdown menu at the top */}
       <div className="absolute top-6 right-6 z-20">

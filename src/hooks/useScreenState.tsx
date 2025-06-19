@@ -9,33 +9,33 @@ export const useScreenState = () => {
   useEffect(() => {
     const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
     const forceOnboarding = new URLSearchParams(window.location.search).get('onboarding') === 'true';
+    const forceReset = new URLSearchParams(window.location.search).get('forceReset') === 'true';
 
-    console.log("[useScreenState] Onboarding check - hasCompleted:", hasCompletedOnboarding);
-    console.log("[useScreenState] Force onboarding:", forceOnboarding);
+    console.log("[useScreenState] Current localStorage value:", localStorage.getItem('hasCompletedOnboarding'));
+    console.log("[useScreenState] hasCompletedOnboarding:", hasCompletedOnboarding);
+    console.log("[useScreenState] forceOnboarding:", forceOnboarding);
+    console.log("[useScreenState] forceReset:", forceReset);
     
-    // For investment demo purposes, always show onboarding if not explicitly completed
-    // OR if forced via URL parameter
-    if (forceOnboarding) {
-      console.log("[useScreenState] Forcing onboarding via URL parameter");
+    // For investment demo - ensure onboarding shows for new users
+    // Reset if forced or if no explicit completion
+    if (forceReset || forceOnboarding || !hasCompletedOnboarding) {
+      console.log("[useScreenState] Starting onboarding flow");
       localStorage.removeItem('hasCompletedOnboarding');
       setScreenState('intro');
-    } else if (!hasCompletedOnboarding) {
-      console.log("[useScreenState] No completed onboarding found, starting from intro");
-      setScreenState('intro');
     } else {
-      console.log("[useScreenState] Onboarding completed, going to main dashboard");
+      console.log("[useScreenState] Onboarding completed, going to main");
       setScreenState('main');
     }
   }, []);
 
   const setScreenStateWithValidation = (newState: ScreenStateType) => {
-    console.log("[useScreenState] Transitioning to screen:", newState);
+    console.log("[useScreenState] Transitioning from", screenState, "to", newState);
     setScreenState(newState);
     
     // Only mark onboarding as completed when explicitly reaching main
     if (newState === 'main') {
       localStorage.setItem('hasCompletedOnboarding', 'true');
-      console.log("[useScreenState] Onboarding marked as completed");
+      console.log("[useScreenState] Onboarding marked as completed in localStorage");
     }
   };
 
