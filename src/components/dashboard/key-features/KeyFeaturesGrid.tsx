@@ -35,6 +35,12 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
     show: { opacity: 1, y: 0 }
   };
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    // Fallback to a reliable placeholder
+    target.src = "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80";
+  };
+
   return (
     <motion.div 
       className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
@@ -75,19 +81,23 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
               )}
 
               {/* Feature Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-48 overflow-hidden bg-gray-100">
                 <img 
                   src={feature.image} 
                   alt={feature.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={handleImageError}
+                  loading="lazy"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-t from-${feature.color}-600/50 to-transparent`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/20 to-transparent`}></div>
               </div>
 
               {/* Feature Content */}
               <div className="p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  {feature.icon}
+                  <div className={`text-${feature.color}-600`}>
+                    {feature.icon}
+                  </div>
                   <h3 className="font-bold text-lg text-gray-800 line-clamp-1">
                     {feature.title}
                   </h3>

@@ -1,15 +1,6 @@
 
 import React from "react";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
-import WelcomeTutorial from "@/components/tutorials/WelcomeTutorial";
-import { useToast } from "@/hooks/use-toast";
-
-interface PopupState {
-  coPayCredit: boolean;
-  henryIntro: boolean;
-  mainTutorial: boolean;
-  transitionTutorial: boolean;
-}
 
 interface IndexContentProps {
   screenState: 'intro' | 'mood' | 'moodResponse' | 'register' | 'subscription' | 'subscriptionAddOns' | 'visionBoard' | 'main';
@@ -28,7 +19,12 @@ interface IndexContentProps {
   setIsFirstVisit: (value: boolean) => void;
   showCoPayCredit: boolean;
   setShowCoPayCredit: (value: boolean) => void;
-  popupsShown: PopupState;
+  popupsShown: {
+    coPayCredit: boolean;
+    henryIntro: boolean;
+    mainTutorial: boolean;
+    transitionTutorial: boolean;
+  };
   getTranslatedText: (key: string) => string;
   onMoodSelect: (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => void;
   onUserInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -58,10 +54,6 @@ const IndexContent: React.FC<IndexContentProps> = ({
   showHenry,
   isFirstVisit,
   setIsFirstVisit,
-  showCoPayCredit,
-  setShowCoPayCredit,
-  popupsShown,
-  getTranslatedText,
   onMoodSelect,
   onUserInfoChange,
   onQualityToggle,
@@ -78,21 +70,7 @@ const IndexContent: React.FC<IndexContentProps> = ({
   markTutorialCompleted,
   isInOnboarding = false
 }) => {
-  const { toast } = useToast();
-
-  // Completely disable tutorial popups to prevent white popup issues
-  const shouldShowTutorial = false;
-
-  const handleSkipTutorial = () => {
-    setIsFirstVisit(false);
-    markTutorialCompleted();
-  };
-
-  const handleCloseTutorial = () => {
-    setIsFirstVisit(false);
-    markTutorialCompleted();
-  };
-
+  // No popups or tutorials - just render the main content
   return (
     <div className="relative">
       <IndexScreenManager

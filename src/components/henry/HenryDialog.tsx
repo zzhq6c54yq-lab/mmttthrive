@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X, Send, Mic, AlertCircle } from "lucide-react";
+import { X, Send, Mic, AlertCircle, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HenryHeader from "./components/HenryHeader";
 import MessageList from "@/components/shared/MessageList";
@@ -21,6 +22,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const { toast } = useToast();
   
   // Add a message to the chat
@@ -43,8 +45,31 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
         isUser: false,
         timestamp: new Date()
       }]);
+      setScrollPosition(0);
     }
   }, [isOpen, userName]);
+  
+  // Handle scroll navigation
+  const handleScrollUp = () => {
+    const scrollArea = document.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollArea) {
+      const currentScroll = scrollArea.scrollTop;
+      const newScroll = Math.max(0, currentScroll - 100);
+      scrollArea.scrollTo({ top: newScroll, behavior: 'smooth' });
+      setScrollPosition(newScroll);
+    }
+  };
+
+  const handleScrollDown = () => {
+    const scrollArea = document.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollArea) {
+      const currentScroll = scrollArea.scrollTop;
+      const maxScroll = scrollArea.scrollHeight - scrollArea.clientHeight;
+      const newScroll = Math.min(maxScroll, currentScroll + 100);
+      scrollArea.scrollTo({ top: newScroll, behavior: 'smooth' });
+      setScrollPosition(newScroll);
+    }
+  };
   
   // Handle voice recognition
   const startListening = () => {
@@ -111,6 +136,26 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
       >
         {/* Header */}
         <HenryHeader onClose={() => onOpenChange(false)} />
+        
+        {/* Scroll Navigation */}
+        <div className="flex justify-center gap-2 mb-2">
+          <Button
+            onClick={handleScrollUp}
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0 hover:bg-[#B87333]/20"
+          >
+            <ArrowUp className="h-4 w-4 text-[#B87333]" />
+          </Button>
+          <Button
+            onClick={handleScrollDown}
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0 hover:bg-[#B87333]/20"
+          >
+            <ArrowDown className="h-4 w-4 text-[#B87333]" />
+          </Button>
+        </div>
         
         {/* Messages Area */}
         <MessageList 
