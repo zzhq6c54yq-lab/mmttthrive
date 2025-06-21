@@ -1,5 +1,6 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
 import useIndexState from "@/hooks/useIndexState";
@@ -7,6 +8,7 @@ import useScreenHistory from "@/hooks/useScreenHistory";
 import IndexContent from "@/components/home/IndexContent";
 
 export default function Index() {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
   
@@ -35,7 +37,7 @@ export default function Index() {
 
   useScreenHistory(screenState, setScreenState);
 
-  // Completely disable all popups to prevent white popup issues
+  // Completely disable all popups and floating elements
   const [showHenry, setShowHenry] = React.useState(false);
 
   React.useEffect(() => {
@@ -56,27 +58,30 @@ export default function Index() {
     console.log("[Index] Tutorial marked as completed");
   };
 
+  // Fixed navigation using React Router instead of manual window manipulation
   const navigateToFeature = (path: string) => {
     console.log("[Index] Navigating to feature:", path);
+    
+    // Show loading toast
     toast({
       title: isSpanish ? "Navegando..." : "Navigating...",
       description: isSpanish ? "Cargando recurso solicitado" : "Loading requested resource",
       duration: 1500,
     });
     
+    // Determine if this is an assessment-related path
     const isAssessmentPath = path.includes('/mental-wellness') || path.includes('/games-and-quizzes');
     
-    window.history.pushState(
-      { 
+    // Use React Router navigate instead of manual window manipulation
+    navigate(path, {
+      state: {
         fromMainMenu: true,
         preventTutorial: true,
         directToAssessment: isAssessmentPath,
-        startAssessment: isAssessmentPath
-      }, 
-      '', 
-      path
-    );
-    window.location.href = path;
+        startAssessment: isAssessmentPath,
+        screenState: 'main'
+      }
+    });
   };
 
   const getTranslatedText = (key: string) => {
@@ -96,16 +101,16 @@ export default function Index() {
       selectedAddOns={selectedAddOns}
       selectedQualities={selectedQualities}
       selectedGoals={selectedGoals}
-      showHenry={showHenry}
+      showHenry={false} // Always false to prevent popup artifacts
       isFirstVisit={isFirstVisit}
       setIsFirstVisit={setIsFirstVisit}
-      showCoPayCredit={false}
-      setShowCoPayCredit={() => {}}
+      showCoPayCredit={false} // Always false to prevent popup artifacts
+      setShowCoPayCredit={() => {}} // No-op function
       popupsShown={{
-        coPayCredit: true,
-        henryIntro: true,
-        mainTutorial: true,
-        transitionTutorial: true,
+        coPayCredit: true, // Mark as shown to prevent rendering
+        henryIntro: true, // Mark as shown to prevent rendering
+        mainTutorial: true, // Mark as shown to prevent rendering
+        transitionTutorial: true, // Mark as shown to prevent rendering
       }}
       getTranslatedText={getTranslatedText}
       onMoodSelect={handleMoodSelect}

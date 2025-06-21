@@ -26,6 +26,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
 }) => {
   const handleClick = () => {
     if (onClick) {
+      console.log("[BaseCard] Navigating to:", path);
       onClick(path);
     }
   };
@@ -47,7 +48,15 @@ const BaseCard: React.FC<BaseCardProps> = ({
     } else if (id.includes("cancer")) {
       return "/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png";
     }
-    return "/placeholder.svg";
+    // Use a reliable Unsplash fallback instead of placeholder.svg
+    return "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80";
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    const fallback = getFallbackImage(id);
+    console.log("[BaseCard] Image failed to load, using fallback:", fallback);
+    target.src = fallback;
   };
 
   // Animation variants - simplified to prevent conflicts
@@ -65,17 +74,18 @@ const BaseCard: React.FC<BaseCardProps> = ({
     >
       <button
         onClick={handleClick}
-        className="w-full h-full text-left"
+        className="w-full h-full text-left focus:outline-none focus:ring-2 focus:ring-[#B87333] focus:ring-opacity-50 rounded-xl"
         aria-label={title}
       >
         <div className="relative rounded-xl overflow-hidden h-44 shadow-lg hover:shadow-xl transition-shadow duration-300">
           {/* Image Section (3/4 of height) */}
           <div className="absolute inset-0 h-[75%] overflow-hidden">
-            <RobustImage 
+            <img 
               src={imagePath}
               alt={title}
-              className="w-full h-full object-cover"
-              fallbackSrc={getFallbackImage(id)}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              onError={handleImageError}
+              loading="lazy"
             />
             
             <div className="absolute inset-0 bg-black/30"></div>
