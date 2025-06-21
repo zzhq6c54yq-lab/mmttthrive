@@ -1,41 +1,36 @@
 
 import React from "react";
 import useTranslation from "@/hooks/useTranslation";
-import { Heart } from "lucide-react";
 
 const PortalHeader: React.FC = () => {
   const { isSpanish } = useTranslation();
   
   return (
-    <div className="bg-gradient-to-r from-rose-100 to-pink-100 dark:from-rose-900/30 dark:to-pink-900/30 p-6 rounded-lg shadow-md border border-rose-300/30 dark:border-rose-500/20">
-      <div className="flex items-center mb-4">
-        <div className="bg-rose-500 rounded-full p-2 mr-3">
-          <Heart className="h-6 w-6 text-white" />
-        </div>
-        <h1 className="text-2xl font-bold text-rose-700 dark:text-rose-300">
-          {isSpanish ? "Portal de Apoyo para el Cáncer" : "Cancer Support Portal"}
-        </h1>
+    <div className="relative bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 rounded-lg overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="/lovable-uploads/f3c84972-8f58-42d7-b86f-82ff2d823b30.png"
+          alt={isSpanish ? "Cintas de concienciación sobre el cáncer" : "Cancer awareness ribbons"}
+          className="w-full h-full object-cover opacity-20"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=800&q=80";
+          }}
+        />
       </div>
       
-      <p className="text-gray-700 dark:text-gray-300 mb-4">
-        {isSpanish 
-          ? "Un espacio compasivo y recursos de apoyo para pacientes, sobrevivientes, cuidadores y familias afectadas por el cáncer."
-          : "A compassionate space and supportive resources for patients, survivors, caregivers, and families affected by cancer."}
-      </p>
-      
-      <div className="flex flex-wrap gap-2">
-        <span className="bg-rose-200 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 text-xs py-1 px-3 rounded-full">
-          {isSpanish ? "Apoyo emocional" : "Emotional Support"}
-        </span>
-        <span className="bg-rose-200 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 text-xs py-1 px-3 rounded-full">
-          {isSpanish ? "Recursos médicos" : "Medical Resources"}
-        </span>
-        <span className="bg-rose-200 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 text-xs py-1 px-3 rounded-full">
-          {isSpanish ? "Comunidad" : "Community"}
-        </span>
-        <span className="bg-rose-200 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 text-xs py-1 px-3 rounded-full">
-          {isSpanish ? "Educación" : "Education"}
-        </span>
+      {/* Content */}
+      <div className="relative z-10 p-8 text-center">
+        <h1 className="text-4xl font-bold text-rose-600 dark:text-rose-400 mb-4">
+          {isSpanish ? "Portal de Apoyo para el Cáncer" : "Cancer Support Portal"}
+        </h1>
+        <p className="text-lg text-rose-700 dark:text-rose-300 max-w-2xl mx-auto">
+          {isSpanish 
+            ? "Recursos integrales y apoyo para pacientes, cuidadores y familias afectadas por el cáncer"
+            : "Comprehensive resources and support for patients, caregivers, and families affected by cancer"
+          }
+        </p>
       </div>
     </div>
   );

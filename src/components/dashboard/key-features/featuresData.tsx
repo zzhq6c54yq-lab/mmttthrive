@@ -23,6 +23,7 @@ import {
   Activity,
   Moon,
   Flower2,
+  Shield,
   TrendingUp as CareerIcon
 } from "lucide-react";
 

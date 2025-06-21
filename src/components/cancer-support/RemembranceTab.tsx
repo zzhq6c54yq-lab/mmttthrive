@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Flower, BookOpen, HeartHandshake, MessageSquare, Star, Leaf, ArrowRight } from "lucide-react";
+import { Flower, BookOpen, HeartHandshake, MessageSquare, Star, Leaf, ArrowRight, Download } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -24,14 +24,23 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       duration: 1500
     });
     
-    // Use consistent navigation pattern
-    if (path.startsWith('/cancer-support/')) {
-      // For cancer support specific pages, use onFeatureClick
-      onFeatureClick(path);
-    } else {
-      // For general pages, use direct navigation
-      navigate(path);
-    }
+    navigate(path, {
+      state: {
+        fromCancerSupport: true,
+        cancerSupportContext: 'remembrance'
+      }
+    });
+  };
+
+  const handleDownload = (resourceType: string) => {
+    toast({
+      title: isSpanish ? "Descargando" : "Downloading",
+      description: isSpanish ? `Descargando ${resourceType}...` : `Downloading ${resourceType}...`,
+      duration: 2000
+    });
+    
+    // Simulate download - in real app, this would trigger actual file download
+    console.log(`[RemembranceTab] Downloading: ${resourceType}`);
   };
   
   const remembranceResources = [
@@ -42,7 +51,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Un espacio virtual para honrar a los seres queridos que hemos perdido"
         : "A virtual space to honor loved ones we have lost",
-      path: "/memorial-garden"
+      path: "/memorial-garden",
+      downloadable: isSpanish ? "Guía de Jardín Memorial" : "Memorial Garden Guide"
     },
     {
       id: "grief-resources",
@@ -51,7 +61,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Información y apoyo para navegar el proceso de duelo"
         : "Information and support for navigating the grief process",
-      path: "/grief-resources"
+      path: "/grief-counseling",
+      downloadable: isSpanish ? "Manual de Duelo" : "Grief Handbook"
     },
     {
       id: "legacy-projects",
@@ -60,7 +71,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Ideas para crear legados significativos para honrar a los seres queridos"
         : "Ideas for creating meaningful legacies to honor loved ones",
-      path: "/legacy-projects"
+      path: "/legacy-builder",
+      downloadable: isSpanish ? "Kit de Proyecto de Legado" : "Legacy Project Kit"
     },
     {
       id: "bereavement-community",
@@ -69,7 +81,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Conéctate con otros que han experimentado pérdidas similares"
         : "Connect with others who have experienced similar losses",
-      path: "/community-support"
+      path: "/bereavement-support-groups",
+      downloadable: isSpanish ? "Guía de Grupo de Apoyo" : "Support Group Guide"
     },
     {
       id: "memorial-wall",
@@ -78,7 +91,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Comparte recuerdos y reflexiones sobre tus seres queridos"
         : "Share memories and reflections about your loved ones",
-      path: "/journaling"
+      path: "/memorial-tribute-wall",
+      downloadable: isSpanish ? "Plantilla de Tributo" : "Tribute Template"
     },
     {
       id: "grief-groups",
@@ -87,7 +101,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
       description: isSpanish 
         ? "Grupos de apoyo facilitados por profesionales especializados en duelo"
         : "Support groups facilitated by grief specialists",
-      path: "/workshops"
+      path: "/professional-grief-support",
+      downloadable: isSpanish ? "Horario de Grupos" : "Group Schedule"
     }
   ];
   
@@ -99,8 +114,8 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
         </h2>
         <p className="text-gray-700 dark:text-gray-300">
           {isSpanish 
-            ? "Apoyo para honrar y recordar a los seres queridos que han fallecido de cáncer." 
-            : "Support for honoring and remembering loved ones who have passed away from cancer."}
+            ? "Apoyo especializado para honrar y recordar a los seres queridos que han fallecido de cáncer." 
+            : "Specialized support for honoring and remembering loved ones who have passed away from cancer."}
         </p>
       </div>
       
@@ -121,15 +136,26 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
                 <div className="flex-1">
                   <h3 className="font-medium text-indigo-600 dark:text-indigo-400 mb-1">{resource.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{resource.description}</p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => handleResourceClick(resource.path, resource.title)}
-                  >
-                    {isSpanish ? "Visitar" : "Visit"}
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 p-0 h-auto hover:bg-transparent"
+                      onClick={() => handleResourceClick(resource.path, resource.title)}
+                    >
+                      {isSpanish ? "Acceder" : "Access"}
+                      <ArrowRight className="ml-1 h-3 w-3" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 p-0 h-auto hover:bg-transparent"
+                      onClick={() => handleDownload(resource.downloadable)}
+                    >
+                      <Download className="mr-1 h-3 w-3" />
+                      {isSpanish ? "Descargar" : "Download"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -144,14 +170,23 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
         <p className="text-gray-600 dark:text-gray-300 mb-4">
           {isSpanish 
             ? "Muchas personas encuentran consuelo al participar en acciones significativas para honrar a sus seres queridos y ayudar a otros."
-            :  "Many people find comfort in engaging in meaningful actions to honor their loved ones and help others."}
+            : "Many people find comfort in engaging in meaningful actions to honor their loved ones and help others."}
         </p>
-        <Button 
-          className="bg-indigo-500 hover:bg-indigo-600 text-white"
-          onClick={() => handleResourceClick("/wellness-challenges", isSpanish ? "Desafíos de Bienestar" : "Wellness Challenges")}
-        >
-          {isSpanish ? "Explorar Formas de Honrar su Memoria" : "Explore Ways to Honor Their Memory"}
-        </Button>
+        <div className="flex gap-3">
+          <Button 
+            className="bg-indigo-500 hover:bg-indigo-600 text-white"
+            onClick={() => handleResourceClick("/memorial-fundraising", isSpanish ? "Recaudación de Fondos Conmemorativa" : "Memorial Fundraising")}
+          >
+            {isSpanish ? "Explorar Formas de Honrar su Memoria" : "Explore Ways to Honor Their Memory"}
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={() => handleDownload(isSpanish ? "Guía de Acción Conmemorativa" : "Memorial Action Guide")}
+          >
+            <Download className="mr-2 h-4 w-4" />
+            {isSpanish ? "Descargar Guía" : "Download Guide"}
+          </Button>
+        </div>
       </div>
     </div>
   );
