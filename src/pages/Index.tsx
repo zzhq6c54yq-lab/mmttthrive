@@ -4,14 +4,80 @@ import { UserProvider } from "@/contexts/UserContext";
 import IndexScreenManager from "@/components/home/IndexScreenManager";
 import CrisisOverlay from "@/components/crisis/CrisisOverlay";
 import useTranslation from "@/hooks/useTranslation";
+import { useIndexState } from "@/hooks/useIndexState";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const { preferredLanguage, setPreferredLanguage } = useTranslation();
+  const navigate = useNavigate();
+  
+  // Get all the state and handlers from useIndexState
+  const {
+    screenState,
+    setScreenState,
+    selectedMood,
+    userInfo,
+    selectedPlan,
+    selectedAddOns,
+    selectedQualities,
+    selectedGoals,
+    isFirstVisit,
+    setIsFirstVisit,
+    handleUserInfoChange,
+    handleRegister,
+    handleSubscriptionSelect,
+    toggleQuality,
+    toggleGoal,
+    toggleAddOn,
+    handleSubscriptionContinue,
+    handleAddOnsContinue,
+    handleVisionBoardContinue,
+    handleMoodSelect
+  } = useIndexState();
+
+  // Handler for Henry toggle (placeholder)
+  const handleHenryToggle = () => {
+    console.log("Henry toggled");
+  };
+
+  // Handler for feature navigation
+  const navigateToFeature = (path: string) => {
+    navigate(path);
+  };
+
+  // Mark tutorial as completed
+  const markTutorialCompleted = () => {
+    localStorage.setItem('tutorialCompleted', 'true');
+  };
 
   return (
     <UserProvider>
       <div className="min-h-screen">
-        <IndexScreenManager />
+        <IndexScreenManager 
+          screenState={screenState}
+          selectedMood={selectedMood}
+          userInfo={userInfo}
+          selectedPlan={selectedPlan}
+          selectedAddOns={selectedAddOns}
+          selectedQualities={selectedQualities}
+          selectedGoals={selectedGoals}
+          showHenry={false}
+          onMoodSelect={handleMoodSelect}
+          onUserInfoChange={handleUserInfoChange}
+          onQualityToggle={toggleQuality}
+          onGoalToggle={toggleGoal}
+          onPlanSelect={handleSubscriptionSelect}
+          onAddOnToggle={toggleAddOn}
+          onHenryToggle={handleHenryToggle}
+          navigateToFeature={navigateToFeature}
+          handleSubscriptionContinue={handleSubscriptionContinue}
+          handleAddOnsContinue={handleAddOnsContinue}
+          handleVisionBoardContinue={handleVisionBoardContinue}
+          handleRegister={handleRegister}
+          setScreenState={setScreenState}
+          markTutorialCompleted={markTutorialCompleted}
+          isInOnboarding={false}
+        />
         <CrisisOverlay />
         
         {/* Language selector */}
