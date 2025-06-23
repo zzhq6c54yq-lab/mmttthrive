@@ -19,10 +19,13 @@ export function Toaster() {
           <Toast key={id} variant={variant} {...props}>
             <ToastContent
               variant={variant}
-              title={title}
-              description={description}
-            />
-            {action && (
+              title={typeof title === 'string' ? title : undefined}
+              description={typeof description === 'string' ? description : undefined}
+            >
+              {typeof title !== 'string' && title}
+              {typeof description !== 'string' && description}
+            </ToastContent>
+            {action && typeof action === 'object' && 'onClick' in action && (
               <ToastAction
                 altText={action.altText || action.label || "Action"}
                 onClick={action.onClick}

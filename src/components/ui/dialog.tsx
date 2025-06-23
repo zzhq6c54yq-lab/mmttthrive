@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
@@ -81,7 +80,8 @@ const DialogContent = React.forwardRef<
         )}
         onOpenAutoFocus={(e) => {
           // Focus the first focusable element or the close button
-          const firstFocusable = e.currentTarget.querySelector(
+          const target = e.currentTarget as HTMLElement;
+          const firstFocusable = target.querySelector(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           ) as HTMLElement;
           if (firstFocusable) {

@@ -166,7 +166,7 @@ function toast(props: Toast) {
   const id = props.id || genId();
 
   // Ensure altText is always set for action
-  if (props.action && !props.action.altText) {
+  if (props.action && typeof props.action === 'object' && 'onClick' in props.action && !props.action.altText) {
     props.action = {
       ...props.action,
       altText: props.action.label || "Toast action"
