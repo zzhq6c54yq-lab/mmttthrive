@@ -130,6 +130,14 @@ type Toast = Omit<ToasterToast, "id"> & {
   duration?: number;
 };
 
+// Enhanced toast options for convenience methods
+type ToastOptions = {
+  title?: string;
+  description?: string;
+  duration?: number;
+  action?: ToasterToast["action"];
+};
+
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
 
@@ -146,6 +154,10 @@ function useToast() {
   return {
     ...state,
     toast,
+    success: (options: ToastOptions) => toast({ ...options, variant: 'success' }),
+    error: (options: ToastOptions) => toast({ ...options, variant: 'destructive' }),
+    warning: (options: ToastOptions) => toast({ ...options, variant: 'warning' }),
+    info: (options: ToastOptions) => toast({ ...options, variant: 'info' }),
     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   };
 }

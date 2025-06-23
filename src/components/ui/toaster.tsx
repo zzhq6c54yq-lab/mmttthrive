@@ -3,9 +3,8 @@ import { useToast } from "@/hooks/use-toast"
 import {
   Toast,
   ToastClose,
-  ToastDescription,
+  ToastContent,
   ToastProvider,
-  ToastTitle,
   ToastViewport,
   ToastAction,
 } from "@/components/ui/toast"
@@ -15,15 +14,14 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {toasts.map(function ({ id, title, description, action, variant, ...props }) {
         return (
-          <Toast key={id} {...props}>
-            <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
-              )}
-            </div>
+          <Toast key={id} variant={variant} {...props}>
+            <ToastContent
+              variant={variant}
+              title={title}
+              description={description}
+            />
             {action && (
               <ToastAction
                 altText={action.altText || action.label || "Action"}

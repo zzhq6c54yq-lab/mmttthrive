@@ -1,7 +1,8 @@
+
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
+import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { 
@@ -35,6 +36,9 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
+        success: "border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-900/20 dark:text-green-400",
+        warning: "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400",
+        info: "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400",
       },
     },
     defaultVariants: {
@@ -42,6 +46,21 @@ const toastVariants = cva(
     },
   }
 )
+
+const getToastIcon = (variant: string) => {
+  switch (variant) {
+    case 'success':
+      return <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 animate-in zoom-in-50 duration-300" />
+    case 'destructive':
+      return <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 animate-in zoom-in-50 duration-300" />
+    case 'warning':
+      return <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 animate-in zoom-in-50 duration-300" />
+    case 'info':
+      return <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 animate-in zoom-in-50 duration-300" />
+    default:
+      return null
+  }
+}
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
@@ -87,6 +106,7 @@ const ToastClose = React.forwardRef<
       className
     )}
     toast-close=""
+    aria-label="Close notification"
     {...props}
   >
     <X className="h-4 w-4" />
@@ -118,6 +138,31 @@ const ToastDescription = React.forwardRef<
 ))
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
+// Enhanced Toast Content component that includes icons
+const ToastContent: React.FC<{
+  variant?: string;
+  title?: string;
+  description?: string;
+  children?: React.ReactNode;
+}> = ({ variant = 'default', title, description, children }) => {
+  const icon = getToastIcon(variant);
+  
+  return (
+    <div className="flex items-start space-x-3">
+      {icon && (
+        <div className="flex-shrink-0 mt-0.5">
+          {icon}
+        </div>
+      )}
+      <div className="flex-1 min-w-0">
+        {title && <ToastTitle>{title}</ToastTitle>}
+        {description && <ToastDescription>{description}</ToastDescription>}
+        {children}
+      </div>
+    </div>
+  );
+};
+
 export {
   ToastProvider,
   ToastViewport,
@@ -126,4 +171,5 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
+  ToastContent,
 }
