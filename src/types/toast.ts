@@ -1,12 +1,11 @@
 
 import * as React from "react"
-import type { ToastActionElement } from "@radix-ui/react-toast"
 
 export interface ToasterToast {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
-  action?: ToastActionElement | {
+  action?: {
     label: string
     onClick: () => void
     altText?: string
@@ -19,8 +18,11 @@ export interface ToasterToast {
 
 export interface ToastActionProps {
   altText: string
+  className?: string
   children: React.ReactNode
   onClick?: () => void
 }
 
-export type ToastProps = React.ComponentPropsWithoutRef<typeof import("@radix-ui/react-toast").Root>
+export type ToastProps = React.ComponentPropsWithoutRef<"div"> & {
+  variant?: "default" | "destructive" | "success" | "warning" | "info"
+}
