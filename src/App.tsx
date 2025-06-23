@@ -14,7 +14,6 @@ import CommunitySupport from "./pages/CommunitySupport";
 import Debug from "./pages/Debug";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
-import CrisisOverlay from "@/components/crisis/CrisisOverlay";
 import "./App.css";
 
 function App() {
@@ -35,7 +34,6 @@ function App() {
           <Route path="/aa-sponsor" element={<AASponsor />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <CrisisOverlay />
         <Toaster />
       </div>
     </UserProvider>

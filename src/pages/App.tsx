@@ -92,6 +92,7 @@ import AllWorkshopsPage from "@/pages/AllWorkshops";
 import SleepTracker from "@/pages/SleepTracker";
 import MeditationStudio from "@/pages/MeditationStudio";
 import CareerCoaching from "@/pages/CareerCoaching";
+import PersonalizedContent from "@/pages/PersonalizedContent";
 
 // Import additional routes for specific chronic illness pages if needed
 // These can be added as the specific content pages are built
@@ -116,6 +117,7 @@ function App() {
         <Route path="/journal" element={<JournalApp />} />
         <Route path="/" element={<Index />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/personalized-content" element={<PersonalizedContent />} />
         <Route path="/progress-reports" element={<ProgressReports />} />
         <Route path="/mental-wellness" element={<MentalWellnessTools />} />
         <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />

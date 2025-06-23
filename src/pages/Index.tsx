@@ -81,7 +81,7 @@ const Index = () => {
         <CrisisOverlay />
         
         {/* Language selector */}
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 right-20 z-40">
           <select
             value={preferredLanguage}
             onChange={(e) => setPreferredLanguage(e.target.value as any)}
