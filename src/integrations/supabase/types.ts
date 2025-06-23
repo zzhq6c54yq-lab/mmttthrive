@@ -195,12 +195,75 @@ export type Database = {
         }
         Relationships: []
       }
+      support_wall: {
+        Row: {
+          content: string
+          created_at: string | null
+          hearts: number | null
+          id: string
+          is_flagged: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      support_wall_hearts: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_hearts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decrement_hearts: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_hearts: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
