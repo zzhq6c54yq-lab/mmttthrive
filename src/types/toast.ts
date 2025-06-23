@@ -23,6 +23,6 @@ export interface ToastActionProps {
   onClick?: () => void
 }
 
-export type ToastProps = React.ComponentPropsWithoutRef<"div"> & {
+export type ToastProps = React.ComponentPropsWithoutRef<typeof import("@radix-ui/react-toast").Root> & {
   variant?: "default" | "destructive" | "success" | "warning" | "info"
 }
