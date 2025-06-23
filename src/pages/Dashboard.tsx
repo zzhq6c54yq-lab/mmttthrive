@@ -1,0 +1,37 @@
+
+import React from 'react';
+import { useUser } from '@/contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import RoleDashboard from '@/components/dashboards/RoleDashboard';
+
+const Dashboard: React.FC = () => {
+  const { user, profile, loading } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading) {
+      if (!user) {
+        navigate('/auth');
+      } else if (profile && !profile.onboarding_completed) {
+        navigate('/onboarding');
+      }
+    }
+  }, [user, profile, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user || !profile) {
+    return null; // Will redirect via useEffect
+  }
+
+  return <RoleDashboard />;
+};
+
+export default Dashboard;

@@ -9,6 +9,66 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          appointment_date: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          status: string | null
+          therapist_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          appointment_date?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          status?: string | null
+          therapist_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          appointment_date?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          status?: string | null
+          therapist_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      crisis_events: {
+        Row: {
+          created_at: string | null
+          event_type: string | null
+          id: string
+          resolved_at: string | null
+          source: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_type?: string | null
+          id?: string
+          resolved_at?: string | null
+          source?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_type?: string | null
+          id?: string
+          resolved_at?: string | null
+          source?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           id: string
@@ -35,25 +95,103 @@ export type Database = {
       }
       journal_entries: {
         Row: {
+          ai_response: string | null
+          ai_sentiment: string | null
           created_at: string | null
           id: string
           mood: string | null
+          mood_score: number | null
           notes: string | null
           user_id: string
         }
         Insert: {
+          ai_response?: string | null
+          ai_sentiment?: string | null
           created_at?: string | null
           id?: string
           mood?: string | null
+          mood_score?: number | null
           notes?: string | null
           user_id: string
         }
         Update: {
+          ai_response?: string | null
+          ai_sentiment?: string | null
           created_at?: string | null
           id?: string
           mood?: string | null
+          mood_score?: number | null
           notes?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string | null
+          created_at: string | null
+          id: string
+          message_type: string | null
+          read_at: string | null
+          recipient_id: string | null
+          sender_id: string | null
+        }
+        Insert: {
+          content: string
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          read_at?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          content?: string
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          read_at?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          goals: string[] | null
+          id: string
+          onboarding_completed: boolean | null
+          role: string | null
+          updated_at: string | null
+          user_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          goals?: string[] | null
+          id: string
+          onboarding_completed?: boolean | null
+          role?: string | null
+          updated_at?: string | null
+          user_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          goals?: string[] | null
+          id?: string
+          onboarding_completed?: boolean | null
+          role?: string | null
+          updated_at?: string | null
+          user_type?: string | null
         }
         Relationships: []
       }
