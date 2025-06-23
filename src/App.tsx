@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import OnboardingPage from "./pages/OnboardingPage";
 import JournalPage from "./pages/JournalPage";
+import CommunitySupport from "./pages/CommunitySupport";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import CrisisOverlay from "@/components/crisis/CrisisOverlay";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/journal" element={<JournalPage />} />
+          <Route path="/community-support" element={<CommunitySupport />} />
           <Route path="/cancer-support" element={<CancerSupportPortal />} />
           <Route path="/career-coaching" element={<CareerCoaching />} />
           <Route path="/meditation-studio" element={<MeditationStudio />} />
