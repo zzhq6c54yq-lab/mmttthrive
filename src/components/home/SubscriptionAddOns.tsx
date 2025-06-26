@@ -10,7 +10,7 @@ interface AddOn {
   id: string;
   title: string;
   description: string;
-  price: number;
+  basePrice: number;
   image: string;
 }
 
@@ -33,11 +33,24 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
 }) => {
   const { isSpanish } = useTranslation();
   const [showNoAddOnsMessage, setShowNoAddOnsMessage] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Only show the "no add-ons" message after user has interacted and tries to continue
+  // Get pricing based on selected plan
+  const getPriceForPlan = (basePrice: number): number => {
+    if (!selectedPlan) return 3; // Default pricing
+    
+    const planLower = selectedPlan.toLowerCase();
+    if (planLower.includes('basic') || planLower.includes('free')) {
+      return 3;
+    } else if (planLower.includes('gold')) {
+      return 2;
+    } else if (planLower.includes('platinum')) {
+      return 1;
+    }
+    return 3; // Default to basic pricing
+  };
+
+  // Only show the "no add-ons" message after user tries to continue without selections
   const handleContinue = () => {
-    setHasInteracted(true);
     if (selectedAddOns.length === 0) {
       setShowNoAddOnsMessage(true);
       // Auto-hide after 3 seconds
@@ -48,7 +61,6 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
   };
 
   const handleAddOnToggle = (addOnId: string) => {
-    setHasInteracted(true);
     setShowNoAddOnsMessage(false); // Hide message when user starts selecting
     onAddOnToggle(addOnId);
   };
@@ -60,7 +72,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Recursos especializados para personal militar activo, veteranos y sus familias."
         : "Specialized resources for active military personnel, veterans, and their families.",
-      price: 19.99,
+      basePrice: 19.99,
       image: "/lovable-uploads/dod-addon.webp",
     },
     {
@@ -69,7 +81,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Apoyo para estudiantes universitarios navegando el estrés académico y la transición a la vida adulta."
         : "Support for college students navigating academic stress and transition to adult life.",
-      price: 14.99,
+      basePrice: 14.99,
       image: "/lovable-uploads/college-addon.webp",
     },
     {
@@ -78,7 +90,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Herramientas de bienestar mental diseñadas para emprendedores y equipos de pequeñas empresas."
         : "Mental wellness tools designed for entrepreneurs and small business teams.",
-      price: 24.99,
+      basePrice: 24.99,
       image: "/lovable-uploads/business-addon.webp",
     },
     {
@@ -87,7 +99,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Recursos especializados para adolescentes y sus familias navegando los desafíos únicos de esta etapa."
         : "Specialized resources for teens and their families navigating the unique challenges of this stage.",
-      price: 16.99,
+      basePrice: 16.99,
       image: "/lovable-uploads/teen-addon.webp",
     },
     {
@@ -96,7 +108,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Apoyo integral para adultos mayores enfocado en el bienestar mental y la conexión social."
         : "Comprehensive support for older adults focused on mental wellness and social connection.",
-      price: 18.99,
+      basePrice: 18.99,
       image: "/lovable-uploads/golden-addon.webp",
     },
     {
@@ -105,7 +117,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Recursos especializados para bomberos, paramédicos, policías y otros primeros auxilios."
         : "Specialized resources for firefighters, paramedics, police officers, and other first responders.",
-      price: 22.99,
+      basePrice: 22.99,
       image: "/lovable-uploads/first-responder-addon.webp",
     },
     {
@@ -114,7 +126,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Apoyo para trabajadores de restaurantes, hoteles y servicios de hospitalidad."
         : "Support for restaurant, hotel, and hospitality service workers.",
-      price: 15.99,
+      basePrice: 15.99,
       image: "/lovable-uploads/hospitality-addon.webp",
     },
     {
@@ -122,8 +134,8 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       title: isSpanish ? "Industria del Transporte" : "Transportation Industry",
       description: isSpanish
         ? "Recursos para conductores de camiones, pilotos, y otros profesionales del transporte."
-        : "Resources for truck drivers, pilots, and other transportation professionals.",
-      price: 17.99,
+        : "Resources for truck drivers, pilots, and other transportation professionals.",  
+      basePrice: 17.99,
       image: "/lovable-uploads/transport-addon.webp",
     },
     {
@@ -132,7 +144,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Apoyo especializado para personas que viven con condiciones de salud crónicas."
         : "Specialized support for individuals living with chronic health conditions.",
-      price: 21.99,
+      basePrice: 21.99,
       image: "/lovable-uploads/chronic-illness-addon.webp",
     },
     {
@@ -141,7 +153,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Recursos para maestros, profesores y personal educativo enfrentando el estrés del aula."
         : "Resources for teachers, professors, and educational staff facing classroom stress.",
-      price: 16.99,
+      basePrice: 16.99,
       image: "/lovable-uploads/educators-addon.webp",
     },
     {
@@ -150,7 +162,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Apoyo especializado para oficiales de policía y personal de seguridad pública."
         : "Specialized support for police officers and public safety personnel.",
-      price: 20.99,
+      basePrice: 20.99,
       image: "/lovable-uploads/law-enforcement-addon.webp",
     },
     {
@@ -159,7 +171,7 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       description: isSpanish
         ? "Recursos comprensivos para pacientes de cáncer, sobrevivientes y sus familias."
         : "Comprehensive resources for cancer patients, survivors, and their families.",
-      price: 25.99,
+      basePrice: 25.99,
       image: "/lovable-uploads/cancer-support-addon.webp",
     }
   ];
@@ -220,54 +232,57 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
       {/* Add-ons Grid */}
       <div className="flex-1 overflow-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {addOns.map((addOn) => (
-            <Card
-              key={addOn.id}
-              className={`bg-[#141921] border-[#B87333]/30 hover:border-[#B87333] transition-colors cursor-pointer ${
-                selectedAddOns.includes(addOn.id) ? "border-2 border-[#B87333]" : ""
-              }`}
-              onClick={() => handleAddOnToggle(addOn.id)}
-            >
-              <CardContent className="p-4">
-                <div className="relative">
-                  <img
-                    src={addOn.image}
-                    alt={addOn.title}
-                    className="w-full h-32 object-cover rounded-md mb-3"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/lovable-uploads/placeholder.webp';
-                    }}
-                  />
-                  {selectedAddOns.includes(addOn.id) && (
-                    <div className="absolute inset-0 bg-black/40 rounded-md flex items-center justify-center">
-                      <span className="text-white text-xl font-bold">
-                        {isSpanish ? "¡Seleccionado!" : "Selected!"}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">{addOn.title}</h3>
-                <p className="text-gray-300 mb-3 text-sm">{addOn.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-[#B87333] font-bold">
-                    ${addOn.price.toFixed(2)} / {isSpanish ? "mes" : "month"}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={`border-white/20 text-white hover:bg-white/10 ${
-                      selectedAddOns.includes(addOn.id) ? "bg-[#B87333] hover:bg-[#A56625]" : ""
-                    }`}
-                  >
-                    {selectedAddOns.includes(addOn.id)
-                      ? isSpanish ? "Quitar" : "Remove"
-                      : isSpanish ? "Añadir" : "Add"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          {addOns.map((addOn) => {
+            const displayPrice = getPriceForPlan(addOn.basePrice);
+            return (
+              <Card
+                key={addOn.id}
+                className={`bg-[#141921] border-[#B87333]/30 hover:border-[#B87333] transition-colors cursor-pointer ${
+                  selectedAddOns.includes(addOn.id) ? "border-2 border-[#B87333]" : ""
+                }`}
+                onClick={() => handleAddOnToggle(addOn.id)}
+              >
+                <CardContent className="p-4">
+                  <div className="relative">
+                    <img
+                      src={addOn.image}
+                      alt={addOn.title}
+                      className="w-full h-32 object-cover rounded-md mb-3"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/lovable-uploads/placeholder.webp';
+                      }}
+                    />
+                    {selectedAddOns.includes(addOn.id) && (
+                      <div className="absolute inset-0 bg-black/40 rounded-md flex items-center justify-center">
+                        <span className="text-white text-xl font-bold">
+                          {isSpanish ? "¡Seleccionado!" : "Selected!"}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{addOn.title}</h3>
+                  <p className="text-gray-300 mb-3 text-sm">{addOn.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#B87333] font-bold">
+                      ${displayPrice.toFixed(2)} / {isSpanish ? "mes" : "month"}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`border-white/20 text-white hover:bg-white/10 ${
+                        selectedAddOns.includes(addOn.id) ? "bg-[#B87333] hover:bg-[#A56625]" : ""
+                      }`}
+                    >
+                      {selectedAddOns.includes(addOn.id)
+                        ? isSpanish ? "Quitar" : "Remove"
+                        : isSpanish ? "Añadir" : "Add"}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
