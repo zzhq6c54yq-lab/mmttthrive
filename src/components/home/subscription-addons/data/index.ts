@@ -1,9 +1,8 @@
-
 import { AddOn } from './types';
 import { Shield, GraduationCap, Building2, Heart, Users, Briefcase, 
          Hotel, Truck, Stethoscope, BookOpen, BadgeCheck, Ribbon } from 'lucide-react';
 
-export { AddOn } from './types';
+export type { AddOn } from './types';
 
 export const addOns: AddOn[] = [
   {
