@@ -35,16 +35,23 @@ const CancerSupportPortal: React.FC = () => {
   };
 
   const handleFeatureClick = (path: string) => {
+    console.log("Cancer support navigation:", path);
+    
     toast({
       title: isSpanish ? "Navegando" : "Navigating",
-      description: isSpanish ? "Accediendo a recursos específicos" : "Accessing specific cancer support resources",
+      description: isSpanish ? "Accediendo a recursos específicos de apoyo contra el cáncer" : "Accessing specific cancer support resources",
       duration: 2000
     });
     
-    navigate(`/${path}`, { 
+    // Ensure we use the full cancer-support path structure
+    const fullPath = path.startsWith('/cancer-support/') ? path : `/cancer-support/${path}`;
+    
+    navigate(fullPath, { 
       state: { 
         fromSpecializedProgram: true, 
-        preventTutorial: true 
+        preventTutorial: true,
+        returnToPortal: "/cancer-support-portal",
+        cancerSupportContext: true
       }
     });
   };
