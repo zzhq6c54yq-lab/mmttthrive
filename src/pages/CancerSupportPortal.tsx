@@ -35,23 +35,38 @@ const CancerSupportPortal: React.FC = () => {
   };
 
   const handleFeatureClick = (path: string) => {
-    console.log("Cancer support navigation:", path);
+    console.log("[CancerSupportPortal] Navigating to:", path);
     
     toast({
-      title: isSpanish ? "Navegando" : "Navigating",
-      description: isSpanish ? "Accediendo a recursos específicos de apoyo contra el cáncer" : "Accessing specific cancer support resources",
+      title: isSpanish ? "Accediendo a Recursos Especializados" : "Accessing Specialized Resources",
+      description: isSpanish ? "Cargando contenido específico de apoyo contra el cáncer" : "Loading specific cancer support content",
       duration: 2000
     });
     
-    // Ensure we use the full cancer-support path structure
-    const fullPath = path.startsWith('/cancer-support/') ? path : `/cancer-support/${path}`;
+    // Enhanced path handling for cancer support
+    let finalPath = path;
     
-    navigate(fullPath, { 
+    // Handle both absolute and relative paths
+    if (!path.startsWith('/')) {
+      finalPath = `/cancer-support/${path}`;
+    }
+    
+    // Special handling for remembrance resources
+    if (path.includes('memorial') || path.includes('grief') || path.includes('legacy') || path.includes('bereavement')) {
+      // These are already properly mapped in App.tsx
+      finalPath = path.startsWith('/') ? path : `/${path}`;
+    }
+    
+    console.log("[CancerSupportPortal] Final navigation path:", finalPath);
+    
+    navigate(finalPath, { 
       state: { 
-        fromSpecializedProgram: true, 
+        fromCancerSupport: true, 
         preventTutorial: true,
         returnToPortal: "/cancer-support-portal",
-        cancerSupportContext: true
+        cancerSupportContext: true,
+        specializedContent: true,
+        portalTab: activeTab
       }
     });
   };
@@ -71,7 +86,7 @@ const CancerSupportPortal: React.FC = () => {
       case 'children':
         return <ChildrenTab onFeatureClick={handleFeatureClick} />;
       default:
-        return null;
+        return <PatientsTab onFeatureClick={handleFeatureClick} />;
     }
   };
 
@@ -80,10 +95,10 @@ const CancerSupportPortal: React.FC = () => {
       <div className="space-y-6">
         <PortalHeader />
 
-        <div className="bg-[#FDF2F2] dark:bg-[#1F1A1A] border border-rose-300/30 dark:border-rose-500/20 rounded-lg overflow-hidden shadow-lg">
+        <div className="bg-[#FDF2F2] dark:bg-[#1F1A1A] border-2 border-rose-300/50 dark:border-rose-500/30 rounded-xl overflow-hidden shadow-xl">
           <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
           
-          <div className="p-6">
+          <div className="p-8">
             {renderTabContent()}
           </div>
         </div>

@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -191,10 +190,8 @@ function App() {
           <Route path="/first-responders-workshops/:workshopId" element={<WorkshopDetail />} />
           <Route path="/first-responders-assessments/:assessmentId" element={<MentalWellnessTools />} />
           
-          {/* Add missing stress management route */}
           <Route path="/stress-management" element={<FirstRespondersStressManagement />} />
           
-          {/* Law enforcement routes */}
           <Route path="/law-enforcement-welcome" element={<LawEnforcementWelcome />} />
           <Route path="/law-enforcement-portal" element={<LawEnforcementPortal />} />
           <Route path="/law-enforcement/stress-management" element={<FirstRespondersStressManagement />} />
@@ -286,11 +283,18 @@ function App() {
           <Route path="/chronic-illness/assess-a2" element={<MentalWellnessTools />} />
           <Route path="/chronic-illness/assess-a3" element={<MentalWellnessTools />} />
           
-          <Route path="/cancer-support" element={<CancerSupportPortal />} />
+          <Route path="/cancer-support" element={<CancerSupportWelcome />} />
           <Route path="/cancer-support-welcome" element={<CancerSupportWelcome />} />
           <Route path="/cancer-support-portal" element={<CancerSupportPortal />} />
           
-          {/* Cancer Support Specific Resources - Direct to specialized components */}
+          <Route path="/memorial-garden" element={<PersonalizedContent />} />
+          <Route path="/grief-counseling" element={<Workshops />} />
+          <Route path="/legacy-builder" element={<PersonalizedContent />} />
+          <Route path="/bereavement-support-groups" element={<CommunitySupport />} />
+          <Route path="/memorial-tribute-wall" element={<PersonalizedContent />} />
+          <Route path="/professional-grief-support" element={<CommunitySupport />} />
+          <Route path="/memorial-fundraising" element={<PersonalizedContent />} />
+          
           <Route path="/cancer-support/newly-diagnosed" element={<Workshops />} />
           <Route path="/cancer-support/treatment" element={<Workshops />} />
           <Route path="/cancer-support/stages" element={<Workshops />} />
@@ -300,17 +304,15 @@ function App() {
           <Route path="/cancer-support/types/:cancerType" element={<Workshops />} />
           <Route path="/cancer-support/immediate-support" element={<RealTimeTherapy />} />
           
-          {/* Cancer Caregiver Resources */}
           <Route path="/cancer-support/caregiver-basics" element={<Workshops />} />
           <Route path="/cancer-support/caregiver-selfcare" element={<GuidedPractice />} />
           <Route path="/cancer-support/caregiver-communication" element={<Workshops />} />
-          <Route path="/cancer-support/financial-navigation" element={<Workshops />} />
+          <Route path="/cancer-support/financial-navigation" element={<FinancialAssistance />} />
           <Route path="/cancer-support/caregiver-workshops" element={<Workshops />} />
-          <Route path="/cancer-support/caregiver-stories" element={<Workshops />} />
+          <Route path="/cancer-support/caregiver-stories" element={<CommunitySupport />} />
           <Route path="/cancer-support/caregiver-forum" element={<CommunitySupport />} />
-          <Route path="/cancer-support/caregiver-groups" element={<CommunitySupport />} />
+          <Route path="/cancer-support/caregiver-groups" element={<VirtualMeetings />} />
           
-          {/* Cancer Children/Family Resources */}
           <Route path="/cancer-support/talking-to-children" element={<Workshops />} />
           <Route path="/cancer-support/children-emotions" element={<Workshops />} />
           <Route path="/cancer-support/parenting-through-treatment" element={<Workshops />} />
@@ -322,7 +324,6 @@ function App() {
           <Route path="/cancer-support/kids-connect" element={<GamesAndQuizzes />} />
           <Route path="/cancer-support/teen-programs" element={<GamesAndQuizzes />} />
           
-          {/* Cancer Information Resources */}
           <Route path="/cancer-support/cancer-types" element={<Workshops />} />
           <Route path="/cancer-support/treatment-options" element={<Workshops />} />
           <Route path="/cancer-support/side-effects" element={<Workshops />} />
@@ -332,10 +333,9 @@ function App() {
           <Route path="/cancer-support/financial-resources" element={<FinancialAssistance />} />
           <Route path="/cancer-support/healthcare-navigation" element={<Workshops />} />
           <Route path="/cancer-support/legal-resources" element={<Workshops />} />
-          <Route path="/cancer-support/survivor-stories" element={<Workshops />} />
+          <Route path="/cancer-support/survivor-stories" element={<CommunitySupport />} />
           <Route path="/cancer-support/daily-inspiration" element={<PersonalizedContent />} />
           
-          {/* Cancer Community Resources */}
           <Route path="/cancer-support/general-community" element={<CommunitySupport />} />
           <Route path="/cancer-support/cancer-type-communities" element={<CommunitySupport />} />
           <Route path="/cancer-support/virtual-meetings" element={<VirtualMeetings />} />
@@ -346,13 +346,12 @@ function App() {
           <Route path="/cancer-support/survivorship-community" element={<CommunitySupport />} />
           <Route path="/cancer-support/create-group" element={<CommunitySupport />} />
           
-          {/* Cancer Remembrance Resources */}
           <Route path="/cancer-support/memorial-garden" element={<PersonalizedContent />} />
           <Route path="/cancer-support/grief-resources" element={<Workshops />} />
           <Route path="/cancer-support/legacy-projects" element={<PersonalizedContent />} />
           <Route path="/cancer-support/bereavement-community" element={<CommunitySupport />} />
           <Route path="/cancer-support/memorial-wall" element={<PersonalizedContent />} />
-          <Route path="/cancer-support/grief-groups" element={<CommunitySupport />} />
+          <Route path="/cancer-support/grief-groups" element={<VirtualMeetings />} />
           <Route path="/cancer-support/honoring-action" element={<PersonalizedContent />} />
           
           <Route path="/career-coaching" element={<CareerCoaching />} />
