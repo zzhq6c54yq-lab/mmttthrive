@@ -99,6 +99,9 @@ import ChronicIllnessPortal from "./pages/ChronicIllnessPortal";
 import CancerSupportWelcome from "./pages/CancerSupportWelcome";
 import AllWorkshopsPage from "./pages/AllWorkshops";
 import JournalApp from "./pages/JournalApp";
+import MemorialGarden from "./pages/MemorialGarden";
+import GriefResources from "./pages/GriefResources";
+import LegacyBuilder from "./pages/LegacyBuilder";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import "./App.css";
@@ -287,9 +290,9 @@ function App() {
           <Route path="/cancer-support-welcome" element={<CancerSupportWelcome />} />
           <Route path="/cancer-support-portal" element={<CancerSupportPortal />} />
           
-          <Route path="/memorial-garden" element={<PersonalizedContent />} />
-          <Route path="/grief-counseling" element={<Workshops />} />
-          <Route path="/legacy-builder" element={<PersonalizedContent />} />
+          <Route path="/memorial-garden" element={<MemorialGarden />} />
+          <Route path="/grief-counseling" element={<GriefResources />} />
+          <Route path="/legacy-builder" element={<LegacyBuilder />} />
           <Route path="/bereavement-support-groups" element={<CommunitySupport />} />
           <Route path="/memorial-tribute-wall" element={<PersonalizedContent />} />
           <Route path="/professional-grief-support" element={<CommunitySupport />} />
