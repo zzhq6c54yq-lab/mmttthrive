@@ -292,6 +292,7 @@ function App() {
           
           <Route path="/memorial-garden" element={<MemorialGarden />} />
           <Route path="/grief-counseling" element={<GriefResources />} />
+          <Route path="/grief-resources" element={<GriefResources />} />
           <Route path="/legacy-builder" element={<LegacyBuilder />} />
           <Route path="/bereavement-support-groups" element={<CommunitySupport />} />
           <Route path="/memorial-tribute-wall" element={<PersonalizedContent />} />
