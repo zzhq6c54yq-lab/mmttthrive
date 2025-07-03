@@ -38,7 +38,15 @@ export const useScreenState = () => {
   }, []);
 
   const setScreenStateWithValidation = (newState: ScreenStateType) => {
-    console.log("[useScreenState] Transitioning from", screenState, "to", newState);
+    console.log("[useScreenState] TRANSITION REQUESTED: from", screenState, "to", newState);
+    console.log("[useScreenState] Call stack:", new Error().stack);
+    
+    // Prevent unwanted transitions to main during onboarding
+    if (newState === 'main' && screenState !== 'visionBoard') {
+      console.warn("[useScreenState] BLOCKING transition to main - onboarding not completed");
+      return;
+    }
+    
     setScreenState(newState);
     
     // Only mark onboarding as completed when explicitly reaching main
