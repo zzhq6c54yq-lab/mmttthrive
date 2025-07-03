@@ -66,7 +66,11 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative z-50">
+      {/* DEBUGGING: Very visible indicator that IntroScreen is showing */}
+      <div className="absolute top-0 left-0 right-0 bg-red-500 text-white text-center py-2 z-50 font-bold">
+        🚨 ONBOARDING INTRO SCREEN IS SHOWING 🚨
+      </div>
       <div className="floating-bg"></div>
       
       {/* Demo reset button - top left */}
