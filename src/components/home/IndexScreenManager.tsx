@@ -69,9 +69,14 @@ const IndexScreenManager: React.FC<IndexScreenManagerProps> = ({
   useScreenDebugger(screenState);
   
   console.log("[IndexScreenManager] Rendering screen:", screenState);
+  console.log("[IndexScreenManager] Props received - isInOnboarding:", isInOnboarding);
   
   if (screenState === 'intro') {
     console.log("[IndexScreenManager] Starting new session from intro screen");
+  }
+  
+  if (screenState === 'main') {
+    console.log("[IndexScreenManager] WARNING: Showing main dashboard instead of onboarding!");
   }
   
   // Use our custom navigation hook instead of a component

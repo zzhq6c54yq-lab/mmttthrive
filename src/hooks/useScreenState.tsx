@@ -6,7 +6,10 @@ export type ScreenStateType = 'intro' | 'mood' | 'moodResponse' | 'register' | '
 export const useScreenState = () => {
   const [screenState, setScreenState] = useState<ScreenStateType>('intro');
   
+  console.log("[useScreenState] Hook initialized with screenState:", screenState);
+  
   useEffect(() => {
+    console.log("[useScreenState] useEffect running...");
     const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
     const forceOnboarding = new URLSearchParams(window.location.search).get('onboarding') === 'true';
     const forceReset = new URLSearchParams(window.location.search).get('forceReset') === 'true';
@@ -16,17 +19,21 @@ export const useScreenState = () => {
     console.log("[useScreenState] forceOnboarding:", forceOnboarding);
     console.log("[useScreenState] forceReset:", forceReset);
     
-    // Always start with onboarding unless explicitly completed
+    // For demo purposes - ALWAYS clear onboarding completion unless there's a specific completion flag
+    // This ensures onboarding always shows in preview mode
+    const hasExplicitCompletion = localStorage.getItem('hasCompletedOnboarding') === 'true';
+    
     if (forceReset) {
       console.log("[useScreenState] Force reset - clearing onboarding");
       localStorage.removeItem('hasCompletedOnboarding');
       setScreenState('intro');
-    } else if (hasCompletedOnboarding && !forceOnboarding) {
-      console.log("[useScreenState] Onboarding completed, going to main");
-      setScreenState('main');
-    } else {
-      console.log("[useScreenState] Starting onboarding flow");
+    } else if (!hasExplicitCompletion || forceOnboarding) {
+      console.log("[useScreenState] No explicit completion found or forced onboarding - starting onboarding flow");
+      localStorage.removeItem('hasCompletedOnboarding'); // Clear any partial completion
       setScreenState('intro');
+    } else {
+      console.log("[useScreenState] Explicit completion found, going to main");
+      setScreenState('main');
     }
   }, []);
 

@@ -70,9 +70,12 @@ const ScreenRenderer: React.FC<ScreenRendererProps> = ({
   handleSkip
 }) => {
   
+  console.log("[ScreenRenderer] Rendering screen state:", screenState);
+  
   // Render the appropriate screen based on the current state
   switch (screenState) {
     case 'intro':
+      console.log("[ScreenRenderer] Rendering IntroScreen");
       return <IntroScreen onContinue={handleContinueToMood} />;
     case 'mood':
       return (
@@ -132,6 +135,7 @@ const ScreenRenderer: React.FC<ScreenRendererProps> = ({
         />
       );
     case 'main':
+      console.log("[ScreenRenderer] Rendering MainDashboard - THIS SHOULD NOT HAPPEN IF ONBOARDING IS REQUIRED!");
       return (
         <MainDashboard
           userName={userInfo.name}
