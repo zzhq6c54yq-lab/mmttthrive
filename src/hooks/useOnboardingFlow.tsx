@@ -17,38 +17,18 @@ const initialState: OnboardingState = {
 export const useOnboardingFlow = () => {
   const [state, setState] = useState<OnboardingState>(initialState);
 
-  // Initialize from localStorage
+  // Initialize from localStorage - ALWAYS start from intro in preview mode
   useEffect(() => {
-    const hasCompleted = localStorage.getItem('hasCompletedOnboarding') === 'true';
-    const forceReset = new URLSearchParams(window.location.search).get('forceReset') === 'true';
+    console.log("[useOnboardingFlow] Initializing onboarding flow");
     
-    console.log("[useOnboardingFlow] Initializing - hasCompleted:", hasCompleted, "forceReset:", forceReset);
+    // FORCE START FROM INTRO - Clear all stored progress to ensure fresh onboarding experience
+    localStorage.removeItem('hasCompletedOnboarding');
+    localStorage.removeItem(STORAGE_KEY);
     
-    if (forceReset) {
-      localStorage.removeItem('hasCompletedOnboarding');
-      localStorage.removeItem(STORAGE_KEY);
-      setState({ ...initialState, currentStep: 'intro' });
-      return;
-    }
-
-    if (hasCompleted) {
-      setState(prev => ({ ...prev, currentStep: 'completed', isOnboardingComplete: true }));
-      return;
-    }
-
-    // Load any saved progress
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const savedState = JSON.parse(saved);
-        setState({ ...initialState, ...savedState, currentStep: savedState.currentStep || 'intro' });
-      } catch (error) {
-        console.error("[useOnboardingFlow] Error loading saved state:", error);
-        setState({ ...initialState, currentStep: 'intro' });
-      }
-    } else {
-      setState({ ...initialState, currentStep: 'intro' });
-    }
+    // Always start from the intro screen
+    setState({ ...initialState, currentStep: 'intro' });
+    
+    console.log("[useOnboardingFlow] Forced fresh start from intro screen");
   }, []);
 
   // Save progress to localStorage
