@@ -17,7 +17,6 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<'English' | 'Español' | 'Português' | 'Filipino'>("English");
   
   useEffect(() => {
-    console.log("[IntroScreen] Component mounted - onboarding screen is showing");
     // Load the saved language preference if available
     const savedLanguage = localStorage.getItem('preferredLanguage');
     if (savedLanguage === 'Español') {
@@ -31,46 +30,22 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
   
   const selectLanguage = (language: 'English' | 'Español' | 'Português' | 'Filipino') => {
     setSelectedLanguage(language);
-    
-    // Set language preference in localStorage
     localStorage.setItem('preferredLanguage', language);
-    
-    // Force a re-render of the app to apply the language change immediately
     window.dispatchEvent(new Event('languageChange'));
-
-    // Add a console log to verify the language change
-    console.log(`Language changed to: ${language}`);
   };
   
   const handleBeginJourney = () => {
-    console.log("[IntroScreen] Begin journey button clicked");
-    // Clear any potentially problematic localStorage items
-    localStorage.removeItem('prevScreenState');
-    localStorage.removeItem('transitionBlocked');
-    localStorage.removeItem('stuckDetected');
-    localStorage.removeItem('introLoaded');
-    
-    // Explicitly call the onContinue function to move to the next screen
-    if (typeof onContinue === 'function') {
-      console.log("[IntroScreen] Calling onContinue function");
-      onContinue();
-    } else {
-      console.error("[IntroScreen] onContinue is not a function:", onContinue);
-    }
+    onContinue();
   };
 
   const handleResetDemo = () => {
-    console.log("[IntroScreen] Demo reset requested");
     localStorage.removeItem('hasCompletedOnboarding');
+    localStorage.removeItem('thriveOnboardingProgress');
     window.location.reload();
   };
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a1f] overflow-hidden relative z-50">
-      {/* DEBUGGING: Very visible indicator that IntroScreen is showing */}
-      <div className="absolute top-0 left-0 right-0 bg-red-500 text-white text-center py-2 z-50 font-bold">
-        🚨 ONBOARDING INTRO SCREEN IS SHOWING 🚨
-      </div>
       <div className="floating-bg"></div>
       
       {/* Demo reset button - top left */}
