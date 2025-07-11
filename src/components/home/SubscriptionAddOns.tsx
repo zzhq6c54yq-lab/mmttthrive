@@ -164,8 +164,10 @@ const SubscriptionAddOns: React.FC<SubscriptionAddOnsProps> = ({
                     <Button
                       variant="outline"
                       size="sm"
-                      className={`border-white/20 text-white hover:bg-white/10 ${
-                        selectedAddOns.includes(addOn.id) ? "bg-[#B87333] hover:bg-[#A56625]" : ""
+                      className={`${
+                        selectedAddOns.includes(addOn.id) 
+                          ? "bg-[#B87333] hover:bg-[#A56625] text-white border-[#B87333]" 
+                          : "bg-white/10 hover:bg-white/20 text-white border-white/30 hover:border-white/50"
                       }`}
                     >
                       {selectedAddOns.includes(addOn.id)
