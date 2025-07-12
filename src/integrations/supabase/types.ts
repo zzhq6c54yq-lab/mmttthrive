@@ -17,158 +17,164 @@ export type Database = {
       crisis_events: {
         Row: {
           created_at: string | null
-          description: string
-          end_time: string
-          id: number
-          start_time: string
-          title: string
-          updated_at: string | null
-          user_id: string
+          event_type: string | null
+          id: string
+          resolved_at: string | null
+          source: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
-          description: string
-          end_time: string
-          id?: never
-          start_time: string
-          title: string
-          updated_at?: string | null
-          user_id: string
+          event_type?: string | null
+          id?: string
+          resolved_at?: string | null
+          source?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
-          description?: string
-          end_time?: string
-          id?: never
-          start_time?: string
-          title?: string
-          updated_at?: string | null
-          user_id?: string
+          event_type?: string | null
+          id?: string
+          resolved_at?: string | null
+          source?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
       feedback: {
         Row: {
-          created_at: string | null
-          id: number
+          id: string
           message: string
+          rating: number | null
+          submitted_at: string | null
           user_id: string
         }
         Insert: {
-          created_at?: string | null
-          id?: never
+          id?: string
           message: string
+          rating?: number | null
+          submitted_at?: string | null
           user_id: string
         }
         Update: {
-          created_at?: string | null
-          id?: never
+          id?: string
           message?: string
+          rating?: number | null
+          submitted_at?: string | null
           user_id?: string
         }
         Relationships: []
       }
       journal_entries: {
         Row: {
-          content: string
           created_at: string | null
-          id: number
-          title: string
-          updated_at: string | null
+          id: string
+          mood: string | null
+          notes: string | null
           user_id: string
         }
         Insert: {
-          content: string
           created_at?: string | null
-          id?: never
-          title: string
-          updated_at?: string | null
+          id?: string
+          mood?: string | null
+          notes?: string | null
           user_id: string
         }
         Update: {
-          content?: string
           created_at?: string | null
-          id?: never
-          title?: string
-          updated_at?: string | null
+          id?: string
+          mood?: string | null
+          notes?: string | null
           user_id?: string
         }
         Relationships: []
       }
       profiles: {
         Row: {
-          avatar_url: string | null
           created_at: string | null
-          id: number
+          email: string | null
+          full_name: string | null
+          goals: string[] | null
+          id: string
+          onboarding_completed: boolean | null
+          role: string | null
           updated_at: string | null
-          user_id: string
-          username: string | null
-          website: string | null
+          user_type: string | null
         }
         Insert: {
-          avatar_url?: string | null
           created_at?: string | null
-          id?: never
+          email?: string | null
+          full_name?: string | null
+          goals?: string[] | null
+          id: string
+          onboarding_completed?: boolean | null
+          role?: string | null
           updated_at?: string | null
-          user_id: string
-          username?: string | null
-          website?: string | null
+          user_type?: string | null
         }
         Update: {
-          avatar_url?: string | null
           created_at?: string | null
-          id?: never
+          email?: string | null
+          full_name?: string | null
+          goals?: string[] | null
+          id?: string
+          onboarding_completed?: boolean | null
+          role?: string | null
           updated_at?: string | null
-          user_id?: string
-          username?: string | null
-          website?: string | null
+          user_type?: string | null
         }
         Relationships: []
       }
       support_wall: {
         Row: {
+          content: string
           created_at: string | null
-          id: number
-          message: string
-          user_id: string
+          hearts: number | null
+          id: string
+          is_flagged: boolean | null
+          user_id: string | null
         }
         Insert: {
+          content: string
           created_at?: string | null
-          id?: never
-          message: string
-          user_id: string
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          user_id?: string | null
         }
         Update: {
+          content?: string
           created_at?: string | null
-          id?: never
-          message?: string
-          user_id?: string
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          user_id?: string | null
         }
         Relationships: []
       }
       support_wall_hearts: {
         Row: {
           created_at: string | null
-          id: number
-          support_wall_id: number
-          user_id: string
+          id: string
+          post_id: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
-          id?: never
-          support_wall_id: number
-          user_id: string
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
-          id?: never
-          support_wall_id?: number
-          user_id?: string
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "support_wall_hearts_support_wall_id_fkey"
-            columns: ["support_wall_id"]
+            foreignKeyName: "support_wall_hearts_post_id_fkey"
+            columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "support_wall"
             referencedColumns: ["id"]
@@ -180,7 +186,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decrement_hearts: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_hearts: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
