@@ -3,6 +3,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FeatureItem } from "./featuresData";
 import { isFeatureRecommended } from "./featureUtils";
+import { useToast } from "@/hooks/use-toast";
+import { ArrowRight } from "lucide-react";
 
 interface KeyFeaturesGridProps {
   features: FeatureItem[];
@@ -19,6 +21,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
   isSpanish,
   handleNavigate
 }) => {
+  const { toast } = useToast();
   // Animation variants
   const container = {
     hidden: { opacity: 0 },
@@ -56,66 +59,91 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
             key={feature.id}
             variants={item}
             className="group cursor-pointer"
-            onClick={() => handleNavigate(feature.path)}
+            onClick={() => {
+              if (!feature.comingSoon) {
+                toast({
+                  title: isSpanish ? "Navegando..." : "Navigating...",
+                  description: isSpanish 
+                    ? `Accediendo a ${feature.title}` 
+                    : `Accessing ${feature.title}`,
+                  duration: 1500,
+                });
+                handleNavigate(feature.path);
+              }
+            }}
           >
-            <div className="relative bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="relative bg-background rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-border/50 hover:border-primary/20">
+              {/* Gradient Overlay for better visual appeal */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               {/* Coming Soon Badge */}
               {feature.comingSoon && (
-                <div className="absolute top-2 right-2 z-10 bg-amber-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                <div className="absolute top-3 right-3 z-20 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-md">
                   {isSpanish ? "Próximamente" : "Coming Soon"}
                 </div>
               )}
               
               {/* Popular Badge */}
               {feature.popular && !recommended && (
-                <div className="absolute top-2 left-2 z-10 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                  {isSpanish ? "Popular" : "Popular"}
+                <div className="absolute top-3 left-3 z-20 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-md">
+                  ⭐ {isSpanish ? "Popular" : "Popular"}
                 </div>
               )}
 
               {/* Recommended Badge */}
               {recommended && (
-                <div className="absolute top-2 left-2 z-10 bg-purple-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                  {isSpanish ? "Recomendado" : "Recommended"}
+                <div className="absolute top-3 left-3 z-20 bg-gradient-to-r from-purple-500 to-violet-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-md">
+                  💫 {isSpanish ? "Recomendado" : "Recommended"}
                 </div>
               )}
 
               {/* Feature Image */}
-              <div className="relative h-48 overflow-hidden bg-gray-100">
+              <div className="relative h-48 overflow-hidden bg-muted/20">
                 <img 
                   src={feature.image} 
                   alt={feature.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   onError={handleImageError}
                   loading="lazy"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-t from-black/20 to-transparent`}></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent group-hover:from-black/20 transition-all duration-300"></div>
+                
+                {/* Icon overlay on hover */}
+                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg">
+                    <ArrowRight className="w-4 h-4 text-primary" />
+                  </div>
+                </div>
               </div>
 
               {/* Feature Content */}
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className={`text-${feature.color}-600`}>
+              <div className="p-6 relative z-10">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className={`p-2 rounded-lg bg-gradient-to-br from-${feature.color}-100 to-${feature.color}-50 text-${feature.color}-600 group-hover:scale-110 transition-transform duration-300`}>
                     {feature.icon}
                   </div>
-                  <h3 className="font-bold text-lg text-gray-800 line-clamp-1">
+                  <h3 className="font-bold text-xl text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-300">
                     {feature.title}
                   </h3>
                 </div>
-                <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-6 leading-relaxed">
                   {feature.description}
                 </p>
                 <button 
-                  className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  className={`w-full px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                     feature.comingSoon 
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed' 
-                      : `bg-${feature.color}-100 text-${feature.color}-700 hover:bg-${feature.color}-200`
+                      ? 'bg-muted text-muted-foreground cursor-not-allowed' 
+                      : `bg-gradient-to-r from-${feature.color}-500 to-${feature.color}-600 text-white hover:from-${feature.color}-600 hover:to-${feature.color}-700 shadow-md hover:shadow-lg group-hover:scale-105`
                   }`}
                   disabled={feature.comingSoon}
                 >
                   {feature.comingSoon 
                     ? (isSpanish ? "Próximamente" : "Coming Soon")
-                    : (isSpanish ? "Explorar" : "Explore")
+                    : (
+                      <>
+                        {isSpanish ? "Explorar Ahora" : "Explore Now"}
+                        <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )
                   }
                 </button>
               </div>
