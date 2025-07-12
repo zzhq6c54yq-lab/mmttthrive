@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,13 +12,22 @@ import { useLocation } from 'react-router-dom';
 const CrisisOverlay: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [breathingActive, setBreathingActive] = useState(false);
-  const { user } = useUser();
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  const { user, profile } = useUser();
   const location = useLocation();
 
-  // Only show crisis button on main dashboard
+  // Check onboarding completion status
+  useEffect(() => {
+    const localStorageCompleted = localStorage.getItem('hasCompletedOnboarding') === 'true';
+    const profileCompleted = profile?.onboarding_completed || false;
+    setHasCompletedOnboarding(localStorageCompleted || profileCompleted);
+  }, [profile]);
+
+  // Only show crisis button on main dashboard AND after onboarding completion
   const state = location.state as { screenState?: string } | null;
   const screenState = state?.screenState;
   const isMainDashboard = location.pathname === "/" && screenState === 'main';
+  const shouldShowCrisisButton = isMainDashboard && hasCompletedOnboarding;
 
   const logCrisisEvent = async (eventType: string, source: string) => {
     if (user) {
@@ -51,8 +60,8 @@ const CrisisOverlay: React.FC = () => {
     setBreathingActive(false);
   };
 
-  // Don't render if not on main dashboard
-  if (!isMainDashboard) {
+  // Don't render if not on main dashboard or onboarding not completed
+  if (!shouldShowCrisisButton) {
     return null;
   }
 

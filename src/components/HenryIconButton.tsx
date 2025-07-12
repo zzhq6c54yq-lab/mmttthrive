@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import HelpChatDialog from "./HelpChatDialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useUser } from "@/contexts/UserContext";
 
 interface HenryIconButtonProps {
   className?: string;
@@ -18,6 +19,15 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  const { profile } = useUser();
+  
+  // Check onboarding completion status
+  useEffect(() => {
+    const localStorageCompleted = localStorage.getItem('hasCompletedOnboarding') === 'true';
+    const profileCompleted = profile?.onboarding_completed || false;
+    setHasCompletedOnboarding(localStorageCompleted || profileCompleted);
+  }, [profile]);
   
   // Get the screen state from the location
   const state = location.state as { screenState?: string } | null;
@@ -30,9 +40,12 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
      screenState === 'mood' ||
      screenState === 'register' ||
      screenState === 'subscription' ||
-     screenState === 'visionBoard' ||
-     screenState === 'main');
-  
+     screenState === 'visionBoard');
+   
+  // Only show on main dashboard after onboarding completion  
+  const isMainDashboard = location.pathname === "/" && screenState === 'main';
+  const shouldShowHenryButton = isMainDashboard && hasCompletedOnboarding;
+   
   // Don't show during emotional check-in flow or on excluded pages
   const isEmotionalCheckIn = location.pathname === "/" && (
     screenState === 'mood' || 
@@ -42,8 +55,8 @@ const HenryIconButton: React.FC<HenryIconButtonProps> = ({
     screenState === 'subscription'
   );
 
-  // Don't show the help button on initial screens or excluded pages
-  if (isExcludedPage || isEmotionalCheckIn) {
+  // Don't show the help button unless on main dashboard with completed onboarding
+  if (!shouldShowHenryButton || isExcludedPage || isEmotionalCheckIn) {
     return null;
   }
 
