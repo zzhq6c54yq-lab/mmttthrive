@@ -184,5 +184,14 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     image: "https://images.unsplash.com/photo-1606092195730-5d7b9af20df552?auto=format&fit=crop&w=800&q=80",
     path: "/games-and-quizzes",
     color: "rose"
+  },
+  {
+    id: "substance-abuse-sponsor",
+    title: isSpanish ? "Mi Padrino de Recuperación" : "My Substance Abuse Sponsor",
+    description: isSpanish ? "Apoyo estilo AA/NA con conexión de padrinos y seguimiento de sobriedad." : "AA/NA style support with sponsor connection and sobriety tracking.",
+    icon: <Heart className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=800&q=80",
+    path: "/substance-abuse-sponsor",
+    color: "emerald"
   }
 ];
