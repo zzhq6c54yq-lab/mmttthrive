@@ -27,24 +27,24 @@ const CoPayCredits = () => {
   const handleEarnCredits = (amount: number, source: string) => {
     setCredits(prev => prev + amount);
     toast({
-      title: `Earned $${amount} in Credits!`,
-      description: `You've earned $${amount} in copay credits from ${source}.`,
+      title: `Earned ${amount} Points!`,
+      description: `You've earned ${amount} points from ${source}.`,
     });
   };
 
   const handleUpgradePlan = (plan: string) => {
-    let upgradeCost = 5;
+    let upgradeCost = 500;
     
     if (currentPlan === "basic" && plan === "platinum") {
-      upgradeCost = 10;
+      upgradeCost = 1000;
     } else if (currentPlan === "gold" && plan === "platinum") {
-      upgradeCost = 5;
+      upgradeCost = 500;
     }
     
     if (credits < upgradeCost) {
       toast({
-        title: "Not enough credits",
-        description: `You need at least $${upgradeCost} in credits to upgrade to the ${plan} plan.`,
+        title: "Not enough points",
+        description: `You need at least ${upgradeCost} points to upgrade to the ${plan} plan.`,
         variant: "destructive"
       });
       return;
@@ -54,19 +54,19 @@ const CoPayCredits = () => {
   };
 
   const handleRedeemPoints = () => {
-    // Updated point conversion: 5,000 points = $5
-    if (challengePoints < 5000) {
+    // Updated point conversion: 100 points = 1 credit point
+    if (challengePoints < 100) {
       toast({
         title: "Not enough points",
-        description: "You need at least 5,000 points to redeem for $5 in co-pay credits.",
+        description: "You need at least 100 points to redeem for credits.",
         variant: "destructive"
       });
       return;
     }
     
-    // Convert in $5 increments per 5,000 points
-    const creditsToRedeem = Math.floor(challengePoints / 5000) * 5;
-    const pointsToDeduct = Math.floor(challengePoints / 5000) * 5000;
+    // Convert in 100-point increments
+    const creditsToRedeem = Math.floor(challengePoints / 100) * 10;
+    const pointsToDeduct = Math.floor(challengePoints / 100) * 100;
     
     setChallengePoints(prev => prev - pointsToDeduct);
     setChallengeCredits(prev => prev + creditsToRedeem);
@@ -74,16 +74,16 @@ const CoPayCredits = () => {
     
     toast({
       title: "Points Redeemed!",
-      description: `You've converted ${pointsToDeduct} points into $${creditsToRedeem} co-pay credits.`,
+      description: `You've converted ${pointsToDeduct} points into ${creditsToRedeem} credit points.`,
     });
   };
 
-  // Handle cash out of credits in $5 increments
+  // Handle cash out of credits in point increments
   const handleCashOut = (amount: number) => {
     if (credits < amount) {
       toast({
-        title: "Not enough credits",
-        description: `You need at least $${amount} in credits to cash out.`,
+        title: "Not enough points",
+        description: `You need at least ${amount} points to redeem.`,
         variant: "destructive"
       });
       return;
@@ -91,8 +91,8 @@ const CoPayCredits = () => {
     
     setCredits(prev => prev - amount);
     toast({
-      title: "Credits Cashed Out!",
-      description: `You've successfully cashed out $${amount} in Thrive credits.`,
+      title: "Points Redeemed!",
+      description: `You've successfully redeemed ${amount} Thrive points.`,
     });
   };
   
@@ -102,7 +102,7 @@ const CoPayCredits = () => {
   };
 
   return (
-    <Page title="Co-Pay Credits Program" fullWidth={true}>
+    <Page title="Points Program" fullWidth={true}>
       <div className="space-y-8 w-full">
         {/* Hero Section */}
         <HeroSection 
@@ -152,13 +152,13 @@ const CoPayCredits = () => {
               value="earn" 
               className="data-[state=active]:bg-white data-[state=active]:text-amber-800 data-[state=active]:shadow-sm"
             >
-              Earn Credits
+              Earn Points
             </TabsTrigger>
             <TabsTrigger 
               value="redeem" 
               className="data-[state=active]:bg-white data-[state=active]:text-amber-800 data-[state=active]:shadow-sm"
             >
-              Redeem Credits
+              Redeem Points
             </TabsTrigger>
           </TabsList>
           

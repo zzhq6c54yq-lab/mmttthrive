@@ -24,21 +24,21 @@ const CreditOverviewCard: React.FC<CreditOverviewCardProps> = ({
       <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100 border-b border-amber-200">
         <CardTitle className="text-2xl flex items-center gap-2 text-amber-800">
           <BadgePercent className="h-6 w-6 text-amber-600" />
-          Your Co-Pay Credits
+          Your Points Balance
         </CardTitle>
-        <CardDescription className="text-gray-600">Use these dollar-value credits for therapy sessions or Thrive Apparel</CardDescription>
+        <CardDescription className="text-gray-600">Use these points for rewards and exclusive benefits</CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <span className="text-4xl font-bold text-amber-600">${credits}</span>
-            <span className="text-gray-500 ml-2">credits available</span>
+            <span className="text-4xl font-bold text-amber-600">{credits}</span>
+            <span className="text-gray-500 ml-2">points available</span>
           </div>
           <Button 
             className="bg-amber-500 hover:bg-amber-600 text-black font-medium shadow-md"
-            onClick={() => handleCashOut(5)}
+            onClick={() => handleCashOut(50)}
           >
-            Use Credits
+            Use Points
           </Button>
         </div>
         <div className="mb-3">
@@ -47,27 +47,27 @@ const CreditOverviewCard: React.FC<CreditOverviewCardProps> = ({
           </Progress>
         </div>
         
-        {/* Credit Cashout Section */}
+        {/* Points Redemption Section */}
         <div className="mt-8 p-6 rounded-lg border border-amber-300 shadow-md bg-gradient-to-r from-amber-50 to-amber-100">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 rounded-full bg-amber-200">
               <Wallet className="h-6 w-6 text-amber-700" />
             </div>
-            <h4 className="font-semibold text-gray-800 text-lg">Cash Out Credits</h4>
+            <h4 className="font-semibold text-gray-800 text-lg">Redeem Points</h4>
           </div>
           <p className="text-gray-600 mb-6">
-            Convert your earned credits to usable Thrive credits in $5 increments. Available for immediate use.
+            Use your earned points for rewards and benefits. Available for immediate use.
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-            {[5, 10, 15, 20, 25].map((amount) => (
+            {[50, 100, 150, 200, 250].map((amount) => (
               <Button 
                 key={amount}
                 onClick={() => handleCashOut(amount)}
                 disabled={credits < amount}
                 className={`${credits >= amount ? 'bg-amber-500 hover:bg-amber-600 text-black' : 'bg-gray-200 text-gray-500'} font-semibold`}
               >
-                ${amount}
+                {amount}
               </Button>
             ))}
           </div>
@@ -81,7 +81,7 @@ const CreditOverviewCard: React.FC<CreditOverviewCardProps> = ({
               </div>
               <h4 className="font-semibold text-gray-800 text-lg">Gold Membership</h4>
             </div>
-            <p className="text-gray-600 pl-12">Earn $5 back on every $100 spent on therapy costs and monthly subscriptions.</p>
+            <p className="text-gray-600 pl-12">Earn bonus points on every wellness activity and challenge completion.</p>
             <Button 
               className="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm"
               onClick={() => handleUpgradePlan("gold")}
@@ -97,7 +97,7 @@ const CreditOverviewCard: React.FC<CreditOverviewCardProps> = ({
               </div>
               <h4 className="font-semibold text-gray-800 text-lg">Platinum Membership</h4>
             </div>
-            <p className="text-gray-600 pl-12">Enjoy greater rewards with $10 back on every $100 spent, designed for those who want to maximize benefits.</p>
+            <p className="text-gray-600 pl-12">Enjoy enhanced rewards with increased point multipliers for wellness activities and challenges.</p>
             <Button 
               className="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-black font-semibold shadow-sm"
               onClick={() => handleUpgradePlan("platinum")}
@@ -112,14 +112,14 @@ const CreditOverviewCard: React.FC<CreditOverviewCardProps> = ({
             <div className="p-3 rounded-full bg-amber-200">
               <ShoppingBag className="h-6 w-6 text-amber-700" />
             </div>
-            <h4 className="font-semibold text-gray-800 text-lg">Thrive Apparel Shop</h4>
+            <h4 className="font-semibold text-gray-800 text-lg">Thrive Rewards Shop</h4>
           </div>
-          <p className="text-gray-600 mb-4">Redeem your credits for exclusive mental wellness merchandise and apparel. Each credit equals one dollar toward your purchase.</p>
+          <p className="text-gray-600 mb-4">Redeem your points for exclusive mental wellness merchandise and rewards.</p>
           <div className="flex justify-end">
             <a href="https://thrive-apparel.com" target="_blank" rel="noopener noreferrer">
               <Button className="bg-amber-600 hover:bg-amber-700 text-black font-semibold shadow-md">
                 <ShoppingBag className="mr-2 h-4 w-4" />
-                Shop with Credits
+                Shop with Points
               </Button>
             </a>
           </div>

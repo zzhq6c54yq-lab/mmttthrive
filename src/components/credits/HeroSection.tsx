@@ -43,10 +43,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab, onGetS
       >
         <div className="mb-6 md:mb-0">
           <h1 className="text-2xl md:text-4xl font-bold text-white mb-3">
-            Co-Pay Credits Program
+            Points Program
           </h1>
           <p className="text-amber-100 text-sm md:text-base max-w-md">
-            Earn credits from co-payments, wellness challenges, and more. Use them to reduce costs for future sessions or shop our exclusive merch.
+            Earn points from wellness challenges and activities. Use them to unlock rewards and exclusive benefits.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
@@ -79,9 +79,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ credits, setActiveTab, onGetS
                 <WalletCards className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h2 className="text-white font-semibold">Your Credits</h2>
+                <h2 className="text-white font-semibold">Your Points</h2>
                 <div className="flex items-baseline">
-                  <span className="text-3xl md:text-4xl font-bold text-white">${credits}</span>
+                  <span className="text-3xl md:text-4xl font-bold text-white">{credits}</span>
                   <span className="text-amber-100 ml-2">available</span>
                 </div>
               </div>
