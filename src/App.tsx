@@ -103,6 +103,7 @@ import JournalApp from "./pages/JournalApp";
 import MemorialGarden from "./pages/MemorialGarden";
 import GriefResources from "./pages/GriefResources";
 import LegacyBuilder from "./pages/LegacyBuilder";
+import MirrorAI from "./pages/MirrorAI";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import "./App.css";
@@ -254,6 +255,7 @@ function App() {
           <Route path="/my-sponsor" element={<MySponsor />} />
           <Route path="/aa-sponsor" element={<AASponsor />} />
           <Route path="/substance-abuse-sponsor" element={<AASponsor />} />
+          <Route path="/mirror-ai" element={<MirrorAI />} />
           
           <Route path="/user-lead" element={<UserLead />} />
           

@@ -68,6 +68,16 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     color: "purple"
   },
   {
+    id: "mirror-ai",
+    title: isSpanish ? "MirrorAI Compañero" : "MirrorAI Companion",
+    description: isSpanish ? "Tu compañero de IA informado sobre traumas para procesar emociones con compasión." : "Your trauma-informed AI companion for processing emotions with compassion.",
+    icon: <Brain className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80",
+    path: "/mirror-ai",
+    color: "purple",
+    popular: true
+  },
+  {
     id: "lois-challenge",
     title: isSpanish ? "Desafío Lois" : "Lois Challenge",
     description: isSpanish ? "Participa en desafíos diarios de bienestar." : "Participate in daily wellness challenges.",
