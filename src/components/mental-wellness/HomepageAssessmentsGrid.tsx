@@ -58,8 +58,7 @@ const HomepageAssessmentsGrid: React.FC = () => {
 
   const translations = {
     title: isSpanish ? 'Evaluaciones de Salud Mental' : 'Mental Health Quiz and Assessments',
-    takeAssessment: isSpanish ? 'Comenzar Evaluación' : 'Start Assessment',
-    takeQuiz: isSpanish ? 'Comenzar Quiz' : 'Start Quiz',
+    start: isSpanish ? 'EMPEZAR' : 'START',
     viewAllAssessments: isSpanish ? 'Ver Todas las Evaluaciones' : 'View All Assessments'
   };
 
@@ -94,23 +93,20 @@ const HomepageAssessmentsGrid: React.FC = () => {
             </div>
 
             <CardContent className="p-3">
-              {/* Compact Title */}
-              <h3 className="text-white text-sm font-semibold line-clamp-2 mb-3 group-hover:text-[#E5C5A1] transition-colors duration-300 min-h-[2.5rem]">
+              {/* More Visible Title */}
+              <h3 className="text-white text-base font-bold line-clamp-2 mb-3 group-hover:text-[#E5C5A1] transition-colors duration-300 min-h-[2.5rem] leading-tight drop-shadow-lg">
                 {isSpanish ? assessment.titleSpanish : assessment.title}
               </h3>
 
-              {/* Start Assessment Button */}
+              {/* START Button */}
               <Button
-                className="w-full bg-[#B87333] hover:bg-[#E5C5A1] text-white hover:text-black font-medium text-xs py-2 transition-all duration-300"
+                className="w-full bg-[#B87333] hover:bg-[#E5C5A1] text-white hover:text-black font-bold text-sm py-2 transition-all duration-300"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleAssessmentClick(assessment);
                 }}
               >
-                {assessment.category.toLowerCase().includes('quiz') 
-                  ? translations.takeQuiz 
-                  : translations.takeAssessment
-                }
+                {translations.start}
               </Button>
             </CardContent>
           </Card>
