@@ -21,6 +21,10 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({
   const { isSpanish } = useTranslation();
   
   const handleClick = () => {
+    // Store current location for return navigation
+    const currentPath = window.location.pathname;
+    localStorage.setItem('lastVisitedPath', currentPath);
+    
     toast({
       title: isSpanish ? "Volviendo al Tablero Principal" : "Returning to Main Dashboard",
       description: isSpanish ? "Llevándote al tablero principal" : "Taking you to the main dashboard",
@@ -31,7 +35,9 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({
       state: { 
         screenState: 'main',
         returnToMain: true,
-        preventTutorial: true
+        preventTutorial: true,
+        fromPath: currentPath,
+        preserveState: true
       } 
     });
   };

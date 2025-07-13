@@ -10,10 +10,16 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   
   const handleNavigateToMain = () => {
+    // Store current location for return navigation
+    const currentPath = window.location.pathname;
+    localStorage.setItem('lastVisitedPath', currentPath);
+    
     navigate('/', { 
       state: { 
         screenState: 'main',
-        returnToMain: true
+        returnToMain: true,
+        fromPath: currentPath,
+        preserveState: true
       } 
     });
   };
