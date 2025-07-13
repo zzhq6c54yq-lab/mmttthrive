@@ -15,6 +15,7 @@ import PersonalizedContent from "./pages/PersonalizedContent";
 import SleepTracker from "./pages/SleepTracker";
 import Home from "./pages/Home";
 import ProgressReports from "./pages/ProgressReports";
+import ProgressAnalytics from "./pages/ProgressAnalytics";
 import MentalWellnessTools from "./pages/MentalWellnessTools";
 import MentalWellnessAssessments from "./pages/MentalWellnessAssessments";
 import GamesAndQuizzes from "./pages/GamesAndQuizzes";
@@ -125,6 +126,7 @@ function App() {
           <Route path="/personalized-content" element={<PersonalizedContent />} />
           <Route path="/home" element={<Home />} />
           <Route path="/progress-reports" element={<ProgressReports />} />
+          <Route path="/progress-analytics" element={<ProgressAnalytics />} />
           <Route path="/mental-wellness" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-assessments" element={<MentalWellnessAssessments />} />
@@ -367,6 +369,7 @@ function App() {
           <Route path="/career-coaching" element={<CareerCoaching />} />
           <Route path="/meditation-studio" element={<MeditationStudio />} />
           <Route path="/sleep-tracker" element={<SleepTracker />} />
+          <Route path="/sleep-analysis" element={<SleepTracker />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />

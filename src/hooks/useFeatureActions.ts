@@ -180,66 +180,48 @@ export const useFeatureActions = () => {
   
   // Function for standardized back button navigation
   const handleBackNavigation = () => {
-    const { state } = location;
+    const currentPath = location.pathname;
+    const state = location.state as any;
     
-    // Check if we're in a specialized portal
-    const inPortal = isInSpecializedPortal();
-    const portalPath = getPortalBasePath();
+    console.log('[useFeatureActions] handleBackNavigation called from:', currentPath);
+    console.log('[useFeatureActions] Location state:', state);
     
-    // If we're in a portal and have stayInPortal flag, navigate within the portal
-    if (inPortal && state && state.stayInPortal) {
-      // If we have a specific portal path to return to
-      if (state.portalPath) {
-        navigate(state.portalPath, {
-          state: {
-            ...state,
-            stayInPortal: true,
-            preventTutorial: true
-          }
-        });
-      }
-      // Otherwise go to the default portal path
-      else {
-        navigate(portalPath, {
-          state: {
-            ...state,
-            stayInPortal: true,
-            preventTutorial: true
-          }
-        });
-      }
-    }
-    // If we have fromFeature in state, navigate back to that feature
-    else if (state && state.fromFeature) {
-      navigate(state.fromFeature, {
+    // Special handling for specialized portals
+    if (isInSpecializedPortal()) {
+      const portalPath = getPortalBasePath();
+      console.log('[useFeatureActions] In specialized portal, navigating to:', portalPath);
+      
+      navigate(portalPath, {
         state: {
-          ...state,
-          preventTutorial: true,
-          returnToFeature: false
+          stayInPortal: true,
+          fromFeature: currentPath
         }
       });
-    } else if (state && state.returnToPortal) {
-      // If returnToPortal is specified, return to that portal
+      return;
+    }
+    
+    // Check if we should stay in a portal context
+    if (state?.stayInPortal && state?.returnToPortal) {
+      console.log('[useFeatureActions] Staying in portal, returning to:', state.returnToPortal);
       navigate(state.returnToPortal, {
         state: {
-          ...state,
-          preventTutorial: true,
-          stayInPortal: true
+          stayInPortal: true,
+          fromFeature: currentPath
         }
       });
-    } else if (state && state.returnToMain) {
-      // If returnToMain is true, return to main dashboard
-      navigate("/", {
-        state: {
-          ...state,
-          preventTutorial: true,
-          screenState: 'main'
-        }
-      });
-    } else {
-      // Otherwise, just go back one step in history
-      navigate(-1);
+      return;
     }
+    
+    // For key feature pages, always return to main dashboard
+    console.log('[useFeatureActions] Returning to main dashboard');
+    navigate('/', { 
+      state: { 
+        screenState: 'main',
+        returnToMain: true,
+        fromPath: currentPath,
+        preserveState: true
+      } 
+    });
   };
 
   return { handleActionClick, handleBackNavigation };

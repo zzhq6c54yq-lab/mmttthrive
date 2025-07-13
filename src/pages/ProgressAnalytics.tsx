@@ -46,9 +46,13 @@ const ProgressAnalytics = () => {
       <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
         <div className="container px-4 max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+            <Link 
+              to="/" 
+              state={{ screenState: 'main', returnToMain: true }}
+              className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Back to Main Dashboard
             </Link>
             <HomeButton />
           </div>

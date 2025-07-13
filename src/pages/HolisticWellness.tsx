@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Leaf, Brain, Heart, Apple, Sunset, BadgeCheck, ArrowRight, Dumbbell, Waves, HandHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
+import BackButton from "@/components/navigation/BackButton";
 import { useNavigate } from "react-router-dom";
 
 const HolisticWellness: React.FC = () => {
@@ -125,24 +126,15 @@ const HolisticWellness: React.FC = () => {
     }, 2500);
   };
 
-  const navigateToMainMenu = () => {
-    navigate("/", { state: { screenState: 'main' } });
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pt-8 pb-16 px-4">
       <div className="fixed top-4 left-4 z-50">
-        <HomeButton />
+        <BackButton />
       </div>
       
       <div className="fixed top-4 right-4 z-50">
-        <Button 
-          variant="outline" 
-          className="flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 border-white/10"
-          onClick={navigateToMainMenu}
-        >
-          <span>Main Menu</span>
-        </Button>
+        <HomeButton />
       </div>
       
       <div className="container mx-auto max-w-6xl">
