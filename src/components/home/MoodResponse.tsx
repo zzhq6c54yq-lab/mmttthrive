@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, ChevronDown, ChevronUp, RefreshCw } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smile, Meh, Frown, HeartCrack, Angry, Brain, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import useTranslation from "@/hooks/useTranslation";
 import { getRandomPrompt, saveUsedPrompt, getUsedPrompts, PositivePrompt } from "@/data/positivePrompts";
 
@@ -14,22 +13,12 @@ interface MoodResponseProps {
 
 const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, onPrevious }) => {
   const [currentPrompt, setCurrentPrompt] = useState<PositivePrompt | null>(null);
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
-  const [isScrolledToTop, setIsScrolledToTop] = useState(true);
-  const [promptCount, setPromptCount] = useState({ current: 1, total: 10 });
-  const affirmationScrollRef = React.useRef<HTMLDivElement>(null);
   const { isSpanish } = useTranslation();
   
   const translations = {
     continue: isSpanish ? "Continuar" : "Continue",
     previous: isSpanish ? "Anterior" : "Previous",
-    newPrompt: isSpanish ? "Nuevo Mensaje" : "Get New Prompt",
-    promptCounter: isSpanish ? "Mensaje" : "Prompt",
-    of: isSpanish ? "de" : "of",
-    positiveTitle: isSpanish ? "Aquí Tienes Tu Mensaje Positivo" : "Here's Your Positive Message",
-    scrollDown: isSpanish ? "Desplázate para más" : "Scroll down for more",
-    scrollUp: isSpanish ? "Desplázate hacia arriba" : "Scroll up for more"
+    newPrompt: isSpanish ? "Nuevo Mensaje" : "Get New Message"
   };
 
   // Initialize with first prompt for the selected mood
@@ -48,10 +37,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     if (newPrompt) {
       setCurrentPrompt(newPrompt);
       saveUsedPrompt(selectedMood, newPrompt.id);
-      
-      // Update prompt counter
-      const currentCount = usedPrompts.length + 1;
-      setPromptCount({ current: currentCount, total: 10 });
     }
   };
 
@@ -59,17 +44,23 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     loadNewPrompt();
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowScrollIndicator(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const getMoodTitle = () => {
-    // Always return the positive title regardless of mood
-    return translations.positiveTitle;
+    switch (selectedMood) {
+      case 'happy':
+        return isSpanish ? 'Tu Día Tiene Potencial Ilimitado' : 'Your Day Has Unlimited Potential';
+      case 'ok':
+        return isSpanish ? 'Encontrando Equilibrio en Este Momento' : 'Finding Balance in This Moment';
+      case 'neutral':
+        return isSpanish ? 'Cada Momento es un Nuevo Comienzo' : 'Every Moment is a Fresh Start';
+      case 'down':
+        return isSpanish ? 'Eres Más Fuerte de lo que Crees' : 'You Are Stronger Than You Know';
+      case 'sad':
+        return isSpanish ? 'Recordatorios Gentiles para tu Corazón' : 'Gentle Reminders for Your Heart';
+      case 'overwhelmed':
+        return isSpanish ? 'Paso a Paso' : 'One Step at a Time';
+      default:
+        return isSpanish ? 'Tu Viaje Continúa' : 'Your Journey Continues';
+    }
   };
 
   const getMoodIcon = () => {
@@ -91,14 +82,6 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
     }
   };
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const isAtBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 20;
-    const isAtTop = target.scrollTop <= 20;
-    
-    setIsScrolledToBottom(isAtBottom);
-    setIsScrolledToTop(isAtTop);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1a1a2e] to-[#16213e] text-white overflow-hidden flex flex-col">
@@ -123,57 +106,22 @@ const MoodResponse: React.FC<MoodResponseProps> = ({ selectedMood, onContinue, o
             </div>
           </div>
           
-          <div className="bg-black/20 backdrop-blur-md border-t border-white/10 p-6 relative">
-            <ScrollArea 
-              className="h-[280px] pr-4 overflow-auto" 
-              onScroll={handleScroll}
-              ref={affirmationScrollRef}
-            >
-              <div className="space-y-6">
-                {currentPrompt && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7 }}
-                    className="bg-gradient-to-br from-[#21213f]/80 to-[#2a294f]/80 backdrop-blur-sm p-5 rounded-xl border border-[#B87333]/30"
-                  >
-                    <div className="flex justify-between items-start mb-3">
-                      <span className="text-xs text-[#B87333] font-medium">
-                        {translations.promptCounter} {promptCount.current} {translations.of} {promptCount.total}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleNewPrompt}
-                        className="text-[#B87333] hover:text-[#E5C5A1] hover:bg-[#B87333]/10 h-6 w-6 p-0"
-                      >
-                        <RefreshCw className="h-3 w-3" />
-                      </Button>
-                    </div>
-                    <p className="text-lg text-white/95 leading-relaxed font-light">
-                      <span className="text-[#E5C5A1]">"</span>
-                      <span className="text-white">
-                        {isSpanish ? currentPrompt.spanish : currentPrompt.english}
-                      </span>
-                      <span className="text-[#E5C5A1]">"</span>
-                    </p>
-                  </motion.div>
-                )}
-              </div>
-            </ScrollArea>
-            
-            {!isScrolledToBottom && (
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-sm rounded-full py-1 px-3 flex items-center gap-1 text-xs text-white/70 shadow-lg border border-white/10 animate-bounce">
-                <ChevronDown className="h-3 w-3" />
-                {translations.scrollDown}
-              </div>
-            )}
-            
-            {!isScrolledToTop && isScrolledToBottom && (
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/40 backdrop-blur-sm rounded-full py-1 px-3 flex items-center gap-1 text-xs text-white/70 shadow-lg border border-white/10 animate-bounce">
-                <ChevronUp className="h-3 w-3" />
-                {translations.scrollUp}
-              </div>
+          <div className="bg-black/20 backdrop-blur-md border-t border-white/10 p-6">
+            {currentPrompt && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                className="bg-gradient-to-br from-[#21213f]/80 to-[#2a294f]/80 backdrop-blur-sm p-6 rounded-xl border border-[#B87333]/30"
+              >
+                <p className="text-lg text-white/95 leading-relaxed font-light text-center">
+                  <span className="text-[#E5C5A1]">"</span>
+                  <span className="text-white">
+                    {isSpanish ? currentPrompt.spanish : currentPrompt.english}
+                  </span>
+                  <span className="text-[#E5C5A1]">"</span>
+                </p>
+              </motion.div>
             )}
           </div>
           
