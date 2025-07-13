@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -23,20 +22,17 @@ const MessageList: React.FC<MessageListProps> = ({
   style,
   showTypingIndicator = false
 }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom whenever messages change
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, showTypingIndicator]);
 
   return (
     <ScrollArea 
-      className={cn("flex-1 pr-4", className)} 
+      className={cn("flex-1 pr-4 h-full overflow-y-auto", className)} 
       style={style}
-      ref={scrollRef}
     >
       <div className="space-y-4 py-1">
         {messages.map((message, index) => (
@@ -93,6 +89,9 @@ const MessageList: React.FC<MessageListProps> = ({
             </div>
           </div>
         )}
+        
+        {/* Invisible element to scroll to */}
+        <div ref={messagesEndRef} />
       </div>
     </ScrollArea>
   );
