@@ -129,22 +129,6 @@ const DailyWellnessChallenges: React.FC = () => {
         <div className="absolute inset-0 bg-pattern opacity-5"></div>
         
         <div className="bg-gradient-to-r from-[#8D65C5]/20 via-[#E96DED]/20 to-[#6C85DD]/20 p-6">
-          {/* Points progress bar */}
-          <div className="mb-4">
-            <div className="flex justify-between items-center mb-1 text-xs text-gray-300">
-              <span>{translations.progressToward}</span>
-              <div className="flex items-center gap-2">
-                <span>{points}/1000 {translations.points}</span>
-                <Award className="h-4 w-4 text-amber-400" />
-              </div>
-            </div>
-            <Progress value={(points % 1000) / 10} max={100} className="h-2 bg-[#1e1e2c]">
-              <div className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></div>
-            </Progress>
-            <p className="text-xs text-gray-400 mt-1 text-right">
-              {1000 - (points % 1000)} {translations.morePointsNeeded}
-            </p>
-          </div>
           
           <div className="flex space-x-4 mb-6">
             <button

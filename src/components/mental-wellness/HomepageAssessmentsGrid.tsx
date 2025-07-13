@@ -8,6 +8,14 @@ import useTranslation from '@/hooks/useTranslation';
 import { useNavigate } from 'react-router-dom';
 import AssessmentModal from './AssessmentModal';
 
+// Import generated assessment cover images
+import gad7Cover from '@/assets/gad-7-cover.jpg';
+import phq9Cover from '@/assets/phq-9-cover.jpg';
+import stressScaleCover from '@/assets/stress-scale-cover.jpg';
+import pcl5Cover from '@/assets/pcl-5-cover.jpg';
+import mdqCover from '@/assets/mdq-cover.jpg';
+import ociRCover from '@/assets/oci-r-cover.jpg';
+
 const HomepageAssessmentsGrid: React.FC = () => {
   const { isSpanish } = useTranslation();
   const navigate = useNavigate();
@@ -17,12 +25,12 @@ const HomepageAssessmentsGrid: React.FC = () => {
   // Get the first 6 assessments for homepage display with title-specific cover images
   const featuredAssessments = mentalHealthAssessments.slice(0, 6).map((assessment, index) => {
     const titleSpecificImages = {
-      'gad-7': 'https://images.unsplash.com/photo-1584004632229-e8b8e6d3e0ae?w=800&h=600&fit=crop', // anxiety - person with hands on face
-      'phq-9': 'https://images.unsplash.com/photo-1555952494-efd681c7e3f9?w=800&h=600&fit=crop', // depression - person looking out window
-      'perceived-stress-scale': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop', // stress - overwhelmed workspace
-      'pcl-5': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop', // PTSD - stormy sky/trauma imagery
-      'mdq': 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop', // bipolar - emotional balance/ups downs
-      'oci-r': 'https://images.unsplash.com/photo-1563356219-d29c35a3e0d9?w=800&h=600&fit=crop'  // OCD - organized/repetitive patterns
+      'gad-7': gad7Cover,
+      'phq-9': phq9Cover,
+      'perceived-stress-scale': stressScaleCover,
+      'pcl-5': pcl5Cover,
+      'mdq': mdqCover,
+      'oci-r': ociRCover
     };
     
     return {
@@ -93,8 +101,8 @@ const HomepageAssessmentsGrid: React.FC = () => {
             </div>
 
             <CardContent className="p-3">
-              {/* More Visible Title */}
-              <h3 className="text-white text-base font-bold line-clamp-2 mb-3 group-hover:text-[#E5C5A1] transition-colors duration-300 min-h-[2.5rem] leading-tight drop-shadow-lg">
+              {/* Highly Visible Title */}
+              <h3 className="text-black text-base font-bold line-clamp-2 mb-3 group-hover:text-[#B87333] transition-colors duration-300 min-h-[2.5rem] leading-tight text-shadow-lg bg-white/90 rounded px-2 py-1">
                 {isSpanish ? assessment.titleSpanish : assessment.title}
               </h3>
 
