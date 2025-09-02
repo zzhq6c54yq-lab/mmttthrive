@@ -1,36 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import * as Tone from "tone";
-import Page from "@/components/Page";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Play, 
-  Pause, 
-  Square, 
-  Volume2, 
-  Mic, 
-  Download,
-  Music,
-  Brain,
-  Heart,
-  Waves,
-  RotateCcw,
-  Settings
-} from "lucide-react";
-import { motion } from "framer-motion";
-import { toast } from "sonner";
-import musicTherapyCover from "@/assets/music-therapy-cover.png";
+import React, { useState, useRef, useEffect } from 'react';
+import * as Tone from 'tone';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Slider } from '@/components/ui/slider';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import Page from '@/components/Page';
+import { Play, Pause, Square, Mic, Video, Download, Trash2, Music, Volume2 } from 'lucide-react';
 
+// Interfaces
 interface RecordedTrack {
   id: string;
   name: string;
-  buffer: Tone.Player;
+  buffer: Tone.ToneAudioBuffer;
   instrument: string;
-  timestamp: Date;
+  timestamp: number;
+  type: 'instrument' | 'microphone' | 'video';
+  duration?: number;
 }
 
 interface AudioEffect {
@@ -38,300 +29,457 @@ interface AudioEffect {
   name: string;
   type: 'reverb' | 'delay' | 'filter' | 'distortion';
   enabled: boolean;
-  settings: Record<string, number>;
+  settings: any;
 }
 
-const MusicTherapy = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [volume, setVolume] = useState(-20);
-  const [currentInstrument, setCurrentInstrument] = useState("synth");
+const MusicTherapy: React.FC = () => {
+  // State management
+  const [volume, setVolume] = useState(70);
+  const [selectedInstrument, setSelectedInstrument] = useState('synth');
   const [activeNotes, setActiveNotes] = useState<Set<string>>(new Set());
   const [recordedTracks, setRecordedTracks] = useState<RecordedTrack[]>([]);
-  const [currentBPM, setBPM] = useState(120);
-  const [effects, setEffects] = useState<AudioEffect[]>([
-    { id: 'reverb', name: 'Reverb', type: 'reverb', enabled: false, settings: { roomSize: 0.8, decay: 2 } },
-    { id: 'delay', name: 'Delay', type: 'delay', enabled: false, settings: { time: 0.25, feedback: 0.3 } },
-    { id: 'filter', name: 'Filter', type: 'filter', enabled: false, settings: { frequency: 1000, Q: 1 } }
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [bpm, setBpm] = useState(120);
+  const [currentOctave, setCurrentOctave] = useState(4);
+  const [micRecording, setMicRecording] = useState(false);
+  const [videoRecording, setVideoRecording] = useState(false);
+  const [audioEffects, setAudioEffects] = useState<AudioEffect[]>([
+    { id: 'reverb', name: 'Reverb', type: 'reverb', enabled: false, settings: { roomSize: 0.7, decay: 1.5 } },
+    { id: 'delay', name: 'Delay', type: 'delay', enabled: false, settings: { delayTime: 0.25, feedback: 0.3 } },
+    { id: 'filter', name: 'Filter', type: 'filter', enabled: false, settings: { frequency: 1000, Q: 1 } },
+    { id: 'distortion', name: 'Distortion', type: 'distortion', enabled: false, settings: { distortion: 0.4 } }
   ]);
 
-  const synthRef = useRef<Tone.PolySynth | null>(null);
-  const reverbRef = useRef<Tone.Reverb | null>(null);
-  const delayRef = useRef<Tone.FeedbackDelay | null>(null);
-  const filterRef = useRef<Tone.Filter | null>(null);
-  const recorderRef = useRef<Tone.Recorder | null>(null);
+  // Refs for audio components
+  const synths = useRef<{ [key: string]: Tone.Synth | Tone.PolySynth }>({});
+  const effects = useRef<{ [key: string]: any }>({});
+  const recorder = useRef<Tone.Recorder | null>(null);
+  const micRecorder = useRef<MediaRecorder | null>(null);
+  const videoRecorder = useRef<MediaRecorder | null>(null);
+  const micStream = useRef<MediaStream | null>(null);
+  const videoStream = useRef<MediaStream | null>(null);
+  const videoElement = useRef<HTMLVideoElement | null>(null);
 
-  const notes = ["C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5"];
-  const drumPads = ["kick", "snare", "hihat", "clap", "openhat", "crash", "ride", "tom"];
+  const { toast } = useToast();
 
-  const instruments = [
-    { value: "synth", label: "Synthesizer", color: "bg-blue-500" },
-    { value: "piano", label: "Piano", color: "bg-purple-500" },
-    { value: "violin", label: "Violin", color: "bg-green-500" },
-    { value: "guitar", label: "Guitar", color: "bg-orange-500" },
-    { value: "drums", label: "Drums", color: "bg-red-500" }
-  ];
-
-  useEffect(() => {
-    setupAudio();
-    return () => {
-      cleanupAudio();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (synthRef.current) {
-      Tone.Destination.volume.value = volume;
-    }
-  }, [volume]);
-
+  // Setup audio context and instruments
   const setupAudio = async () => {
-    await Tone.start();
-    
-    // Setup synthesis chain
-    synthRef.current = new Tone.PolySynth().toDestination();
-    reverbRef.current = new Tone.Reverb(2).toDestination();
-    delayRef.current = new Tone.FeedbackDelay("8n", 0.3).toDestination();
-    filterRef.current = new Tone.Filter(1000, "lowpass").toDestination();
-    recorderRef.current = new Tone.Recorder();
+    try {
+      // Create effects chain
+      effects.current.reverb = new Tone.Reverb(1.5).toDestination();
+      effects.current.delay = new Tone.FeedbackDelay(0.25, 0.3).connect(effects.current.reverb);
+      effects.current.filter = new Tone.Filter(1000, "lowpass").connect(effects.current.delay);
+      effects.current.distortion = new Tone.Distortion(0.4).connect(effects.current.filter);
+      
+      const effectsChain = effects.current.distortion;
 
-    // Connect effects chain
-    synthRef.current.connect(reverbRef.current);
-    synthRef.current.connect(delayRef.current);
-    synthRef.current.connect(filterRef.current);
-    synthRef.current.connect(recorderRef.current);
+      // Set up main synths
+      synths.current.synth = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "triangle" },
+        envelope: { attack: 0.02, decay: 0.1, sustain: 0.3, release: 1 }
+      }).connect(effectsChain);
+      
+      synths.current.piano = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "sine" },
+        envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 }
+      }).connect(effectsChain);
+      
+      // Violin with vibrato and bow-like attack
+      synths.current.violin = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "sawtooth" },
+        envelope: { attack: 0.1, decay: 0.3, sustain: 0.8, release: 1.2 }
+      }).connect(effectsChain);
+      
+      // Cello with deeper, richer tone
+      synths.current.cello = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "sawtooth" },
+        envelope: { attack: 0.15, decay: 0.4, sustain: 0.9, release: 2 }
+      }).connect(effectsChain);
 
-    Tone.Transport.bpm.value = currentBPM;
+      // Setup recorder
+      recorder.current = new Tone.Recorder();
+      effectsChain.connect(recorder.current);
+
+      // Set BPM
+      Tone.Transport.bpm.value = bpm;
+      
+      console.log('Audio setup complete');
+    } catch (error) {
+      console.error('Error setting up audio:', error);
+      toast({
+        title: "Audio Setup Error",
+        description: "Failed to initialize audio system",
+        variant: "destructive",
+      });
+    }
   };
 
   const cleanupAudio = () => {
-    synthRef.current?.dispose();
-    reverbRef.current?.dispose();
-    delayRef.current?.dispose();
-    filterRef.current?.dispose();
-    recorderRef.current?.dispose();
-  };
-
-  const playNote = async (note: string, duration = "8n") => {
-    if (!synthRef.current) return;
-
-    await Tone.start();
-    
     try {
-      if (currentInstrument === "synth") {
-        synthRef.current.triggerAttackRelease(note, duration);
-      } else if (currentInstrument === "piano") {
-        const synth = new Tone.Synth({
-          oscillator: { type: "sine" },
-          envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 }
-        }).toDestination();
-        synth.triggerAttackRelease(note, duration);
-      } else if (currentInstrument === "drums") {
-        const drumSynth = new Tone.MembraneSynth().toDestination();
-        drumSynth.triggerAttackRelease(note, duration);
-      }
-
-      setActiveNotes(prev => new Set([...prev, note]));
-      setTimeout(() => {
-        setActiveNotes(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(note);
-          return newSet;
-        });
-      }, Tone.Time(duration).toMilliseconds());
-
+      synths.current.synth?.dispose();
+      synths.current.piano?.dispose();
+      synths.current.violin?.dispose();
+      synths.current.cello?.dispose();
+      Object.values(effects.current).forEach(effect => effect?.dispose());
+      recorder.current?.dispose();
     } catch (error) {
-      console.error("Error playing note:", error);
-      toast.error("Failed to play note");
+      console.error('Error cleaning up audio:', error);
     }
   };
 
+  useEffect(() => {
+    setupAudio();
+    return cleanupAudio;
+  }, []);
+
+  // Update volume
+  useEffect(() => {
+    Tone.Destination.volume.value = Tone.gainToDb(volume / 100);
+  }, [volume]);
+
+  // Play note function
+  const playNote = async (note: string) => {
+    if (!synths.current[selectedInstrument]) return;
+    
+    await Tone.start();
+    
+    // Add visual feedback
+    setActiveNotes(prev => new Set(prev).add(note));
+    setTimeout(() => {
+      setActiveNotes(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(note);
+        return newSet;
+      });
+    }, 200);
+    
+    if (selectedInstrument === 'synth') {
+      synths.current[selectedInstrument].triggerAttackRelease(note, "8n");
+    } else if (selectedInstrument === 'violin') {
+      // Violin with longer sustain and vibrato
+      const now = Tone.now();
+      synths.current[selectedInstrument].triggerAttack(note, now);
+      synths.current[selectedInstrument].triggerRelease(now + 1);
+    } else if (selectedInstrument === 'cello') {
+      // Cello with deeper, richer tone
+      synths.current[selectedInstrument].triggerAttackRelease(note, "2n");
+    } else {
+      synths.current[selectedInstrument].triggerAttackRelease(note, "4n");
+    }
+  };
+
+  // Play drum sounds
   const playDrum = async (drumType: string) => {
     await Tone.start();
     
-    try {
-      let synth;
-      
-      switch (drumType) {
-        case "kick":
-          synth = new Tone.MembraneSynth().toDestination();
-          synth.triggerAttackRelease("C1", "8n");
-          break;
-        case "snare":
-          synth = new Tone.NoiseSynth().toDestination();
-          synth.triggerAttackRelease("8n");
-          break;
-        case "hihat":
-          synth = new Tone.NoiseSynth({
-            noise: { type: "white" },
-            envelope: { attack: 0.005, decay: 0.1, sustain: 0 }
-          }).toDestination();
-          synth.triggerAttackRelease("32n");
-          break;
-        case "clap":
-          synth = new Tone.NoiseSynth().toDestination();
-          synth.triggerAttackRelease("16n");
-          break;
-        default:
-          synth = new Tone.Synth().toDestination();
-          synth.triggerAttackRelease("C4", "8n");
+    const drumSynths: { [key: string]: () => void } = {
+      kick: () => {
+        const kick = new Tone.MembraneSynth({
+          pitchDecay: 0.05,
+          octaves: 10,
+          oscillator: { type: "sine" },
+          envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4 }
+        }).toDestination();
+        kick.triggerAttackRelease("C1", "8n");
+      },
+      snare: () => {
+        const snare = new Tone.NoiseSynth({
+          noise: { type: "white" },
+          envelope: { attack: 0.001, decay: 0.2, sustain: 0 }
+        }).toDestination();
+        snare.triggerAttackRelease("4n");
+      },
+      hihat: () => {
+        const hihat = new Tone.MetalSynth({
+          envelope: { attack: 0.001, decay: 0.1, release: 0.01 }
+        }).toDestination();
+        hihat.triggerAttackRelease("C4", "8n");
+      },
+      clap: () => {
+        const clap = new Tone.NoiseSynth({
+          noise: { type: "pink" },
+          envelope: { attack: 0.01, decay: 0.15, sustain: 0 }
+        }).toDestination();
+        clap.triggerAttackRelease("16n");
       }
-    } catch (error) {
-      console.error("Error playing drum:", error);
-      toast.error("Failed to play drum");
+    };
+
+    if (drumSynths[drumType]) {
+      drumSynths[drumType]();
     }
   };
 
+  // Recording functions
   const startRecording = async () => {
-    if (!recorderRef.current) return;
+    if (!recorder.current) return;
     
     try {
       setIsRecording(true);
-      recorderRef.current.start();
-      toast.success("Recording started");
+      recorder.current.start();
+      toast({
+        title: "Recording Started",
+        description: "Play some music to record your performance",
+      });
     } catch (error) {
-      console.error("Recording error:", error);
-      toast.error("Failed to start recording");
-      setIsRecording(false);
+      console.error('Error starting recording:', error);
+      toast({
+        title: "Recording Error",
+        description: "Failed to start recording",
+        variant: "destructive",
+      });
     }
   };
 
   const stopRecording = async () => {
-    if (!recorderRef.current || !isRecording) return;
+    if (!recorder.current || !isRecording) return;
     
     try {
-      const recording = await recorderRef.current.stop();
-      const url = URL.createObjectURL(recording);
-      const buffer = new Tone.Player(url);
+      setIsRecording(false);
+      const recording = await recorder.current.stop();
       
       const newTrack: RecordedTrack = {
         id: Date.now().toString(),
         name: `Track ${recordedTracks.length + 1}`,
-        buffer,
-        instrument: currentInstrument,
-        timestamp: new Date()
+        buffer: recording,
+        instrument: selectedInstrument,
+        timestamp: Date.now(),
+        type: 'instrument'
       };
       
       setRecordedTracks(prev => [...prev, newTrack]);
-      setIsRecording(false);
-      toast.success("Recording saved");
+      
+      toast({
+        title: "Recording Complete",
+        description: `${newTrack.name} saved successfully`,
+      });
     } catch (error) {
-      console.error("Error stopping recording:", error);
-      toast.error("Failed to save recording");
-      setIsRecording(false);
+      console.error('Error stopping recording:', error);
+      toast({
+        title: "Recording Error",
+        description: "Failed to save recording",
+        variant: "destructive",
+      });
     }
   };
 
-  const playTrack = (track: RecordedTrack) => {
-    track.buffer.start();
-    setIsPlaying(true);
-    
-    track.buffer.onstop = () => setIsPlaying(false);
+  // Microphone recording
+  const startMicRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStream.current = stream;
+      
+      const mediaRecorder = new MediaRecorder(stream);
+      micRecorder.current = mediaRecorder;
+      
+      const chunks: Blob[] = [];
+      mediaRecorder.ondataavailable = (event) => {
+        chunks.push(event.data);
+      };
+      
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: 'audio/wav' });
+        const buffer = await blob.arrayBuffer();
+        const audioBuffer = await Tone.getContext().decodeAudioData(buffer);
+        
+        const newTrack: RecordedTrack = {
+          id: Date.now().toString(),
+          name: `Voice ${recordedTracks.filter(t => t.type === 'microphone').length + 1}`,
+          buffer: new Tone.ToneAudioBuffer(audioBuffer),
+          instrument: 'microphone',
+          timestamp: Date.now(),
+          type: 'microphone'
+        };
+        
+        setRecordedTracks(prev => [...prev, newTrack]);
+        
+        toast({
+          title: "Voice Recording Complete",
+          description: `${newTrack.name} saved successfully`,
+        });
+      };
+      
+      mediaRecorder.start();
+      setMicRecording(true);
+      
+      toast({
+        title: "Voice Recording Started",
+        description: "Speak or sing into your microphone",
+      });
+    } catch (error) {
+      console.error('Error starting microphone recording:', error);
+      toast({
+        title: "Microphone Error",
+        description: "Could not access microphone",
+        variant: "destructive",
+      });
+    }
   };
 
+  const stopMicRecording = () => {
+    if (micRecorder.current) {
+      micRecorder.current.stop();
+      setMicRecording(false);
+    }
+    if (micStream.current) {
+      micStream.current.getTracks().forEach(track => track.stop());
+    }
+  };
+
+  // Video recording
+  const startVideoRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: true, 
+        audio: true 
+      });
+      videoStream.current = stream;
+      
+      if (videoElement.current) {
+        videoElement.current.srcObject = stream;
+      }
+      
+      const mediaRecorder = new MediaRecorder(stream);
+      videoRecorder.current = mediaRecorder;
+      
+      const chunks: Blob[] = [];
+      mediaRecorder.ondataavailable = (event) => {
+        chunks.push(event.data);
+      };
+      
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        
+        // Create download link
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `video-${Date.now()}.webm`;
+        a.click();
+        
+        toast({
+          title: "Video Recording Complete",
+          description: "Video saved to downloads",
+        });
+      };
+      
+      mediaRecorder.start();
+      setVideoRecording(true);
+      
+      toast({
+        title: "Video Recording Started",
+        description: "Recording video and audio",
+      });
+    } catch (error) {
+      console.error('Error starting video recording:', error);
+      toast({
+        title: "Video Error",
+        description: "Could not access camera",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopVideoRecording = () => {
+    if (videoRecorder.current) {
+      videoRecorder.current.stop();
+      setVideoRecording(false);
+    }
+    if (videoStream.current) {
+      videoStream.current.getTracks().forEach(track => track.stop());
+    }
+  };
+
+  // Play recorded track
+  const playTrack = async (track: RecordedTrack) => {
+    try {
+      const player = new Tone.Player(track.buffer).toDestination();
+      await player.loaded;
+      player.start();
+      
+      toast({
+        title: "Playing Track",
+        description: track.name,
+      });
+    } catch (error) {
+      console.error('Error playing track:', error);
+      toast({
+        title: "Playback Error",
+        description: "Failed to play track",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Toggle audio effects
   const toggleEffect = (effectId: string) => {
-    setEffects(prev => prev.map(effect => 
+    setAudioEffects(prev => prev.map(effect => 
       effect.id === effectId 
         ? { ...effect, enabled: !effect.enabled }
         : effect
     ));
-
-    // Apply effects to audio chain
-    const effect = effects.find(e => e.id === effectId);
-    if (!effect) return;
-
-    switch (effect.type) {
-      case 'reverb':
-        if (reverbRef.current) {
-          reverbRef.current.wet.value = effect.enabled ? 0 : 0.3;
-        }
-        break;
-      case 'delay':
-        if (delayRef.current) {
-          delayRef.current.wet.value = effect.enabled ? 0 : 0.2;
-        }
-        break;
-      case 'filter':
-        if (filterRef.current) {
-          filterRef.current.frequency.value = effect.enabled ? 20000 : effect.settings.frequency;
-        }
-        break;
+    
+    const effect = effects.current[effectId];
+    if (effect) {
+      effect.wet.value = audioEffects.find(e => e.id === effectId)?.enabled ? 0 : 1;
     }
   };
 
+  // Download track (placeholder)
   const downloadTrack = (track: RecordedTrack) => {
-    // This would typically convert the buffer to a downloadable format
-    toast.success(`Downloading ${track.name}`);
+    toast({
+      title: "Download",
+      description: `Downloading ${track.name}...`,
+    });
   };
 
   return (
-    <Page 
-      title="Music Therapy Studio" 
-      showBackButton
-    >
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50">
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
+    <Page title="Music Therapy Studio" featureId="music-therapy">
+      <div className="space-y-6">
         {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-4"
-        >
-          <div className="relative w-full h-64 rounded-2xl overflow-hidden shadow-xl">
-            <img 
-              src={musicTherapyCover} 
-              alt="Music Therapy" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 text-white">
-              <h1 className="text-4xl font-bold mb-2">ThriveSound Studio</h1>
-              <p className="text-lg opacity-90">Therapeutic Music Creation & Healing</p>
-            </div>
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Music className="h-8 w-8 text-amber-500" />
+            <h2 className="text-3xl font-bold text-white">Create Your Musical Journey</h2>
           </div>
-        </motion.div>
+          <p className="text-white/80 max-w-2xl mx-auto">
+            Express yourself through music therapy. Play instruments, record your creations, and explore the healing power of sound.
+          </p>
+        </div>
 
         {/* Control Panel */}
-        <Card>
+        <Card className="bg-white/10 border-white/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5" />
+            <CardTitle className="text-white flex items-center gap-2">
+              <Volume2 className="h-5 w-5" />
               Studio Controls
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {/* Instrument Selector */}
+              {/* Instrument Selection */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Instrument</label>
-                <Select value={currentInstrument} onValueChange={setCurrentInstrument}>
-                  <SelectTrigger>
+                <label className="text-white text-sm font-medium">Instrument</label>
+                <Select value={selectedInstrument} onValueChange={setSelectedInstrument}>
+                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {instruments.map(instrument => (
-                      <SelectItem key={instrument.value} value={instrument.value}>
-                        <div className="flex items-center gap-2">
-                          <div className={`w-3 h-3 rounded-full ${instrument.color}`} />
-                          {instrument.label}
-                        </div>
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="synth">Synthesizer</SelectItem>
+                    <SelectItem value="piano">Piano</SelectItem>
+                    <SelectItem value="violin">Violin</SelectItem>
+                    <SelectItem value="cello">Cello</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Volume Control */}
               <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center gap-2">
-                  <Volume2 className="w-4 h-4" />
-                  Volume: {volume} dB
-                </label>
+                <label className="text-white text-sm font-medium">Volume: {volume}%</label>
                 <Slider
                   value={[volume]}
                   onValueChange={(value) => setVolume(value[0])}
-                  min={-60}
-                  max={0}
+                  max={100}
                   step={1}
                   className="w-full"
                 />
@@ -339,13 +487,10 @@ const MusicTherapy = () => {
 
               {/* BPM Control */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">BPM: {currentBPM}</label>
+                <label className="text-white text-sm font-medium">BPM: {bpm}</label>
                 <Slider
-                  value={[currentBPM]}
-                  onValueChange={(value) => {
-                    setBPM(value[0]);
-                    Tone.Transport.bpm.value = value[0];
-                  }}
+                  value={[bpm]}
+                  onValueChange={(value) => setBpm(value[0])}
                   min={60}
                   max={180}
                   step={1}
@@ -353,62 +498,159 @@ const MusicTherapy = () => {
                 />
               </div>
 
-              {/* Recording Controls */}
+              {/* Recording Status */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Recording</label>
-                <div className="flex gap-2">
-                  <Button
-                    variant={isRecording ? "destructive" : "default"}
-                    size="sm"
-                    onClick={isRecording ? stopRecording : startRecording}
-                    className="flex-1"
-                  >
-                    {isRecording ? <Square className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                  </Button>
+                <label className="text-white text-sm font-medium">Status</label>
+                <div className="flex flex-col gap-1">
+                  {isRecording && <Badge variant="destructive">Recording Audio</Badge>}
+                  {micRecording && <Badge className="bg-purple-500">Recording Voice</Badge>}
+                  {videoRecording && <Badge className="bg-orange-500">Recording Video</Badge>}
+                  {!isRecording && !micRecording && !videoRecording && <Badge variant="outline">Ready</Badge>}
                 </div>
               </div>
+            </div>
+
+            <Separator className="my-6 bg-white/20" />
+
+            {/* Recording Controls */}
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+              <Button
+                className={`h-20 text-lg font-bold transition-all duration-200 ${
+                  isRecording 
+                    ? 'bg-red-600 hover:bg-red-700 animate-pulse' 
+                    : 'bg-red-500 hover:bg-red-600'
+                } text-white`}
+                onClick={isRecording ? stopRecording : startRecording}
+              >
+                {isRecording ? '⏹️ Stop Recording' : '🎤 Start Recording'}
+              </Button>
+              
+              <Button
+                className={`h-20 text-lg font-bold transition-all duration-200 ${
+                  micRecording 
+                    ? 'bg-purple-600 hover:bg-purple-700 animate-pulse' 
+                    : 'bg-purple-500 hover:bg-purple-600'
+                } text-white`}
+                onClick={micRecording ? stopMicRecording : startMicRecording}
+              >
+                {micRecording ? '⏹️ Stop Mic' : '🎙️ Record Voice'}
+              </Button>
+              
+              <Button
+                className={`h-20 text-lg font-bold transition-all duration-200 ${
+                  videoRecording 
+                    ? 'bg-orange-600 hover:bg-orange-700 animate-pulse' 
+                    : 'bg-orange-500 hover:bg-orange-600'
+                } text-white`}
+                onClick={videoRecording ? stopVideoRecording : startVideoRecording}
+              >
+                {videoRecording ? '⏹️ Stop Video' : '📹 Record Video'}
+              </Button>
+              
+              <Button
+                className="h-20 text-lg font-bold bg-green-500 hover:bg-green-600 text-white"
+                onClick={() => recordedTracks.length > 0 && playTrack(recordedTracks[recordedTracks.length - 1])}
+                disabled={recordedTracks.length === 0}
+              >
+                ▶️ Play Latest
+              </Button>
+              
+              <Button
+                className="h-20 text-lg font-bold bg-blue-500 hover:bg-blue-600 text-white"
+                onClick={() => setVolume(prev => prev === 0 ? 70 : 0)}
+              >
+                {volume === 0 ? '🔇 Unmute' : '🔊 Mute'}
+              </Button>
             </div>
           </CardContent>
         </Card>
 
+        {/* Video Preview */}
+        {videoRecording && (
+          <Card className="bg-white/10 border-white/20">
+            <CardContent className="p-4">
+              <video
+                ref={videoElement}
+                autoPlay
+                muted
+                className="w-full max-w-md mx-auto rounded-lg"
+              />
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Main Interface Tabs */}
         <Tabs defaultValue="keyboard" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="keyboard">Keyboard</TabsTrigger>
-            <TabsTrigger value="drums">Drums</TabsTrigger>
-            <TabsTrigger value="effects">Effects</TabsTrigger>
-            <TabsTrigger value="tracks">Recordings</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-white/10">
+            <TabsTrigger value="keyboard" className="text-white data-[state=active]:bg-white/20">Keyboard</TabsTrigger>
+            <TabsTrigger value="drums" className="text-white data-[state=active]:bg-white/20">Drums</TabsTrigger>
+            <TabsTrigger value="effects" className="text-white data-[state=active]:bg-white/20">Effects</TabsTrigger>
+            <TabsTrigger value="tracks" className="text-white data-[state=active]:bg-white/20">Recordings</TabsTrigger>
           </TabsList>
 
-          {/* Piano Keyboard */}
-          <TabsContent value="keyboard">
-            <Card>
+          <TabsContent value="keyboard" className="space-y-6">
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Music className="w-5 h-5" />
-                  Virtual Keyboard
-                </CardTitle>
+                <CardTitle className="text-white">Virtual Keyboard</CardTitle>
+                <CardDescription className="text-white/70">
+                  Click the keys to play notes with your selected instrument
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-13 gap-1 max-w-4xl mx-auto">
-                  {notes.map((note, index) => {
-                    const isSharp = note.includes("#");
-                    const isActive = activeNotes.has(note);
+                <div className="mb-4 flex items-center gap-4">
+                  <label className="text-white text-sm">Octave:</label>
+                  <div className="flex gap-2">
+                    {[3, 4, 5, 6].map(octave => (
+                      <Button
+                        key={octave}
+                        size="sm"
+                        variant={currentOctave === octave ? "default" : "outline"}
+                        onClick={() => setCurrentOctave(octave)}
+                        className="h-8 w-8"
+                      >
+                        {octave}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-7 gap-1">
+                  {['C', 'D', 'E', 'F', 'G', 'A', 'B'].map((note, index) => (
+                    <Button
+                      key={note}
+                      className={`h-16 text-sm font-semibold transition-all duration-150 ${
+                        activeNotes.has(`${note}${currentOctave}`) 
+                          ? 'bg-amber-500 text-black transform scale-95' 
+                          : 'bg-white text-black hover:bg-gray-200'
+                      }`}
+                      onClick={() => playNote(`${note}${currentOctave}`)}
+                      onMouseDown={() => playNote(`${note}${currentOctave}`)}
+                    >
+                      {note}{currentOctave}
+                    </Button>
+                  ))}
+                </div>
+                
+                {/* Black keys */}
+                <div className="grid grid-cols-7 gap-1 mt-1 relative">
+                  {[0, 1, 2, 3, 4, 5, 6].map((index) => {
+                    const blackKeys = ['C#', 'D#', '', 'F#', 'G#', 'A#', ''];
+                    const note = blackKeys[index];
+                    if (!note) return <div key={index} className="h-10"></div>;
                     
                     return (
-                      <motion.button
+                      <Button
                         key={note}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => playNote(note)}
-                        className={`
-                          relative h-32 rounded-lg font-medium text-sm transition-all duration-150
-                          ${isSharp 
-                            ? `bg-gray-800 text-white h-20 -mx-2 z-10 ${isActive ? 'bg-purple-600' : 'hover:bg-gray-700'}`
-                            : `bg-white border-2 border-gray-200 text-gray-800 ${isActive ? 'bg-blue-100 border-blue-400' : 'hover:bg-gray-50'}`
-                          }
-                        `}
+                        className={`h-10 text-xs font-semibold transition-all duration-150 ${
+                          activeNotes.has(`${note}${currentOctave}`) 
+                            ? 'bg-amber-600 text-white transform scale-95' 
+                            : 'bg-gray-800 text-white hover:bg-gray-700'
+                        }`}
+                        onClick={() => playNote(`${note}${currentOctave}`)}
+                        onMouseDown={() => playNote(`${note}${currentOctave}`)}
                       >
-                        {note}
-                      </motion.button>
+                        {note}{currentOctave}
+                      </Button>
                     );
                   })}
                 </div>
@@ -416,78 +658,57 @@ const MusicTherapy = () => {
             </Card>
           </TabsContent>
 
-          {/* Drum Pads */}
-          <TabsContent value="drums">
-            <Card>
+          <TabsContent value="drums" className="space-y-6">
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Waves className="w-5 h-5" />
-                  Drum Pads
-                </CardTitle>
+                <CardTitle className="text-white">Drum Pads</CardTitle>
+                <CardDescription className="text-white/70">
+                  Click the pads to create rhythmic beats
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
-                  {drumPads.map((drum) => (
-                    <motion.button
-                      key={drum}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => playDrum(drum)}
-                      className="aspect-square bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl font-bold text-lg shadow-lg transition-all duration-150"
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { name: 'kick', label: '🥁 KICK', color: 'bg-red-500 hover:bg-red-600' },
+                    { name: 'snare', label: '🥁 SNARE', color: 'bg-blue-500 hover:bg-blue-600' },
+                    { name: 'hihat', label: '🥁 HI-HAT', color: 'bg-yellow-500 hover:bg-yellow-600' },
+                    { name: 'clap', label: '👏 CLAP', color: 'bg-green-500 hover:bg-green-600' }
+                  ].map((drum) => (
+                    <Button
+                      key={drum.name}
+                      className={`h-24 text-lg font-bold ${drum.color} text-white`}
+                      onClick={() => playDrum(drum.name)}
                     >
-                      {drum.toUpperCase()}
-                    </motion.button>
+                      {drum.label}
+                    </Button>
                   ))}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Effects Panel */}
-          <TabsContent value="effects">
-            <Card>
+          <TabsContent value="effects" className="space-y-6">
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Brain className="w-5 h-5" />
-                  Audio Effects
-                </CardTitle>
+                <CardTitle className="text-white">Audio Effects</CardTitle>
+                <CardDescription className="text-white/70">
+                  Enhance your sound with professional audio effects
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {effects.map((effect) => (
-                    <div key={effect.id} className="space-y-4 p-4 border rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {audioEffects.map((effect) => (
+                    <div key={effect.id} className="space-y-3 p-4 rounded-lg bg-white/5">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium">{effect.name}</h4>
-                        <Button
-                          variant={effect.enabled ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => toggleEffect(effect.id)}
-                        >
-                          {effect.enabled ? "ON" : "OFF"}
-                        </Button>
+                        <label className="text-white font-medium">{effect.name}</label>
+                        <Switch
+                          checked={effect.enabled}
+                          onCheckedChange={() => toggleEffect(effect.id)}
+                        />
                       </div>
-                      {effect.enabled && (
-                        <div className="space-y-2">
-                          {Object.entries(effect.settings).map(([key, value]) => (
-                            <div key={key}>
-                              <label className="text-xs text-muted-foreground">{key}</label>
-                              <Slider
-                                value={[value]}
-                                onValueChange={(newValue) => {
-                                  setEffects(prev => prev.map(e => 
-                                    e.id === effect.id 
-                                      ? { ...e, settings: { ...e.settings, [key]: newValue[0] } }
-                                      : e
-                                  ));
-                                }}
-                                min={0}
-                                max={key === 'frequency' ? 5000 : 2}
-                                step={0.1}
-                                className="w-full"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <Badge variant={effect.enabled ? "default" : "outline"}>
+                        {effect.enabled ? "ON" : "OFF"}
+                      </Badge>
                     </div>
                   ))}
                 </div>
@@ -495,37 +716,55 @@ const MusicTherapy = () => {
             </Card>
           </TabsContent>
 
-          {/* Recorded Tracks */}
-          <TabsContent value="tracks">
-            <Card>
+          <TabsContent value="tracks" className="space-y-6">
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="w-5 h-5" />
-                  Your Recordings
-                </CardTitle>
+                <CardTitle className="text-white">Your Recordings</CardTitle>
+                <CardDescription className="text-white/70">
+                  Manage and play back your recorded tracks
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {recordedTracks.length === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <Mic className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>No recordings yet. Start creating!</p>
-                  </div>
+                  <p className="text-white/60 text-center py-8">
+                    No recordings yet. Start creating your first track!
+                  </p>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {recordedTracks.map((track) => (
-                      <div key={track.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">{track.name}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {track.instrument} • {track.timestamp.toLocaleString()}
-                          </p>
+                      <div key={track.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5">
+                        <div className="flex items-center gap-3">
+                          <Badge variant="outline">
+                            {track.type === 'instrument' ? '🎵' : track.type === 'microphone' ? '🎤' : '📹'}
+                          </Badge>
+                          <div>
+                            <p className="text-white font-medium">{track.name}</p>
+                            <p className="text-white/60 text-sm">
+                              {track.instrument} • {new Date(track.timestamp).toLocaleString()}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex gap-2">
-                          <Button size="sm" onClick={() => playTrack(track)}>
-                            <Play className="w-4 h-4" />
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => playTrack(track)}
+                            className="bg-green-500 hover:bg-green-600"
+                          >
+                            <Play className="h-4 w-4" />
                           </Button>
-                          <Button size="sm" variant="outline" onClick={() => downloadTrack(track)}>
-                            <Download className="w-4 h-4" />
+                          <Button
+                            size="sm"
+                            onClick={() => downloadTrack(track)}
+                            variant="outline"
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => setRecordedTracks(prev => prev.filter(t => t.id !== track.id))}
+                            variant="destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
@@ -538,31 +777,30 @@ const MusicTherapy = () => {
         </Tabs>
 
         {/* Therapeutic Benefits */}
-        <Card>
+        <Card className="bg-white/10 border-white/20">
           <CardHeader>
-            <CardTitle>Therapeutic Benefits</CardTitle>
+            <CardTitle className="text-white">Therapeutic Benefits</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center space-y-2">
-                <Brain className="w-8 h-8 mx-auto text-blue-600" />
-                <h4 className="font-medium">Cognitive Enhancement</h4>
-                <p className="text-sm text-muted-foreground">Improve memory, focus, and mental clarity through musical expression</p>
+                <div className="text-2xl">🧠</div>
+                <h3 className="text-white font-medium">Cognitive Enhancement</h3>
+                <p className="text-white/70 text-sm">Music stimulates brain plasticity and improves memory</p>
               </div>
               <div className="text-center space-y-2">
-                <Heart className="w-8 h-8 mx-auto text-red-500" />
-                <h4 className="font-medium">Emotional Regulation</h4>
-                <p className="text-sm text-muted-foreground">Process emotions and reduce stress through creative musical outlets</p>
+                <div className="text-2xl">💖</div>
+                <h3 className="text-white font-medium">Emotional Regulation</h3>
+                <p className="text-white/70 text-sm">Express and process emotions through musical creation</p>
               </div>
               <div className="text-center space-y-2">
-                <Waves className="w-8 h-8 mx-auto text-green-600" />
-                <h4 className="font-medium">Relaxation & Healing</h4>
-                <p className="text-sm text-muted-foreground">Promote relaxation and healing through guided musical therapy</p>
+                <div className="text-2xl">🤝</div>
+                <h3 className="text-white font-medium">Social Connection</h3>
+                <p className="text-white/70 text-sm">Share your musical journey and connect with others</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        </div>
       </div>
     </Page>
   );

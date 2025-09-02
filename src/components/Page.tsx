@@ -52,6 +52,8 @@ const Page: React.FC<PageProps> = ({
   const handleBackClick = () => {
     if (onBackClick) {
       onBackClick();
+    } else if (location.state?.previousPath) {
+      navigate(location.state.previousPath);
     } else {
       // Always navigate to main dashboard for key features
       navigate('/', { 
