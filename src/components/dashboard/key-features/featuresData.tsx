@@ -203,5 +203,15 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     image: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?auto=format&fit=crop&w=800&q=80",
     path: "/substance-abuse-sponsor",
     color: "emerald"
+  },
+  {
+    id: "music-therapy",
+    title: isSpanish ? "Terapia Musical" : "Music Therapy",
+    description: isSpanish ? "Estudio musical completo con grabación, instrumentos y efectos terapéuticos." : "Complete music studio with recording, instruments and therapeutic effects.",
+    icon: <Headphones className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
+    path: "/music-therapy",
+    color: "blue",
+    popular: true
   }
 ];

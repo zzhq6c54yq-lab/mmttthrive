@@ -13,6 +13,7 @@ import CommunitySupport from "./pages/CommunitySupport";
 import Debug from "./pages/Debug";
 import PersonalizedContent from "./pages/PersonalizedContent";
 import SleepTracker from "./pages/SleepTracker";
+import MusicTherapy from "./pages/MusicTherapy";
 import Home from "./pages/Home";
 import ProgressReports from "./pages/ProgressReports";
 import ProgressAnalytics from "./pages/ProgressAnalytics";
@@ -369,7 +370,8 @@ function App() {
           <Route path="/career-coaching" element={<CareerCoaching />} />
           <Route path="/meditation-studio" element={<MeditationStudio />} />
           <Route path="/sleep-tracker" element={<SleepTracker />} />
-          <Route path="/sleep-analysis" element={<SleepTracker />} />
+        <Route path="/sleep-analysis" element={<SleepTracker />} />
+        <Route path="/music-therapy" element={<MusicTherapy />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />

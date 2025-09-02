@@ -121,7 +121,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
                   <div className={`p-2 rounded-lg bg-gradient-to-br from-${feature.color}-100 to-${feature.color}-50 text-${feature.color}-600 group-hover:scale-110 transition-transform duration-300`}>
                     {feature.icon}
                   </div>
-                  <h3 className="font-bold text-xl text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="font-bold text-lg text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight">
                     {feature.title}
                   </h3>
                 </div>
