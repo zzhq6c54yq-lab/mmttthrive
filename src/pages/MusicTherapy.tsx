@@ -238,10 +238,14 @@ const MusicTherapy: React.FC = () => {
       setIsRecording(false);
       const recording = await recorder.current.stop();
       
+      // Convert Blob to ToneAudioBuffer
+      const buffer = await recording.arrayBuffer();
+      const audioBuffer = await Tone.getContext().decodeAudioData(buffer);
+      
       const newTrack: RecordedTrack = {
         id: Date.now().toString(),
         name: `Track ${recordedTracks.length + 1}`,
-        buffer: recording,
+        buffer: new Tone.ToneAudioBuffer(audioBuffer),
         instrument: selectedInstrument,
         timestamp: Date.now(),
         type: 'instrument'
