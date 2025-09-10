@@ -26,9 +26,12 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   const { 
     userInfo: registrationUserInfo, 
     isSpanish, 
-    isPortuguese, 
+    isPortuguese,
+    isLogin,
+    isLoading,
+    setIsLogin,
     handleUserInfoChange, 
-    handleRegister 
+    handleSubmit
   } = useRegistrationState();
 
   // Use the registration state but sync with onboarding flow
@@ -40,14 +43,23 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   
   // Translations
   const translations = {
-    title: isSpanish ? "Crea Tu Cuenta" : "Create Your Account",
-    subtitle: isSpanish ? "Únete a Thrive MT para comenzar tu viaje de bienestar mental" : "Join Thrive MT to start your mental wellness journey",
-    fullName: isSpanish ? "Nombre Completo" : "Full Name",
-    email: isSpanish ? "Correo Electrónico" : "Email Address",
-    password: isSpanish ? "Contraseña" : "Password",
-    register: isSpanish ? "Registrarse" : "Register",
-    previous: isSpanish ? "Anterior" : "Previous",
-    skipRegistration: isSpanish ? "Continuar Sin Registro" : "Continue Without Registration",
+    title: isLogin 
+      ? (isSpanish ? "Inicia Sesión" : isPortuguese ? "Fazer Login": "Sign In")
+      : (isSpanish ? "Crea Tu Cuenta" : isPortuguese ? "Criar Conta" : "Create Your Account"),
+    subtitle: isLogin 
+      ? (isSpanish ? "Bienvenido de vuelta a Thrive MT" : isPortuguese ? "Bem-vindo de volta ao Thrive MT" : "Welcome back to Thrive MT")
+      : (isSpanish ? "Únete a Thrive MT para comenzar tu viaje de bienestar mental" : isPortuguese ? "Junte-se ao Thrive MT para começar sua jornada de bem-estar mental" : "Join Thrive MT to start your mental wellness journey"),
+    fullName: isSpanish ? "Nombre Completo" : isPortuguese ? "Nome Completo" : "Full Name",
+    email: isSpanish ? "Correo Electrónico" : isPortuguese ? "E-mail" : "Email Address",
+    password: isSpanish ? "Contraseña" : isPortuguese ? "Senha" : "Password",
+    submit: isLogin 
+      ? (isSpanish ? "Iniciar Sesión" : isPortuguese ? "Entrar" : "Sign In")
+      : (isSpanish ? "Registrarse" : isPortuguese ? "Registrar" : "Register"),
+    toggle: isLogin 
+      ? (isSpanish ? "¿No tienes cuenta? Regístrate" : isPortuguese ? "Não tem conta? Cadastre-se" : "Don't have an account? Sign up")
+      : (isSpanish ? "¿Ya tienes cuenta? Inicia sesión" : isPortuguese ? "Já tem conta? Faça login" : "Already have an account? Sign in"),
+    previous: isSpanish ? "Anterior" : isPortuguese ? "Anterior" : "Previous",
+    skipRegistration: isSpanish ? "Continuar Sin Registro" : isPortuguese ? "Continuar Sem Registro" : "Continue Without Registration",
   };
 
   return (
@@ -66,24 +78,26 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
         </div>
         
         <form 
-          onSubmit={(e) => handleRegister(e, () => onSubmit(e))} 
+          onSubmit={(e) => handleSubmit(e, () => onSubmit(e))} 
           className="space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/10"
         >
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">{translations.fullName}</label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <input 
-                type="text"
-                id="name"
-                name="name"
-                value={registrationUserInfo.name}
-                onChange={handleUserInfoChange}
-                className="pl-10 w-full p-2 bg-white/10 border border-white/20 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none text-white"
-                placeholder={isSpanish ? "Juan Pérez" : "John Doe"}
-              />
+          {!isLogin && (
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">{translations.fullName}</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input 
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={registrationUserInfo.name}
+                  onChange={handleUserInfoChange}
+                  className="pl-10 w-full p-2 bg-white/10 border border-white/20 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none text-white"
+                  placeholder={isSpanish ? "Juan Pérez" : isPortuguese ? "João Silva" : "John Doe"}
+                />
+              </div>
             </div>
-          </div>
+          )}
           
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">{translations.email}</label>
@@ -120,10 +134,21 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
           <div className="pt-2">
             <Button 
               type="submit"
-              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white disabled:opacity-50"
             >
-              {translations.register}
+              {isLoading ? (isSpanish ? "Procesando..." : isPortuguese ? "Processando..." : "Processing...") : translations.submit}
             </Button>
+          </div>
+          
+          <div className="text-center pt-2">
+            <button 
+              type="button"
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-sm text-[#B87333] hover:text-[#E5C5A1] underline"
+            >
+              {translations.toggle}
+            </button>
           </div>
         </form>
         

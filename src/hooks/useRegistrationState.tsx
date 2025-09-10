@@ -9,6 +9,8 @@ export const useRegistrationState = () => {
     email: '',
     password: '',
   });
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   
   // Get language preference
@@ -19,6 +21,107 @@ export const useRegistrationState = () => {
   const handleUserInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogin = async (e: React.FormEvent, nextScreenSetter: () => void) => {
+    e.preventDefault();
+    if (!userInfo.email || !userInfo.password) {
+      const errorMessages = {
+        'English': {
+          title: "Login Error",
+          description: "Please enter your email and password."
+        },
+        'Español': {
+          title: "Error de Inicio de Sesión",
+          description: "Por favor ingresa tu correo y contraseña."
+        },
+        'Português': {
+          title: "Erro de Login",
+          description: "Por favor, insira seu e-mail e senha."
+        }
+      };
+      
+      const message = errorMessages[preferredLanguage as keyof typeof errorMessages] || errorMessages['English'];
+      
+      toast({
+        title: message.title,
+        description: message.description,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: userInfo.email,
+        password: userInfo.password,
+      });
+
+      if (error) {
+        let errorMessage = error.message;
+        
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = isSpanish 
+            ? "Credenciales incorrectas. Verifica tu correo y contraseña."
+            : isPortuguese
+            ? "Credenciais incorretas. Verifique seu e-mail e senha."
+            : "Invalid credentials. Please check your email and password.";
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = isSpanish 
+            ? "Por favor confirma tu correo antes de iniciar sesión."
+            : isPortuguese
+            ? "Por favor confirme seu e-mail antes de fazer login."
+            : "Please confirm your email before logging in.";
+        }
+
+        toast({
+          title: isSpanish ? "Error de Inicio de Sesión" : isPortuguese ? "Erro de Login" : "Login Error",
+          description: errorMessage,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (data.user) {
+        const successMessages = {
+          'English': {
+            title: "Welcome Back!",
+            description: "You've successfully logged in to Thrive MT."
+          },
+          'Español': {
+            title: "¡Bienvenido de Vuelta!",
+            description: "Has iniciado sesión exitosamente en Thrive MT."
+          },
+          'Português': {
+            title: "Bem-vindo de Volta!",
+            description: "Você fez login com sucesso no Thrive MT."
+          }
+        };
+        
+        const message = successMessages[preferredLanguage as keyof typeof successMessages] || successMessages['English'];
+        
+        toast({
+          title: message.title,
+          description: message.description,
+        });
+        
+        nextScreenSetter();
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        title: isSpanish ? "Error de Inicio de Sesión" : isPortuguese ? "Erro de Login" : "Login Error",
+        description: isSpanish 
+          ? "Ocurrió un error durante el inicio de sesión. Inténtalo de nuevo."
+          : isPortuguese
+          ? "Ocorreu um erro durante o login. Tente novamente."
+          : "An error occurred during login. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRegister = async (e: React.FormEvent, nextScreenSetter: () => void) => {
@@ -48,7 +151,8 @@ export const useRegistrationState = () => {
       });
       return;
     }
-    
+
+    setIsLoading(true);
     try {
       // Attempt to create user account with Supabase
       const { data, error } = await supabase.auth.signUp({
@@ -66,12 +170,20 @@ export const useRegistrationState = () => {
       if (error) {
         // Handle specific error cases
         let errorMessage = error.message;
-        if (error.message.includes('already registered')) {
+        if (error.message.includes('already registered') || error.message.includes('duplicate key')) {
+          setIsLogin(true); // Switch to login mode
           errorMessage = isSpanish 
-            ? "Este correo ya está registrado. Intenta iniciar sesión."
+            ? "Este correo ya está registrado. Cambiamos a modo de inicio de sesión."
             : isPortuguese
-            ? "Este e-mail já está registrado. Tente fazer login."
-            : "This email is already registered. Try logging in.";
+            ? "Este e-mail já está registrado. Mudamos para o modo de login."
+            : "This email is already registered. Switched to login mode.";
+            
+          toast({
+            title: isSpanish ? "Cuenta Existente" : isPortuguese ? "Conta Existente" : "Account Exists",
+            description: errorMessage,
+            variant: "default"
+          });
+          return;
         }
 
         toast({
@@ -86,15 +198,21 @@ export const useRegistrationState = () => {
         const successMessages = {
           'English': {
             title: "Registration Successful",
-            description: "Welcome to Thrive MT! Your journey to better mental health begins now."
+            description: data.user.email_confirmed_at ? 
+              "Welcome to Thrive MT! Your journey to better mental health begins now." :
+              "Please check your email to confirm your account, then you can continue."
           },
           'Español': {
             title: "Registro Exitoso",
-            description: "¡Bienvenido a Thrive MT! Tu viaje hacia una mejor salud mental comienza ahora."
+            description: data.user.email_confirmed_at ?
+              "¡Bienvenido a Thrive MT! Tu viaje hacia una mejor salud mental comienza ahora." :
+              "Por favor revisa tu correo para confirmar tu cuenta, luego puedes continuar."
           },
           'Português': {
             title: "Registro bem-sucedido",
-            description: "Bem-vindo ao Thrive MT! Sua jornada para uma melhor saúde mental começa agora."
+            description: data.user.email_confirmed_at ?
+              "Bem-vindo ao Thrive MT! Sua jornada para uma melhor saúde mental começa agora." :
+              "Por favor, verifique seu e-mail para confirmar sua conta, então você pode continuar."
           }
         };
         
@@ -105,7 +223,10 @@ export const useRegistrationState = () => {
           description: message.description,
         });
         
-        nextScreenSetter();
+        // Only proceed if email is confirmed or confirmation is disabled
+        if (data.user.email_confirmed_at || data.session) {
+          nextScreenSetter();
+        }
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -118,6 +239,16 @@ export const useRegistrationState = () => {
           : "An error occurred during registration. Please try again.",
         variant: "destructive"
       });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent, nextScreenSetter: () => void) => {
+    if (isLogin) {
+      await handleLogin(e, nextScreenSetter);
+    } else {
+      await handleRegister(e, nextScreenSetter);
     }
   };
 
@@ -125,8 +256,13 @@ export const useRegistrationState = () => {
     userInfo,
     isSpanish,
     isPortuguese,
+    isLogin,
+    isLoading,
+    setIsLogin,
     handleUserInfoChange,
-    handleRegister
+    handleRegister,
+    handleLogin,
+    handleSubmit
   };
 };
 
