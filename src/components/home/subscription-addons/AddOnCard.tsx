@@ -121,18 +121,38 @@ const AddOnCard: React.FC<AddOnCardProps> = ({
             
             {expandedAddon === addOn.id && (
               <div 
-                className="absolute bottom-full left-0 right-0 bg-black/80 backdrop-blur-sm p-3 rounded-md mb-2 z-20 border border-white/20"
-                onClick={(e) => e.stopPropagation()}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) {
+                    onToggleExpand(addOn.id);
+                  }
+                }}
               >
-                <h4 className="font-medium text-sm mb-1">Key Features:</h4>
-                <ul className="text-xs">
-                  {addOn.features?.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-1 mb-1">
-                      <span className="h-1 w-1 bg-[#B87333] rounded-full"></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div 
+                  className="bg-gray-900/95 backdrop-blur-sm border border-white/30 rounded-lg p-4 max-w-sm w-full shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-semibold text-white">Key Features</h4>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleExpand(addOn.id);
+                      }}
+                      className="text-white/70 hover:text-white text-xl leading-none"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <ul className="text-sm text-white/90 space-y-2">
+                    {addOn.features?.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="h-1.5 w-1.5 bg-[#B87333] rounded-full mt-2 flex-shrink-0"></span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
           </div>
