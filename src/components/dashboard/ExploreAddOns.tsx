@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import AddOnGrid from '@/components/home/subscription-addons/AddOnGrid';
 import { addOns } from '@/components/home/subscription-addons/data';
 import useTranslation from '@/hooks/useTranslation';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const ExploreAddOns: React.FC = () => {
@@ -14,11 +14,6 @@ const ExploreAddOns: React.FC = () => {
   const [expandedAddon, setExpandedAddon] = useState<string | null>(null);
   const { isSpanish } = useTranslation();
   const { toast } = useToast();
-  
-  const supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL,
-    import.meta.env.VITE_SUPABASE_ANON_KEY
-  );
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
