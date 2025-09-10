@@ -116,7 +116,7 @@ const OnboardingContainer: React.FC = () => {
 
   switch (currentStep) {
     case 'intro':
-      return <IntroScreen onContinue={nextStep} />;
+      return <IntroScreen onContinue={nextStep} onSkipToMain={completeOnboarding} />;
       
     case 'mood':
       return <MoodScreen onMoodSelect={handleMoodSelect} />;

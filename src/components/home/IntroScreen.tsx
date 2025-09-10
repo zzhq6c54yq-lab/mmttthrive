@@ -11,9 +11,10 @@ import {
 
 interface IntroScreenProps {
   onContinue: () => void;
+  onSkipToMain?: () => void;
 }
 
-const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
+const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<'English' | 'Español' | 'Português' | 'Filipino'>("English");
   
   useEffect(() => {
@@ -86,6 +87,19 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue }) => {
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>
+        
+        {/* Development Skip Button */}
+        {onSkipToMain && (
+          <div className="mt-6">
+            <Button 
+              variant="ghost" 
+              className="text-xs text-muted-foreground hover:text-foreground opacity-60 hover:opacity-100"
+              onClick={onSkipToMain}
+            >
+              Skip to Main Menu (Dev)
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
