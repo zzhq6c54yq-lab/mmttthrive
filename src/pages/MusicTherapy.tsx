@@ -13,6 +13,8 @@ import { useToast } from '@/hooks/use-toast';
 import Page from '@/components/Page';
 import VirtualKeyboard from '@/components/music-therapy/VirtualKeyboard';
 import ChordPads from '@/components/music-therapy/ChordPads';
+import InstrumentSelector from '@/components/music-therapy/InstrumentSelector';
+import InstrumentVisual from '@/components/music-therapy/InstrumentVisual';
 import { Play, Pause, Square, Mic, Video, Download, Trash2, Music, Volume2, Piano } from 'lucide-react';
 
 // Interfaces
@@ -372,22 +374,16 @@ const MusicTherapy: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {/* Instrument Selection */}
-              <div className="space-y-2">
-                <label className="text-white text-sm font-medium">Instrument</label>
-                <Select value={selectedInstrument} onValueChange={setSelectedInstrument}>
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="cello">Cello</SelectItem>
-                    <SelectItem value="violin">Violin</SelectItem>
-                    <SelectItem value="ukulele">Ukulele</SelectItem>
-                    <SelectItem value="piano">Piano</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            {/* Instrument Selection */}
+            <div className="mb-6">
+              <label className="text-white text-lg font-medium mb-4 block">Choose Your Instrument</label>
+              <InstrumentSelector 
+                selectedInstrument={selectedInstrument}
+                onInstrumentChange={setSelectedInstrument}
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
               {/* Volume Control */}
               <div className="space-y-2">
@@ -526,6 +522,26 @@ const MusicTherapy: React.FC = () => {
             </CardContent>
           </Card>
         )}
+
+        {/* Instrument Visual Display */}
+        <Card className="bg-white/10 border-white/20">
+          <CardHeader>
+            <CardTitle className="text-white">Your Instrument</CardTitle>
+            <CardDescription className="text-white/70">
+              Click on the instrument to play notes directly
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <InstrumentVisual
+              selectedInstrument={selectedInstrument}
+              activeNotes={activeNotes}
+              activeChords={activeChords}
+              onNotePress={playNote}
+              octave={currentOctave}
+              ukuleleStrum={ukuleleStrum}
+            />
+          </CardContent>
+        </Card>
 
         {/* Main Interface Tabs */}
         <Tabs defaultValue="chords" className="w-full">
