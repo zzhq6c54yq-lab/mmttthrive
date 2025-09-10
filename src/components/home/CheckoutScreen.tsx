@@ -5,6 +5,7 @@ import { ArrowLeft, CreditCard, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useUser } from "@/contexts/UserContext";
 import { addOns } from "./subscription-addons/data";
 import { 
   getPriceDisplay, 
@@ -29,6 +30,7 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+  const { user, loading } = useUser();
 
   // Calculate pricing
   const planPricing = {
@@ -52,8 +54,14 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
       return;
     }
 
-    // Check if user is authenticated
-    const { data: { user } } = await supabase.auth.getUser();
+    // Wait for loading to complete and check authentication
+    if (loading) {
+      console.log('UserContext still loading, please wait...');
+      return;
+    }
+
+    console.log('User authentication state:', { user, loading });
+
     if (!user) {
       toast({
         title: "Authentication Required",
