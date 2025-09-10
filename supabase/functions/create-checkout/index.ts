@@ -43,21 +43,13 @@ serve(async (req) => {
     logStep("User authenticated", { userId: user.id, email: user.email });
 
     // Get the plan details from the request body
-    const { planTitle, billingCycle = 'monthly' } = await req.json();
-    logStep("Request body parsed", { planTitle, billingCycle });
+    const { planTitle, billingCycle = 'monthly', selectedAddOns = [], totalAmount } = await req.json();
+    logStep("Request body parsed", { planTitle, billingCycle, selectedAddOns, totalAmount });
 
-    // Define pricing
-    const planPricing = {
-      'Basic': { monthly: 0, yearly: 0 },
-      'Gold': { monthly: 500, yearly: 4800 }, // $5/month, $48/year (20% discount)
-      'Platinum': { monthly: 1000, yearly: 9600 } // $10/month, $96/year (20% discount)
-    };
-
-    const pricing = planPricing[planTitle as keyof typeof planPricing];
-    if (!pricing) throw new Error(`Invalid plan: ${planTitle}`);
-
-    const amount = pricing[billingCycle as keyof typeof pricing];
-    logStep("Pricing calculated", { planTitle, billingCycle, amount });
+    // Calculate total amount (plan + add-ons)
+    // Convert dollar amount to cents for Stripe
+    const amount = Math.round((totalAmount || 0) * 100);
+    logStep("Total amount calculated", { planTitle, billingCycle, selectedAddOns, totalAmountDollars: totalAmount, amountCents: amount });
 
     // For free plan, just update the database and return success
     if (amount === 0) {
@@ -96,8 +88,12 @@ serve(async (req) => {
           price_data: {
             currency: "usd",
             product_data: { 
-              name: `${planTitle} Plan`,
-              description: `ThriveMT ${planTitle} subscription - ${billingCycle} billing`
+              name: selectedAddOns.length > 0 
+                ? `${planTitle} Plan + ${selectedAddOns.length} Add-ons`
+                : `${planTitle} Plan`,
+              description: selectedAddOns.length > 0
+                ? `ThriveMT ${planTitle} subscription with ${selectedAddOns.length} specialized add-ons - ${billingCycle} billing`
+                : `ThriveMT ${planTitle} subscription - ${billingCycle} billing`
             },
             unit_amount: amount,
             recurring: { interval: billingCycle === 'yearly' ? 'year' : 'month' },
@@ -107,11 +103,12 @@ serve(async (req) => {
       ],
       mode: "subscription",
       success_url: `${req.headers.get("origin")}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get("origin")}/subscription-plans`,
+      cancel_url: `${req.headers.get("origin")}/`,
       metadata: {
         user_id: user.id,
         plan_title: planTitle,
-        billing_cycle: billingCycle
+        billing_cycle: billingCycle,
+        selected_addons: JSON.stringify(selectedAddOns)
       }
     });
 

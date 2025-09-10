@@ -59,7 +59,7 @@ export const useOnboardingFlow = () => {
   const nextStep = useCallback(() => {
     const stepOrder: OnboardingStep[] = [
       'intro', 'mood', 'moodResponse', 'register', 
-      'subscription', 'subscriptionAddOns', 'visionBoard', 'completed'
+      'subscription', 'subscriptionAddOns', 'checkout', 'visionBoard', 'completed'
     ];
     
     const currentIndex = stepOrder.indexOf(state.currentStep);
@@ -71,7 +71,7 @@ export const useOnboardingFlow = () => {
   const previousStep = useCallback(() => {
     const stepOrder: OnboardingStep[] = [
       'intro', 'mood', 'moodResponse', 'register', 
-      'subscription', 'subscriptionAddOns', 'visionBoard'
+      'subscription', 'subscriptionAddOns', 'checkout', 'visionBoard'
     ];
     
     const currentIndex = stepOrder.indexOf(state.currentStep);

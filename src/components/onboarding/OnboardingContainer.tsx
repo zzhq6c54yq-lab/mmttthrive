@@ -7,6 +7,7 @@ import MoodResponse from "@/components/home/MoodResponse";
 import RegistrationScreen from "@/components/home/RegistrationScreen";
 import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
+import CheckoutScreen from "@/components/home/CheckoutScreen";
 import VisionBoard from "@/components/home/VisionBoard";
 import MainDashboard from "@/components/home/MainDashboard";
 
@@ -60,6 +61,12 @@ const OnboardingContainer: React.FC = () => {
   // Handle add-ons continue
   const handleAddOnsContinue = () => {
     console.log("[OnboardingContainer] Add-ons step completed");
+    nextStep();
+  };
+
+  // Handle checkout continue
+  const handleCheckoutContinue = () => {
+    console.log("[OnboardingContainer] Checkout step completed");
     nextStep();
   };
 
@@ -153,6 +160,16 @@ const OnboardingContainer: React.FC = () => {
           onContinue={handleAddOnsContinue}
           onPrevious={previousStep}
           onSkip={nextStep}
+        />
+      );
+
+    case 'checkout':
+      return (
+        <CheckoutScreen
+          selectedPlan={selectedPlan}
+          selectedAddOns={selectedAddOns}
+          onContinue={handleCheckoutContinue}
+          onPrevious={previousStep}
         />
       );
       

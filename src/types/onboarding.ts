@@ -5,6 +5,7 @@ export type OnboardingStep =
   | 'register' 
   | 'subscription' 
   | 'subscriptionAddOns' 
+  | 'checkout'
   | 'visionBoard' 
   | 'completed';
 
