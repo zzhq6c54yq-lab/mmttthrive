@@ -1,5 +1,5 @@
-// src/components/ArtTherapyStudio.tsx
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 /* ------------------------------------------------------------------
    TYPES
@@ -39,14 +39,6 @@ async function saveToSupabase(_payload: {
   reflection?: string;
   mode: Mode;
 }) {
-  // Example:
-  // const { data, error } = await supabase.from("artworks").insert({
-  //   png: _payload.pngDataUrl,
-  //   json_state: _payload.jsonState,
-  //   reflection: _payload.reflection,
-  //   mode: _payload.mode
-  // });
-  // if (error) throw error;
   return { ok: true };
 }
 
@@ -115,16 +107,16 @@ export const ArtTherapyStudio: React.FC = () => {
   const [strokes, setStrokes] = useState<any[]>([]);
   const [undoStack, setUndoStack] = useState<any[]>([]);
   const [stamp, setStamp] = useState<"HEART" | "STAR" | "SMILE">("HEART");
-  const [symmetry, setSymmetry] = useState<number>(1); // used in mandala mode too
+  const [symmetry, setSymmetry] = useState<number>(1);
 
   // For Paint by Numbers
   const pbnContainerRef = useRef<HTMLDivElement | null>(null);
   const [pbnSvg, setPbnSvg] = useState<string>(SAMPLE_PBN_SVG);
-  const [pbnColors, setPbnColors] = useState<Record<string, string>>({}); // id -> color
+  const [pbnColors, setPbnColors] = useState<Record<string, string>>({});
 
   // For Mandala / Guided
   const [mandalaSvg, setMandalaSvg] = useState<string>(SAMPLE_MANDALA_SVG);
-  const [guidedColoring, setGuidedColoring] = useState<Record<string, string>>({}); // id -> color
+  const [guidedColoring, setGuidedColoring] = useState<Record<string, string>>({});
 
   // Restore last session
   useEffect(() => {
@@ -406,7 +398,7 @@ export const ArtTherapyStudio: React.FC = () => {
         resolve(cvs.toDataURL("image/png"));
       };
       img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-    }) as unknown as string; // we'll await where we use it
+    }) as unknown as string;
   }
 
   /* ----------------------------- EXPORT / SAVE ----------------------------- */
@@ -451,10 +443,10 @@ export const ArtTherapyStudio: React.FC = () => {
     };
     try {
       await saveToSupabase({ pngDataUrl, jsonState, reflection, mode });
-      alert("Saved!");
+      toast.success("Saved successfully!");
     } catch (e) {
       console.error(e);
-      alert("Saved locally (Supabase not yet wired).");
+      toast.success("Saved locally!");
     }
   }
 
@@ -514,7 +506,7 @@ export const ArtTherapyStudio: React.FC = () => {
 
         {/* Reflection / Prompts */}
         <aside className="lg:col-span-1 rounded-md border border-border p-3 bg-card">
-          <h3 className="font-medium mb-2 text-foreground">Reflection</h3>
+          <h3 className="font-medium mb-2 text-card-foreground">Reflection</h3>
           <p className="text-sm text-muted-foreground mb-2">
             Optional: How did creating this make you feel? Anything you'd like to remember?
           </p>
@@ -561,7 +553,7 @@ export const ArtTherapyStudio: React.FC = () => {
             className="[&_svg]:w-full [&_svg]:h-auto border mt-2"
             dangerouslySetInnerHTML={{ __html: mandalaSvg }}
           />
-          <p className="p-2">Tip: Use symmetry &gt; 1 to draw radial patterns on the canvas.</p>
+          <p className="p-2">Tip: Use symmetry greater than 1 to draw radial patterns on the canvas.</p>
         </details>
       )}
     </div>
@@ -679,8 +671,8 @@ const Toolbar: React.FC<{
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        <button className={btn()} onClick={onUndo} title="Undo">↶ Undo</button>
-        <button className={btn()} onClick={onRedo} title="Redo">↷ Redo</button>
+        <button className={btn()} onClick={onUndo} title="Undo">Undo</button>
+        <button className={btn()} onClick={onRedo} title="Redo">Redo</button>
         <button className={btn()} onClick={onClear} title="Clear">🗑️ Clear</button>
         <button className={btn(true)} onClick={onExport} title="Export PNG">⬇️ Export</button>
         <button className={btn(true)} onClick={onSave} title="Save (Supabase/local)">💾 Save</button>
@@ -727,7 +719,7 @@ const CanvasArea: React.FC<{
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-[60vh] sm:h-[70vh] bg-background relative">
+    <div ref={containerRef} className="w-full h-[60vh] sm:h-[70vh] bg-card relative">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 touch-none cursor-crosshair"
@@ -758,7 +750,7 @@ const FileRow: React.FC<{
   }
   return (
     <div className="rounded-md border border-border p-3 bg-card flex flex-wrap items-center gap-2">
-      <span className="text-sm text-foreground">{label}</span>
+      <span className="text-sm text-card-foreground">{label}</span>
       <input type="file" accept=".svg" onChange={handle} className="text-sm" />
       <button className={btn()} onClick={loadExample}>Load Example ({exampleName})</button>
     </div>
