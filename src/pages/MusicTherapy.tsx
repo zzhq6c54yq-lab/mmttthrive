@@ -11,6 +11,9 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import Page from '@/components/Page';
+import StudioEnvironment from '@/components/music-therapy/StudioEnvironment';
+import AudioVisualizer from '@/components/music-therapy/AudioVisualizer';
+import ParticleSystem from '@/components/music-therapy/ParticleSystem';
 import VirtualKeyboard from '@/components/music-therapy/VirtualKeyboard';
 import ChordPads from '@/components/music-therapy/ChordPads';
 import InstrumentSelector from '@/components/music-therapy/InstrumentSelector';
@@ -366,24 +369,35 @@ const MusicTherapy: React.FC = () => {
 
   return (
     <Page title="Music Therapy Studio" featureId="music-therapy">
-      <div className="space-y-6">
-        {/* Hero Section */}
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-3">
-            <Music className="h-8 w-8 text-amber-500" />
-            <h2 className="text-3xl font-bold text-white">Create Your Musical Journey</h2>
+      <StudioEnvironment>
+        {/* Futuristic Hero Section */}
+        <div className="text-center space-y-6 py-12">
+          <div className="flex items-center justify-center gap-4">
+            <Music className="h-12 w-12 text-primary animate-pulse" />
+            <h2 className="text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent logo-glow">
+              QUANTUM STUDIO
+            </h2>
           </div>
-          <p className="text-white/80 max-w-2xl mx-auto">
-            Express yourself through music therapy. Play instruments, record your creations, and explore the healing power of sound.
+          <p className="text-muted-foreground max-w-3xl mx-auto text-xl font-light">
+            Enter the future of music therapy • Express • Heal • Create through quantum sound
           </p>
+          
+          {/* Audio Visualizer */}
+          <div className="flex justify-center">
+            <AudioVisualizer 
+              isPlaying={isRecording} 
+              activeNotes={activeNotes} 
+              className="opacity-80"
+            />
+          </div>
         </div>
 
-        {/* Control Panel */}
-        <Card className="bg-white/10 border-white/20">
+        {/* Holographic Control Panel */}
+        <Card className="glass-morphism holographic-border neon-glow">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Volume2 className="h-5 w-5" />
-              Studio Controls
+            <CardTitle className="text-primary flex items-center gap-2 text-2xl font-bold">
+              <Volume2 className="h-6 w-6" />
+              QUANTUM CONTROLS
             </CardTitle>
           </CardHeader>
           <CardContent>

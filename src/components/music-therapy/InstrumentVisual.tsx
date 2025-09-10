@@ -69,8 +69,10 @@ const InstrumentVisual: React.FC<InstrumentVisualProps> = ({
   };
 
   return (
-    <div className="w-full min-h-[400px] flex items-center justify-center p-8 bg-gradient-to-br from-background/50 to-muted/50 rounded-lg">
-      {renderInstrument()}
+    <div className="w-full min-h-[500px] flex items-center justify-center p-8 glass-morphism holographic-border rounded-2xl instrument-glow">
+      <div className="w-full max-w-6xl">
+        {renderInstrument()}
+      </div>
     </div>
   );
 };
