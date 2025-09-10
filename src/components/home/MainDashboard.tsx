@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
 import DashboardContent from "@/components/dashboard/DashboardContent";
 import InfoButtons from "@/components/dashboard/InfoButtons";
+import ExploreAddOns from "@/components/dashboard/ExploreAddOns";
 import HenryFloatingElement from "@/components/home/HenryFloatingElement";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -51,7 +52,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
       
       <InfoButtons />
       
-      <DashboardContent 
+      <ExploreAddOns />
+      
+      <DashboardContent
         selectedQualities={selectedQualities}
         selectedGoals={selectedGoals}
         navigateToFeature={navigateToFeature}
