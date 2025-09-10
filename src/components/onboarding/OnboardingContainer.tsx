@@ -46,9 +46,10 @@ const OnboardingContainer: React.FC = () => {
   };
 
   // Handle registration
-  const handleRegister = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRegister = async (e: React.FormEvent) => {
     console.log("[OnboardingContainer] Registration submitted");
+    // The actual registration logic is handled in useRegistrationState
+    // This just serves as the nextStep callback
     nextStep();
   };
 

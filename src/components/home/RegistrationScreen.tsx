@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, User, Mail, Lock } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useRegistrationState } from "@/hooks/useRegistrationState";
 
 interface RegistrationScreenProps {
   userInfo: {
@@ -23,9 +23,20 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   onPrevious,
   onSkip,
 }) => {
-  // Get preferred language
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'English';
-  const isSpanish = preferredLanguage === 'Español';
+  const { 
+    userInfo: registrationUserInfo, 
+    isSpanish, 
+    isPortuguese, 
+    handleUserInfoChange, 
+    handleRegister 
+  } = useRegistrationState();
+
+  // Use the registration state but sync with onboarding flow
+  React.useEffect(() => {
+    onUserInfoChange({ target: { name: 'name', value: registrationUserInfo.name } } as any);
+    onUserInfoChange({ target: { name: 'email', value: registrationUserInfo.email } } as any);
+    onUserInfoChange({ target: { name: 'password', value: registrationUserInfo.password } } as any);
+  }, [registrationUserInfo, onUserInfoChange]);
   
   // Translations
   const translations = {
@@ -55,7 +66,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
         </div>
         
         <form 
-          onSubmit={onSubmit} 
+          onSubmit={(e) => handleRegister(e, () => onSubmit(e))} 
           className="space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/10"
         >
           <div>
@@ -66,8 +77,8 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                 type="text"
                 id="name"
                 name="name"
-                value={userInfo.name}
-                onChange={onUserInfoChange}
+                value={registrationUserInfo.name}
+                onChange={handleUserInfoChange}
                 className="pl-10 w-full p-2 bg-white/10 border border-white/20 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none text-white"
                 placeholder={isSpanish ? "Juan Pérez" : "John Doe"}
               />
@@ -82,8 +93,8 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                 type="email"
                 id="email"
                 name="email"
-                value={userInfo.email}
-                onChange={onUserInfoChange}
+                value={registrationUserInfo.email}
+                onChange={handleUserInfoChange}
                 className="pl-10 w-full p-2 bg-white/10 border border-white/20 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none text-white"
                 placeholder={isSpanish ? "juan@ejemplo.com" : "john@example.com"}
               />
@@ -98,8 +109,8 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                 type="password"
                 id="password"
                 name="password"
-                value={userInfo.password}
-                onChange={onUserInfoChange}
+                value={registrationUserInfo.password}
+                onChange={handleUserInfoChange}
                 className="pl-10 w-full p-2 bg-white/10 border border-white/20 rounded-md focus:ring-[#B87333] focus:border-[#B87333] outline-none text-white"
                 placeholder="••••••••"
               />
