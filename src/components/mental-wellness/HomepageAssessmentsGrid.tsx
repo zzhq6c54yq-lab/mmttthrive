@@ -71,44 +71,42 @@ const HomepageAssessmentsGrid: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Enhanced Assessments Section Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1] mb-4">
+    <div className="space-y-12">
+      {/* Clean Section Header */}
+      <div className="text-center">
+        <h2 className="text-4xl font-bold text-white mb-4">
           {translations.title}
         </h2>
-        <p className="text-white/80 text-lg max-w-2xl mx-auto">
+        <p className="text-white/70 text-xl max-w-3xl mx-auto">
           {isSpanish ? "Descubre cómo te sientes y mejora tu bienestar mental" : "Discover how you feel and improve your mental wellness"}
         </p>
       </div>
 
-      {/* Compact Assessments Grid - 3x2 Layout */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-4 max-w-4xl mx-auto">
+      {/* Open Grid Layout - No Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {featuredAssessments.map((assessment, index) => (
-          <Card 
+          <div 
             key={assessment.id} 
-            className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-[#B87333]/30 hover:border-[#B87333]/50 hover:from-white/15 hover:to-white/10 transition-all duration-300 cursor-pointer group transform hover:scale-102 hover:shadow-lg hover:shadow-[#B87333]/10"
+            className="group cursor-pointer transform hover:scale-105 transition-all duration-300"
             onClick={() => handleAssessmentClick(assessment)}
           >
-            {/* Compact Cover Image */}
-            <div className="w-full h-32 rounded-t-lg overflow-hidden relative">
+            {/* Clean Image */}
+            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden mb-6 shadow-xl group-hover:shadow-2xl transition-shadow duration-300">
               <img
                 src={assessment.coverImage}
                 alt={isSpanish ? assessment.titleSpanish : assessment.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>
 
-            <CardContent className="p-3">
-              {/* Highly Visible Title */}
-              <h3 className="text-black text-base font-bold line-clamp-2 mb-3 group-hover:text-[#B87333] transition-colors duration-300 min-h-[2.5rem] leading-tight text-shadow-lg bg-white/90 rounded px-2 py-1">
+            {/* Clean Title & Button */}
+            <div className="text-center space-y-4">
+              <h3 className="text-white text-xl font-bold group-hover:text-[#E5C5A1] transition-colors duration-300">
                 {isSpanish ? assessment.titleSpanish : assessment.title}
               </h3>
 
-              {/* START Button */}
               <Button
-                className="w-full bg-[#B87333] hover:bg-[#E5C5A1] text-white hover:text-black font-bold text-sm py-2 transition-all duration-300"
+                className="bg-[#B87333] hover:bg-[#E5C5A1] text-white hover:text-black font-bold px-8 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleAssessmentClick(assessment);
@@ -116,21 +114,21 @@ const HomepageAssessmentsGrid: React.FC = () => {
               >
                 {translations.start}
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
 
-      {/* Enhanced View All Assessments Button */}
-      <div className="text-center pt-8">
+      {/* Clean View All Button */}
+      <div className="text-center pt-12">
         <Button
           onClick={handleViewAllAssessments}
           variant="outline"
-          className="bg-gradient-to-r from-[#B87333]/20 to-[#E5C5A1]/20 border-[#B87333] text-[#E5C5A1] hover:bg-gradient-to-r hover:from-[#B87333]/30 hover:to-[#E5C5A1]/30 hover:border-[#E5C5A1] px-8 py-3 font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+          className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 px-10 py-4 text-lg font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
           size="lg"
         >
           {translations.viewAllAssessments}
-          <ArrowRight className="h-4 w-4 ml-2" />
+          <ArrowRight className="h-5 w-5 ml-3" />
         </Button>
       </div>
 

@@ -10,6 +10,7 @@ import { PaintByNumbersArea } from "@/components/art-therapy/PaintByNumbersArea"
 import { TherapeuticSidebar } from "@/components/art-therapy/TherapeuticSidebar";
 import { LevelSelector } from "@/components/art-therapy/LevelSelector";
 import { FileUploader } from "@/components/art-therapy/FileUploader";
+import BackButton from "@/components/navigation/BackButton";
 import { THERAPY_THEMES } from "@/data/therapeuticThemes";
 import { PBN_TEMPLATES, SAMPLE_MANDALA_SVG } from "@/data/paintByNumbersTemplates";
 import { Stroke } from "@/types/artTherapyTypes";
@@ -198,6 +199,12 @@ export const ArtTherapyStudio: React.FC = () => {
         minHeight: state.isFullscreen ? '100vh' : '100vh'
       }}
     >
+      {!state.isFullscreen && (
+        <div className="flex justify-start">
+          <BackButton />
+        </div>
+      )}
+      
       <TherapeuticHeader
         currentTheme={state.currentTheme}
         setCurrentTheme={setCurrentTheme}
