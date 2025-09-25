@@ -14,12 +14,16 @@ const ThriveButton: React.FC<ThriveButtonProps> = ({ className = '' }) => {
     const currentPath = window.location.pathname;
     localStorage.setItem('lastVisitedPath', currentPath);
     
+    // Ensure onboarding is marked complete
+    localStorage.setItem('hasCompletedOnboarding', 'true');
+    
     navigate('/', { 
       state: { 
         screenState: 'main',
         returnToMain: true,
         fromPath: currentPath,
-        preserveState: true
+        preserveState: true,
+        preventIntroRedirect: true
       } 
     });
   };

@@ -39,28 +39,42 @@ export const useScreenHistory = (
     if (location.state) {
       console.log("[useScreenHistory] Navigation state:", location.state);
 
+      // Prevent navigation to intro if explicitly prevented
+      if (location.state.preventIntroRedirect && location.state.returnToIntro) {
+        console.log("[useScreenHistory] Prevented intro redirect, staying in main");
+        setScreenState('main');
+        return;
+      }
+
       if (location.state.returnToFeature || location.state.returnToMain) {
         setScreenState('main');
         return;
       } else if (location.state.screenState) {
-        setScreenState(location.state.screenState);
+        // Don't allow setting to intro if coming from navigation within main app
+        if (location.state.screenState === 'intro' && localStorage.getItem('hasCompletedOnboarding') === 'true') {
+          console.log("[useScreenHistory] Preventing return to intro for completed user");
+          setScreenState('main');
+        } else {
+          setScreenState(location.state.screenState);
+        }
         return;
-      } else if (location.state.returnToIntro) {
+      } else if (location.state.returnToIntro && !location.state.preventIntroRedirect) {
+        // Only allow explicit return to intro if not prevented
         setScreenState('intro');
         return;
       }
     }
 
-    // For root path, enforce onboarding rules
+    // For root path, enforce onboarding rules but never force back to intro once in main
     if (location.pathname === '/') {
       if (hasCompletedOnboarding && screenState !== 'main') {
         console.log("[useScreenHistory] Onboarding completed, transitioning to main");
         setScreenState('main');
-      } else if (!hasCompletedOnboarding && (screenState === 'main')) {
-        console.log("[useScreenHistory] Onboarding not completed, returning to intro");
-        setScreenState('intro');
+      } else if (!hasCompletedOnboarding && screenState !== 'main' && screenState !== 'intro') {
+        // Only redirect to intro if we're not already in main - once user reaches main, they stay there
+        console.log("[useScreenHistory] Onboarding not completed, but allowing to stay in main if already there");
       }
-      // If screenState is already intro and onboarding not completed, keep it as intro
+      // Once in main, never go back to intro via navigation
     }
   }, [location, setScreenState, screenState]);
 

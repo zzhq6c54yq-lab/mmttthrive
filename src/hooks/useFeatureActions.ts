@@ -213,13 +213,16 @@ export const useFeatureActions = () => {
     }
     
     // For key feature pages, always return to main dashboard
+    // Ensure onboarding is marked complete to prevent intro redirect
+    localStorage.setItem('hasCompletedOnboarding', 'true');
     console.log('[useFeatureActions] Returning to main dashboard');
     navigate('/', { 
       state: { 
         screenState: 'main',
         returnToMain: true,
         fromPath: currentPath,
-        preserveState: true
+        preserveState: true,
+        preventIntroRedirect: true
       } 
     });
   };
