@@ -39,7 +39,11 @@ import WellnessChallenges from "./pages/WellnessChallenges";
 import MySponsor from "./pages/MySponsor";
 import Workshops from "./pages/Workshops";
 import WorkshopDetail from "./pages/WorkshopDetail";
-import HelpNavButton from "./components/help/HelpNavButton";
+import ProgressDashboardPage from "./pages/ProgressDashboard";
+import EnhancedMirrorAIPage from "./pages/EnhancedMirrorAI";
+import PersonalizedRecommendationsPage from "./pages/PersonalizedRecommendations";
+import EnhancedAudioTherapyPage from "./pages/EnhancedAudioTherapy";
+import ArtTherapyStudio from "./components/ArtTherapyStudio";
 import CrisisSupport from "./pages/CrisisSupport";
 import LearnMoreAboutThrive from "./pages/LearnMoreAboutThrive";
 import CoPay from "./pages/CoPay";
@@ -116,7 +120,6 @@ function App() {
   return (
     <UserProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
-        <HelpNavButton />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
@@ -375,7 +378,11 @@ function App() {
           <Route path="/sleep-tracker" element={<SleepTracker />} />
         <Route path="/sleep-analysis" element={<SleepTracker />} />
         <Route path="/music-therapy" element={<MusicTherapy />} />
-        <Route path="/art-therapy" element={<ArtTherapy />} />
+          <Route path="/progress" element={<ProgressDashboardPage />} />
+          <Route path="/enhanced-mirror-ai" element={<EnhancedMirrorAIPage />} />
+          <Route path="/recommendations" element={<PersonalizedRecommendationsPage />} />
+          <Route path="/enhanced-audio-therapy" element={<EnhancedAudioTherapyPage />} />
+          <Route path="/art-therapy" element={<ArtTherapyStudio />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />

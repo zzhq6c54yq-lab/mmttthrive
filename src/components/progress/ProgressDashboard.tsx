@@ -65,7 +65,7 @@ const ProgressDashboard: React.FC = () => {
       const workshopProgress = { data: JSON.parse(localStorage.getItem('workshopProgress') || '[]') };
 
       // Calculate metrics from data
-      const journalCount = journalEntries.data?.length || 0;
+      const journalCount = journalEntries?.length || 0;
       const assessmentCount = assessmentData.data?.length || 0;
       const workshopCount = workshopProgress.data?.length || 0;
 

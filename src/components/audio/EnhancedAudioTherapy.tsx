@@ -367,10 +367,19 @@ const EnhancedAudioTherapy: React.FC = () => {
               {/* Binaural Beat Player Component */}
               <div className="mt-6">
                 <BinauralBeatPlayer
-                  frequency={currentSession.frequencies.binaural}
-                  baseFrequency={currentSession.frequencies.base}
-                  volume={volume / 100}
-                  isPlaying={isPlaying}
+                  track={{
+                    id: currentSession.id,
+                    title: currentSession.title,
+                    description: currentSession.description,
+                    imageUrl: '/placeholder.svg',
+                    audioUrl: '',
+                    baseFrequency: currentSession.frequencies.base,
+                    targetFrequency: currentSession.frequencies.base + currentSession.frequencies.binaural,
+                    duration: `${customDuration}:00`,
+                    category: currentSession.category
+                  }}
+                  onNext={() => {}}
+                  onPrevious={() => {}}
                 />
               </div>
             </CardContent>
