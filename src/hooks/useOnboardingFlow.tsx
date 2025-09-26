@@ -144,10 +144,39 @@ export const useOnboardingFlow = () => {
     });
   }, [saveProgress]);
 
-  const completeOnboarding = useCallback(() => {
-    console.log("[useOnboardingFlow] Completing onboarding");
+  const completeOnboarding = useCallback(async () => {
+    console.log("[useOnboardingFlow] Completing onboarding with user data:", {
+      selectedGoals: state.selectedGoals,
+      selectedQualities: state.selectedQualities
+    });
+    
+    // Update profile with onboarding completion and selected preferences
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            onboarding_completed: true,
+            goals: state.selectedGoals,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', user.id);
+          
+        if (error) {
+          console.error("[useOnboardingFlow] Error updating profile:", error);
+        } else {
+          console.log("[useOnboardingFlow] Profile updated successfully");
+        }
+      }
+    } catch (error) {
+      console.error("[useOnboardingFlow] Error during profile update:", error);
+    }
+    
     goToStep('completed');
-  }, [goToStep]);
+  }, [goToStep, state.selectedGoals, state.selectedQualities]);
 
   const resetOnboarding = useCallback(() => {
     console.log("[useOnboardingFlow] Resetting onboarding");
