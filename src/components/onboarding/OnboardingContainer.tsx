@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useOnboardingFlow } from "@/hooks/useOnboardingFlow";
 import IntroScreen from "@/components/home/IntroScreen";
 import MoodScreen from "@/components/home/MoodScreen";
@@ -13,6 +13,7 @@ import MainDashboard from "@/components/home/MainDashboard";
 
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     currentStep,
     selectedMood,
@@ -37,6 +38,15 @@ const OnboardingContainer: React.FC = () => {
     toggleGoal,
     completeOnboarding,
   } = useOnboardingFlow();
+
+  // Check for navigation state from ThriveButton or other sources
+  useEffect(() => {
+    const navigationState = location.state as any;
+    if (navigationState?.screenState === 'main' || navigationState?.returnToMain) {
+      console.log("[OnboardingContainer] Navigation state detected - going to main dashboard");
+      goToStep('completed');
+    }
+  }, [location.state, goToStep]);
 
   console.log("[OnboardingContainer] Current step:", currentStep, "isComplete:", isOnboardingComplete);
 
