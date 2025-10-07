@@ -17,6 +17,16 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   
   // Set up initial position
   let yPosition = 20;
+  const pageHeight = 280; // A4 page height minus margins
+  const marginTop = 20;
+  
+  // Helper function to check if we need a new page
+  const checkPageBreak = (requiredSpace: number) => {
+    if (yPosition + requiredSpace > pageHeight) {
+      doc.addPage();
+      yPosition = marginTop;
+    }
+  };
   
   // Add header with logo placeholder
   doc.setFontSize(20);
@@ -28,6 +38,7 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   yPosition += 15;
   
   // Add workshop title
+  checkPageBreak(25);
   doc.setFontSize(18);
   doc.text(content.title, 105, yPosition, { align: 'center' });
   yPosition += 7;
@@ -43,6 +54,7 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   
   // Split text into multiple lines
   const introLines = doc.splitTextToSize(content.introduction, 170);
+  checkPageBreak(introLines.length * 7 + 10);
   doc.text(introLines, 20, yPosition);
   yPosition += introLines.length * 7;
   
@@ -51,6 +63,7 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
     yPosition += 10;
     
     // Add section title
+    checkPageBreak(20);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text(`${index + 1}. ${section.title}`, 20, yPosition);
@@ -60,11 +73,13 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
     doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     const descLines = doc.splitTextToSize(section.description, 170);
+    checkPageBreak(descLines.length * 6 + 10);
     doc.text(descLines, 20, yPosition);
     yPosition += descLines.length * 6 + 5;
     
     // Add exercises
     section.exercises.forEach((exercise, exIndex) => {
+      checkPageBreak(30);
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
       doc.text(`Exercise ${index + 1}.${exIndex + 1}: ${exercise.title}`, 25, yPosition);
@@ -73,12 +88,14 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
       doc.setFontSize(11);
       doc.setFont('helvetica', 'normal');
       const instructionLines = doc.splitTextToSize(exercise.instructions, 165);
+      checkPageBreak(instructionLines.length * 6 + 10);
       doc.text(instructionLines, 25, yPosition);
       yPosition += instructionLines.length * 6 + 5;
       
       // Add prompt and space for answers
       exercise.prompts.forEach(prompt => {
         const promptText = doc.splitTextToSize(`• ${prompt}`, 165);
+        checkPageBreak(promptText.length * 6 + 35);
         doc.text(promptText, 25, yPosition);
         yPosition += promptText.length * 6;
         
@@ -94,6 +111,7 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   });
   
   // Add commitment section
+  checkPageBreak(60);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text("My Commitment", 20, yPosition);
@@ -112,6 +130,7 @@ export const downloadWorksheet = (workshopId: string, toastParam?: any) => {
   
   // Signature line
   yPosition += 15;
+  checkPageBreak(10);
   doc.text("Signature: _______________________     Date: _____________", 20, yPosition);
   
   // Save the PDF with workshop title
