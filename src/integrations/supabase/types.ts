@@ -14,13 +14,177 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      crisis_events: {
+        Row: {
+          created_at: string | null
+          event_type: string
+          id: string
+          source: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_type: string
+          id?: string
+          source?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          source?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      feedback: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          rating: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          rating?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          rating?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journal_entries: {
+        Row: {
+          created_at: string | null
+          id: string
+          mood: string
+          mood_score: number | null
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          mood: string
+          mood_score?: number | null
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          mood?: string
+          mood_score?: number | null
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          goals: string[] | null
+          id: string
+          onboarding_completed: boolean | null
+          updated_at: string | null
+          user_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          goals?: string[] | null
+          id: string
+          onboarding_completed?: boolean | null
+          updated_at?: string | null
+          user_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          goals?: string[] | null
+          id?: string
+          onboarding_completed?: boolean | null
+          updated_at?: string | null
+          user_type?: string | null
+        }
+        Relationships: []
+      }
+      support_wall: {
+        Row: {
+          content: string
+          created_at: string | null
+          hearts: number | null
+          id: string
+          is_flagged: boolean | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          hearts?: number | null
+          id?: string
+          is_flagged?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      support_wall_hearts: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_wall_hearts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "support_wall"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decrement_hearts: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
+      increment_hearts: {
+        Args: { post_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
