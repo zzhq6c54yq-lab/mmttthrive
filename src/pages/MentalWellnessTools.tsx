@@ -140,37 +140,34 @@ const MentalWellnessTools: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f9fafc] to-[#f3f3f8]">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
       {/* Animated background elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-gradient-to-br from-[#9b87f5]/5 to-transparent blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-gradient-to-tr from-[#D946EF]/5 to-transparent blur-3xl"></div>
+        <motion.div 
+          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-primary/10 to-transparent blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-secondary/10 to-transparent blur-3xl"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            rotate: [0, -90, 0]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        />
       </div>
       
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#272730] text-white py-12 px-4 relative overflow-hidden">
-        <motion.div 
-          className="absolute top-[-20%] right-[-10%] w-[40%] h-[70%] rounded-full bg-gradient-to-br from-[#9b87f5]/20 to-transparent blur-3xl"
-          animate={{ 
-            rotate: [0, 180],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ duration: 25, repeat: Infinity, repeatType: "reverse" }}
-        />
-        <motion.div 
-          className="absolute bottom-[-20%] left-[-10%] w-[40%] h-[70%] rounded-full bg-gradient-to-tr from-[#D946EF]/20 to-transparent blur-3xl"
-          animate={{ 
-            rotate: [0, -180],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", delay: 2 }}
-        />
-        
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="flex items-center justify-between mb-6">
+      {/* Lighter, more welcoming header */}
+      <div className="bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 backdrop-blur-sm py-8 px-4 relative overflow-hidden border-b border-border/50">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex items-center justify-between mb-4">
             <Button 
-              variant="link" 
-              className="text-white hover:text-[#9b87f5] transition-colors p-0 flex items-center"
+              variant="ghost" 
+              className="text-foreground hover:text-primary transition-colors p-0 flex items-center"
               onClick={() => navigate("/home")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -183,52 +180,36 @@ const MentalWellnessTools: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+            className="text-center"
           >
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2 flex items-center gap-2">
-                <Brain className="h-7 w-7 text-[#9b87f5]" />
-                Mental Wellness Tools
-              </h1>
-              <p className="text-gray-300 max-w-xl">
-                Interactive tools, assessments, and resources designed to support your mental health journey.
-              </p>
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              <Button 
-                onClick={() => navigate("/mental-wellness-tools/therapy-support")}
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
-              >
-                <Clipboard className="h-4 w-4 mr-2" />
-                Therapy Support
-              </Button>
-              <Button 
-                onClick={() => navigate("/mental-wellness-tools/crisis-resources")}
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
-              >
-                <Heart className="h-4 w-4 mr-2" />
-                Crisis Resources
-              </Button>
-            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-3 flex items-center justify-center gap-3">
+              <Brain className="h-8 w-8 text-primary" />
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Mental Wellness Hub
+              </span>
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Personalized tools, assessments, and resources to support your mental health journey
+            </p>
           </motion.div>
         </div>
       </div>
       
-      {/* Daily Skill Card */}
-      <div className="max-w-6xl mx-auto px-4 relative z-10">
+      {/* Daily Skill Card - Redesigned */}
+      <div className="max-w-7xl mx-auto px-4 relative z-10 -mt-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="-mt-8 mb-8"
+          className="mb-8"
         >
-          <div className="bg-white rounded-lg shadow-md border border-gray-100 p-6">
-            <div className="flex flex-col md:flex-row justify-between gap-6">
-              <div>
-                <h3 className="text-sm uppercase text-gray-500 tracking-wider mb-1 flex items-center gap-1">
-                  <Activity className="h-4 w-4 text-[#9b87f5]" /> 
-                  Daily Mental Wellness Skill
+          <div className="glass-morphism rounded-2xl border-2 border-primary/20 p-6 md:p-8 shadow-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 -z-10"></div>
+            <div className="flex flex-col lg:flex-row justify-between gap-6">
+              <div className="flex-1">
+                <h3 className="text-sm uppercase text-muted-foreground tracking-wider mb-3 flex items-center gap-2 font-semibold">
+                  <Activity className="h-5 w-5 text-primary" /> 
+                  Today's Wellness Practice
                 </h3>
                 
                 <AnimatePresence mode="wait">
@@ -239,25 +220,27 @@ const MentalWellnessTools: React.FC = () => {
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <div className="flex items-center gap-3 mb-1">
-                      <div className="p-2 rounded-full bg-[#9b87f5]/10">
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
                         {dailySkills[currentSkill].icon}
                       </div>
-                      <h2 className="text-xl font-bold">{dailySkills[currentSkill].title}</h2>
-                      <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-600">
-                        {dailySkills[currentSkill].category}
-                      </span>
+                      <div className="flex-1">
+                        <h2 className="text-2xl font-bold mb-1">{dailySkills[currentSkill].title}</h2>
+                        <span className="text-xs px-3 py-1 bg-muted rounded-full text-muted-foreground font-medium">
+                          {dailySkills[currentSkill].category}
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-gray-600">{dailySkills[currentSkill].description}</p>
+                    <p className="text-muted-foreground text-base leading-relaxed">{dailySkills[currentSkill].description}</p>
                   </motion.div>
                 </AnimatePresence>
                 
-                <div className="flex gap-1 mt-3">
+                <div className="flex gap-2 mt-4">
                   {dailySkills.map((_, index) => (
                     <button
                       key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        index === currentSkill ? "bg-[#9b87f5]" : "bg-gray-300"
+                      className={`h-1.5 rounded-full transition-all ${
+                        index === currentSkill ? "bg-primary w-8" : "bg-muted w-1.5"
                       }`}
                       onClick={() => setCurrentSkill(index)}
                     />
@@ -265,12 +248,20 @@ const MentalWellnessTools: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button className="bg-[#9b87f5] hover:bg-[#8b77e5] text-white">
-                  Try This Skill
+              <div className="flex flex-col sm:flex-row gap-3 lg:items-start">
+                <Button 
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all"
+                  size="lg"
+                >
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Try Now
                 </Button>
-                <Button variant="outline" className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5">
-                  View All Daily Skills
+                <Button 
+                  variant="outline" 
+                  className="border-2 border-primary/30 hover:bg-primary/5"
+                  size="lg"
+                >
+                  View All
                 </Button>
               </div>
             </div>
@@ -278,21 +269,25 @@ const MentalWellnessTools: React.FC = () => {
         </motion.div>
       </div>
       
-      {/* Quick Access Tools */}
-      <div className="max-w-6xl mx-auto px-4 mb-10 relative z-10">
+      {/* Quick Access Tools - Bento Grid Style */}
+      <div className="max-w-7xl mx-auto px-4 mb-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-8"
         >
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-[#9b87f5]" />
-              Quick Access Tools
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-primary" />
+              Quick Access
             </h2>
-            <Button variant="link" className="text-[#9b87f5]" onClick={() => setActiveTab("tools")}>
-              View All Tools
+            <Button 
+              variant="ghost" 
+              className="text-primary hover:text-primary/80" 
+              onClick={() => setActiveTab("tools")}
+            >
+              View All
+              <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
           
@@ -301,35 +296,37 @@ const MentalWellnessTools: React.FC = () => {
               <motion.button
                 key={index}
                 onClick={tool.action}
-                className={`p-4 rounded-lg bg-gradient-to-br ${tool.color} border text-left h-full transition-all hover:shadow-md flex flex-col`}
-                whileHover={{ y: -5 }}
+                className="group relative p-6 rounded-2xl glass-morphism border-2 border-border/50 text-left h-full transition-all hover:shadow-2xl hover:border-primary/30 flex flex-col overflow-hidden"
+                whileHover={{ y: -8, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 * index }}
+                transition={{ duration: 0.3, delay: 0.05 * index }}
               >
-                <div className={`${tool.iconBg} p-2 rounded-full w-fit mb-3`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
+                
+                <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 w-fit mb-4 group-hover:scale-110 transition-transform">
                   {tool.icon}
                 </div>
-                <h3 className="font-medium text-gray-900 mb-1">{tool.title}</h3>
-                <p className="text-sm text-gray-600 flex-grow">{tool.description}</p>
-                <div className="flex justify-end mt-3">
-                  <ArrowRight className="h-5 w-5 text-gray-400" />
+                <h3 className="font-semibold text-lg mb-2 text-foreground">{tool.title}</h3>
+                <p className="text-sm text-muted-foreground flex-grow leading-relaxed">{tool.description}</p>
+                <div className="flex justify-end mt-4">
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                 </div>
               </motion.button>
             ))}
           </div>
         </motion.div>
         
-        {/* Features Cards */}
+        {/* Featured Resources - Improved Cards */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-10"
+          className="mt-12"
         >
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-[#9b87f5]" />
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-2">
+            <BookOpen className="h-6 w-6 text-primary" />
             Featured Resources
           </h2>
           
@@ -337,28 +334,26 @@ const MentalWellnessTools: React.FC = () => {
             {featureCards.map((feature, index) => (
               <motion.div
                 key={index}
-                className="rounded-lg overflow-hidden border border-gray-200 bg-white transition-all hover:shadow-md"
-                whileHover={{ y: -5 }}
+                className="group rounded-2xl overflow-hidden border-2 border-border/50 glass-morphism transition-all hover:shadow-2xl hover:border-primary/30 cursor-pointer"
+                whileHover={{ y: -8 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 * index }}
+                onClick={() => navigate(feature.path)}
               >
-                <div className="h-2 bg-gradient-to-r from-[#9b87f5] to-[#D946EF]"></div>
-                <div className="p-5">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-full bg-gray-50 border border-gray-100">
+                <div className="h-1.5 bg-gradient-to-r from-primary via-secondary to-accent"></div>
+                <div className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 group-hover:scale-110 transition-transform">
                       {feature.icon}
                     </div>
-                    <div>
-                      <h3 className="font-medium text-lg mb-1">{feature.title}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{feature.description}</p>
-                      <Button 
-                        variant="link" 
-                        className="p-0 h-auto text-[#9b87f5] flex items-center"
-                        onClick={() => navigate(feature.path)}
-                      >
-                        Explore <ChevronRight className="h-4 w-4 ml-1" />
-                      </Button>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-xl mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">{feature.description}</p>
+                      <div className="flex items-center text-primary font-medium text-sm group-hover:gap-2 gap-1 transition-all">
+                        <span>Explore</span>
+                        <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -368,78 +363,89 @@ const MentalWellnessTools: React.FC = () => {
         </motion.div>
       </div>
       
-      {/* Main Tabs Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
-        <Tabs 
-          defaultValue={activeTab} 
-          value={activeTab} 
-          onValueChange={setActiveTab} 
-          className="w-full"
-        >
-          <TabsList className="mb-8 max-w-2xl grid grid-cols-3 bg-white/80">
-            <TabsTrigger 
-              value="tools" 
-              className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white"
-            >
-              <Sparkles className="h-4 w-4 mr-2" />
-              Wellness Tools
-            </TabsTrigger>
-            <TabsTrigger 
-              value="assessments" 
-              className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white"
-            >
-              <Clipboard className="h-4 w-4 mr-2" />
-              Assessments
-            </TabsTrigger>
-            <TabsTrigger 
-              value="resources" 
-              className="data-[state=active]:bg-[#9b87f5] data-[state=active]:text-white"
-            >
-              <BookOpen className="h-4 w-4 mr-2" />
-              Resources
-            </TabsTrigger>
-          </TabsList>
-          
-          {/* Loading state */}
-          <AnimatePresence>
-            {isLoading && (
-              <motion.div
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex justify-center py-20"
-              >
-                <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 border-4 border-t-[#9b87f5] border-r-[#9b87f5]/30 border-b-[#9b87f5]/60 border-l-[#9b87f5]/10 rounded-full animate-spin"></div>
-                  <p className="mt-4 text-gray-500">Loading your personalized content...</p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-          {/* Tools Tab */}
-          <AnimatePresence>
-            {!isLoading && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <TabsContent value="tools" className="focus:outline-none">
-                  <SelfCareTab />
-                </TabsContent>
-                
-                <TabsContent value="assessments" className="focus:outline-none">
-                  <AssessmentsTab />
-                </TabsContent>
-                
-                <TabsContent value="resources" className="focus:outline-none">
-                  <ResourcesTab />
-                </TabsContent>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Tabs>
+      {/* Main Tabs Content - Modernized */}
+      <div className="bg-card/30 backdrop-blur-sm border-y border-border/50 py-12">
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <Tabs 
+            defaultValue={activeTab} 
+            value={activeTab} 
+            onValueChange={setActiveTab} 
+            className="w-full"
+          >
+            <div className="flex justify-center mb-10">
+              <TabsList className="inline-flex bg-card/80 backdrop-blur-sm border-2 border-border/50 p-1.5 rounded-2xl shadow-lg">
+                <TabsTrigger 
+                  value="tools" 
+                  className="rounded-xl px-6 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all"
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  <span className="font-semibold">Wellness Tools</span>
+                  <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/20 data-[state=active]:bg-primary-foreground/20">12</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="assessments" 
+                  className="rounded-xl px-6 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all"
+                >
+                  <Clipboard className="h-4 w-4 mr-2" />
+                  <span className="font-semibold">Assessments</span>
+                  <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/20 data-[state=active]:bg-primary-foreground/20">4</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="resources" 
+                  className="rounded-xl px-6 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all"
+                >
+                  <BookOpen className="h-4 w-4 mr-2" />
+                  <span className="font-semibold">Resources</span>
+                  <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/20 data-[state=active]:bg-primary-foreground/20">8</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            
+            {/* Loading state */}
+            <AnimatePresence>
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex justify-center py-20"
+                >
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="relative">
+                      <div className="w-16 h-16 border-4 border-primary/20 rounded-full"></div>
+                      <div className="absolute top-0 left-0 w-16 h-16 border-4 border-t-primary border-r-primary/60 border-b-primary/30 border-l-transparent rounded-full animate-spin"></div>
+                    </div>
+                    <p className="text-muted-foreground font-medium">Loading your personalized content...</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Tab Content with smooth transitions */}
+            <AnimatePresence mode="wait">
+              {!isLoading && (
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <TabsContent value="tools" className="focus:outline-none mt-0">
+                    <SelfCareTab />
+                  </TabsContent>
+                  
+                  <TabsContent value="assessments" className="focus:outline-none mt-0">
+                    <AssessmentsTab />
+                  </TabsContent>
+                  
+                  <TabsContent value="resources" className="focus:outline-none mt-0">
+                    <ResourcesTab />
+                  </TabsContent>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Tabs>
+        </div>
       </div>
       
       {/* Get Help Banner */}

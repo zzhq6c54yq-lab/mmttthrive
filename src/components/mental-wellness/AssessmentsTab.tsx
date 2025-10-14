@@ -1,181 +1,206 @@
-
 import React from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clipboard, BarChart4, Clock, Brain, ArrowRight } from "lucide-react";
+import { Brain, Heart, Activity, Smile, TrendingUp, Clock, BarChart3, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useLocation } from "react-router-dom";
 
 const AssessmentsTab: React.FC = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
-  const location = useLocation();
-  const fromSpecializedProgram = location.state?.fromSpecializedProgram;
-  const returnToPortal = location.state?.returnToPortal;
 
   const handleAssessmentStart = (assessmentType: string) => {
     toast({
-      title: `Starting ${assessmentType} Assessment`,
-      description: "Your assessment is being prepared...",
-      duration: 2000,
+      title: "Starting Assessment",
+      description: `Loading ${assessmentType} assessment...`,
     });
     
-    // In a real app, this would navigate to the specific assessment
-    // For now, we'll just show a completion toast after a delay
     setTimeout(() => {
       toast({
         title: "Assessment Ready",
-        description: `Begin your ${assessmentType} assessment now`,
-        duration: 3000,
+        description: "Please answer honestly for the most accurate results.",
       });
-    }, 1000);
+    }, 1500);
   };
 
+  const assessments = [
+    {
+      title: "Anxiety Screening",
+      description: "GAD-7 assessment to evaluate anxiety symptoms and severity over the past two weeks.",
+      icon: <Brain className="h-6 w-6 text-primary" />,
+      duration: "2-3 min",
+      questions: 7,
+      type: "GAD-7",
+      color: "from-primary/10 to-primary/5"
+    },
+    {
+      title: "Depression Check",
+      description: "PHQ-9 validated screening tool to assess depressive symptoms and their impact.",
+      icon: <Heart className="h-6 w-6 text-destructive" />,
+      duration: "3-4 min",
+      questions: 9,
+      type: "PHQ-9",
+      color: "from-destructive/10 to-destructive/5"
+    },
+    {
+      title: "Stress Assessment",
+      description: "Evaluate your current stress levels and identify key stressors in your life.",
+      icon: <Activity className="h-6 w-6 text-accent" />,
+      duration: "5 min",
+      questions: 10,
+      type: "PSS-10",
+      color: "from-accent/10 to-accent/5"
+    },
+    {
+      title: "Well-being Index",
+      description: "WHO-5 measure of current mental well-being and quality of life indicators.",
+      icon: <Smile className="h-6 w-6 text-secondary" />,
+      duration: "1-2 min",
+      questions: 5,
+      type: "WHO-5",
+      color: "from-secondary/10 to-secondary/5"
+    }
+  ];
+
+  const progressStats = [
+    { label: "Completed", value: 3, icon: <CheckCircle2 className="h-5 w-5" /> },
+    { label: "In Progress", value: 1, icon: <Clock className="h-5 w-5" /> },
+    { label: "Trend", value: "+5%", icon: <TrendingUp className="h-5 w-5" /> }
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <Clipboard className="h-5 w-5 text-[#9b87f5]" />
-          Mental Health Assessments
-        </h2>
-        <p className="text-gray-600 mb-6">
-          These research-backed tools can help you better understand your mental health and track changes over time.
-          All assessments are confidential and take 5-10 minutes to complete.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="border-[#9b87f5]/30 hover:shadow-md transition-all">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between">
-                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">Self-Assessment</Badge>
-                <span className="text-xs flex items-center gap-1 text-gray-500">
-                  <Clock className="h-3 w-3" /> 5 minutes
-                </span>
+    <div className="space-y-10">
+      {/* Progress Overview */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="glass-morphism rounded-2xl border-2 border-border/50 p-6">
+          <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-primary" />
+            Your Assessment Progress
+          </h3>
+          <div className="grid grid-cols-3 gap-4">
+            {progressStats.map((stat, index) => (
+              <div key={stat.label} className="text-center">
+                <div className="flex justify-center mb-2 text-primary">
+                  {stat.icon}
+                </div>
+                <div className="text-2xl font-bold">{stat.value}</div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
               </div>
-              <CardTitle className="mt-2">Anxiety Screening (GAD-7)</CardTitle>
-              <CardDescription>Evaluate symptoms of generalized anxiety disorder</CardDescription>
-            </CardHeader>
-            <CardContent className="pt-2">
-              <p className="text-sm text-gray-600">
-                This validated 7-question screening tool helps identify anxiety symptoms and their severity over the past two weeks.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleAssessmentStart("Anxiety")}
-              >
-                Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="border-[#9b87f5]/30 hover:shadow-md transition-all">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between">
-                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">Self-Assessment</Badge>
-                <span className="text-xs flex items-center gap-1 text-gray-500">
-                  <Clock className="h-3 w-3" /> 5 minutes
-                </span>
-              </div>
-              <CardTitle className="mt-2">Depression Inventory (PHQ-9)</CardTitle>
-              <CardDescription>Screen for signs of depression and monitor severity</CardDescription>
-            </CardHeader>
-            <CardContent className="pt-2">
-              <p className="text-sm text-gray-600">
-                A 9-question tool to assess the presence and severity of depression symptoms according to DSM standards.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleAssessmentStart("Depression")}
-              >
-                Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="border-[#9b87f5]/30 hover:shadow-md transition-all">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between">
-                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">Self-Assessment</Badge>
-                <span className="text-xs flex items-center gap-1 text-gray-500">
-                  <Clock className="h-3 w-3" /> 8 minutes
-                </span>
-              </div>
-              <CardTitle className="mt-2">Stress Assessment (PSS)</CardTitle>
-              <CardDescription>Measure your current stress levels</CardDescription>
-            </CardHeader>
-            <CardContent className="pt-2">
-              <p className="text-sm text-gray-600">
-                The Perceived Stress Scale helps you understand how different situations affect your stress levels.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleAssessmentStart("Stress")}
-              >
-                Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </CardFooter>
-          </Card>
-          
-          <Card className="border-[#9b87f5]/30 hover:shadow-md transition-all">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between">
-                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">Self-Assessment</Badge>
-                <span className="text-xs flex items-center gap-1 text-gray-500">
-                  <Clock className="h-3 w-3" /> 10 minutes
-                </span>
-              </div>
-              <CardTitle className="mt-2">Well-Being Index</CardTitle>
-              <CardDescription>Assess your overall mental wellness</CardDescription>
-            </CardHeader>
-            <CardContent className="pt-2">
-              <p className="text-sm text-gray-600">
-                A holistic evaluation of your emotional, psychological, and social well-being factors.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                className="w-full bg-gradient-to-r from-[#9b87f5] to-[#8b77e5] hover:from-[#8b77e5] hover:to-[#7b67d5] group"
-                onClick={() => handleAssessmentStart("Well-Being")}
-              >
-                Start Assessment <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-        
-        <div className="mt-8 bg-[#9b87f5]/10 p-5 rounded-lg border border-[#9b87f5]/30">
-          <div className="flex flex-col md:flex-row items-start gap-4">
-            <div className="p-3 rounded-full bg-[#9b87f5]/20">
-              <BarChart4 className="h-6 w-6 text-[#9b87f5]" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900">Track Your Progress</h3>
-              <p className="text-gray-600 mt-1 mb-3">
-                Regular assessments can help you and your healthcare providers monitor changes in your mental health over time.
-                We recommend taking these assessments every 2-4 weeks.
-              </p>
-              <Button 
-                variant="outline" 
-                className="border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5"
-                onClick={() => {
-                  toast({
-                    title: "Assessment History",
-                    description: "Loading your previous assessment results",
-                    duration: 2000,
-                  });
-                }}
-              >
-                View Your Assessment History
-              </Button>
-            </div>
+            ))}
           </div>
         </div>
+      </motion.div>
+
+      {/* Assessment Cards */}
+      <div>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-2">Mental Health Assessments</h2>
+          <p className="text-muted-foreground">
+            Evidence-based screening tools to help you understand your mental health. 
+            These assessments are not diagnostic tools but can guide conversations with healthcare providers.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {assessments.map((assessment, index) => (
+            <motion.div
+              key={assessment.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              whileHover={{ y: -5 }}
+            >
+              <Card className="h-full glass-morphism border-2 border-border/50 hover:border-primary/30 hover:shadow-xl transition-all overflow-hidden">
+                <div className={`h-2 bg-gradient-to-r ${assessment.color}`}></div>
+                <CardHeader>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
+                      {assessment.icon}
+                    </div>
+                    <Badge variant="outline" className="border-primary/30">
+                      {assessment.type}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl">{assessment.title}</CardTitle>
+                  <CardDescription className="text-sm leading-relaxed">
+                    {assessment.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4" />
+                      <span>{assessment.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Activity className="h-4 w-4" />
+                      <span>{assessment.questions} questions</span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button 
+                    className="w-full bg-primary hover:bg-primary/90 group"
+                    onClick={() => handleAssessmentStart(assessment.title)}
+                  >
+                    Start Assessment
+                    <TrendingUp className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Assessment History CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="glass-morphism rounded-2xl border-2 border-primary/30 p-8 text-center"
+      >
+        <BarChart3 className="h-12 w-12 text-primary mx-auto mb-4" />
+        <h3 className="font-bold text-2xl mb-3">Track Your Progress Over Time</h3>
+        <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+          View your assessment history, track trends, and see how your mental health changes over time.
+          Share results with your healthcare provider for better care.
+        </p>
+        <div className="flex gap-3 justify-center flex-wrap">
+          <Button 
+            size="lg"
+            className="bg-primary hover:bg-primary/90"
+            onClick={() => navigate("/progress-reports")}
+          >
+            View Assessment History
+          </Button>
+          <Button 
+            size="lg"
+            variant="outline"
+            className="border-2 border-primary/30 hover:bg-primary/5"
+          >
+            Download Report
+          </Button>
+        </div>
+      </motion.div>
+
+      {/* Important Note */}
+      <div className="bg-muted/50 border border-border rounded-xl p-6">
+        <h4 className="font-semibold mb-2 flex items-center gap-2">
+          <Brain className="h-5 w-5 text-primary" />
+          Important Information
+        </h4>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          These screening tools are for educational purposes and are not a substitute for professional diagnosis. 
+          If you're experiencing mental health concerns, please consult with a qualified healthcare provider. 
+          If you're in crisis, please contact emergency services or a crisis hotline immediately.
+        </p>
       </div>
     </div>
   );
