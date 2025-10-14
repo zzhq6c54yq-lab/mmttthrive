@@ -1,3 +1,5 @@
+import { comprehensiveTraumaAssessment } from './traumaAssessment';
+
 export interface MentalHealthAssessment {
   id: string;
   title: string;
@@ -35,6 +37,8 @@ export interface AssessmentQuestion {
   scaleLabels?: string[];
   scaleLabelsSpanish?: string[];
   required: boolean;
+  section?: string;
+  sectionSpanish?: string;
 }
 
 export interface ScoringSystem {
@@ -60,18 +64,20 @@ export interface ResultInterpretation {
   severity: 'low' | 'moderate' | 'high' | 'severe';
 }
 
+import { comprehensiveTraumaAssessment } from './traumaAssessment';
+
 export const mentalHealthAssessments: MentalHealthAssessment[] = [
-  // ANXIETY ASSESSMENTS
+  // GAD-7 - Complete 7 Questions
   {
     id: 'gad-7',
     title: 'Generalized Anxiety Disorder 7-item (GAD-7)',
     titleSpanish: 'Trastorno de Ansiedad Generalizada 7 ítems (GAD-7)',
-    description: 'A validated screening tool for generalized anxiety disorder used widely by healthcare professionals.',
-    descriptionSpanish: 'Una herramienta de detección validada para el trastorno de ansiedad generalizada ampliamente utilizada por profesionales de la salud.',
+    description: 'A validated screening tool for generalized anxiety disorder used widely by healthcare professionals. This clinically proven assessment helps identify anxiety symptoms.',
+    descriptionSpanish: 'Una herramienta de detección validada para el trastorno de ansiedad generalizada ampliamente utilizada por profesionales de la salud. Esta evaluación clínicamente probada ayuda a identificar síntomas de ansiedad.',
     category: 'Anxiety Assessment',
     categorySpanish: 'Evaluación de Ansiedad',
-    duration: '3-5 minutes',
-    durationSpanish: '3-5 minutos',
+    duration: '5-7 minutes',
+    durationSpanish: '5-7 minutos',
     difficulty: 'Beginner',
     difficultySpanish: 'Principiante',
     targetAudience: 'Adults experiencing anxiety symptoms',
@@ -86,15 +92,69 @@ export const mentalHealthAssessments: MentalHealthAssessment[] = [
         options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
         optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
         required: true
+      },
+      {
+        id: 'gad2',
+        question: 'Over the last 2 weeks, how often have you been bothered by not being able to stop or control worrying?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por no poder detener o controlar la preocupación?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'gad3',
+        question: 'Over the last 2 weeks, how often have you been bothered by worrying too much about different things?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por preocuparte demasiado por diferentes cosas?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'gad4',
+        question: 'Over the last 2 weeks, how often have you been bothered by trouble relaxing?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por tener problemas para relajarte?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'gad5',
+        question: 'Over the last 2 weeks, how often have you been bothered by being so restless that it\'s hard to sit still?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por estar tan inquieto que es difícil quedarse quieto?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'gad6',
+        question: 'Over the last 2 weeks, how often have you been bothered by becoming easily annoyed or irritable?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por molestarte o irritarte fácilmente?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'gad7',
+        question: 'Over the last 2 weeks, how often have you been bothered by feeling afraid as if something awful might happen?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por tener miedo como si algo terrible pudiera pasar?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
       }
     ],
     scoring: {
       type: 'sum',
       ranges: [
-        { min: 0, max: 4, level: 'Minimal', levelSpanish: 'Mínima', description: 'Minimal anxiety', descriptionSpanish: 'Ansiedad mínima' },
-        { min: 5, max: 9, level: 'Mild', levelSpanish: 'Leve', description: 'Mild anxiety', descriptionSpanish: 'Ansiedad leve' },
-        { min: 10, max: 14, level: 'Moderate', levelSpanish: 'Moderada', description: 'Moderate anxiety', descriptionSpanish: 'Ansiedad moderada' },
-        { min: 15, max: 21, level: 'Severe', levelSpanish: 'Severa', description: 'Severe anxiety', descriptionSpanish: 'Ansiedad severa' }
+        { min: 0, max: 4, level: 'Minimal Anxiety', levelSpanish: 'Ansiedad Mínima', description: 'Little to no anxiety symptoms', descriptionSpanish: 'Pocos o ningún síntoma de ansiedad' },
+        { min: 5, max: 9, level: 'Mild Anxiety', levelSpanish: 'Ansiedad Leve', description: 'Mild anxiety symptoms', descriptionSpanish: 'Síntomas leves de ansiedad' },
+        { min: 10, max: 14, level: 'Moderate Anxiety', levelSpanish: 'Ansiedad Moderada', description: 'Moderate anxiety symptoms', descriptionSpanish: 'Síntomas moderados de ansiedad' },
+        { min: 15, max: 21, level: 'Severe Anxiety', levelSpanish: 'Ansiedad Severa', description: 'Severe anxiety symptoms', descriptionSpanish: 'Síntomas severos de ansiedad' }
       ]
     },
     resultInterpretations: [
@@ -102,453 +162,420 @@ export const mentalHealthAssessments: MentalHealthAssessment[] = [
         scoreRange: { min: 0, max: 4 },
         title: 'Minimal Anxiety',
         titleSpanish: 'Ansiedad Mínima',
-        description: 'Your responses suggest minimal anxiety symptoms.',
-        descriptionSpanish: 'Tus respuestas sugieren síntomas mínimos de ansiedad.',
+        description: 'Your responses suggest minimal anxiety symptoms. Continue maintaining good mental health practices.',
+        descriptionSpanish: 'Tus respuestas sugieren síntomas mínimos de ansiedad. Continúa manteniendo buenas prácticas de salud mental.',
         severity: 'low'
+      },
+      {
+        scoreRange: { min: 5, max: 9 },
+        title: 'Mild Anxiety',
+        titleSpanish: 'Ansiedad Leve',
+        description: 'Your responses suggest mild anxiety. Consider stress management techniques and self-care practices.',
+        descriptionSpanish: 'Tus respuestas sugieren ansiedad leve. Considera técnicas de manejo del estrés y prácticas de autocuidado.',
+        severity: 'low'
+      },
+      {
+        scoreRange: { min: 10, max: 14 },
+        title: 'Moderate Anxiety',
+        titleSpanish: 'Ansiedad Moderada',
+        description: 'Your responses suggest moderate anxiety. Consider speaking with a mental health professional for support.',
+        descriptionSpanish: 'Tus respuestas sugieren ansiedad moderada. Considera hablar con un profesional de salud mental para obtener apoyo.',
+        severity: 'moderate'
+      },
+      {
+        scoreRange: { min: 15, max: 21 },
+        title: 'Severe Anxiety',
+        titleSpanish: 'Ansiedad Severa',
+        description: 'Your responses suggest severe anxiety. We strongly recommend consulting with a mental health professional.',
+        descriptionSpanish: 'Tus respuestas sugieren ansiedad severa. Recomendamos encarecidamente consultar con un profesional de salud mental.',
+        severity: 'severe'
       }
     ],
     recommendations: [
-      'Practice regular stress management techniques',
-      'Maintain a healthy lifestyle with exercise and good sleep',
-      'Consider mindfulness or meditation practices'
+      'Practice deep breathing exercises daily',
+      'Engage in regular physical activity',
+      'Maintain a consistent sleep schedule',
+      'Consider mindfulness or meditation practices',
+      'Limit caffeine and alcohol intake',
+      'Connect with supportive friends and family',
+      'If symptoms persist, consult a mental health professional'
     ],
     recommendationsSpanish: [
-      'Practica técnicas regulares de manejo del estrés',
-      'Mantén un estilo de vida saludable con ejercicio y buen sueño',
-      'Considera prácticas de atención plena o meditación'
+      'Practica ejercicios de respiración profunda diariamente',
+      'Participa en actividad física regular',
+      'Mantén un horario de sueño consistente',
+      'Considera prácticas de atención plena o meditación',
+      'Limita el consumo de cafeína y alcohol',
+      'Conéctate con amigos y familia que te apoyen',
+      'Si los síntomas persisten, consulta a un profesional de salud mental'
     ],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
+    disclaimer: 'This screening tool is for educational purposes only and does not provide a clinical diagnosis. If you are experiencing severe anxiety, please consult a healthcare professional. In case of emergency, call 988 (Suicide & Crisis Lifeline).',
+    disclaimerSpanish: 'Esta herramienta de detección es solo para fines educativos y no proporciona un diagnóstico clínico. Si experimentas ansiedad severa, consulta a un profesional de la salud. En caso de emergencia, llama al 988 (Línea de Vida para Suicidio y Crisis).',
     professionalReferral: true
   },
 
-  // DEPRESSION ASSESSMENTS
+  // PHQ-9 - Complete 9 Questions
   {
     id: 'phq-9',
     title: 'Patient Health Questionnaire-9 (PHQ-9)',
     titleSpanish: 'Cuestionario de Salud del Paciente-9 (PHQ-9)',
-    description: 'The gold standard screening tool for depression severity used by healthcare professionals worldwide.',
-    descriptionSpanish: 'La herramienta de detección estándar para la gravedad de la depresión utilizada por profesionales de la salud en todo el mundo.',
+    description: 'The gold standard screening tool for depression severity used by healthcare professionals worldwide. This clinically validated assessment measures depressive symptoms.',
+    descriptionSpanish: 'La herramienta de detección estándar para la gravedad de la depresión utilizada por profesionales de la salud en todo el mundo. Esta evaluación clínicamente validada mide síntomas depresivos.',
     category: 'Depression Assessment',
     categorySpanish: 'Evaluación de Depresión',
-    duration: '5-8 minutes',
-    durationSpanish: '5-8 minutos',
+    duration: '7-10 minutes',
+    durationSpanish: '7-10 minutos',
     difficulty: 'Beginner',
     difficultySpanish: 'Principiante',
     targetAudience: 'Adults experiencing depressive symptoms',
     targetAudienceSpanish: 'Adultos que experimentan síntomas depresivos',
     coverImage: 'https://images.unsplash.com/photo-1616006400265-7c4b8c26439d?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Engage in regular physical activity', 'Maintain social connections', 'Consider professional counseling'],
-    recommendationsSpanish: ['Participa en actividad física regular', 'Mantén conexiones sociales', 'Considera consejería profesional'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
+    questions: [
+      {
+        id: 'phq1',
+        question: 'Over the last 2 weeks, how often have you been bothered by little interest or pleasure in doing things?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por tener poco interés o placer en hacer cosas?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq2',
+        question: 'Over the last 2 weeks, how often have you been bothered by feeling down, depressed, or hopeless?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por sentirte decaído, deprimido o sin esperanza?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq3',
+        question: 'Over the last 2 weeks, how often have you been bothered by trouble falling or staying asleep, or sleeping too much?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por problemas para conciliar el sueño, permanecer dormido o dormir demasiado?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq4',
+        question: 'Over the last 2 weeks, how often have you been bothered by feeling tired or having little energy?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por sentirte cansado o tener poca energía?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq5',
+        question: 'Over the last 2 weeks, how often have you been bothered by poor appetite or overeating?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por falta de apetito o comer en exceso?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq6',
+        question: 'Over the last 2 weeks, how often have you been bothered by feeling bad about yourself - or that you are a failure or have let yourself or your family down?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por sentirte mal contigo mismo, o que eres un fracaso o has decepcionado a ti mismo o a tu familia?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq7',
+        question: 'Over the last 2 weeks, how often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por problemas para concentrarte en cosas, como leer el periódico o ver televisión?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq8',
+        question: 'Over the last 2 weeks, how often have you been bothered by moving or speaking so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por moverte o hablar tan lentamente que otras personas podrían haberlo notado? ¿O lo contrario: estar tan inquieto o agitado que te has estado moviendo mucho más de lo habitual?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      },
+      {
+        id: 'phq9',
+        question: 'Over the last 2 weeks, how often have you been bothered by thoughts that you would be better off dead, or of hurting yourself in some way?',
+        questionSpanish: 'En las últimas 2 semanas, ¿con qué frecuencia te has sentido molesto por pensamientos de que estarías mejor muerto, o de hacerte daño de alguna manera?',
+        type: 'multiple-choice',
+        options: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+        optionsSpanish: ['Para nada', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'],
+        required: true
+      }
+    ],
+    scoring: {
+      type: 'sum',
+      ranges: [
+        { min: 0, max: 4, level: 'Minimal Depression', levelSpanish: 'Depresión Mínima', description: 'Little to no depression', descriptionSpanish: 'Poca o ninguna depresión' },
+        { min: 5, max: 9, level: 'Mild Depression', levelSpanish: 'Depresión Leve', description: 'Mild depression symptoms', descriptionSpanish: 'Síntomas leves de depresión' },
+        { min: 10, max: 14, level: 'Moderate Depression', levelSpanish: 'Depresión Moderada', description: 'Moderate depression symptoms', descriptionSpanish: 'Síntomas moderados de depresión' },
+        { min: 15, max: 19, level: 'Moderately Severe Depression', levelSpanish: 'Depresión Moderadamente Severa', description: 'Moderately severe depression', descriptionSpanish: 'Depresión moderadamente severa' },
+        { min: 20, max: 27, level: 'Severe Depression', levelSpanish: 'Depresión Severa', description: 'Severe depression symptoms', descriptionSpanish: 'Síntomas severos de depresión' }
+      ]
+    },
+    resultInterpretations: [
+      {
+        scoreRange: { min: 0, max: 4 },
+        title: 'Minimal Depression',
+        titleSpanish: 'Depresión Mínima',
+        description: 'Your responses suggest minimal or no depression. Continue with healthy lifestyle practices.',
+        descriptionSpanish: 'Tus respuestas sugieren depresión mínima o nula. Continúa con prácticas de estilo de vida saludable.',
+        severity: 'low'
+      },
+      {
+        scoreRange: { min: 5, max: 9 },
+        title: 'Mild Depression',
+        titleSpanish: 'Depresión Leve',
+        description: 'Your responses suggest mild depression. Consider self-care strategies and monitoring your mood.',
+        descriptionSpanish: 'Tus respuestas sugieren depresión leve. Considera estrategias de autocuidado y monitoreo de tu estado de ánimo.',
+        severity: 'low'
+      },
+      {
+        scoreRange: { min: 10, max: 14 },
+        title: 'Moderate Depression',
+        titleSpanish: 'Depresión Moderada',
+        description: 'Your responses suggest moderate depression. We recommend consulting with a mental health professional.',
+        descriptionSpanish: 'Tus respuestas sugieren depresión moderada. Recomendamos consultar con un profesional de salud mental.',
+        severity: 'moderate'
+      },
+      {
+        scoreRange: { min: 15, max: 19 },
+        title: 'Moderately Severe Depression',
+        titleSpanish: 'Depresión Moderadamente Severa',
+        description: 'Your responses suggest moderately severe depression. Professional treatment is strongly recommended.',
+        descriptionSpanish: 'Tus respuestas sugieren depresión moderadamente severa. Se recomienda encarecidamente tratamiento profesional.',
+        severity: 'high'
+      },
+      {
+        scoreRange: { min: 20, max: 27 },
+        title: 'Severe Depression',
+        titleSpanish: 'Depresión Severa',
+        description: 'Your responses suggest severe depression. Immediate professional help is strongly recommended.',
+        descriptionSpanish: 'Tus respuestas sugieren depresión severa. Se recomienda encarecidamente ayuda profesional inmediata.',
+        severity: 'severe'
+      }
+    ],
+    recommendations: [
+      'Seek professional mental health support',
+      'Engage in regular physical activity',
+      'Maintain social connections',
+      'Establish a consistent sleep routine',
+      'Practice self-compassion',
+      'Consider therapy or counseling',
+      'If you answered "Nearly every day" to question 9, please seek immediate help - Call 988 (Suicide & Crisis Lifeline)'
+    ],
+    recommendationsSpanish: [
+      'Busca apoyo profesional de salud mental',
+      'Participa en actividad física regular',
+      'Mantén conexiones sociales',
+      'Establece una rutina de sueño consistente',
+      'Practica la autocompasión',
+      'Considera terapia o consejería',
+      'Si respondiste "Casi todos los días" a la pregunta 9, busca ayuda inmediata - Llama al 988 (Línea de Vida para Suicidio y Crisis)'
+    ],
+    disclaimer: 'This screening tool is for educational purposes only and does not provide a clinical diagnosis. If you are experiencing severe depression or suicidal thoughts, please seek immediate help. Call 988 (Suicide & Crisis Lifeline) or visit your nearest emergency room.',
+    disclaimerSpanish: 'Esta herramienta de detección es solo para fines educativos y no proporciona un diagnóstico clínico. Si experimentas depresión severa o pensamientos suicidas, busca ayuda inmediata. Llama al 988 (Línea de Vida para Suicidio y Crisis) o visita la sala de emergencias más cercana.',
     professionalReferral: true
   },
 
-  // STRESS ASSESSMENTS
+  // PSS-10 - Complete 10 Questions
   {
     id: 'perceived-stress-scale',
     title: 'Perceived Stress Scale (PSS-10)',
     titleSpanish: 'Escala de Estrés Percibido (PSS-10)',
-    description: 'Measures the degree to which situations in life are appraised as stressful.',
-    descriptionSpanish: 'Mide el grado en que las situaciones de la vida se evalúan como estresantes.',
+    description: 'A widely used psychological instrument for measuring the degree to which situations in your life are appraised as stressful. Questions assess thoughts and feelings during the last month.',
+    descriptionSpanish: 'Un instrumento psicológico ampliamente utilizado para medir el grado en que las situaciones de tu vida se evalúan como estresantes. Las preguntas evalúan pensamientos y sentimientos durante el último mes.',
     category: 'Stress Assessment',
     categorySpanish: 'Evaluación de Estrés',
-    duration: '4-6 minutes',
-    durationSpanish: '4-6 minutos',
+    duration: '6-8 minutes',
+    durationSpanish: '6-8 minutos',
     difficulty: 'Beginner',
     difficultySpanish: 'Principiante',
     targetAudience: 'Adults experiencing stress',
     targetAudienceSpanish: 'Adultos que experimentan estrés',
     coverImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Practice stress reduction techniques', 'Improve time management', 'Seek support from friends and family'],
-    recommendationsSpanish: ['Practica técnicas de reducción del estrés', 'Mejora la gestión del tiempo', 'Busca apoyo de amigos y familia'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
+    questions: [
+      {
+        id: 'pss1',
+        question: 'In the last month, how often have you been upset because of something that happened unexpectedly?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia te has sentido molesto por algo que sucedió inesperadamente?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss2',
+        question: 'In the last month, how often have you felt that you were unable to control the important things in your life?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia has sentido que no podías controlar las cosas importantes en tu vida?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss3',
+        question: 'In the last month, how often have you felt nervous and stressed?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia te has sentido nervioso y estresado?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss4',
+        question: 'In the last month, how often have you felt confident about your ability to handle your personal problems?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia te has sentido seguro de tu capacidad para manejar tus problemas personales?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss5',
+        question: 'In the last month, how often have you felt that things were going your way?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia has sentido que las cosas iban a tu manera?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss6',
+        question: 'In the last month, how often have you found that you could not cope with all the things that you had to do?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia has encontrado que no podías hacer frente a todas las cosas que tenías que hacer?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss7',
+        question: 'In the last month, how often have you been able to control irritations in your life?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia has podido controlar las irritaciones en tu vida?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss8',
+        question: 'In the last month, how often have you felt that you were on top of things?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia has sentido que estabas al tanto de las cosas?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss9',
+        question: 'In the last month, how often have you been angered because of things that happened that were outside of your control?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia te has enojado por cosas que sucedieron fuera de tu control?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      },
+      {
+        id: 'pss10',
+        question: 'In the last month, how often have you felt difficulties were piling up so high that you could not overcome them?',
+        questionSpanish: 'En el último mes, ¿con qué frecuencia has sentido que las dificultades se acumulaban tan alto que no podías superarlas?',
+        type: 'multiple-choice',
+        options: ['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'],
+        optionsSpanish: ['Nunca', 'Casi nunca', 'A veces', 'Bastante a menudo', 'Muy a menudo'],
+        required: true
+      }
+    ],
+    scoring: {
+      type: 'sum',
+      ranges: [
+        { min: 0, max: 13, level: 'Low Stress', levelSpanish: 'Estrés Bajo', description: 'Low perceived stress', descriptionSpanish: 'Estrés percibido bajo' },
+        { min: 14, max: 26, level: 'Moderate Stress', levelSpanish: 'Estrés Moderado', description: 'Moderate perceived stress', descriptionSpanish: 'Estrés percibido moderado' },
+        { min: 27, max: 40, level: 'High Stress', levelSpanish: 'Estrés Alto', description: 'High perceived stress', descriptionSpanish: 'Estrés percibido alto' }
+      ]
+    },
+    resultInterpretations: [
+      {
+        scoreRange: { min: 0, max: 13 },
+        title: 'Low Perceived Stress',
+        titleSpanish: 'Estrés Percibido Bajo',
+        description: 'Your responses suggest low levels of perceived stress. You appear to be coping well with life\'s demands.',
+        descriptionSpanish: 'Tus respuestas sugieren niveles bajos de estrés percibido. Pareces estar manejando bien las demandas de la vida.',
+        severity: 'low'
+      },
+      {
+        scoreRange: { min: 14, max: 26 },
+        title: 'Moderate Perceived Stress',
+        titleSpanish: 'Estrés Percibido Moderado',
+        description: 'Your responses suggest moderate levels of perceived stress. Consider implementing stress reduction techniques.',
+        descriptionSpanish: 'Tus respuestas sugieren niveles moderados de estrés percibido. Considera implementar técnicas de reducción del estrés.',
+        severity: 'moderate'
+      },
+      {
+        scoreRange: { min: 27, max: 40 },
+        title: 'High Perceived Stress',
+        titleSpanish: 'Estrés Percibido Alto',
+        description: 'Your responses suggest high levels of perceived stress. Consider seeking support from a mental health professional.',
+        descriptionSpanish: 'Tus respuestas sugieren niveles altos de estrés percibido. Considera buscar apoyo de un profesional de salud mental.',
+        severity: 'high'
+      }
+    ],
+    recommendations: [
+      'Practice stress-reduction techniques like deep breathing',
+      'Improve time management skills',
+      'Set realistic goals and priorities',
+      'Engage in regular physical exercise',
+      'Get adequate sleep (7-9 hours per night)',
+      'Connect with supportive friends and family',
+      'Consider mindfulness or meditation',
+      'Take breaks throughout the day'
+    ],
+    recommendationsSpanish: [
+      'Practica técnicas de reducción del estrés como respiración profunda',
+      'Mejora habilidades de gestión del tiempo',
+      'Establece metas y prioridades realistas',
+      'Participa en ejercicio físico regular',
+      'Duerme lo suficiente (7-9 horas por noche)',
+      'Conéctate con amigos y familia que te apoyen',
+      'Considera mindfulness o meditación',
+      'Toma descansos durante el día'
+    ],
+    disclaimer: 'This assessment measures perceived stress, not clinical stress disorder. It is for educational purposes only. If you are experiencing overwhelming stress, please consult a healthcare professional.',
+    disclaimerSpanish: 'Esta evaluación mide el estrés percibido, no el trastorno de estrés clínico. Es solo para fines educativos. Si experimentas estrés abrumador, consulta a un profesional de la salud.',
     professionalReferral: false
   },
 
-  // PTSD ASSESSMENTS
-  {
-    id: 'pcl-5',
-    title: 'PTSD Checklist for DSM-5 (PCL-5)',
-    titleSpanish: 'Lista de Verificación de TEPT para DSM-5 (PCL-5)',
-    description: 'A widely used screening tool for post-traumatic stress disorder symptoms.',
-    descriptionSpanish: 'Una herramienta de detección ampliamente utilizada para síntomas de trastorno de estrés postraumático.',
-    category: 'PTSD Assessment',
-    categorySpanish: 'Evaluación de TEPT',
-    duration: '8-12 minutes',
-    durationSpanish: '8-12 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults who have experienced trauma',
-    targetAudienceSpanish: 'Adultos que han experimentado trauma',
-    coverImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Consider trauma-informed therapy', 'Practice grounding techniques', 'Build a support network'],
-    recommendationsSpanish: ['Considera terapia informada sobre trauma', 'Practica técnicas de conexión a tierra', 'Construye una red de apoyo'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  },
-
-  // BIPOLAR ASSESSMENTS
-  {
-    id: 'mdq',
-    title: 'Mood Disorder Questionnaire (MDQ)',
-    titleSpanish: 'Cuestionario de Trastorno del Estado de Ánimo (MDQ)',
-    description: 'Screening tool for bipolar spectrum disorders and mood episodes.',
-    descriptionSpanish: 'Herramienta de detección para trastornos del espectro bipolar y episodios del estado de ánimo.',
-    category: 'Bipolar Assessment',
-    categorySpanish: 'Evaluación Bipolar',
-    duration: '6-10 minutes',
-    durationSpanish: '6-10 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults with mood fluctuations',
-    targetAudienceSpanish: 'Adultos con fluctuaciones del estado de ánimo',
-    coverImage: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'complex', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Monitor mood patterns', 'Maintain regular sleep schedule', 'Consider professional evaluation'],
-    recommendationsSpanish: ['Monitorea patrones del estado de ánimo', 'Mantén un horario de sueño regular', 'Considera evaluación profesional'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  },
-
-  // OCD ASSESSMENTS
-  {
-    id: 'oci-r',
-    title: 'Obsessive-Compulsive Inventory-Revised (OCI-R)',
-    titleSpanish: 'Inventario Obsesivo-Compulsivo-Revisado (OCI-R)',
-    description: 'Assessment for obsessive-compulsive disorder symptoms and severity.',
-    descriptionSpanish: 'Evaluación para síntomas y gravedad del trastorno obsesivo-compulsivo.',
-    category: 'OCD Assessment',
-    categorySpanish: 'Evaluación TOC',
-    duration: '7-10 minutes',
-    durationSpanish: '7-10 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults with repetitive thoughts or behaviors',
-    targetAudienceSpanish: 'Adultos con pensamientos o comportamientos repetitivos',
-    coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Practice exposure and response prevention', 'Learn mindfulness techniques', 'Consider specialized therapy'],
-    recommendationsSpanish: ['Practica exposición y prevención de respuesta', 'Aprende técnicas de mindfulness', 'Considera terapia especializada'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  },
-
-  // ADHD ASSESSMENTS
-  {
-    id: 'asrs-v1-1',
-    title: 'Adult ADHD Self-Report Scale (ASRS-v1.1)',
-    titleSpanish: 'Escala de Autoinforme de TDAH en Adultos (ASRS-v1.1)',
-    description: 'Screening tool for attention-deficit/hyperactivity disorder in adults.',
-    descriptionSpanish: 'Herramienta de detección para trastorno por déficit de atención e hiperactividad en adultos.',
-    category: 'ADHD Assessment',
-    categorySpanish: 'Evaluación TDAH',
-    duration: '5-8 minutes',
-    durationSpanish: '5-8 minutos',
-    difficulty: 'Beginner',
-    difficultySpanish: 'Principiante',
-    targetAudience: 'Adults with attention or hyperactivity concerns',
-    targetAudienceSpanish: 'Adultos con preocupaciones de atención o hiperactividad',
-    coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'complex', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Develop organizational strategies', 'Practice focus techniques', 'Consider professional evaluation'],
-    recommendationsSpanish: ['Desarrolla estrategias organizacionales', 'Practica técnicas de enfoque', 'Considera evaluación profesional'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  },
-
-  // PERSONALITY ASSESSMENTS
-  {
-    id: 'big-five',
-    title: 'Big Five Personality Traits',
-    titleSpanish: 'Cinco Grandes Rasgos de Personalidad',
-    description: 'Comprehensive personality assessment based on the five-factor model.',
-    descriptionSpanish: 'Evaluación integral de personalidad basada en el modelo de cinco factores.',
-    category: 'Personality Assessment',
-    categorySpanish: 'Evaluación de Personalidad',
-    duration: '15-20 minutes',
-    durationSpanish: '15-20 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults interested in personality insights',
-    targetAudienceSpanish: 'Adultos interesados en conocimientos de personalidad',
-    coverImage: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'average', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Embrace your personality strengths', 'Work on areas for growth', 'Apply insights to relationships'],
-    recommendationsSpanish: ['Abraza las fortalezas de tu personalidad', 'Trabaja en áreas de crecimiento', 'Aplica conocimientos a las relaciones'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // ATTACHMENT STYLES
-  {
-    id: 'attachment-style',
-    title: 'Adult Attachment Style Assessment',
-    titleSpanish: 'Evaluación de Estilo de Apego en Adultos',
-    description: 'Identifies your attachment patterns in relationships.',
-    descriptionSpanish: 'Identifica tus patrones de apego en las relaciones.',
-    category: 'Relationship Assessment',
-    categorySpanish: 'Evaluación de Relaciones',
-    duration: '10-15 minutes',
-    durationSpanish: '10-15 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults in relationships or seeking relationship insights',
-    targetAudienceSpanish: 'Adultos en relaciones o que buscan conocimientos sobre relaciones',
-    coverImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'complex', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Understand your attachment needs', 'Communicate openly with partners', 'Work on emotional security'],
-    recommendationsSpanish: ['Comprende tus necesidades de apego', 'Comunícate abiertamente con las parejas', 'Trabaja en la seguridad emocional'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // EMOTIONAL INTELLIGENCE
-  {
-    id: 'emotional-intelligence',
-    title: 'Emotional Intelligence Quotient (EQ)',
-    titleSpanish: 'Cociente de Inteligencia Emocional (CE)',
-    description: 'Measures your ability to understand and manage emotions.',
-    descriptionSpanish: 'Mide tu capacidad para entender y manejar las emociones.',
-    category: 'Emotional Assessment',
-    categorySpanish: 'Evaluación Emocional',
-    duration: '12-18 minutes',
-    durationSpanish: '12-18 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults wanting to improve emotional skills',
-    targetAudienceSpanish: 'Adultos que quieren mejorar habilidades emocionales',
-    coverImage: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'average', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Practice emotional awareness', 'Develop empathy skills', 'Work on emotion regulation'],
-    recommendationsSpanish: ['Practica la conciencia emocional', 'Desarrolla habilidades de empatía', 'Trabaja en la regulación emocional'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // SLEEP QUALITY
-  {
-    id: 'psqi',
-    title: 'Pittsburgh Sleep Quality Index (PSQI)',
-    titleSpanish: 'Índice de Calidad del Sueño de Pittsburgh (PSQI)',
-    description: 'Comprehensive assessment of sleep quality and patterns.',
-    descriptionSpanish: 'Evaluación integral de la calidad y patrones del sueño.',
-    category: 'Sleep Assessment',
-    categorySpanish: 'Evaluación del Sueño',
-    duration: '8-12 minutes',
-    durationSpanish: '8-12 minutos',
-    difficulty: 'Beginner',
-    difficultySpanish: 'Principiante',
-    targetAudience: 'Adults with sleep concerns',
-    targetAudienceSpanish: 'Adultos con preocupaciones del sueño',
-    coverImage: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'complex', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Maintain consistent sleep schedule', 'Create relaxing bedtime routine', 'Optimize sleep environment'],
-    recommendationsSpanish: ['Mantén un horario de sueño consistente', 'Crea una rutina relajante antes de dormir', 'Optimiza el ambiente del sueño'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // SELF-ESTEEM
-  {
-    id: 'rosenberg-self-esteem',
-    title: 'Rosenberg Self-Esteem Scale',
-    titleSpanish: 'Escala de Autoestima de Rosenberg',
-    description: 'Widely used measure of global self-worth and self-acceptance.',
-    descriptionSpanish: 'Medida ampliamente utilizada del valor propio global y la autoaceptación.',
-    category: 'Self-Esteem Assessment',
-    categorySpanish: 'Evaluación de Autoestima',
-    duration: '3-5 minutes',
-    durationSpanish: '3-5 minutos',
-    difficulty: 'Beginner',
-    difficultySpanish: 'Principiante',
-    targetAudience: 'Adults seeking self-worth insights',
-    targetAudienceSpanish: 'Adultos que buscan conocimientos sobre el valor propio',
-    coverImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Practice self-compassion', 'Challenge negative self-talk', 'Celebrate personal achievements'],
-    recommendationsSpanish: ['Practica la autocompasión', 'Desafía el diálogo interno negativo', 'Celebra los logros personales'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // RESILIENCE
-  {
-    id: 'connor-davidson',
-    title: 'Connor-Davidson Resilience Scale',
-    titleSpanish: 'Escala de Resistencia de Connor-Davidson',
-    description: 'Measures psychological resilience and ability to cope with adversity.',
-    descriptionSpanish: 'Mide la resistencia psicológica y la capacidad para enfrentar la adversidad.',
-    category: 'Resilience Assessment',
-    categorySpanish: 'Evaluación de Resistencia',
-    duration: '8-12 minutes',
-    durationSpanish: '8-12 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults facing challenges or stress',
-    targetAudienceSpanish: 'Adultos que enfrentan desafíos o estrés',
-    coverImage: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Build support networks', 'Develop coping strategies', 'Practice stress management'],
-    recommendationsSpanish: ['Construye redes de apoyo', 'Desarrolla estrategias de afrontamiento', 'Practica el manejo del estrés'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // BURNOUT
-  {
-    id: 'maslach-burnout',
-    title: 'Maslach Burnout Inventory',
-    titleSpanish: 'Inventario de Agotamiento de Maslach',
-    description: 'Assessment for work-related burnout and occupational stress.',
-    descriptionSpanish: 'Evaluación para el agotamiento relacionado con el trabajo y el estrés ocupacional.',
-    category: 'Workplace Assessment',
-    categorySpanish: 'Evaluación Laboral',
-    duration: '10-15 minutes',
-    durationSpanish: '10-15 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Working adults experiencing job stress',
-    targetAudienceSpanish: 'Adultos trabajadores que experimentan estrés laboral',
-    coverImage: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'complex', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Set work-life boundaries', 'Practice stress reduction', 'Seek workplace support'],
-    recommendationsSpanish: ['Establece límites entre trabajo y vida', 'Practica la reducción del estrés', 'Busca apoyo en el lugar de trabajo'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: false
-  },
-
-  // SOCIAL ANXIETY
-  {
-    id: 'liebowitz-social-anxiety',
-    title: 'Liebowitz Social Anxiety Scale',
-    titleSpanish: 'Escala de Ansiedad Social de Liebowitz',
-    description: 'Comprehensive assessment of social anxiety in various situations.',
-    descriptionSpanish: 'Evaluación integral de la ansiedad social en diversas situaciones.',
-    category: 'Social Anxiety Assessment',
-    categorySpanish: 'Evaluación de Ansiedad Social',
-    duration: '12-18 minutes',
-    durationSpanish: '12-18 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults with social fears or shyness',
-    targetAudienceSpanish: 'Adultos con miedos sociales o timidez',
-    coverImage: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Practice gradual exposure', 'Learn social skills', 'Consider group therapy'],
-    recommendationsSpanish: ['Practica exposición gradual', 'Aprende habilidades sociales', 'Considera terapia grupal'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  },
-
-  // EATING DISORDERS
-  {
-    id: 'eat-26',
-    title: 'Eating Attitudes Test (EAT-26)',
-    titleSpanish: 'Prueba de Actitudes Alimentarias (EAT-26)',
-    description: 'Screening tool for eating disorder symptoms and attitudes.',
-    descriptionSpanish: 'Herramienta de detección para síntomas y actitudes de trastornos alimentarios.',
-    category: 'Eating Disorder Assessment',
-    categorySpanish: 'Evaluación de Trastornos Alimentarios',
-    duration: '8-12 minutes',
-    durationSpanish: '8-12 minutos',
-    difficulty: 'Intermediate',
-    difficultySpanish: 'Intermedio',
-    targetAudience: 'Adults with eating or body image concerns',
-    targetAudienceSpanish: 'Adultos con preocupaciones alimentarias o de imagen corporal',
-    coverImage: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Practice body acceptance', 'Develop healthy eating habits', 'Seek specialized support'],
-    recommendationsSpanish: ['Practica la aceptación corporal', 'Desarrolla hábitos alimentarios saludables', 'Busca apoyo especializado'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  },
-
-  // SUBSTANCE USE
-  {
-    id: 'audit',
-    title: 'Alcohol Use Disorders Identification Test (AUDIT)',
-    titleSpanish: 'Prueba de Identificación de Trastornos por Uso de Alcohol (AUDIT)',
-    description: 'WHO-developed screening tool for alcohol use disorders.',
-    descriptionSpanish: 'Herramienta de detección desarrollada por la OMS para trastornos por uso de alcohol.',
-    category: 'Substance Use Assessment',
-    categorySpanish: 'Evaluación de Uso de Sustancias',
-    duration: '5-8 minutes',
-    durationSpanish: '5-8 minutos',
-    difficulty: 'Beginner',
-    difficultySpanish: 'Principiante',
-    targetAudience: 'Adults concerned about alcohol use',
-    targetAudienceSpanish: 'Adultos preocupados por el uso de alcohol',
-    coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop',
-    questions: [],
-    scoring: { type: 'sum', ranges: [] },
-    resultInterpretations: [],
-    recommendations: ['Monitor alcohol consumption', 'Develop healthy coping strategies', 'Consider professional support'],
-    recommendationsSpanish: ['Monitorea el consumo de alcohol', 'Desarrolla estrategias de afrontamiento saludables', 'Considera apoyo profesional'],
-    disclaimer: 'This assessment is for educational purposes only and does not replace professional medical advice.',
-    disclaimerSpanish: 'Esta evaluación es solo para fines educativos y no reemplaza el consejo médico profesional.',
-    professionalReferral: true
-  }
+  // Add comprehensive trauma assessment
+  comprehensiveTraumaAssessment,
 ];
 
-// Assessment categories for filtering
-export const assessmentCategories = [
+export interface AssessmentCategory {
+  id: string;
+  name: string;
+  nameSpanish: string;
+}
+
+export const assessmentCategories: AssessmentCategory[] = [
   { id: 'all', name: 'All Assessments', nameSpanish: 'Todas las Evaluaciones' },
-  { id: 'anxiety', name: 'Anxiety', nameSpanish: 'Ansiedad' },
-  { id: 'depression', name: 'Depression', nameSpanish: 'Depresión' },
-  { id: 'stress', name: 'Stress', nameSpanish: 'Estrés' },
-  { id: 'ptsd', name: 'PTSD & Trauma', nameSpanish: 'TEPT y Trauma' },
-  { id: 'personality', name: 'Personality', nameSpanish: 'Personalidad' },
-  { id: 'relationships', name: 'Relationships', nameSpanish: 'Relaciones' },
-  { id: 'workplace', name: 'Workplace', nameSpanish: 'Lugar de Trabajo' },
-  { id: 'wellness', name: 'Wellness', nameSpanish: 'Bienestar' },
-  { id: 'specialized', name: 'Specialized', nameSpanish: 'Especializadas' }
+  { id: 'anxiety', name: 'Anxiety Assessment', nameSpanish: 'Evaluación de Ansiedad' },
+  { id: 'depression', name: 'Depression Assessment', nameSpanish: 'Evaluación de Depresión' },
+  { id: 'stress', name: 'Stress Assessment', nameSpanish: 'Evaluación de Estrés' },
+  { id: 'ptsd', name: 'PTSD Assessment', nameSpanish: 'Evaluación de TEPT' },
+  { id: 'trauma', name: 'Trauma Assessment', nameSpanish: 'Evaluación de Trauma' },
+  { id: 'bipolar', name: 'Bipolar Assessment', nameSpanish: 'Evaluación Bipolar' },
+  { id: 'ocd', name: 'OCD Assessment', nameSpanish: 'Evaluación TOC' },
+  { id: 'adhd', name: 'ADHD Assessment', nameSpanish: 'Evaluación TDAH' },
+  { id: 'personality', name: 'Personality Assessment', nameSpanish: 'Evaluación de Personalidad' },
+  { id: 'relationship', name: 'Relationship Assessment', nameSpanish: 'Evaluación de Relaciones' },
+  { id: 'emotional', name: 'Emotional Assessment', nameSpanish: 'Evaluación Emocional' }
 ];
