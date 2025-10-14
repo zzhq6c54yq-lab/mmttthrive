@@ -171,7 +171,7 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
   },
   {
     id: "meditation",
-    title: isSpanish ? "Meditación" : "Meditation Studio",
+    title: isSpanish ? "Estudio de Meditación" : "Meditation Studio",
     description: isSpanish ? "Estudio de meditación con prácticas guiadas." : "Comprehensive meditation studio with guided practices.",
     icon: <Flower2 className="w-6 h-6" />,
     image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=800&q=80",

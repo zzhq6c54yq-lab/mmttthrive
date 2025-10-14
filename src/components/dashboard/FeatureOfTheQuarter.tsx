@@ -10,29 +10,35 @@ const QUARTER_FEATURES = [
   {
     id: "sleep-tracker",
     title: "Sleep Tracker",
-    description: "Log your nightly rest and improve your sleep habits.",
-    route: "/games/sleep-tracker",
-    color: "from-cyan-100 to-sky-200",
-    icon: <MoonStar className="w-8 h-8 text-sky-600 mb-2" />,
-    image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=500&q=80"
+    titleEs: "Seguimiento del Sueño",
+    description: "Track and improve your sleep patterns.",
+    descriptionEs: "Rastrea y mejora tus patrones de sueño.",
+    route: "/sleep-tracker",
+    color: "from-indigo-100 to-indigo-200",
+    icon: <MoonStar className="w-8 h-8 text-indigo-600 mb-2" />,
+    image: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: "meditation-studio",
     title: "Meditation Studio",
-    description: "Relax and meditate with guided sessions.",
-    route: "/games/meditation-studio",
-    color: "from-purple-100 to-indigo-100",
-    icon: <Sparkles className="w-8 h-8 text-purple-500 mb-2" />,
-    image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=500&q=80"
+    titleEs: "Estudio de Meditación",
+    description: "Comprehensive meditation studio with guided practices.",
+    descriptionEs: "Estudio de meditación con prácticas guiadas.",
+    route: "/meditation-studio",
+    color: "from-cyan-100 to-cyan-200",
+    icon: <Sparkles className="w-8 h-8 text-cyan-600 mb-2" />,
+    image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: "career-coaching",
     title: "Career Coaching",
-    description: "Boost your career with tips and quick quizzes.",
-    route: "/games/career-coaching",
-    color: "from-amber-100 to-yellow-50",
-    icon: <Award className="w-8 h-8 text-amber-500 mb-2" />,
-    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=500&q=80"
+    titleEs: "Orientación Profesional",
+    description: "Professional guidance and career development.",
+    descriptionEs: "Orientación profesional y desarrollo de carrera.",
+    route: "/career-coaching",
+    color: "from-slate-100 to-slate-200",
+    icon: <Award className="w-8 h-8 text-slate-600 mb-2" />,
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80"
   },
 ];
 
@@ -61,16 +67,24 @@ const FeatureOfTheQuarter: React.FC = () => {
         {QUARTER_FEATURES.map(feature => (
           <div
             key={feature.id}
-            className={`flex flex-col justify-between items-center p-6 rounded-xl bg-gradient-to-br ${feature.color} shadow-lg`}
+            className={`flex flex-col justify-between items-center p-6 rounded-xl bg-gradient-to-br ${feature.color} shadow-lg hover:shadow-xl transition-all duration-300`}
           >
             {feature.icon}
-            <img src={feature.image} alt={feature.title} className="rounded-lg w-full h-28 object-cover mb-2" />
-            <h4 className="text-lg font-bold text-zinc-700 mb-1 mt-2">{feature.title}</h4>
-            <p className="text-sm text-zinc-600 mb-4 text-center">{feature.description}</p>
+            <img 
+              src={feature.image} 
+              alt={isSpanish ? feature.titleEs : feature.title} 
+              className="rounded-lg w-full h-40 object-cover mb-3 shadow-md" 
+            />
+            <h4 className="text-lg font-bold text-zinc-800 mb-2 mt-2 text-center">
+              {isSpanish ? feature.titleEs : feature.title}
+            </h4>
+            <p className="text-sm text-zinc-600 mb-4 text-center flex-grow">
+              {isSpanish ? feature.descriptionEs : feature.description}
+            </p>
             <Button
-              className="w-44 h-14 text-lg bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-black font-bold rounded-xl shadow-md hover:scale-105 transition duration-150"
+              className="w-44 h-14 text-lg bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white font-bold rounded-xl shadow-md hover:scale-105 transition duration-150"
               style={{ minWidth: "11rem", minHeight: "3.5rem", fontSize: "1.17rem" }}
-              onClick={() => handleNavigation(feature.route, feature.title)}
+              onClick={() => handleNavigation(feature.route, isSpanish ? feature.titleEs : feature.title)}
             >
               {isSpanish ? "Explorar" : "Explore"}
             </Button>
