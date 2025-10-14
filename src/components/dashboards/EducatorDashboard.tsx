@@ -6,14 +6,14 @@ import { BookOpen, Users, Clock, Heart, Coffee, GraduationCap } from 'lucide-rea
 import { useUser } from '@/contexts/UserContext';
 
 const EducatorDashboard: React.FC = () => {
-  const { profile } = useUser();
+  const { user } = useUser();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-teal-800 to-blue-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
-            Welcome, {profile?.full_name || 'Educator'} 📚
+            Welcome, {user?.email?.split('@')[0] || 'Educator'} 📚
           </h1>
           <p className="text-green-200 text-lg">
             🍎 You shape minds every day. Let's take care of yours.

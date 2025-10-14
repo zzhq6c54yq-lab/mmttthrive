@@ -5,9 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Profile {
   id: string;
-  email: string | null;
-  full_name: string | null;
-  role: string;
   user_type: string | null;
   onboarding_completed: boolean;
   goals: string[] | null;

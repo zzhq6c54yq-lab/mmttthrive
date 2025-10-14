@@ -6,14 +6,14 @@ import { Shield, Activity, Users, Calendar, AlertTriangle, Phone } from 'lucide-
 import { useUser } from '@/contexts/UserContext';
 
 const FirstResponderDashboard: React.FC = () => {
-  const { profile } = useUser();
+  const { user } = useUser();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-800 to-yellow-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
-            Welcome back, {profile?.full_name || 'Hero'}
+            Welcome back, {user?.email?.split('@')[0] || 'Hero'}
           </h1>
           <p className="text-orange-200 text-lg">
             🚨 You serve others every day. Let us serve you.

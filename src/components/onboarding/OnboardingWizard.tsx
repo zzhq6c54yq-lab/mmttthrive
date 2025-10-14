@@ -52,7 +52,6 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
   const handleComplete = async () => {
     try {
       await updateProfile({
-        full_name: data.fullName,
         user_type: data.userType,
         goals: [...data.goals, ...data.mentalHealthNeeds],
         onboarding_completed: true
@@ -60,7 +59,7 @@ const OnboardingWizard: React.FC<{ onComplete: () => void }> = ({ onComplete }) 
       
       toast({
         title: "Welcome aboard!",
-        description: `Welcome to Omni Solus, ${data.fullName}! Your personalized dashboard is ready.`,
+        description: `Welcome to Omni Solus! Your personalized dashboard is ready.`,
         variant: "success"
       });
       

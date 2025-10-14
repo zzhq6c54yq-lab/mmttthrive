@@ -6,14 +6,14 @@ import { BookOpen, Users, Calendar, Heart, Star, MessageCircle } from 'lucide-re
 import { useUser } from '@/contexts/UserContext';
 
 const AdolescentDashboard: React.FC = () => {
-  const { profile } = useUser();
+  const { user } = useUser();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-blue-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
-            Hey {profile?.full_name || 'Friend'} 👋
+            Hey {user?.email?.split('@')[0] || 'Friend'} 👋
           </h1>
           <p className="text-purple-200 text-lg">
             🌟 Your mental health journey matters. You're not alone in this.

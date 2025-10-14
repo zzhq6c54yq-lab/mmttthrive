@@ -6,14 +6,14 @@ import { Heart, Users, Calendar, Book, Phone, Smile } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 
 const GoldenYearsDashboard: React.FC = () => {
-  const { profile } = useUser();
+  const { user } = useUser();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
-            Hello, {profile?.full_name || 'Friend'} 🌅
+            Hello, {user?.email?.split('@')[0] || 'Friend'} 🌅
           </h1>
           <p className="text-amber-200 text-lg">
             ✨ Your golden years deserve golden care. You've earned this peace.
