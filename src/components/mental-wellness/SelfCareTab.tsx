@@ -241,6 +241,7 @@ const SelfCareTab: React.FC = () => {
           <Button 
             size="lg"
             className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
+            onClick={() => navigate("/mental-wellness-tools/goals")}
           >
             <Sparkles className="mr-2 h-5 w-5" />
             Build My Custom Plan

@@ -12,17 +12,11 @@ const AssessmentsTab: React.FC = () => {
   const { toast } = useToast();
 
   const handleAssessmentStart = (assessmentType: string) => {
+    navigate("/mental-wellness-assessments");
     toast({
       title: "Starting Assessment",
       description: `Loading ${assessmentType} assessment...`,
     });
-    
-    setTimeout(() => {
-      toast({
-        title: "Assessment Ready",
-        description: "Please answer honestly for the most accurate results.",
-      });
-    }, 1500);
   };
 
   const assessments = [

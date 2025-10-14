@@ -112,6 +112,14 @@ import MemorialGarden from "./pages/MemorialGarden";
 import GriefResources from "./pages/GriefResources";
 import LegacyBuilder from "./pages/LegacyBuilder";
 import MirrorAI from "./pages/MirrorAI";
+import BreathingExercise from "./pages/BreathingExercise";
+import ThoughtReframing from "./pages/ThoughtReframing";
+import GuidedMeditationPage from "./pages/GuidedMeditationPage";
+import MoodBoost from "./pages/MoodBoost";
+import SleepImprovement from "./pages/SleepImprovement";
+import GoalSetting from "./pages/GoalSetting";
+import MentalWellnessExercise from "./pages/MentalWellnessExercise";
+import TherapySupport from "./pages/TherapySupport";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import "./App.css";
@@ -135,6 +143,14 @@ function App() {
           <Route path="/progress-analytics" element={<ProgressAnalytics />} />
           <Route path="/mental-wellness" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
+          <Route path="/mental-wellness-tools/breathing" element={<BreathingExercise />} />
+          <Route path="/mental-wellness-tools/reframing" element={<ThoughtReframing />} />
+          <Route path="/mental-wellness-tools/meditation" element={<GuidedMeditationPage />} />
+          <Route path="/mental-wellness-tools/mood-boost" element={<MoodBoost />} />
+          <Route path="/mental-wellness-tools/sleep" element={<SleepImprovement />} />
+          <Route path="/mental-wellness-tools/goals" element={<GoalSetting />} />
+          <Route path="/mental-wellness-tools/exercise" element={<MentalWellnessExercise />} />
+          <Route path="/mental-wellness-tools/therapy-support" element={<TherapySupport />} />
           <Route path="/mental-wellness-assessments" element={<MentalWellnessAssessments />} />
           <Route path="/mental-wellness/assessments" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness/assessments/:quizId" element={<MentalWellnessTools />} />

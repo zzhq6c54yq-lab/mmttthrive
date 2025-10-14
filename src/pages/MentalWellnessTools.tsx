@@ -235,6 +235,18 @@ const MentalWellnessTools: React.FC = () => {
                   </motion.div>
                 </AnimatePresence>
                 
+                <div className="flex gap-3 mt-4">
+                  <Button onClick={() => {
+                    const routes: Record<string, string> = {
+                      "Box Breathing": "/mental-wellness-tools/breathing",
+                      "Thought Reframing": "/mental-wellness-tools/reframing",
+                      "Mindful Meditation": "/mental-wellness-tools/meditation",
+                      "Quick Mood Boost": "/mental-wellness-tools/mood-boost"
+                    };
+                    navigate(routes[dailySkills[currentSkill].title] || "/mental-wellness-tools");
+                  }}>Try Now</Button>
+                  <Button variant="outline" onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })}>View All</Button>
+                </div>
                 <div className="flex gap-2 mt-4">
                   {dailySkills.map((_, index) => (
                     <button
