@@ -14,6 +14,141 @@ export type Database = {
   }
   public: {
     Tables: {
+      career_assessments: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          resource_type: Database["public"]["Enums"]["career_resource_type"]
+          responses: Json | null
+          results: Json | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          resource_type: Database["public"]["Enums"]["career_resource_type"]
+          responses?: Json | null
+          results?: Json | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          resource_type?: Database["public"]["Enums"]["career_resource_type"]
+          responses?: Json | null
+          results?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_module_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          module_type: Database["public"]["Enums"]["career_module_type"]
+          progress: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          module_type: Database["public"]["Enums"]["career_module_type"]
+          progress?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          module_type?: Database["public"]["Enums"]["career_module_type"]
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      coaching_sessions: {
+        Row: {
+          additional_notes: string | null
+          created_at: string | null
+          focus_area: string
+          id: string
+          preferred_date: string
+          preferred_time: string
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          created_at?: string | null
+          focus_area: string
+          id?: string
+          preferred_date: string
+          preferred_time: string
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          additional_notes?: string | null
+          created_at?: string | null
+          focus_area?: string
+          id?: string
+          preferred_date?: string
+          preferred_time?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      course_enrollments: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          course_type: Database["public"]["Enums"]["career_course_type"]
+          created_at: string | null
+          enrolled_at: string | null
+          id: string
+          progress: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          course_type: Database["public"]["Enums"]["career_course_type"]
+          created_at?: string | null
+          enrolled_at?: string | null
+          id?: string
+          progress?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          course_type?: Database["public"]["Enums"]["career_course_type"]
+          created_at?: string | null
+          enrolled_at?: string | null
+          id?: string
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       crisis_events: {
         Row: {
           created_at: string | null
@@ -35,6 +170,36 @@ export type Database = {
           id?: string
           source?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      event_registrations: {
+        Row: {
+          created_at: string | null
+          event_date: string
+          event_title: string
+          event_type: string
+          id: string
+          registered_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_date: string
+          event_title: string
+          event_type: string
+          id?: string
+          registered_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_date?: string
+          event_title?: string
+          event_type?: string
+          id?: string
+          registered_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -187,7 +352,20 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      career_course_type:
+        | "leadership_fundamentals"
+        | "strategic_communication"
+        | "remote_team_management"
+      career_module_type:
+        | "career_development"
+        | "leadership_skills"
+        | "resume_building"
+        | "goal_setting"
+      career_resource_type:
+        | "career_assessment"
+        | "template_library"
+        | "interview_simulator"
+        | "goal_planner"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -314,6 +492,24 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      career_course_type: [
+        "leadership_fundamentals",
+        "strategic_communication",
+        "remote_team_management",
+      ],
+      career_module_type: [
+        "career_development",
+        "leadership_skills",
+        "resume_building",
+        "goal_setting",
+      ],
+      career_resource_type: [
+        "career_assessment",
+        "template_library",
+        "interview_simulator",
+        "goal_planner",
+      ],
+    },
   },
 } as const
