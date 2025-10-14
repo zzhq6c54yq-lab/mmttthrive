@@ -120,6 +120,17 @@ import SleepImprovement from "./pages/SleepImprovement";
 import GoalSetting from "./pages/GoalSetting";
 import MentalWellnessExercise from "./pages/MentalWellnessExercise";
 import TherapySupport from "./pages/TherapySupport";
+import CareerDevelopmentModule from "./pages/career-modules/CareerDevelopmentModule";
+import LeadershipSkillsModule from "./pages/career-modules/LeadershipSkillsModule";
+import ResumeBuildingModule from "./pages/career-modules/ResumeBuildingModule";
+import GoalSettingModule from "./pages/career-modules/GoalSettingModule";
+import LeadershipFundamentals from "./pages/career-courses/LeadershipFundamentals";
+import StrategicCommunication from "./pages/career-courses/StrategicCommunication";
+import RemoteTeamManagement from "./pages/career-courses/RemoteTeamManagement";
+import CareerAssessment from "./pages/career-resources/CareerAssessment";
+import TemplateLibrary from "./pages/career-resources/TemplateLibrary";
+import InterviewSimulator from "./pages/career-resources/InterviewSimulator";
+import GoalPlanner from "./pages/career-resources/GoalPlanner";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import "./App.css";
@@ -391,6 +402,17 @@ function App() {
           <Route path="/cancer-support/honoring-action" element={<PersonalizedContent />} />
           
           <Route path="/career-coaching" element={<CareerCoaching />} />
+          <Route path="/career-coaching/module/career-development" element={<CareerDevelopmentModule />} />
+          <Route path="/career-coaching/module/leadership-skills" element={<LeadershipSkillsModule />} />
+          <Route path="/career-coaching/module/resume-building" element={<ResumeBuildingModule />} />
+          <Route path="/career-coaching/module/goal-setting" element={<GoalSettingModule />} />
+          <Route path="/career-coaching/course/leadership-fundamentals" element={<LeadershipFundamentals />} />
+          <Route path="/career-coaching/course/strategic-communication" element={<StrategicCommunication />} />
+          <Route path="/career-coaching/course/remote-team-management" element={<RemoteTeamManagement />} />
+          <Route path="/career-coaching/resource/career-assessment" element={<CareerAssessment />} />
+          <Route path="/career-coaching/resource/template-library" element={<TemplateLibrary />} />
+          <Route path="/career-coaching/resource/interview-simulator" element={<InterviewSimulator />} />
+          <Route path="/career-coaching/resource/goal-planner" element={<GoalPlanner />} />
           <Route path="/meditation-studio" element={<MeditationStudio />} />
           <Route path="/sleep-tracker" element={<SleepTracker />} />
         <Route path="/sleep-analysis" element={<SleepTracker />} />

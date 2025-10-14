@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,17 +9,70 @@ import { Textarea } from "@/components/ui/textarea";
 import { TrendingUp, Users, FileText, Target, Award, Calendar, MessageCircle, Download, BookOpen, Video, Briefcase } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
+import { getModuleRoute, getCourseRoute, getResourceRoute } from "@/utils/careerModuleRoutes";
 
 const CareerCoaching = () => {
   const { isSpanish } = useTranslation();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [bookingForm, setBookingForm] = useState({
+    date: "",
+    time: "",
+    focusArea: "",
+  });
 
   const handleDownload = (resourceType: string) => {
     toast({
       title: isSpanish ? "Descargando" : "Downloading",
       description: isSpanish ? `Descargando ${resourceType}...` : `Downloading ${resourceType}...`,
       duration: 2000
+    });
+  };
+
+  const handleContinueModule = (title: string) => {
+    const route = getModuleRoute(title);
+    navigate(route);
+  };
+
+  const handleStartCourse = (title: string) => {
+    const route = getCourseRoute(title);
+    navigate(route);
+  };
+
+  const handleAccessResource = (title: string) => {
+    const route = getResourceRoute(title);
+    navigate(route);
+  };
+
+  const handleBookSession = () => {
+    if (!bookingForm.date || !bookingForm.time || !bookingForm.focusArea) {
+      toast({
+        title: isSpanish ? "Información faltante" : "Missing Information",
+        description: isSpanish 
+          ? "Por favor completa todos los campos para reservar tu sesión." 
+          : "Please complete all fields to book your session.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: isSpanish ? "¡Sesión reservada!" : "Session Booked!",
+      description: isSpanish 
+        ? `Tu sesión de coaching ha sido programada para ${bookingForm.date} a las ${bookingForm.time}.` 
+        : `Your coaching session has been scheduled for ${bookingForm.date} at ${bookingForm.time}.`,
+    });
+
+    setBookingForm({ date: "", time: "", focusArea: "" });
+  };
+
+  const handleRegisterEvent = (eventTitle: string) => {
+    toast({
+      title: isSpanish ? "¡Registro exitoso!" : "Registration Successful!",
+      description: isSpanish 
+        ? `Te has registrado para: ${eventTitle}` 
+        : `You have registered for: ${eventTitle}`,
     });
   };
 
@@ -201,7 +255,7 @@ const CareerCoaching = () => {
                         <div className="bg-blue-500 h-2 rounded-full" style={{width: `${area.progress}%`}}></div>
                       </div>
                     </div>
-                    <Button size="sm" className="w-full">
+                    <Button size="sm" className="w-full" onClick={() => handleContinueModule(area.title)}>
                       {isSpanish ? "Continuar" : "Continue"}
                     </Button>
                   </CardContent>
@@ -269,7 +323,7 @@ const CareerCoaching = () => {
                       <div className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
                         {course.level}
                       </div>
-                      <Button className="w-full">
+                      <Button className="w-full" onClick={() => handleStartCourse(course.title)}>
                         {isSpanish ? "Comenzar Curso" : "Start Course"}
                       </Button>
                       <Button variant="outline" className="w-full" onClick={() => handleDownload(`${course.title} Material`)}>
@@ -295,7 +349,7 @@ const CareerCoaching = () => {
                 <CardContent>
                   <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
                   <div className="flex gap-2">
-                    <Button className="flex-1">
+                    <Button className="flex-1" onClick={() => handleAccessResource(resource.title)}>
                       {isSpanish ? "Acceder" : "Access"}
                     </Button>
                     <Button 
@@ -323,16 +377,29 @@ const CareerCoaching = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <Input placeholder={isSpanish ? "Seleccionar fecha" : "Select date"} type="date" />
-                  <select className="w-full p-2 border rounded">
-                    <option>{isSpanish ? "Seleccionar hora" : "Select time"}</option>
-                    <option>9:00 AM</option>
-                    <option>11:00 AM</option>
-                    <option>2:00 PM</option>
-                    <option>4:00 PM</option>
+                  <Input 
+                    placeholder={isSpanish ? "Seleccionar fecha" : "Select date"} 
+                    type="date"
+                    value={bookingForm.date}
+                    onChange={(e) => setBookingForm({ ...bookingForm, date: e.target.value })}
+                  />
+                  <select 
+                    className="w-full p-2 border rounded"
+                    value={bookingForm.time}
+                    onChange={(e) => setBookingForm({ ...bookingForm, time: e.target.value })}
+                  >
+                    <option value="">{isSpanish ? "Seleccionar hora" : "Select time"}</option>
+                    <option value="9:00 AM">9:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="4:00 PM">4:00 PM</option>
                   </select>
-                  <Textarea placeholder={isSpanish ? "Describe tus objetivos para la sesión..." : "Describe your goals for the session..."} />
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                  <Textarea 
+                    placeholder={isSpanish ? "Describe tus objetivos para la sesión..." : "Describe your goals for the session..."}
+                    value={bookingForm.focusArea}
+                    onChange={(e) => setBookingForm({ ...bookingForm, focusArea: e.target.value })}
+                  />
+                  <Button className="w-full bg-green-600 hover:bg-green-700" onClick={handleBookSession}>
                     {isSpanish ? "Reservar Sesión" : "Book Session"}
                   </Button>
                 </div>
@@ -389,7 +456,7 @@ const CareerCoaching = () => {
                         {event.type}
                       </span>
                       <div className="flex gap-2">
-                        <Button className="flex-1">
+                        <Button className="flex-1" onClick={() => handleRegisterEvent(event.title)}>
                           {isSpanish ? "Registrarse" : "Register"}
                         </Button>
                         <Button variant="outline" onClick={() => handleDownload(`${event.title} Agenda`)}>
