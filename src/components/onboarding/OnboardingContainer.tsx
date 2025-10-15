@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useOnboardingFlow } from "@/hooks/useOnboardingFlow";
 import IntroScreen from "@/components/home/IntroScreen";
@@ -10,10 +10,12 @@ import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import CheckoutScreen from "@/components/home/CheckoutScreen";
 import VisionBoard from "@/components/home/VisionBoard";
 import MainDashboard from "@/components/home/MainDashboard";
+import QuickStartTutorial from "@/components/tutorials/QuickStartTutorial";
 
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [showQuickStart, setShowQuickStart] = useState(false);
   const {
     currentStep,
     selectedMood,
@@ -109,18 +111,38 @@ const OnboardingContainer: React.FC = () => {
     localStorage.setItem('tutorialCompleted', 'true');
   };
 
+  // Check if should show QuickStart tutorial after onboarding
+  useEffect(() => {
+    const hasSeenQuickStart = localStorage.getItem('hasSeenQuickStart');
+    if ((isOnboardingComplete || currentStep === 'completed') && !hasSeenQuickStart) {
+      setShowQuickStart(true);
+    }
+  }, [isOnboardingComplete, currentStep]);
+
   // Render the appropriate screen
   if (isOnboardingComplete || currentStep === 'completed') {
     return (
-      <MainDashboard
-        userName={userInfo.name}
-        showHenry={false}
-        onHenryToggle={handleHenryToggle}
-        selectedQualities={selectedQualities}
-        selectedGoals={selectedGoals}
-        navigateToFeature={navigateToFeature}
-        markTutorialCompleted={markTutorialCompleted}
-      />
+      <>
+        <MainDashboard
+          userName={userInfo.name}
+          showHenry={false}
+          onHenryToggle={handleHenryToggle}
+          selectedQualities={selectedQualities}
+          selectedGoals={selectedGoals}
+          navigateToFeature={navigateToFeature}
+          markTutorialCompleted={markTutorialCompleted}
+        />
+        
+        {/* Show QuickStart tutorial on first completion */}
+        <QuickStartTutorial
+          isOpen={showQuickStart}
+          onClose={() => setShowQuickStart(false)}
+          onComplete={() => {
+            markTutorialCompleted();
+            setShowQuickStart(false);
+          }}
+        />
+      </>
     );
   }
 

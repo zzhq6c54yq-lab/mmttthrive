@@ -6,6 +6,7 @@ interface PopupState {
   henryIntro: boolean;
   mainTutorial: boolean;
   transitionTutorial: boolean;
+  quickStartTutorial: boolean;
 }
 
 interface PopupManagementReturn {
@@ -27,7 +28,8 @@ const usePopupManagement = (screenState: string): PopupManagementReturn => {
       coPayCredit: false,
       henryIntro: false,
       mainTutorial: false,
-      transitionTutorial: false
+      transitionTutorial: false,
+      quickStartTutorial: false
     };
   });
 
@@ -46,7 +48,8 @@ const usePopupManagement = (screenState: string): PopupManagementReturn => {
     setPopupsShown(prev => ({
       ...prev,
       mainTutorial: true,
-      transitionTutorial: true
+      transitionTutorial: true,
+      quickStartTutorial: true
     }));
   };
 
