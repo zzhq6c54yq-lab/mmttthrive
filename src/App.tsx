@@ -428,6 +428,8 @@ function App() {
           <Route path="/recommendations" element={<PersonalizedRecommendationsPage />} />
           <Route path="/enhanced-audio-therapy" element={<EnhancedAudioTherapyPage />} />
           <Route path="/art-therapy" element={<ArtTherapyStudio />} />
+          <Route path="/dear-henry" element={<DearHenry />} />
+          <Route path="/dear-henry-admin" element={<DearHenryAdmin />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />
