@@ -113,9 +113,16 @@ const OnboardingContainer: React.FC = () => {
 
   // Check if should show QuickStart tutorial after onboarding
   useEffect(() => {
-    const hasSeenQuickStart = localStorage.getItem('hasSeenQuickStart');
-    if ((isOnboardingComplete || currentStep === 'completed') && !hasSeenQuickStart) {
-      setShowQuickStart(true);
+    if (isOnboardingComplete || currentStep === 'completed') {
+      const hasSeenQuickStart = localStorage.getItem('hasSeenQuickStart');
+      console.log("Onboarding complete - checking QuickStart:", { hasSeenQuickStart });
+      if (!hasSeenQuickStart) {
+        // Small delay to ensure dashboard is rendered
+        setTimeout(() => {
+          console.log("Showing QuickStart tutorial");
+          setShowQuickStart(true);
+        }, 300);
+      }
     }
   }, [isOnboardingComplete, currentStep]);
 

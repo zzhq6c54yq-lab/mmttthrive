@@ -232,7 +232,7 @@ export const useRegistrationState = () => {
           if (!loginError) {
             nextScreenSetter();
           } else {
-            // If auto-login fails, user needs to confirm email
+            // If auto-login fails, user needs to confirm email - but still allow progression
             toast({
               title: isSpanish ? "Confirma tu Correo" : isPortuguese ? "Confirme seu E-mail" : "Confirm Your Email",
               description: isSpanish 
@@ -242,6 +242,8 @@ export const useRegistrationState = () => {
                 : "Please check your email and click the confirmation link.",
               variant: "default"
             });
+            // Still allow user to progress through onboarding
+            nextScreenSetter();
           }
         }
       }

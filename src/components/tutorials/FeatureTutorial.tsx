@@ -23,7 +23,14 @@ const FeatureTutorial: React.FC<FeatureTutorialProps> = ({
   
   // Get tutorial content for this feature
   const tutorialSteps = useTutorialSteps(featureId, userName);
-  const currentTutorial = tutorialSteps[currentStepIndex]; 
+  const currentTutorial = tutorialSteps[currentStepIndex];
+  
+  console.log("FeatureTutorial mounted:", { 
+    featureId, 
+    tutorialStepsCount: tutorialSteps.length,
+    currentStepIndex,
+    hasCurrentTutorial: !!currentTutorial
+  });
   
   const handleNext = () => {
     if (currentStepIndex < tutorialSteps.length - 1) {

@@ -59,12 +59,22 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
   };
 
   const handleOpenTutorial = () => {
-    console.log(`Tutorial requested for ${currentFeatureId}`);
+    const state = location.state as { screenState?: string } | null;
+    const screenState = state?.screenState;
+    const isMainDashboard = location.pathname === "/" && screenState === "main";
     
-    // Determine which tutorial to show based on location and feature
-    if (location.pathname === "/" || currentFeatureId === 'dashboard') {
+    console.log("TutorialButton clicked:", { 
+      isMainDashboard, 
+      pathname: location.pathname, 
+      screenState, 
+      featureId: currentFeatureId
+    });
+    
+    if (isMainDashboard || location.pathname === "/" || currentFeatureId === 'dashboard') {
+      console.log("Opening QuickStart tutorial");
       setShowQuickStart(true);
     } else {
+      console.log("Opening Feature tutorial for:", currentFeatureId);
       setShowTutorial(true);
     }
   };
@@ -111,7 +121,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
 
         {/* Feature-specific Tutorial */}
         {showTutorial && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
             <FeatureTutorial
               featureId={currentFeatureId}
               onClose={() => {
@@ -151,7 +161,7 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
 
       {/* Feature-specific Tutorial */}
       {showTutorial && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <FeatureTutorial
             featureId={currentFeatureId}
             onClose={() => {
