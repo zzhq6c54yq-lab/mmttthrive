@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users } from "lucide-react";
+import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
 import { Separator } from "@/components/ui/separator";
@@ -14,6 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedProgressBar } from "@/components/therapy/AnimatedProgressBar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const insuranceProviders = [
   "Blue Cross Blue Shield",
@@ -104,15 +106,19 @@ const therapistProfiles = [
 
 const TherapistMatchingDialog = () => {
   const [step, setStep] = useState(1);
+  const [direction, setDirection] = useState(1);
   const [concerns, setConcerns] = useState<string[]>([]);
   const [preferredApproach, setPreferredApproach] = useState("");
   const [preferredGender, setPreferredGender] = useState("");
   const [extraDetails, setExtraDetails] = useState("");
   const [insurance, setInsurance] = useState("");
   const [matchedTherapists, setMatchedTherapists] = useState(therapistProfiles);
+  const [isSearching, setIsSearching] = useState(false);
   const { toast } = useToast();
 
-  const handleNextStep = () => {
+  const stepLabels = ["Concerns", "Preferences", "Insurance", "Review"];
+
+  const handleNextStep = async () => {
     if (step === 1 && concerns.length === 0) {
       toast({
         title: "Please select at least one concern",
@@ -122,7 +128,11 @@ const TherapistMatchingDialog = () => {
     }
     
     if (step === 4) {
-      // Simulate matching algorithm
+      setIsSearching(true);
+      
+      // Simulate matching algorithm with loading delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       const filteredTherapists = therapistProfiles
         .filter(therapist => 
           concerns.some(concern => therapist.specialties.includes(concern))
@@ -131,12 +141,16 @@ const TherapistMatchingDialog = () => {
       setMatchedTherapists(
         filteredTherapists.length > 0 ? filteredTherapists : therapistProfiles
       );
+      
+      setIsSearching(false);
     }
     
+    setDirection(1);
     setStep(step + 1);
   };
 
   const handlePrevStep = () => {
+    setDirection(-1);
     setStep(step - 1);
   };
 
@@ -155,6 +169,21 @@ const TherapistMatchingDialog = () => {
     });
   };
 
+  const stepVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -300 : 300,
+      opacity: 0,
+    }),
+  };
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -165,18 +194,32 @@ const TherapistMatchingDialog = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {therapistKeywords.map((keyword, idx) => (
-                <div 
+                <motion.div 
                   key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.03 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => toggleConcern(keyword.name)}
-                  className={`flex items-center p-3 rounded-lg border cursor-pointer transition-colors
+                  className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all duration-300
                     ${concerns.includes(keyword.name) 
-                      ? "bg-[#B87333]/10 border-[#B87333] text-[#B87333]" 
-                      : "hover:border-[#B87333]/50"}
+                      ? "bg-[hsl(var(--primary))]/10 border-[hsl(var(--primary))] shadow-[0_0_20px_hsl(var(--primary)/0.2)] ring-2 ring-[hsl(var(--primary))]/20" 
+                      : "hover:border-[hsl(var(--primary))]/50 hover:shadow-md hover:bg-muted/30"}
                   `}
                 >
                   <span className="text-xl mr-2">{keyword.icon}</span>
-                  <span>{keyword.name}</span>
-                </div>
+                  <span className="font-medium">{keyword.name}</span>
+                  {concerns.includes(keyword.name) && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="ml-auto"
+                    >
+                      <CheckCircle className="h-4 w-4" />
+                    </motion.div>
+                  )}
+                </motion.div>
               ))}
             </div>
           </div>
@@ -328,77 +371,125 @@ const TherapistMatchingDialog = () => {
       case 5:
         return (
           <div className="space-y-4">
-            <div className="text-center mb-6">
-              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
-              <h2 className="text-xl font-medium">We found therapists for you!</h2>
-              <p className="text-sm text-gray-500">
-                Based on your preferences, these therapists would be a good match:
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              {matchedTherapists.map((therapist) => (
-                <div key={therapist.id} className="border rounded-lg overflow-hidden">
-                  <div className="flex items-center p-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                      <img 
-                        src={therapist.image} 
-                        alt={therapist.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-grow">
-                      <h3 className="font-medium">{therapist.name}</h3>
-                      <p className="text-sm text-gray-600">{therapist.title}</p>
-                      <div className="flex items-center mt-1">
-                        <div className="flex items-center">
-                          <span className="text-yellow-500">★</span>
-                          <span className="text-sm ml-1">{therapist.rating}</span>
-                        </div>
-                        <span className="text-xs text-gray-500 mx-2">•</span>
-                        <span className="text-sm text-gray-600">{therapist.reviews} reviews</span>
-                        <span className="text-xs text-gray-500 mx-2">•</span>
-                        <span className="text-sm text-green-600">Available {therapist.nextAvailable}</span>
+            {isSearching ? (
+              <div className="space-y-4">
+                <div className="text-center mb-6">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="inline-block"
+                  >
+                    <Loader2 className="h-12 w-12 text-[hsl(var(--primary))] mx-auto mb-2" />
+                  </motion.div>
+                  <h2 className="text-xl font-medium">Finding your perfect match...</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Analyzing your preferences and matching with therapists
+                  </p>
+                </div>
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="border rounded-lg overflow-hidden p-4">
+                    <div className="flex items-center mb-4">
+                      <Skeleton className="w-16 h-16 rounded-full mr-4" />
+                      <div className="flex-1">
+                        <Skeleton className="h-5 w-32 mb-2" />
+                        <Skeleton className="h-4 w-48" />
                       </div>
                     </div>
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-4 w-3/4" />
                   </div>
-                  
-                  <div className="px-4 pb-2">
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {therapist.specialties.map((specialty, idx) => (
-                        <span 
-                          key={idx} 
-                          className={`text-xs px-2 py-0.5 rounded-full ${
-                            concerns.includes(specialty) 
-                              ? "bg-[#B87333]/10 text-[#B87333]" 
-                              : "bg-gray-100 text-gray-600"
-                          }`}
-                        >
-                          {specialty}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="text-sm text-gray-600 mb-3">
-                      <span className="font-medium">Approach:</span> {therapist.approach}
-                    </p>
-                  </div>
-                  
-                  <div className="bg-gray-50 px-4 py-3 flex justify-between items-center">
-                    <span className="text-sm text-gray-600">{therapist.experience} experience</span>
-                    <Button 
-                      onClick={() => handleSchedule(therapist.id)}
-                      className="bg-[#B87333] hover:bg-[#B87333]/90 text-white"
+                ))}
+              </div>
+            ) : (
+              <>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", duration: 0.6 }}
+                  className="text-center mb-6"
+                >
+                  <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-2" />
+                  <h2 className="text-xl font-medium">We found {matchedTherapists.length} therapists for you!</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Based on your preferences, these therapists would be a good match:
+                  </p>
+                </motion.div>
+                
+                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                  {matchedTherapists.map((therapist, index) => (
+                    <motion.div
+                      key={therapist.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                      className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 group"
                     >
-                      Schedule Consultation
-                    </Button>
-                  </div>
+                      <div className="flex items-center p-4">
+                        <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 ring-2 ring-muted group-hover:ring-[hsl(var(--primary))] transition-all">
+                          <img 
+                            src={therapist.image} 
+                            alt={therapist.name} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-grow">
+                          <h3 className="font-medium">{therapist.name}</h3>
+                          <p className="text-sm text-muted-foreground">{therapist.title}</p>
+                          <div className="flex items-center mt-1">
+                            <div className="flex items-center">
+                              <span className="text-yellow-500">★</span>
+                              <span className="text-sm ml-1">{therapist.rating}</span>
+                            </div>
+                            <span className="text-xs text-muted-foreground mx-2">•</span>
+                            <span className="text-sm text-muted-foreground">{therapist.reviews} reviews</span>
+                            <span className="text-xs text-muted-foreground mx-2">•</span>
+                            <span className="text-sm text-green-600">Available {therapist.nextAvailable}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="px-4 pb-2">
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {therapist.specialties.map((specialty, idx) => (
+                            <motion.span 
+                              key={idx}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: index * 0.1 + idx * 0.05 }}
+                              className={`text-xs px-2 py-0.5 rounded-full ${
+                                concerns.includes(specialty) 
+                                  ? "bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] font-medium" 
+                                  : "bg-muted text-muted-foreground"
+                              }`}
+                            >
+                              {specialty}
+                            </motion.span>
+                          ))}
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          <span className="font-medium">Approach:</span> {therapist.approach}
+                        </p>
+                      </div>
+                      
+                      <div className="bg-muted/30 px-4 py-3 flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{therapist.experience} experience</span>
+                        <Button 
+                          onClick={() => handleSchedule(therapist.id)}
+                          className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white transition-all hover:scale-105"
+                        >
+                          Schedule Consultation
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            
-            <p className="text-center text-sm text-gray-500 mt-4">
-              Don't see a good fit? <Button variant="link" className="p-0 h-auto">View more therapists</Button>
-            </p>
+                
+                <p className="text-center text-sm text-muted-foreground mt-4">
+                  Don't see a good fit? <Button variant="link" className="p-0 h-auto">View more therapists</Button>
+                </p>
+              </>
+            )}
           </div>
         );
         
@@ -410,49 +501,70 @@ const TherapistMatchingDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-[#B87333] hover:bg-[#B87333]/90 text-white font-medium w-full">
-          <Search className="mr-2 h-4 w-4" />
-          Match Me With A Therapist
-        </Button>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Button className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white font-medium w-full shadow-lg hover:shadow-xl transition-all">
+            <Search className="mr-2 h-4 w-4" />
+            Match Me With A Therapist
+          </Button>
+        </motion.div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[700px] backdrop-blur-xl bg-background/95 border-muted shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Find Your Perfect Therapist Match</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-2xl">Find Your Perfect Therapist Match</DialogTitle>
+          <DialogDescription className="text-base">
             Answer a few questions to help us match you with the right therapist for your needs.
           </DialogDescription>
         </DialogHeader>
         
         {step <= 4 && (
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex space-x-1">
-              {[1, 2, 3, 4].map((s) => (
-                <div 
-                  key={s} 
-                  className={`w-6 h-1 rounded-full ${s <= step ? 'bg-[#B87333]' : 'bg-gray-200'}`}
-                />
-              ))}
-            </div>
-            <div className="text-xs text-gray-500">Step {step} of 4</div>
-          </div>
+          <AnimatedProgressBar 
+            currentStep={step} 
+            totalSteps={4} 
+            stepLabels={stepLabels}
+          />
         )}
         
-        {renderStep()}
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={step}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {renderStep()}
+          </motion.div>
+        </AnimatePresence>
         
         <DialogFooter className={step === 5 ? "justify-center" : ""}>
           {step > 1 && step < 5 && (
-            <Button variant="outline" onClick={handlePrevStep}>
+            <Button variant="outline" onClick={handlePrevStep} className="hover:bg-muted">
               Back
             </Button>
           )}
           {step < 5 && (
-            <Button onClick={handleNextStep} className="bg-[#B87333] hover:bg-[#B87333]/90">
-              {step === 4 ? 'Find Therapists' : 'Next Step'}
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button 
+              onClick={handleNextStep} 
+              disabled={isSearching}
+              className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 hover:scale-105 transition-all"
+            >
+              {isSearching ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Finding Matches...
+                </>
+              ) : (
+                <>
+                  {step === 4 ? 'Find Therapists' : 'Next Step'}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
           )}
-          {step === 5 && (
-            <Button variant="outline" onClick={() => setStep(1)}>
+          {step === 5 && !isSearching && (
+            <Button variant="outline" onClick={() => { setStep(1); setDirection(-1); }}>
               Start New Search
             </Button>
           )}
@@ -466,23 +578,45 @@ const RealTimeTherapy = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-[#1a1a1f] text-white py-12">
-        <div className="container px-4 max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/home" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 mb-6">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-br from-[hsl(var(--primary))] via-[hsl(var(--primary-glow))] to-[hsl(var(--primary))] text-white py-16 relative overflow-hidden"
+      >
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl" />
+        </div>
+        
+        <div className="container px-4 max-w-6xl mx-auto relative z-10">
+          <div className="flex justify-between items-center mb-8">
+            <Link to="/home" className="inline-flex items-center text-white hover:text-white/80 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Link>
             <HomeButton />
           </div>
-          <h1 className="text-4xl md:text-5xl font-light mb-4">Real-Time Therapy</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">
+          <motion.h1 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-5xl font-light mb-4"
+          >
+            Real-Time Therapy
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-xl text-white/90 max-w-3xl"
+          >
             Connect with licensed therapists through secure video sessions that fit your schedule and needs.
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main Content */}
       <div className="container px-4 py-12 max-w-6xl mx-auto">
@@ -519,30 +653,51 @@ const RealTimeTherapy = () => {
             </CardContent>
           </Card>
           
-          <div className="mb-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-10"
+          >
             <h3 className="text-xl mb-6">Browse by Common Concerns</h3>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
               {therapistKeywords.slice(0, 10).map((keyword, index) => (
-                <Button 
-                  key={index} 
-                  variant="outline"
-                  className="flex flex-col h-auto py-4 border-gray-200 hover:bg-[#B87333]/10 hover:text-[#B87333] hover:border-[#B87333]"
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ scale: 1.05, rotate: 2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <span className="text-2xl mb-1">{keyword.icon}</span>
-                  <span className="text-sm text-center">{keyword.name}</span>
-                </Button>
+                  <Button 
+                    variant="outline"
+                    className="flex flex-col h-auto py-4 w-full hover:bg-[hsl(var(--primary))]/10 hover:text-[hsl(var(--primary))] hover:border-[hsl(var(--primary))] hover:shadow-lg transition-all duration-300"
+                  >
+                    <span className="text-2xl mb-1">{keyword.icon}</span>
+                    <span className="text-sm text-center">{keyword.name}</span>
+                  </Button>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <img 
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-8"
+          >
+            <motion.img 
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
               src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80&w=800&ixlib=rb-4.0.3"
               alt="Woman in online therapy session"
-              className="w-full rounded-lg object-cover h-[300px] md:h-full"
+              className="w-full rounded-lg object-cover h-[300px] md:h-full shadow-lg"
             />
             <div>
-              <h3 className="text-xl mb-4">How Online Therapy Works</h3>
+              <h3 className="text-xl mb-4 font-medium">How Online Therapy Works</h3>
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-[#B87333] mr-2 mt-1 flex-shrink-0" />
@@ -565,53 +720,92 @@ const RealTimeTherapy = () => {
                   <span>Continue regular sessions to build a therapeutic relationship</span>
                 </li>
               </ul>
-              <TherapistMatchingDialog />
+              <div className="mt-6">
+                <TherapistMatchingDialog />
+              </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Insurance Section */}
-        <section className="mb-16">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16"
+        >
           <h2 className="text-3xl font-light mb-8">Insurance Information</h2>
-          <p className="mb-6 text-lg">
+          <p className="mb-6 text-lg text-muted-foreground">
             We work with most major insurance providers to make therapy accessible and affordable. 
             Verify your coverage during the sign-up process.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {insuranceProviders.map((provider, index) => (
-              <Card key={index} className="p-4 text-center hover:border-[#B87333]/50 transition-colors">
-                {provider}
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ scale: 1.05, y: -4 }}
+              >
+                <Card className="p-4 text-center hover:border-[hsl(var(--primary))]/50 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  {provider}
+                </Card>
+              </motion.div>
             ))}
           </div>
           <p className="mt-6 text-muted-foreground">
             Don't see your insurance? Contact us to discuss other payment options and sliding scale fees.
           </p>
-        </section>
+        </motion.section>
 
         {/* Before You Start Section */}
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-3xl font-light mb-8">Things to Know Before Starting</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {importantFacts.map((fact, index) => (
-              <Card key={index} className="p-6 hover:shadow-md transition-shadow">
-                <div className="flex gap-4">
-                  <Info className="h-6 w-6 text-[#B87333] flex-shrink-0" />
-                  <div>
-                    <h3 className="text-xl mb-2">{fact.title}</h3>
-                    <p className="text-muted-foreground">{fact.description}</p>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -4 }}
+              >
+                <Card className="p-6 hover:shadow-lg transition-all duration-300 h-full border-muted hover:border-[hsl(var(--primary))]/30">
+                  <div className="flex gap-4">
+                    <motion.div
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Info className="h-6 w-6 text-[hsl(var(--primary))] flex-shrink-0" />
+                    </motion.div>
+                    <div>
+                      <h3 className="text-xl mb-2 font-medium">{fact.title}</h3>
+                      <p className="text-muted-foreground">{fact.description}</p>
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
           </div>
-          <div className="mt-12 text-center">
-            <p className="text-lg mb-6 max-w-3xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <p className="text-lg mb-6 max-w-3xl mx-auto text-muted-foreground">
               Ready to take the first step on your mental health journey?
             </p>
             <TherapistMatchingDialog />
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
       </div>
     </div>
   );
