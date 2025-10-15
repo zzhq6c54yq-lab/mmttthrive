@@ -1,1 +1,7 @@
 project_id = "daghobrbxgkgmflkcnyh"
+
+[functions.henry-ai-chat]
+verify_jwt = false
+
+[functions.generate-henry-answer]
+verify_jwt = false

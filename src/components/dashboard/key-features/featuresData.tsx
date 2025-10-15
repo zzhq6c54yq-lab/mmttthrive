@@ -25,7 +25,8 @@ import {
   Flower2,
   Shield,
   TrendingUp as CareerIcon,
-  Palette
+  Palette,
+  Mail
 } from "lucide-react";
 
 export interface FeatureItem {
@@ -223,6 +224,18 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80",
     path: "/art-therapy",
     color: "rose",
+    popular: true
+  },
+  {
+    id: "dear-henry",
+    title: isSpanish ? "Querido Henry" : "Dear Henry",
+    description: isSpanish 
+      ? "Consejería compasiva y anónima de nuestro columnista de salud mental" 
+      : "Compassionate, anonymous advice from our mental health columnist",
+    icon: <Mail className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
+    path: "/dear-henry",
+    color: "amber",
     popular: true
   }
 ];

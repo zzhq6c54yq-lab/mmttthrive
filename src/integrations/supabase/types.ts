@@ -227,6 +227,186 @@ export type Database = {
         }
         Relationships: []
       }
+      henry_answers: {
+        Row: {
+          answer_text: string
+          author: string
+          created_at: string | null
+          id: string
+          published_at: string | null
+          question_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          answer_text: string
+          author?: string
+          created_at?: string | null
+          id?: string
+          published_at?: string | null
+          question_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          answer_text?: string
+          author?: string
+          created_at?: string | null
+          id?: string
+          published_at?: string | null
+          question_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "henry_qa_feed"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "henry_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "henry_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      henry_appreciations: {
+        Row: {
+          created_at: string | null
+          id: string
+          question_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          question_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          question_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_appreciations_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "henry_qa_feed"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "henry_appreciations_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "henry_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      henry_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          question_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          question_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          question_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_bookmarks_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "henry_qa_feed"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "henry_bookmarks_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "henry_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      henry_questions: {
+        Row: {
+          category: Database["public"]["Enums"]["henry_category"]
+          created_at: string | null
+          id: string
+          is_anonymous: boolean | null
+          question_text: string
+          status: Database["public"]["Enums"]["henry_status"]
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["henry_category"]
+          created_at?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          question_text: string
+          status?: Database["public"]["Enums"]["henry_status"]
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["henry_category"]
+          created_at?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          question_text?: string
+          status?: Database["public"]["Enums"]["henry_status"]
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      insight_tokens: {
+        Row: {
+          created_at: string | null
+          id: string
+          tokens_earned: number | null
+          total_appreciations: number | null
+          total_bookmarks: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          tokens_earned?: number | null
+          total_appreciations?: number | null
+          total_bookmarks?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          tokens_earned?: number | null
+          total_appreciations?: number | null
+          total_bookmarks?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       journal_entries: {
         Row: {
           created_at: string | null
@@ -339,7 +519,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      henry_qa_feed: {
+        Row: {
+          answer_id: string | null
+          answer_text: string | null
+          appreciation_count: number | null
+          author: string | null
+          category: Database["public"]["Enums"]["henry_category"] | null
+          created_at: string | null
+          id: string | null
+          is_anonymous: boolean | null
+          published_at: string | null
+          question_text: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       decrement_hearts: {
@@ -366,6 +560,15 @@ export type Database = {
         | "template_library"
         | "interview_simulator"
         | "goal_planner"
+      henry_category:
+        | "anxiety"
+        | "relationships"
+        | "self-esteem"
+        | "depression"
+        | "purpose"
+        | "trauma"
+        | "motivation"
+      henry_status: "pending" | "approved" | "answered" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -510,6 +713,16 @@ export const Constants = {
         "interview_simulator",
         "goal_planner",
       ],
+      henry_category: [
+        "anxiety",
+        "relationships",
+        "self-esteem",
+        "depression",
+        "purpose",
+        "trauma",
+        "motivation",
+      ],
+      henry_status: ["pending", "approved", "answered", "rejected"],
     },
   },
 } as const

@@ -8,6 +8,8 @@ import AASponsor from "./pages/AASponsor";
 import Auth from "./pages/Auth";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import ResendConfirmationPage from "./pages/ResendConfirmationPage";
+import DearHenry from "./pages/DearHenry";
+import DearHenryAdmin from "./pages/DearHenryAdmin";
 import Dashboard from "./pages/Dashboard";
 import OnboardingPage from "./pages/OnboardingPage";
 import JournalPage from "./pages/JournalPage";
