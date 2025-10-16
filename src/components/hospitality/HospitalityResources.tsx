@@ -221,7 +221,7 @@ const HospitalityResources: React.FC = () => {
           <Card className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border-purple-200 dark:border-purple-900">
             <CardContent className="p-6">
               <h4 className="font-medium text-gray-900 dark:text-white mb-2">2-Minute Reset</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-sm text-gray-800 dark:text-gray-200 mb-4">
                 A quick mindfulness practice you can do during short breaks
               </p>
               <Button 
@@ -236,7 +236,7 @@ const HospitalityResources: React.FC = () => {
           <Card className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-blue-200 dark:border-blue-900">
             <CardContent className="p-6">
               <h4 className="font-medium text-gray-900 dark:text-white mb-2">Staff Room Stretch</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-sm text-gray-800 dark:text-gray-200 mb-4">
                 Quick stretches to relieve physical tension during shifts
               </p>
               <Button 
@@ -251,7 +251,7 @@ const HospitalityResources: React.FC = () => {
           <Card className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 border-orange-200 dark:border-orange-900">
             <CardContent className="p-6">
               <h4 className="font-medium text-gray-900 dark:text-white mb-2">Emotional Regulation</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-sm text-gray-800 dark:text-gray-200 mb-4">
                 Techniques to calm your nervous system after difficult interactions
               </p>
               <Button 

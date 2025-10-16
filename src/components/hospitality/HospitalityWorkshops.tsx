@@ -100,7 +100,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>Practical mindfulness techniques for busy shifts</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>7:00 PM</span>
@@ -141,7 +141,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>For chefs, managers, and kitchen leads</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>3:00 PM</span>
@@ -182,7 +182,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>Emotional regulation for front-of-house staff</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>6:00 PM</span>
@@ -223,7 +223,7 @@ const HospitalityWorkshops: React.FC = () => {
               <CardDescription>Maintaining boundaries and personal life</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+              <div className="flex items-center gap-4 text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
                   <span>1:00 PM</span>

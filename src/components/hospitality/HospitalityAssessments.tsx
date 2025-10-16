@@ -61,7 +61,7 @@ const HospitalityAssessments: React.FC = () => {
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">15 questions</div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">15 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/stress", "Service Industry Stress Assessment")}
               className="bg-orange-500 hover:bg-orange-600"
@@ -94,7 +94,7 @@ const HospitalityAssessments: React.FC = () => {
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">12 questions</div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">12 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/burnout", "Hospitality Burnout Assessment")}
               className="bg-red-500 hover:bg-red-600"
@@ -127,7 +127,7 @@ const HospitalityAssessments: React.FC = () => {
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">18 questions</div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">18 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/work-life-balance", "Work-Life Balance Assessment")}
               className="bg-purple-500 hover:bg-purple-600"
@@ -160,7 +160,7 @@ const HospitalityAssessments: React.FC = () => {
             </p>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <div className="text-sm text-gray-500">20 questions</div>
+            <div className="text-sm text-gray-700 dark:text-gray-300">20 questions</div>
             <Button 
               onClick={() => handleAssessmentStart("/hospitality-assessments/burnout", "Emotional Resilience Check")}
               className="bg-blue-500 hover:bg-blue-600"

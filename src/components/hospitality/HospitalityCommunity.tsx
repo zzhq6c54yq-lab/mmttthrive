@@ -51,7 +51,7 @@ const HospitalityCommunity: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-gray-500 mb-3">
+              <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <Users className="h-4 w-4 mr-2" />
                 <span>247 members</span>
                 <span className="mx-2">•</span>
@@ -80,7 +80,7 @@ const HospitalityCommunity: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-gray-500 mb-3">
+              <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <Users className="h-4 w-4 mr-2" />
                 <span>189 members</span>
                 <span className="mx-2">•</span>
@@ -109,7 +109,7 @@ const HospitalityCommunity: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-gray-500 mb-3">
+              <div className="flex items-center text-sm text-gray-700 dark:text-gray-300 mb-3">
                 <Users className="h-4 w-4 mr-2" />
                 <span>104 members</span>
                 <span className="mx-2">•</span>
