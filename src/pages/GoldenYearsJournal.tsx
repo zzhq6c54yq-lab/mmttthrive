@@ -247,16 +247,26 @@ const GoldenYearsJournal: React.FC = () => {
                 {entries[selectedCategory] && entries[selectedCategory].length > 0 ? (
                   <ScrollArea className="h-[200px] bg-[#1a1a1a]/80 rounded-md p-4 border border-[#9F9EA1]/20">
                     <div className="space-y-6">
-                      {entries[selectedCategory].map((entry, index) => (
-                        <div key={index} className="prose prose-invert max-w-none">
-                          <div dangerouslySetInnerHTML={{ 
-                            __html: entry
-                              .replace(/^## (.*)/gm, '<h3 class="text-[#D4AF37] font-serif font-bold mb-2">$1</h3>')
-                              .replace(/\n/g, '<br/>') 
-                          }} />
-                          <div className="border-b border-[#9F9EA1]/20 mt-4 pb-2"></div>
-                        </div>
-                      ))}
+                      {entries[selectedCategory].map((entry, index) => {
+                        // Parse entry safely - extract date header and content
+                        const lines = entry.split('\n');
+                        const dateHeader = lines[0]?.startsWith('## ') ? lines[0].slice(3) : '';
+                        const content = lines.slice(dateHeader ? 2 : 0).join('\n');
+                        
+                        return (
+                          <div key={index} className="prose prose-invert max-w-none">
+                            {dateHeader && (
+                              <h3 className="text-[#D4AF37] font-serif font-bold mb-2">
+                                {dateHeader}
+                              </h3>
+                            )}
+                            <div className="whitespace-pre-wrap text-gray-300">
+                              {content}
+                            </div>
+                            <div className="border-b border-[#9F9EA1]/20 mt-4 pb-2"></div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </ScrollArea>
                 ) : (

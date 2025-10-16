@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Page from '@/components/Page';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, XCircle, Loader2, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
@@ -22,11 +23,57 @@ const DearHenryAdmin: React.FC = () => {
   const [approvedQuestions, setApprovedQuestions] = useState<PendingQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingAnswer, setGeneratingAnswer] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [authChecking, setAuthChecking] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchQuestions();
+    checkAdminAccess();
   }, []);
+
+  const checkAdminAccess = async () => {
+    setAuthChecking(true);
+    
+    // Check if user is authenticated
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
+      toast({ 
+        title: "Authentication Required", 
+        description: "Please log in to access the admin dashboard.",
+        variant: "destructive" 
+      });
+      navigate('/auth');
+      return;
+    }
+
+    // Check if user has admin role
+    const { data: roleCheck, error: roleError } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (roleError) {
+      console.error('Error checking admin role:', roleError);
+    }
+
+    if (!roleCheck) {
+      toast({ 
+        title: "Unauthorized Access", 
+        description: "You do not have permission to access the admin dashboard.",
+        variant: "destructive" 
+      });
+      navigate('/');
+      return;
+    }
+
+    setIsAdmin(true);
+    setAuthChecking(false);
+    fetchQuestions();
+  };
 
   const fetchQuestions = async () => {
     setLoading(true);
@@ -103,14 +150,22 @@ const DearHenryAdmin: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (authChecking || loading) {
     return (
       <Page title="Dear Henry Admin" showBackButton={true}>
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 animate-spin" />
+        <div className="flex flex-col items-center justify-center h-64 space-y-4">
+          <Shield className="w-12 h-12 text-amber-500 animate-pulse" />
+          <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+          <p className="text-gray-400">
+            {authChecking ? 'Verifying admin credentials...' : 'Loading dashboard...'}
+          </p>
         </div>
       </Page>
     );
+  }
+
+  if (!isAdmin) {
+    return null;
   }
 
   return (
