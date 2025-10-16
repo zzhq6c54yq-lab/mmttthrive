@@ -120,8 +120,8 @@ const GameMeditationStudio: React.FC = () => {
       <Card className="bg-gradient-to-r from-purple-100 to-indigo-100">
         <CardHeader className="text-center">
           <Sparkles className="w-10 h-10 text-purple-600 mx-auto mb-4" />
-          <CardTitle className="text-3xl text-purple-800">Meditation Studio</CardTitle>
-          <p className="text-purple-600">Find your inner peace with guided meditation</p>
+          <CardTitle className="text-3xl text-purple-900">Meditation Studio</CardTitle>
+          <p className="text-purple-800">Find your inner peace with guided meditation</p>
         </CardHeader>
       </Card>
 
@@ -131,16 +131,16 @@ const GameMeditationStudio: React.FC = () => {
             <CardHeader>
               <div className="flex items-center gap-3">
                 <meditation.icon className="w-6 h-6 text-purple-600" />
-                <CardTitle className="text-lg">{meditation.name}</CardTitle>
+                <CardTitle className="text-lg text-gray-900">{meditation.name}</CardTitle>
               </div>
-              <p className="text-sm text-gray-600">{Math.floor(meditation.duration / 60)} minutes</p>
+              <p className="text-sm text-gray-800">{Math.floor(meditation.duration / 60)} minutes</p>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-medium mb-2">Instructions:</h4>
+                <h4 className="font-medium mb-2 text-gray-900">Instructions:</h4>
                 <ul className="space-y-1">
                   {meditation.instructions.slice(0, 2).map((instruction, index) => (
-                    <li key={index} className="text-sm text-gray-600 flex items-start gap-2">
+                    <li key={index} className="text-sm text-gray-800 flex items-start gap-2">
                       <span className="text-purple-500">•</span>
                       {instruction}
                     </li>

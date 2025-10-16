@@ -13,8 +13,8 @@ const MINI_GAME_FEATURES = [
   { title: "Memory Match", playable: true, route: "/games/memory-match" },
   { title: "Word Unscramble", playable: true, route: "/games/word-unscramble" },
   { title: "Sleep Tracker", playable: true, route: "/games/sleep-tracker" },
-  { title: "Career Coaching", playable: true, route: "/games/career-coaching" },
-  { title: "Meditation Studio", playable: true, route: "/games/meditation-studio" }
+  { title: "Career Coaching", playable: true, route: "/career-coaching" },
+  { title: "Meditation Studio", playable: true, route: "/meditation-studio" }
 ];
 
 const DashboardMiniGamesGrid: React.FC = () => {

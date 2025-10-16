@@ -71,10 +71,10 @@ const GameCareerCoaching: React.FC = () => {
       <div className="max-w-2xl mx-auto p-6">
         <Card>
           <CardHeader>
-            <CardTitle>Career Assessment</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-gray-100">Career Assessment</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p>What's your primary career goal for the next 12 months?</p>
+            <p className="text-gray-900 dark:text-gray-100">What's your primary career goal for the next 12 months?</p>
             <div className="grid grid-cols-1 gap-3">
               {["Get promoted", "Change careers", "Develop new skills", "Improve work-life balance"].map((option) => (
                 <Button
@@ -111,7 +111,7 @@ const GameCareerCoaching: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="bg-white rounded-lg p-4">
-            <p className="text-gray-700">{module.content[currentContent]}</p>
+            <p className="text-gray-900">{module.content[currentContent]}</p>
           </div>
           <Button onClick={handleNext} className="w-full bg-amber-600 text-white">
             {currentContent === module.content.length - 1 && currentModule === CAREER_MODULES.length - 1 
