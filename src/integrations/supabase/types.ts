@@ -816,21 +816,27 @@ export type Database = {
           created_at: string
           hearts: number
           id: string
+          mood: string | null
           reply_count: number | null
+          user_id: string | null
         }
         Insert: {
           content: string
           created_at?: string
           hearts?: number
           id?: string
+          mood?: string | null
           reply_count?: number | null
+          user_id?: string | null
         }
         Update: {
           content?: string
           created_at?: string
           hearts?: number
           id?: string
+          mood?: string | null
           reply_count?: number | null
+          user_id?: string | null
         }
         Relationships: []
       }
