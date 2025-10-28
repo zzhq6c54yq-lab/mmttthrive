@@ -45,16 +45,16 @@ const QuickStartTutorial: React.FC<QuickStartTutorialProps> = ({ isOpen, onClose
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl bg-gradient-to-br from-[#1a1a1f] via-[#221F26] to-[#1a1a1f] border-white/20 text-white p-0 overflow-hidden" showCloseButton={false}>
+      <DialogContent className="w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1f] via-[#221F26] to-[#1a1a1f] border-white/20 text-white p-0" showCloseButton={false}>
         {/* Close button - positioned relative to dialog */}
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-4 top-4 z-[100] rounded-full bg-black/40 text-white hover:bg-black/60 hover:text-white border-2 border-white/30 shadow-lg"
+          className="absolute right-2 top-2 sm:right-4 sm:top-4 z-[100] rounded-full bg-black/60 text-white hover:bg-black/80 hover:text-white border-2 border-white/50 shadow-xl w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center"
           onClick={onClose}
           aria-label="Close tutorial"
         >
-          <X className="h-5 w-5" />
+          <X className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
 
         {/* Header with image and text */}
