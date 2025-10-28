@@ -497,6 +497,35 @@ export type Database = {
         }
         Relationships: []
       }
+      replies: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          whisper_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          whisper_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          whisper_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "replies_whisper_id_fkey"
+            columns: ["whisper_id"]
+            isOneToOne: false
+            referencedRelation: "whispers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       support_wall: {
         Row: {
           bookmark_count: number | null
@@ -720,6 +749,27 @@ export type Database = {
         }
         Relationships: []
       }
+      whispers: {
+        Row: {
+          content: string
+          created_at: string
+          hearts: number
+          id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          hearts?: number
+          id?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          hearts?: number
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       henry_qa_feed: {
@@ -743,18 +793,12 @@ export type Database = {
         Args: { post_id: string }
         Returns: undefined
       }
-      decrement_comment_count: {
-        Args: { post_id: string }
-        Returns: undefined
-      }
+      decrement_comment_count: { Args: { post_id: string }; Returns: undefined }
       decrement_comment_hearts: {
         Args: { comment_id: string }
         Returns: undefined
       }
-      decrement_hearts: {
-        Args: { post_id: string }
-        Returns: undefined
-      }
+      decrement_hearts: { Args: { post_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -766,18 +810,12 @@ export type Database = {
         Args: { post_id: string }
         Returns: undefined
       }
-      increment_comment_count: {
-        Args: { post_id: string }
-        Returns: undefined
-      }
+      increment_comment_count: { Args: { post_id: string }; Returns: undefined }
       increment_comment_hearts: {
         Args: { comment_id: string }
         Returns: undefined
       }
-      increment_hearts: {
-        Args: { post_id: string }
-        Returns: undefined
-      }
+      increment_hearts: { Args: { post_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

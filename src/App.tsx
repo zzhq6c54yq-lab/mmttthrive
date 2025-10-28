@@ -129,6 +129,7 @@ import SleepImprovement from "./pages/SleepImprovement";
 import GoalSetting from "./pages/GoalSetting";
 import MentalWellnessExercise from "./pages/MentalWellnessExercise";
 import TherapySupport from "./pages/TherapySupport";
+import Unburdened from "./pages/Unburdened";
 import CareerDevelopmentModule from "./pages/career-modules/CareerDevelopmentModule";
 import LeadershipSkillsModule from "./pages/career-modules/LeadershipSkillsModule";
 import ResumeBuildingModule from "./pages/career-modules/ResumeBuildingModule";
@@ -436,6 +437,7 @@ function App() {
           <Route path="/art-therapy" element={<ArtTherapyStudio />} />
           <Route path="/dear-henry" element={<DearHenry />} />
           <Route path="/dear-henry-admin" element={<DearHenryAdmin />} />
+          <Route path="/unburdened" element={<Unburdened />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />

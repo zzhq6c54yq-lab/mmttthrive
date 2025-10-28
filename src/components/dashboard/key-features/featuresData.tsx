@@ -26,7 +26,8 @@ import {
   Shield,
   TrendingUp as CareerIcon,
   Palette,
-  Mail
+  Mail,
+  CloudRain
 } from "lucide-react";
 
 export interface FeatureItem {
@@ -236,6 +237,18 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
     path: "/dear-henry",
     color: "amber",
+    popular: true
+  },
+  {
+    id: "unburdened",
+    title: isSpanish ? "Liberado" : "Unburdened",
+    description: isSpanish 
+      ? "Comparte pensamientos anónimamente y conecta con otros en un espacio seguro" 
+      : "Share thoughts anonymously and connect with others in a safe space",
+    icon: <CloudRain className="w-6 h-6" />,
+    image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=800&q=80",
+    path: "/unburdened",
+    color: "rose",
     popular: true
   }
 ];
