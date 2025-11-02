@@ -12,22 +12,29 @@
 
 @layer base {
   :root {
-    /* Therapeutic Mental Health Palette - Light Mode */
-    --background: 30 20% 97%;
-    --foreground: 220 15% 25%;
+    /* Sanctuary Dashboard Palette - Light Mode */
+    --background: 40 33% 97%;
+    --foreground: 215 20% 23%;
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 25%;
+    --card-foreground: 215 20% 23%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 25%;
-    --primary: 150 25% 55%;
+    --popover-foreground: 215 20% 23%;
+    --primary: 142 40% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 150 30% 70%;
-    --secondary: 260 35% 70%;
-    --secondary-foreground: 0 0% 100%;
+    --primary-glow: 142 45% 75%;
+    --secondary: 265 35% 75%;
+    --secondary-foreground: 265 20% 20%;
     --muted: 220 15% 95%;
     --muted-foreground: 220 10% 55%;
-    --accent: 200 40% 75%;
-    --accent-foreground: 220 15% 25%;
+    --accent: 15 45% 70%;
+    --accent-foreground: 15 20% 20%;
+    
+    /* Therapeutic Contextual Colors */
+    --wellness: 142 40% 65%;
+    --mental-health: 265 35% 75%;
+    --community: 10 60% 80%;
+    --learning: 200 50% 75%;
+    --urgent: 35 55% 75%;
     --destructive: 0 70% 65%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 15% 90%;

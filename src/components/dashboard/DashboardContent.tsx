@@ -1,14 +1,14 @@
 import React from "react";
-import { motion } from "framer-motion";
-import DailyWellnessChallenges from "@/components/dashboard/DailyWellnessChallenges";
+import HeroSanctuary from "@/components/dashboard/HeroSanctuary";
+import WellnessRibbon from "@/components/dashboard/WellnessRibbon";
+import MasonryGrid, { MasonryLeft, MasonryRight } from "@/components/dashboard/MasonryGrid";
+import ForYouSection from "@/components/dashboard/ForYouSection";
+import CompactGratitude from "@/components/dashboard/CompactGratitude";
+import CompactAssessments from "@/components/dashboard/CompactAssessments";
+import TimelineAppointments from "@/components/dashboard/TimelineAppointments";
+import HeroWorkshop from "@/components/dashboard/HeroWorkshop";
 import SpecializedPrograms from "@/components/dashboard/SpecializedPrograms";
-import UpcomingAppointments from "@/components/dashboard/UpcomingAppointments";
-import QuizzesSection from "@/components/dashboard/QuizzesSection";
-import FeaturedWorkshops from "@/components/dashboard/FeaturedWorkshops";
-import KeyFeatures from "@/components/dashboard/key-features/KeyFeatures";
-import GratitudeVisualizer from "@/components/dashboard/GratitudeVisualizer";
-import HeroWelcomeCard from "@/components/dashboard/HeroWelcomeCard";
-import QuickActionsBar from "@/components/dashboard/QuickActionsBar";
+import FloatingHenryChat from "@/components/dashboard/FloatingHenryChat";
 import { NavigateFunction } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -72,129 +72,54 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   return (
     <main className="container mx-auto max-w-7xl px-4 sm:px-6 py-8 relative z-10">
-      {/* Hero Welcome Card */}
-      <div className="mb-8">
-        <HeroWelcomeCard 
-          userName={userName}
-          onQuickCheckin={() => navigate('/daily-wellness')}
-          onTodaysGoals={() => navigate('/goals')}
-        />
-      </div>
+      {/* Hero Sanctuary Section */}
+      <HeroSanctuary 
+        userName={userName}
+        onQuickCheckin={() => navigate('/daily-wellness')}
+        onTodaysGoals={() => navigate('/goals')}
+      />
 
-      {/* Quick Actions Bar */}
-      <div className="mb-10">
-        <QuickActionsBar />
-      </div>
+      {/* Wellness Ribbon - Horizontal Story Circles */}
+      <WellnessRibbon />
 
-      {/* Primary Section - Daily Wellness */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="mb-8"
-      >
-        <div className="bg-card rounded-3xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            {isSpanish ? '🌱 Chequeo Diario de Bienestar' : '🌱 Daily Wellness Check-in'}
-          </h2>
-          <DailyWellnessChallenges />
-        </div>
-      </motion.div>
-
-      {/* Personalized Programs - Horizontal Scroll */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="mb-8"
-      >
-        <div className="bg-card rounded-3xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            {isSpanish ? '✨ Programas Personalizados' : '✨ Programs for You'}
-          </h2>
-          <SpecializedPrograms />
-        </div>
-      </motion.div>
-
-      {/* Gratitude Moment */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="mb-8"
-      >
-        <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-3xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            {isSpanish ? '💝 Momento de Gratitud' : '💝 Gratitude Moment'}
-          </h2>
-          <GratitudeVisualizer />
-        </div>
-      </motion.div>
-
-      {/* Two Column Grid - Assessments & Appointments */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="bg-card rounded-3xl p-6 shadow-md h-full">
-            <h2 className="text-2xl font-semibold text-foreground mb-6">
-              {isSpanish ? '🧠 Evaluaciones Rápidas' : '🧠 Quick Assessments'}
-            </h2>
-            <QuizzesSection />
+      {/* Masonry Grid Layout */}
+      <MasonryGrid>
+        {/* Left Column - Large Cards */}
+        <MasonryLeft>
+          {/* Hero Workshop Card */}
+          <HeroWorkshop />
+          
+          {/* Compact Gratitude Card */}
+          <CompactGratitude />
+          
+          {/* Specialized Programs */}
+          <div className="bg-card rounded-3xl p-6 shadow-md">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
+              {isSpanish ? '✨ Programas Especializados' : '✨ Specialized Programs'}
+            </h3>
+            <SpecializedPrograms />
           </div>
-        </motion.div>
+        </MasonryLeft>
 
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="bg-card rounded-3xl p-6 shadow-md h-full">
-            <h2 className="text-2xl font-semibold text-foreground mb-6">
-              {isSpanish ? '📅 Próximas Sesiones' : '📅 Upcoming Sessions'}
-            </h2>
-            <UpcomingAppointments />
-          </div>
-        </motion.div>
-      </div>
+        {/* Right Column - Compact Cards */}
+        <MasonryRight>
+          {/* Timeline Appointments */}
+          <TimelineAppointments />
+          
+          {/* Compact Assessments Grid */}
+          <CompactAssessments />
+        </MasonryRight>
+      </MasonryGrid>
 
-      {/* Featured Workshop */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="mb-8"
-      >
-        <div className="bg-card rounded-3xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            {isSpanish ? '🎯 Taller Destacado' : '🎯 Featured Workshop'}
-          </h2>
-          <FeaturedWorkshops 
-            navigate={navigate} 
-            onWorkshopClick={onWorkshopClick}
-          />
-        </div>
-      </motion.div>
+      {/* For You Recommendations - Horizontal Scroll */}
+      <ForYouSection 
+        navigateToFeature={handleFeatureClick}
+        selectedQualities={selectedQualities}
+        selectedGoals={selectedGoals}
+      />
 
-      {/* All Features Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <div className="bg-card rounded-3xl p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            {isSpanish ? '🌟 Explorar Más Funciones' : '🌟 Explore More Features'}
-          </h2>
-          <KeyFeatures 
-            navigateToFeature={handleFeatureClick}
-            selectedQualities={selectedQualities}
-            selectedGoals={selectedGoals}
-          />
-        </div>
-      </motion.div>
+      {/* Floating Henry Chat */}
+      <FloatingHenryChat />
     </main>
   );
 };
