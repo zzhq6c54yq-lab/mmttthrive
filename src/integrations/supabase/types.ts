@@ -470,9 +470,97 @@ export type Database = {
         }
         Relationships: []
       }
+      mini_sessions: {
+        Row: {
+          anxiety: number | null
+          coaching: string | null
+          created_at: string
+          energy: number | null
+          focus: string
+          id: string
+          mood: number | null
+          shared_with_therapist: boolean | null
+          summary: string | null
+          tags: string[] | null
+          urge_level: number | null
+          user_id: string
+          user_text_primary: string | null
+          user_text_secondary: string | null
+        }
+        Insert: {
+          anxiety?: number | null
+          coaching?: string | null
+          created_at?: string
+          energy?: number | null
+          focus: string
+          id?: string
+          mood?: number | null
+          shared_with_therapist?: boolean | null
+          summary?: string | null
+          tags?: string[] | null
+          urge_level?: number | null
+          user_id: string
+          user_text_primary?: string | null
+          user_text_secondary?: string | null
+        }
+        Update: {
+          anxiety?: number | null
+          coaching?: string | null
+          created_at?: string
+          energy?: number | null
+          focus?: string
+          id?: string
+          mood?: number | null
+          shared_with_therapist?: boolean | null
+          summary?: string | null
+          tags?: string[] | null
+          urge_level?: number | null
+          user_id?: string
+          user_text_primary?: string | null
+          user_text_secondary?: string | null
+        }
+        Relationships: []
+      }
+      parent_connections: {
+        Row: {
+          accepted_at: string | null
+          connection_type: string
+          created_at: string | null
+          id: string
+          nickname: string | null
+          notes: string | null
+          recipient_id: string
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          connection_type: string
+          created_at?: string | null
+          id?: string
+          nickname?: string | null
+          notes?: string | null
+          recipient_id: string
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          connection_type?: string
+          created_at?: string | null
+          id?: string
+          nickname?: string | null
+          notes?: string | null
+          recipient_id?: string
+          requester_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
+          email: string | null
           goals: string[] | null
           id: string
           onboarding_completed: boolean | null
@@ -481,6 +569,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          email?: string | null
           goals?: string[] | null
           id: string
           onboarding_completed?: boolean | null
@@ -489,6 +578,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          email?: string | null
           goals?: string[] | null
           id?: string
           onboarding_completed?: boolean | null
@@ -554,6 +644,189 @@ export type Database = {
             columns: ["reply_id"]
             isOneToOne: false
             referencedRelation: "replies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shared_activities: {
+        Row: {
+          activity_type: string
+          assigned_to: string | null
+          child_name: string | null
+          completed: boolean | null
+          completed_at: string | null
+          connection_id: string
+          created_at: string | null
+          creator_id: string
+          description: string | null
+          due_date: string | null
+          id: string
+          priority: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          activity_type: string
+          assigned_to?: string | null
+          child_name?: string | null
+          completed?: boolean | null
+          completed_at?: string | null
+          connection_id: string
+          created_at?: string | null
+          creator_id: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          activity_type?: string
+          assigned_to?: string | null
+          child_name?: string | null
+          completed?: boolean | null
+          completed_at?: string | null
+          connection_id?: string
+          created_at?: string | null
+          creator_id?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_activities_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "parent_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shared_calendar_events: {
+        Row: {
+          child_name: string | null
+          color: string | null
+          connection_id: string
+          created_at: string | null
+          creator_id: string
+          description: string | null
+          end_time: string | null
+          event_type: string
+          id: string
+          is_recurring: boolean | null
+          location: string | null
+          recurrence_rule: string | null
+          reminder_minutes: number | null
+          start_time: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          child_name?: string | null
+          color?: string | null
+          connection_id: string
+          created_at?: string | null
+          creator_id: string
+          description?: string | null
+          end_time?: string | null
+          event_type: string
+          id?: string
+          is_recurring?: boolean | null
+          location?: string | null
+          recurrence_rule?: string | null
+          reminder_minutes?: number | null
+          start_time: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          child_name?: string | null
+          color?: string | null
+          connection_id?: string
+          created_at?: string | null
+          creator_id?: string
+          description?: string | null
+          end_time?: string | null
+          event_type?: string
+          id?: string
+          is_recurring?: boolean | null
+          location?: string | null
+          recurrence_rule?: string | null
+          reminder_minutes?: number | null
+          start_time?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_calendar_events_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "parent_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shared_media: {
+        Row: {
+          child_name: string | null
+          connection_id: string
+          created_at: string | null
+          description: string | null
+          event_date: string | null
+          file_url: string
+          id: string
+          is_favorite: boolean | null
+          media_type: string
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string | null
+          uploader_id: string
+        }
+        Insert: {
+          child_name?: string | null
+          connection_id: string
+          created_at?: string | null
+          description?: string | null
+          event_date?: string | null
+          file_url: string
+          id?: string
+          is_favorite?: boolean | null
+          media_type: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string | null
+          uploader_id: string
+        }
+        Update: {
+          child_name?: string | null
+          connection_id?: string
+          created_at?: string | null
+          description?: string | null
+          event_date?: string | null
+          file_url?: string
+          id?: string
+          is_favorite?: boolean | null
+          media_type?: string
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string | null
+          uploader_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shared_media_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "parent_connections"
             referencedColumns: ["id"]
           },
         ]

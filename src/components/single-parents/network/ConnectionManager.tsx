@@ -48,22 +48,80 @@ const ConnectionManager: React.FC = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      // Find user by email (simplified - would need profiles table in production)
-      const { data: recipientProfile } = await supabase
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(searchEmail)) {
+        toast({
+          title: "Invalid email",
+          description: "Please enter a valid email address",
+          variant: "destructive"
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Find user by email in profiles table
+      const { data: recipientProfile, error: profileError } = await supabase
         .from('profiles')
-        .select('id')
-        .eq('id', searchEmail) // This would be email lookup in production
-        .single();
+        .select('id, email')
+        .eq('email', searchEmail.toLowerCase().trim())
+        .maybeSingle();
+
+      if (profileError) throw profileError;
 
       if (!recipientProfile) {
         toast({
           title: "User not found",
-          description: "No user found with that email",
+          description: "No user found with that email address",
           variant: "destructive"
         });
+        setIsLoading(false);
         return;
       }
 
+      // Check if trying to connect with self
+      if (recipientProfile.id === user.id) {
+        toast({
+          title: "Invalid request",
+          description: "You cannot connect with yourself",
+          variant: "destructive"
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if connection already exists
+      const { data: existingConnection } = await (supabase as any)
+        .from('parent_connections')
+        .select('id, status')
+        .or(`and(requester_id.eq.${user.id},recipient_id.eq.${recipientProfile.id}),and(requester_id.eq.${recipientProfile.id},recipient_id.eq.${user.id})`)
+        .maybeSingle();
+
+      if (existingConnection) {
+        if (existingConnection.status === 'pending') {
+          toast({
+            title: "Request pending",
+            description: "A connection request is already pending",
+            variant: "destructive"
+          });
+        } else if (existingConnection.status === 'accepted') {
+          toast({
+            title: "Already connected",
+            description: "You are already connected with this user",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Connection exists",
+            description: "A connection with this user already exists",
+            variant: "destructive"
+          });
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      // Create connection request
       const { error } = await (supabase as any).from('parent_connections').insert({
         requester_id: user.id,
         recipient_id: recipientProfile.id,
@@ -75,7 +133,7 @@ const ConnectionManager: React.FC = () => {
 
       toast({
         title: "Request sent",
-        description: "Connection request sent successfully"
+        description: `Connection request sent to ${searchEmail}`
       });
 
       setSearchEmail("");

@@ -5,10 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { ParentConnection, SharedMedia } from "@/types/database-extensions";
 import { Image as ImageIcon, Upload, Heart } from "lucide-react";
+import MediaUploadDialog from "./MediaUploadDialog";
 
 const MediaGallery: React.FC = () => {
   const [media, setMedia] = useState<SharedMedia[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [selectedConnectionId, setSelectedConnectionId] = useState<string>("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -34,6 +37,11 @@ const MediaGallery: React.FC = () => {
       }
 
       const connectionIds = connections.map(c => c.id);
+      
+      // Set first connection as default for uploads
+      if (connectionIds.length > 0 && !selectedConnectionId) {
+        setSelectedConnectionId(connectionIds[0]);
+      }
 
       // Get media for these connections
       const { data, error } = await (supabase as any)
@@ -79,6 +87,18 @@ const MediaGallery: React.FC = () => {
     return <div className="text-center text-muted-foreground">Loading gallery...</div>;
   }
 
+  const handleUploadClick = () => {
+    if (!selectedConnectionId) {
+      toast({
+        title: "No connections",
+        description: "You need to connect with another parent first",
+        variant: "destructive"
+      });
+      return;
+    }
+    setUploadDialogOpen(true);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -86,11 +106,18 @@ const MediaGallery: React.FC = () => {
           <ImageIcon className="w-5 h-5" />
           Photo Gallery
         </h3>
-        <Button size="sm">
+        <Button size="sm" onClick={handleUploadClick}>
           <Upload className="w-4 h-4 mr-2" />
           Upload
         </Button>
       </div>
+      
+      <MediaUploadDialog
+        open={uploadDialogOpen}
+        onOpenChange={setUploadDialogOpen}
+        connectionId={selectedConnectionId}
+        onUploadComplete={loadMedia}
+      />
 
       {media.length === 0 ? (
         <Card className="p-8 text-center">
