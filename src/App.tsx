@@ -119,12 +119,6 @@ import ChronicIllnessWelcome from "./pages/ChronicIllnessWelcome";
 import ChronicIllnessPortal from "./pages/ChronicIllnessPortal";
 import CancerSupportWelcome from "./pages/CancerSupportWelcome";
 import AllWorkshopsPage from "./pages/AllWorkshops";
-import SingleParentsWelcome from "./pages/SingleParentsWelcome";
-import SingleParentsPortal from "./pages/SingleParentsPortal";
-import SingleParentStressAssessment from "./pages/SingleParentStressAssessment";
-import SingleParentBurnoutAssessment from "./pages/SingleParentBurnoutAssessment";
-import MiniSession from "./pages/MiniSession";
-import MiniSessionHistory from "./pages/MiniSessionHistory";
 import JournalApp from "./pages/JournalApp";
 import MemorialGarden from "./pages/MemorialGarden";
 import GriefResources from "./pages/GriefResources";
@@ -449,15 +443,6 @@ function App() {
           <Route path="/dear-henry" element={<DearHenry />} />
           <Route path="/dear-henry-admin" element={<DearHenryAdmin />} />
           <Route path="/unburdened" element={<Unburdened />} />
-          
-          <Route path="/single-parents-welcome" element={<SingleParentsWelcome />} />
-          <Route path="/single-parents-portal" element={<SingleParentsPortal />} />
-          <Route path="/single-parents-assessments/stress" element={<SingleParentStressAssessment />} />
-          <Route path="/single-parents-assessments/burnout" element={<SingleParentBurnoutAssessment />} />
-          
-          <Route path="/mini-session" element={<MiniSession />} />
-          <Route path="/between-sessions" element={<MiniSession />} />
-          <Route path="/mini-session/history" element={<MiniSessionHistory />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
           <Route path="/not-found" element={<NotFound />} />

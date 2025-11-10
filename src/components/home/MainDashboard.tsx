@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ThriveHeader from "@/components/dashboard/ThriveHeader";
 import DashboardContent from "@/components/dashboard/DashboardContent";
-import Sidebar from "@/components/dashboard/Sidebar";
+import InfoButtons from "@/components/dashboard/InfoButtons";
+import ExploreAddOns from "@/components/dashboard/ExploreAddOns";
+import HenryFloatingElement from "@/components/home/HenryFloatingElement";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
 
@@ -29,9 +31,9 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isSpanish } = useTranslation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
+    console.log("[MainDashboard] Workshop clicked:", workshopId, workshopTitle);
     toast({
       title: isSpanish ? "Navegando al taller..." : "Navigating to workshop...",
       description: workshopTitle,
@@ -41,23 +43,28 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
       <ThriveHeader 
         userName={userName}
         showHenry={showHenry}
         onHenryToggle={onHenryToggle}
-        onMenuClick={() => setSidebarOpen(true)}
       />
       
+      <InfoButtons />
+      
+      <ExploreAddOns />
+      
       <DashboardContent
-        userName={userName}
         selectedQualities={selectedQualities}
         selectedGoals={selectedGoals}
         navigateToFeature={navigateToFeature}
         navigate={navigate}
         onWorkshopClick={handleWorkshopClick}
+      />
+      
+      <HenryFloatingElement 
+        showHenry={showHenry}
+        onHenryToggle={onHenryToggle}
       />
     </div>
   );
