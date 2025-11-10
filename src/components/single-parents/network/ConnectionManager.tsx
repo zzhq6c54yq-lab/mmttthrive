@@ -4,10 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { ParentConnection } from "@/types/database-extensions";
 import { Users, UserPlus, Check, X } from "lucide-react";
 
 const ConnectionManager: React.FC = () => {
-  const [connections, setConnections] = useState<any[]>([]);
+  const [connections, setConnections] = useState<ParentConnection[]>([]);
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
   const [searchEmail, setSearchEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,8 +30,8 @@ const ConnectionManager: React.FC = () => {
 
       if (error) throw error;
 
-      const accepted = data?.filter(c => c.status === 'accepted') || [];
-      const pending = data?.filter(c => c.status === 'pending') || [];
+      const accepted = ((data || []) as unknown as ParentConnection[]).filter(c => c.status === 'accepted');
+      const pending = ((data || []) as unknown as ParentConnection[]).filter(c => c.status === 'pending');
 
       setConnections(accepted);
       setPendingRequests(pending);

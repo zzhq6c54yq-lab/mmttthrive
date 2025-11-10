@@ -43,7 +43,7 @@ const MiniSessionHistory: React.FC = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setSessions(data || []);
+      setSessions((data || []) as unknown as MiniSession[]);
     } catch (error) {
       console.error('Error loading sessions:', error);
       toast({

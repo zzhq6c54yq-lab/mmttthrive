@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { ParentConnection, SharedActivity } from "@/types/database-extensions";
 import { ListTodo, Plus, CheckCircle2 } from "lucide-react";
 import { format } from "date-fns";
 
 const ActivityManager: React.FC = () => {
-  const [activities, setActivities] = useState<any[]>([]);
+  const [activities, setActivities] = useState<SharedActivity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -44,7 +45,7 @@ const ActivityManager: React.FC = () => {
 
       if (error) throw error;
 
-      setActivities(data || []);
+      setActivities((data || []) as unknown as SharedActivity[]);
     } catch (error) {
       console.error('Error loading activities:', error);
       toast({

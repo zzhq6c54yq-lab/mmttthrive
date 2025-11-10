@@ -296,6 +296,11 @@ function App() {
           <Route path="/transport-community/:communityId" element={<CommunitySupport />} />
           <Route path="/transport-resources/:resourceId" element={<ResourceLibrary />} />
           
+          <Route path="/single-parents-welcome" element={<SingleParentsWelcome />} />
+          <Route path="/single-parents-portal" element={<SingleParentsPortal />} />
+          <Route path="/mini-session" element={<MiniSession />} />
+          <Route path="/mini-session/history" element={<MiniSessionHistory />} />
+          
           <Route path="/workshops" element={<Workshops />} />
           <Route path="/workshop/:workshopId" element={<WorkshopDetail />} />
           

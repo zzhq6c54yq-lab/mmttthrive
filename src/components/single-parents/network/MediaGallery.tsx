@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { ParentConnection, SharedMedia } from "@/types/database-extensions";
 import { Image as ImageIcon, Upload, Heart } from "lucide-react";
 
 const MediaGallery: React.FC = () => {
-  const [media, setMedia] = useState<any[]>([]);
+  const [media, setMedia] = useState<SharedMedia[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -44,7 +45,7 @@ const MediaGallery: React.FC = () => {
 
       if (error) throw error;
 
-      setMedia(data || []);
+      setMedia((data || []) as unknown as SharedMedia[]);
     } catch (error) {
       console.error('Error loading media:', error);
       toast({

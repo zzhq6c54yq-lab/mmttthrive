@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { ParentConnection, SharedCalendarEvent } from "@/types/database-extensions";
 import { Calendar, Plus } from "lucide-react";
 import { format } from "date-fns";
 
 const SharedCalendar: React.FC = () => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<SharedCalendarEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -46,7 +47,7 @@ const SharedCalendar: React.FC = () => {
 
       if (error) throw error;
 
-      setEvents(data || []);
+      setEvents((data || []) as unknown as SharedCalendarEvent[]);
     } catch (error) {
       console.error('Error loading events:', error);
       toast({
