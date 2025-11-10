@@ -470,6 +470,57 @@ export type Database = {
         }
         Relationships: []
       }
+      mini_sessions: {
+        Row: {
+          anxiety: number | null
+          coaching: string | null
+          created_at: string
+          energy: number | null
+          focus: string
+          id: string
+          mood: number | null
+          shared_with_therapist: boolean | null
+          summary: string | null
+          tags: string[] | null
+          urge_level: number | null
+          user_id: string
+          user_text_primary: string | null
+          user_text_secondary: string | null
+        }
+        Insert: {
+          anxiety?: number | null
+          coaching?: string | null
+          created_at?: string
+          energy?: number | null
+          focus: string
+          id?: string
+          mood?: number | null
+          shared_with_therapist?: boolean | null
+          summary?: string | null
+          tags?: string[] | null
+          urge_level?: number | null
+          user_id: string
+          user_text_primary?: string | null
+          user_text_secondary?: string | null
+        }
+        Update: {
+          anxiety?: number | null
+          coaching?: string | null
+          created_at?: string
+          energy?: number | null
+          focus?: string
+          id?: string
+          mood?: number | null
+          shared_with_therapist?: boolean | null
+          summary?: string | null
+          tags?: string[] | null
+          urge_level?: number | null
+          user_id?: string
+          user_text_primary?: string | null
+          user_text_secondary?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
