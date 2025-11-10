@@ -14,6 +14,50 @@ interface KeyFeaturesGridProps {
   handleNavigate: (path: string) => void;
 }
 
+// Static color mapping for icon backgrounds
+const getIconColors = (color: string): string => {
+  const colorMap: Record<string, string> = {
+    purple: "p-2 rounded-lg bg-gradient-to-br from-purple-100 to-purple-50 text-purple-600 group-hover:scale-110 transition-transform duration-300",
+    blue: "p-2 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 text-blue-600 group-hover:scale-110 transition-transform duration-300",
+    green: "p-2 rounded-lg bg-gradient-to-br from-green-100 to-green-50 text-green-600 group-hover:scale-110 transition-transform duration-300",
+    yellow: "p-2 rounded-lg bg-gradient-to-br from-yellow-100 to-yellow-50 text-yellow-600 group-hover:scale-110 transition-transform duration-300",
+    red: "p-2 rounded-lg bg-gradient-to-br from-red-100 to-red-50 text-red-600 group-hover:scale-110 transition-transform duration-300",
+    indigo: "p-2 rounded-lg bg-gradient-to-br from-indigo-100 to-indigo-50 text-indigo-600 group-hover:scale-110 transition-transform duration-300",
+    teal: "p-2 rounded-lg bg-gradient-to-br from-teal-100 to-teal-50 text-teal-600 group-hover:scale-110 transition-transform duration-300",
+    orange: "p-2 rounded-lg bg-gradient-to-br from-orange-100 to-orange-50 text-orange-600 group-hover:scale-110 transition-transform duration-300",
+    emerald: "p-2 rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600 group-hover:scale-110 transition-transform duration-300",
+    violet: "p-2 rounded-lg bg-gradient-to-br from-violet-100 to-violet-50 text-violet-600 group-hover:scale-110 transition-transform duration-300",
+    pink: "p-2 rounded-lg bg-gradient-to-br from-pink-100 to-pink-50 text-pink-600 group-hover:scale-110 transition-transform duration-300",
+    slate: "p-2 rounded-lg bg-gradient-to-br from-slate-100 to-slate-50 text-slate-600 group-hover:scale-110 transition-transform duration-300",
+    cyan: "p-2 rounded-lg bg-gradient-to-br from-cyan-100 to-cyan-50 text-cyan-600 group-hover:scale-110 transition-transform duration-300",
+    rose: "p-2 rounded-lg bg-gradient-to-br from-rose-100 to-rose-50 text-rose-600 group-hover:scale-110 transition-transform duration-300",
+    amber: "p-2 rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 text-amber-600 group-hover:scale-110 transition-transform duration-300"
+  };
+  return colorMap[color] || colorMap.purple;
+};
+
+// Static color mapping for buttons
+const getButtonColors = (color: string): string => {
+  const colorMap: Record<string, string> = {
+    purple: "bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    blue: "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    green: "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    yellow: "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-600 hover:to-yellow-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    red: "bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    indigo: "bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    teal: "bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    orange: "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    emerald: "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    violet: "bg-gradient-to-r from-violet-500 to-violet-600 text-white hover:from-violet-600 hover:to-violet-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    pink: "bg-gradient-to-r from-pink-500 to-pink-600 text-white hover:from-pink-600 hover:to-pink-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    slate: "bg-gradient-to-r from-slate-500 to-slate-600 text-white hover:from-slate-600 hover:to-slate-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    cyan: "bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    rose: "bg-gradient-to-r from-rose-500 to-rose-600 text-white hover:from-rose-600 hover:to-rose-700 shadow-md hover:shadow-lg group-hover:scale-105",
+    amber: "bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md hover:shadow-lg group-hover:scale-105"
+  };
+  return colorMap[color] || colorMap.purple;
+};
+
 const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
   features,
   selectedQualities,
@@ -116,9 +160,10 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
               </div>
 
               {/* Feature Content */}
+              {/* Feature Content */}
               <div className="p-6 relative z-10">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={`p-2 rounded-lg bg-gradient-to-br from-${feature.color}-100 to-${feature.color}-50 text-${feature.color}-600 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={getIconColors(feature.color)}>
                     {feature.icon}
                   </div>
                   <h3 className="font-bold text-lg text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight">
@@ -132,7 +177,7 @@ const KeyFeaturesGrid: React.FC<KeyFeaturesGridProps> = ({
                   className={`w-full px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
                     feature.comingSoon 
                       ? 'bg-muted text-muted-foreground cursor-not-allowed' 
-                      : `bg-gradient-to-r from-${feature.color}-500 to-${feature.color}-600 text-white hover:from-${feature.color}-600 hover:to-${feature.color}-700 shadow-md hover:shadow-lg group-hover:scale-105`
+                      : getButtonColors(feature.color)
                   }`}
                   disabled={feature.comingSoon}
                 >

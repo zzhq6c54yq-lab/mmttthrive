@@ -7,37 +7,10 @@ import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart as RechartsLineChart, Line, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useAnalyticsData } from "@/hooks/useAnalyticsData";
 
 const ProgressAnalytics = () => {
-  // Sample data for charts
-  const moodData = [
-    { name: 'Week 1', mood: 5 },
-    { name: 'Week 2', mood: 4 },
-    { name: 'Week 3', mood: 6 },
-    { name: 'Week 4', mood: 7 },
-    { name: 'Week 5', mood: 6 },
-    { name: 'Week 6', mood: 8 },
-    { name: 'Week 7', mood: 7 },
-    { name: 'Week 8', mood: 9 },
-  ];
-
-  const activityData = [
-    { name: 'Mon', minutes: 20 },
-    { name: 'Tue', minutes: 30 },
-    { name: 'Wed', minutes: 15 },
-    { name: 'Thu', minutes: 40 },
-    { name: 'Fri', minutes: 25 },
-    { name: 'Sat', minutes: 35 },
-    { name: 'Sun', minutes: 45 },
-  ];
-
-  const wellnessData = [
-    { name: 'Sleep', value: 30 },
-    { name: 'Exercise', value: 25 },
-    { name: 'Nutrition', value: 20 },
-    { name: 'Mindfulness', value: 15 },
-    { name: 'Social', value: 10 },
-  ];
+  const { moodData, activityData, wellnessData } = useAnalyticsData();
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -83,21 +56,27 @@ const ProgressAnalytics = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <RechartsLineChart
-                        data={moodData}
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis domain={[0, 10]} />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="mood" stroke="#8884d8" activeDot={{ r: 8 }} />
-                      </RechartsLineChart>
-                    </ResponsiveContainer>
-                  </div>
+                  {moodData.length > 0 ? (
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RechartsLineChart
+                          data={moodData}
+                          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis domain={[0, 10]} />
+                          <Tooltip />
+                          <Legend />
+                          <Line type="monotone" dataKey="mood" stroke="#8884d8" activeDot={{ r: 8 }} />
+                        </RechartsLineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                      <p>No mood data yet. Start tracking your mood to see your progress!</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
               
@@ -112,21 +91,27 @@ const ProgressAnalytics = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <RechartsBarChart
-                        data={activityData}
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="minutes" fill="#82ca9d" />
-                      </RechartsBarChart>
-                    </ResponsiveContainer>
-                  </div>
+                  {activityData.length > 0 ? (
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RechartsBarChart
+                          data={activityData}
+                          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="minutes" fill="#82ca9d" />
+                        </RechartsBarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                      <p>No activity data yet. Use our wellness features to track your activities!</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -142,28 +127,34 @@ const ProgressAnalytics = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RechartsPieChart>
-                      <Pie
-                        data={wellnessData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                        outerRadius={100}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {wellnessData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend />
-                    </RechartsPieChart>
-                  </ResponsiveContainer>
-                </div>
+                {wellnessData.length > 0 ? (
+                  <div className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RechartsPieChart>
+                        <Pie
+                          data={wellnessData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {wellnessData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                        <Legend />
+                      </RechartsPieChart>
+                    </ResponsiveContainer>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                    <p>No wellness metrics yet. Complete wellness activities to see your distribution!</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

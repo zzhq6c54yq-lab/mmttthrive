@@ -8,6 +8,7 @@ import CancerSupportPortal from "./pages/CancerSupportPortal";
 import CareerCoaching from "./pages/CareerCoaching";
 import MeditationStudio from "./pages/MeditationStudio";
 import AASponsor from "./pages/AASponsor";
+import SubstanceAbuseSponsor from "./pages/SubstanceAbuseSponsor";
 import Auth from "./pages/Auth";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import ResendConfirmationPage from "./pages/ResendConfirmationPage";
@@ -318,7 +319,7 @@ function App() {
           <Route path="/wellness-challenges/:id" element={<WellnessChallenges />} />
           <Route path="/my-sponsor" element={<MySponsor />} />
           <Route path="/aa-sponsor" element={<AASponsor />} />
-          <Route path="/substance-abuse-sponsor" element={<AASponsor />} />
+          <Route path="/substance-abuse-sponsor" element={<SubstanceAbuseSponsor />} />
           <Route path="/mirror-ai" element={<MirrorAI />} />
           
           <Route path="/user-lead" element={<UserLead />} />

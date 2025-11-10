@@ -521,6 +521,33 @@ export type Database = {
         }
         Relationships: []
       }
+      mood_entries: {
+        Row: {
+          created_at: string | null
+          id: string
+          mood_label: string | null
+          mood_score: number
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          mood_label?: string | null
+          mood_score: number
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          mood_label?: string | null
+          mood_score?: number
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       parent_connections: {
         Row: {
           accepted_at: string | null
@@ -1033,6 +1060,39 @@ export type Database = {
           },
         ]
       }
+      user_activities: {
+        Row: {
+          activity_name: string
+          activity_type: string
+          completed_at: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          id: string
+          metadata: Json | null
+          user_id: string
+        }
+        Insert: {
+          activity_name: string
+          activity_type: string
+          completed_at?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          metadata?: Json | null
+          user_id: string
+        }
+        Update: {
+          activity_name?: string
+          activity_type?: string
+          completed_at?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -1050,6 +1110,36 @@ export type Database = {
           created_at?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wellness_metrics: {
+        Row: {
+          created_at: string | null
+          id: string
+          metric_type: string
+          metric_unit: string | null
+          metric_value: number
+          recorded_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          metric_type: string
+          metric_unit?: string | null
+          metric_value: number
+          recorded_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          metric_type?: string
+          metric_unit?: string | null
+          metric_value?: number
+          recorded_at?: string | null
           user_id?: string
         }
         Relationships: []
