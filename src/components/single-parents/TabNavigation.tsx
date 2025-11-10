@@ -10,6 +10,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   const tabs = [
     { id: 'wellness', label: 'Parent Wellness' },
     { id: 'parenting', label: 'Parenting Tools' },
+    { id: 'network', label: 'Parent Network' },
     { id: 'resources', label: 'Resources' },
     { id: 'workshops', label: 'Workshops' },
   ];

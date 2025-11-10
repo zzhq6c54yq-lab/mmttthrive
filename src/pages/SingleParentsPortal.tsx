@@ -3,6 +3,7 @@ import PortalHeader from '@/components/single-parents/PortalHeader';
 import TabNavigation from '@/components/single-parents/TabNavigation';
 import ParentWellnessTab from '@/components/single-parents/ParentWellnessTab';
 import ParentingToolsTab from '@/components/single-parents/ParentingToolsTab';
+import ParentNetworkTab from '@/components/single-parents/ParentNetworkTab';
 import ResourcesTab from '@/components/single-parents/ResourcesTab';
 import WorkshopsTab from '@/components/single-parents/WorkshopsTab';
 import HomeButton from '@/components/HomeButton';
@@ -23,6 +24,7 @@ const SingleParentsPortal: React.FC = () => {
         <div className="mt-6">
           {activeTab === 'wellness' && <ParentWellnessTab />}
           {activeTab === 'parenting' && <ParentingToolsTab />}
+          {activeTab === 'network' && <ParentNetworkTab />}
           {activeTab === 'resources' && <ResourcesTab />}
           {activeTab === 'workshops' && <WorkshopsTab />}
         </div>
