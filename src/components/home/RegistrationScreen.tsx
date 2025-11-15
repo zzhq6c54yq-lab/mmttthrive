@@ -48,7 +48,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
     setIsStaffLoading(true);
     try {
       // Demo therapist login - check for code 0001
-      if (staffEmail === "0001" && staffPassword === "0001") {
+      if (staffEmail.trim() === "0001" && staffPassword.trim() === "0001") {
         const { error } = await supabase.auth.signInWithPassword({ 
           email: "therapist@demo.com", 
           password: "0001" 
