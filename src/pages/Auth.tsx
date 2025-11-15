@@ -14,10 +14,13 @@ import { z } from "zod";
 const Auth: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [staffEmail, setStaffEmail] = useState("");
+  const [staffPassword, setStaffPassword] = useState("");
   const [accessCode, setAccessCode] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showStaffPassword, setShowStaffPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -61,24 +64,6 @@ const Auth: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
-
-    // Check for therapist access code
-    const trimmedEmail = email.trim();
-    const trimmedCode = accessCode.trim();
-    if (trimmedCode === "0001" || trimmedEmail === "0001" || trimmedEmail === "therapist@demo.com") {
-      const { error } = await supabase.auth.signInWithPassword({ 
-        email: "therapist@demo.com", 
-        password: "0001" 
-      });
-      if (error) {
-        toast({ title: "Therapist login failed", description: error.message, variant: "destructive" });
-      } else {
-        toast({ title: "Welcome, Dr. Mitchell!", description: "Therapist dashboard loading..." });
-        navigate("/therapist-dashboard");
-      }
-      setLoading(false);
-      return;
-    }
 
     // Validate input with Zod
     try {
@@ -145,51 +130,76 @@ const Auth: React.FC = () => {
           )}
           
           {isLogin && (
-            <Alert className="mb-4 bg-primary/10 border-primary/20">
-              <Key className="h-4 w-4" />
-              <AlertTitle>Staff Login Credentials</AlertTitle>
-              <AlertDescription className="text-sm space-y-2 mt-2">
-                <div className="flex items-center justify-between gap-2">
-                  <p><strong>Email:</strong> <span className="font-mono">therapist@demo.com</span></p>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 px-2"
-                    onClick={() => copyToClipboard("therapist@demo.com", "Email")}
-                  >
-                    <Copy className="h-3 w-3" />
-                  </Button>
+            <div className="mb-4">
+              <Alert className="mb-3 bg-primary/10 border-primary/20">
+                <Key className="h-4 w-4" />
+                <AlertTitle>Staff Login</AlertTitle>
+                <AlertDescription className="text-xs opacity-70 mt-1">
+                  Demo credentials: therapist@demo.com / 0001
+                </AlertDescription>
+              </Alert>
+              
+              <div className="space-y-3 p-4 border border-primary/20 rounded-lg bg-primary/5">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium">Staff Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="email"
+                      value={staffEmail}
+                      onChange={e => setStaffEmail(e.target.value)}
+                      className="pl-10"
+                      placeholder="therapist@demo.com"
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center justify-between gap-2">
-                  <p><strong>Password:</strong> <span className="font-mono">0001</span></p>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 px-2"
-                    onClick={() => copyToClipboard("0001", "Password")}
-                  >
-                    <Copy className="h-3 w-3" />
-                  </Button>
+                
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium">Staff Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type={showStaffPassword ? "text" : "password"}
+                      value={staffPassword}
+                      onChange={e => setStaffPassword(e.target.value)}
+                      className="pl-10 pr-10"
+                      placeholder="Enter staff password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowStaffPassword(!showStaffPassword)}
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                    >
+                      {showStaffPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </div>
-                <p className="text-xs opacity-70 mt-2">Or simply enter <span className="font-mono">0001</span> in the access code field</p>
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {isLogin && (
-            <div className="space-y-2 mb-4">
-              <label className="block text-sm font-medium">Therapist Access Code</label>
-              <div className="relative">
-                <Key className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
-                  value={accessCode}
-                  onChange={e => setAccessCode(e.target.value)}
-                  className="pl-10"
-                  placeholder="Enter 0001 for therapist login"
-                />
+                
+                <Button
+                  type="button"
+                  onClick={async () => {
+                    if (!staffEmail || !staffPassword) {
+                      toast({ title: "Please enter staff credentials", variant: "destructive" });
+                      return;
+                    }
+                    setLoading(true);
+                    const { error } = await supabase.auth.signInWithPassword({ 
+                      email: staffEmail, 
+                      password: staffPassword 
+                    });
+                    if (error) {
+                      toast({ title: "Staff login failed", description: error.message, variant: "destructive" });
+                    } else {
+                      toast({ title: "Welcome back!", description: "Loading dashboard..." });
+                    }
+                    setLoading(false);
+                  }}
+                  disabled={loading}
+                  className="w-full"
+                  variant="secondary"
+                >
+                  Staff Login
+                </Button>
               </div>
             </div>
           )}
