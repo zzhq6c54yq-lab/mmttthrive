@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Mail, Lock, Stethoscope } from "lucide-react";
+import { ArrowLeft, User, Mail, Lock } from "lucide-react";
 import { useRegistrationState } from "@/hooks/useRegistrationState";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -39,38 +39,55 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
     handleSubmit
   } = useRegistrationState();
 
-  const [isTherapistLoading, setIsTherapistLoading] = React.useState(false);
+  const [staffEmail, setStaffEmail] = React.useState("");
+  const [staffPassword, setStaffPassword] = React.useState("");
+  const [isStaffLoading, setIsStaffLoading] = React.useState(false);
 
-  const handleTherapistLogin = async () => {
-    setIsTherapistLoading(true);
+  const handleStaffLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsStaffLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ 
-        email: "therapist@demo.com", 
-        password: "0001" 
-      });
-      
-      if (error) {
-        toast({ 
-          title: "Therapist login failed", 
-          description: error.message, 
-          variant: "destructive" 
+      // Demo therapist login - check for code 0001
+      if (staffEmail === "0001" && staffPassword === "0001") {
+        const { error } = await supabase.auth.signInWithPassword({ 
+          email: "therapist@demo.com", 
+          password: "0001" 
         });
+        
+        if (error) {
+          toast({ 
+            title: "Login failed", 
+            description: "Invalid credentials", 
+            variant: "destructive" 
+          });
+        } else {
+          navigate("/therapist-dashboard");
+        }
       } else {
-        toast({ 
-          title: "Welcome, Dr. Mitchell!", 
-          description: "Therapist dashboard loading..." 
+        // Regular staff login
+        const { error } = await supabase.auth.signInWithPassword({ 
+          email: staffEmail, 
+          password: staffPassword
         });
-        navigate("/therapist-dashboard");
+        
+        if (error) {
+          toast({ 
+            title: "Login failed", 
+            description: "Invalid credentials", 
+            variant: "destructive" 
+          });
+        } else {
+          navigate("/therapist-dashboard");
+        }
       }
     } catch (error) {
-      console.error('Therapist login error:', error);
       toast({ 
         title: "Login error", 
         description: "An unexpected error occurred", 
         variant: "destructive" 
       });
     } finally {
-      setIsTherapistLoading(false);
+      setIsStaffLoading(false);
     }
   };
 
@@ -112,42 +129,6 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-[#D946EF]/20 to-transparent rounded-full blur-3xl -z-10"></div>
       
       <div className="max-w-md w-full mx-auto px-4 z-10">
-        {/* Therapist Portal Section */}
-        <div className="mb-6 bg-gradient-to-r from-[#B87333]/20 to-[#E5C5A1]/20 backdrop-blur-md p-5 rounded-lg shadow-lg border border-[#B87333]/30">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="bg-[#B87333]/30 p-2 rounded-lg">
-              <Stethoscope className="h-6 w-6 text-[#E5C5A1]" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-[#E5C5A1]">Therapist Portal</h3>
-              <p className="text-sm text-gray-300">Demo Login Access</p>
-            </div>
-          </div>
-          <div className="bg-black/30 rounded-md p-3 mb-3">
-            <p className="text-xs text-gray-400 mb-2">Demo Credentials:</p>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-300">Login Code:</span>
-              <code className="bg-[#B87333]/20 px-2 py-1 rounded text-[#E5C5A1] font-mono">0001</code>
-            </div>
-          </div>
-          <Button
-            onClick={handleTherapistLogin}
-            disabled={isTherapistLoading}
-            className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:from-[#A56625] hover:to-[#D4B48F] text-white font-semibold disabled:opacity-50"
-          >
-            {isTherapistLoading ? "Logging in..." : "Login as Therapist"}
-          </Button>
-        </div>
-
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/20"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-[#1a1a1f] text-gray-400">or continue as client</span>
-          </div>
-        </div>
-
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] to-[#E5C5A1]">{translations.title}</h2>
           <p className="text-gray-300">{translations.subtitle}</p>
@@ -227,6 +208,50 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
             </button>
           </div>
         </form>
+
+        {/* Staff Access - Only show on login page */}
+        {isLogin && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <form onSubmit={handleStaffLogin} className="space-y-3">
+              <div className="text-center mb-3">
+                <p className="text-xs text-gray-400">Staff Access</p>
+                <p className="text-xs text-gray-500 mt-1">Code: 0001</p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={staffEmail}
+                    onChange={(e) => setStaffEmail(e.target.value)}
+                    placeholder="Staff ID"
+                    className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#B87333]/50 text-sm"
+                  />
+                </div>
+                
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="password"
+                    value={staffPassword}
+                    onChange={(e) => setStaffPassword(e.target.value)}
+                    placeholder="Access Code"
+                    className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#B87333]/50 text-sm"
+                  />
+                </div>
+              </div>
+
+              <Button 
+                type="submit" 
+                disabled={isStaffLoading}
+                className="w-full bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 py-2 text-sm disabled:opacity-50"
+              >
+                {isStaffLoading ? "Logging in..." : "Staff Login"}
+              </Button>
+            </form>
+          </div>
+        )}
         
         <div className="flex justify-between mt-6">
           <Button 
