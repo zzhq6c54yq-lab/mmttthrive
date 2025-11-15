@@ -30,7 +30,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('Access code valid, attempting sign in');
+    console.log('Access code valid, setting up therapist account');
 
     // Create admin client with service role key
     const supabaseAdmin = createClient(
@@ -44,14 +44,61 @@ serve(async (req) => {
       }
     );
 
-    // Try to sign in
-    const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
-      email: THERAPIST_EMAIL,
-      password: THERAPIST_PASSWORD,
+    // First, check if user exists by trying to get them
+    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000
     });
 
-    // If user doesn't exist, create it
-    if (signInError?.message?.includes('Invalid login credentials')) {
+    const existingUser = users?.find(u => u.email === THERAPIST_EMAIL);
+
+    if (existingUser) {
+      console.log('Therapist user exists, updating password');
+      
+      // Update the existing user's password
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingUser.id,
+        { password: THERAPIST_PASSWORD }
+      );
+
+      if (updateError) {
+        console.error('Error updating password:', updateError);
+        throw new Error('Failed to update therapist password');
+      }
+
+      // Ensure profile exists
+      const { error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: existingUser.id,
+          email: THERAPIST_EMAIL,
+          display_name: 'Demo Therapist',
+          is_therapist: true,
+        });
+
+      if (profileError) {
+        console.error('Error upserting profile:', profileError);
+      }
+
+      // Ensure therapist record exists
+      const { error: therapistError } = await supabaseAdmin
+        .from('therapists')
+        .upsert({
+          user_id: existingUser.id,
+          name: 'Demo Therapist',
+          title: 'Licensed Therapist',
+          bio: 'Demo therapist account for testing',
+          specialties: ['General Counseling'],
+          hourly_rate: 150,
+          is_active: true,
+        });
+
+      if (therapistError) {
+        console.error('Error upserting therapist record:', therapistError);
+      }
+
+      console.log('Therapist account updated, signing in');
+    } else {
       console.log('Therapist user does not exist, creating it');
       
       // Create the user
@@ -71,7 +118,7 @@ serve(async (req) => {
       // Create profile
       const { error: profileError } = await supabaseAdmin
         .from('profiles')
-        .upsert({
+        .insert({
           id: userData.user.id,
           email: THERAPIST_EMAIL,
           display_name: 'Demo Therapist',
@@ -85,7 +132,7 @@ serve(async (req) => {
       // Create therapist record
       const { error: therapistError } = await supabaseAdmin
         .from('therapists')
-        .upsert({
+        .insert({
           user_id: userData.user.id,
           name: 'Demo Therapist',
           title: 'Licensed Therapist',
@@ -99,29 +146,15 @@ serve(async (req) => {
         console.error('Error creating therapist record:', therapistError);
       }
 
-      console.log('Therapist account fully set up, signing in');
-
-      // Now sign in
-      const { data: newSignInData, error: newSignInError } = await supabaseAdmin.auth.signInWithPassword({
-        email: THERAPIST_EMAIL,
-        password: THERAPIST_PASSWORD,
-      });
-
-      if (newSignInError || !newSignInData.session) {
-        console.error('Error signing in after creation:', newSignInError);
-        throw newSignInError || new Error('No session returned from sign in');
-      }
-
-      console.log('Sign in successful');
-
-      return new Response(
-        JSON.stringify({ 
-          access_token: newSignInData.session.access_token,
-          refresh_token: newSignInData.session.refresh_token,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.log('Therapist account created');
     }
+
+    // Now sign in with the correct password
+    console.log('Signing in as therapist');
+    const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
+      email: THERAPIST_EMAIL,
+      password: THERAPIST_PASSWORD,
+    });
 
     if (signInError || !signInData.session) {
       console.error('Error signing in:', signInError);
