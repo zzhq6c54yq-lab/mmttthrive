@@ -136,11 +136,17 @@ const Auth: React.FC = () => {
             </Alert>
           )}
           
-          <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
-            <p className="text-sm text-muted-foreground text-center">
-              <span className="font-semibold text-primary">Therapist Demo:</span> Enter <span className="font-mono bg-background px-2 py-1 rounded">0001</span> in access code below
-            </p>
-          </div>
+          {isLogin && (
+            <Alert className="mb-4 bg-primary/10 border-primary/20">
+              <Key className="h-4 w-4" />
+              <AlertTitle>Staff Login Credentials</AlertTitle>
+              <AlertDescription className="text-sm space-y-1 mt-2">
+                <p><strong>Email:</strong> <span className="font-mono">therapist@demo.com</span></p>
+                <p><strong>Password:</strong> <span className="font-mono">0001</span></p>
+                <p className="text-xs opacity-70 mt-2">Or simply enter <span className="font-mono">0001</span> in the access code field</p>
+              </AlertDescription>
+            </Alert>
+          )}
 
           {isLogin && (
             <div className="space-y-2 mb-4">
