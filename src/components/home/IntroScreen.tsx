@@ -1,13 +1,18 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Languages, ChevronDown, RotateCcw } from "lucide-react";
+import { ArrowRight, Languages, ChevronDown, RotateCcw, Key } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 interface IntroScreenProps {
   onContinue: () => void;
@@ -16,6 +21,11 @@ interface IntroScreenProps {
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<'English' | 'Español' | 'Português' | 'Filipino'>("English");
+  const [showAccessCodeDialog, setShowAccessCodeDialog] = useState(false);
+  const [accessCode, setAccessCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
   
   useEffect(() => {
     // Load the saved language preference if available
@@ -43,6 +53,52 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
     localStorage.removeItem('hasCompletedOnboarding');
     localStorage.removeItem('thriveOnboardingProgress');
     window.location.reload();
+  };
+
+  const handleTherapistAccessCode = async () => {
+    if (accessCode !== "0001") {
+      toast({
+        title: "Invalid access code",
+        description: "Please enter a valid therapist access code.",
+        variant: "destructive",
+      });
+      setAccessCode("");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('therapist-access', {
+        body: { accessCode }
+      });
+
+      if (error) throw error;
+
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
+
+      if (sessionError) throw sessionError;
+
+      toast({
+        title: "Welcome back!",
+        description: "Therapist login successful.",
+      });
+      
+      setShowAccessCodeDialog(false);
+      setAccessCode("");
+      navigate("/therapist-dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Login failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setAccessCode("");
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
@@ -72,7 +128,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
                 ? "dahil ang buhay ay dapat na higit pa sa simpleng pagiging buhay lamang"
                 : "because life should be more than just surviving"}
         </p>
-        <div className="mt-10 flex justify-center gap-4">
+        <div className="mt-10 flex flex-col items-center gap-4">
           <Button 
             className="group bg-[#B87333] hover:bg-[#B87333]/80 hero-button shadow-[0_0_15px_rgba(184,115,51,0.4)]"
             onClick={handleBeginJourney}
@@ -85,6 +141,16 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
                   ? "Simulan ang Iyong Paglalakbay"
                   : "Begin Your Journey"}
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowAccessCodeDialog(true)}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            <Key className="mr-2 h-4 w-4" />
+            Staff Access
           </Button>
         </div>
         
@@ -101,6 +167,43 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onContinue, onSkipToMain }) =
           </div>
         )}
       </div>
+
+      <Dialog open={showAccessCodeDialog} onOpenChange={setShowAccessCodeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Therapist Access</DialogTitle>
+            <DialogDescription>
+              Enter the 4-digit access code to continue to the therapist dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="accessCode">Access Code</Label>
+              <Input
+                id="accessCode"
+                type="password"
+                placeholder="Enter 4-digit code"
+                value={accessCode}
+                onChange={(e) => setAccessCode(e.target.value)}
+                maxLength={4}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleTherapistAccessCode();
+                  }
+                }}
+                className="text-center text-2xl tracking-widest"
+              />
+            </div>
+            <Button
+              onClick={handleTherapistAccessCode}
+              disabled={loading || accessCode.length !== 4}
+              className="w-full"
+            >
+              {loading ? "Verifying..." : "Continue"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
