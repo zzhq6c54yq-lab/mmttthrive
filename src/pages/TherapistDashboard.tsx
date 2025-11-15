@@ -12,10 +12,21 @@ import ScheduleTab from "@/components/therapist/ScheduleTab";
 import MessagesTab from "@/components/therapist/MessagesTab";
 import EarningsTab from "@/components/therapist/EarningsTab";
 import { DocumentsTab } from "@/components/therapist/DocumentsTab";
+import { CalendarView } from "@/components/therapist/CalendarView";
+import { useTherapyBookings } from "@/hooks/useTherapyBookings";
 
 export default function TherapistDashboard() {
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Get current user
+  const { data: user } = useQuery({
+    queryKey: ["current-user"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      return user;
+    },
+  });
 
   // Get current therapist profile
   const { data: therapist, isLoading: therapistLoading } = useQuery({
@@ -34,6 +45,9 @@ export default function TherapistDashboard() {
       return data;
     },
   });
+
+  // Get all bookings for calendar view
+  const { data: allBookings } = useTherapyBookings(user?.id || "");
 
   // Get upcoming bookings
   const { data: upcomingBookings } = useQuery({
@@ -325,7 +339,7 @@ export default function TherapistDashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+          <TabsList className="grid grid-cols-3 md:grid-cols-7 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
@@ -343,6 +357,12 @@ export default function TherapistDashboard() {
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
               Schedule
+            </TabsTrigger>
+            <TabsTrigger 
+              value="calendar" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Calendar
             </TabsTrigger>
             <TabsTrigger 
               value="messages" 
@@ -386,6 +406,12 @@ export default function TherapistDashboard() {
           <TabsContent value="schedule" className="animate-fade-in">
             <ScheduleTab 
               appointments={appointments}
+            />
+          </TabsContent>
+
+          <TabsContent value="calendar" className="animate-fade-in">
+            <CalendarView 
+              bookings={allBookings || []}
             />
           </TabsContent>
 
