@@ -40,21 +40,24 @@ serve(async (req) => {
       }
     );
 
-    console.log('Looking up therapist user');
+    console.log('Looking up therapist profile directly from database');
 
-    // Find the therapist user by email
-    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.listUsers();
+    // Query profiles table directly instead of listing all users
+    const { data: profileData, error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .select('id, email, is_therapist')
+      .eq('email', 'therapist@demo.com')
+      .eq('is_therapist', true)
+      .maybeSingle();
     
-    if (userError) {
-      console.error('Error fetching users:', userError);
-      throw userError;
+    if (profileError) {
+      console.error('Error querying profiles:', profileError);
+      throw profileError;
     }
 
-    let therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
-    
-    // If therapist doesn't exist, call setup function to create it
-    if (!therapistUser) {
-      console.log('Therapist user not found, setting up demo therapist...');
+    // If profile doesn't exist, call setup function to create it
+    if (!profileData) {
+      console.log('Therapist profile not found, setting up demo therapist...');
       
       try {
         const setupResponse = await fetch(
@@ -74,21 +77,42 @@ serve(async (req) => {
           throw new Error('Failed to setup demo therapist');
         }
 
-        console.log('Demo therapist setup complete, fetching user...');
+        console.log('Demo therapist setup complete');
         
-        // Fetch the user again after creation
-        const { data: newUserData, error: refetchError } = await supabaseAdmin.auth.admin.listUsers();
+        // Query the profile again after creation
+        const { data: newProfileData, error: refetchError } = await supabaseAdmin
+          .from('profiles')
+          .select('id')
+          .eq('email', 'therapist@demo.com')
+          .eq('is_therapist', true)
+          .single();
         
-        if (refetchError) {
-          console.error('Error refetching users:', refetchError);
-          throw refetchError;
+        if (refetchError || !newProfileData) {
+          console.error('Error refetching profile:', refetchError);
+          throw new Error('Therapist profile not found after setup');
         }
 
-        therapistUser = newUserData.users.find(u => u.email === 'therapist@demo.com');
-        
-        if (!therapistUser) {
-          throw new Error('Therapist user not found after setup');
+        console.log('Creating session for therapist user:', newProfileData.id);
+
+        // Create a session for the newly created user
+        const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.admin.createSession({
+          userId: newProfileData.id,
+        });
+
+        if (sessionError) {
+          console.error('Error creating session:', sessionError);
+          throw sessionError;
         }
+
+        console.log('Session created successfully');
+
+        return new Response(
+          JSON.stringify({ 
+            access_token: sessionData.access_token,
+            refresh_token: sessionData.refresh_token,
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       } catch (setupError) {
         console.error('Error setting up therapist:', setupError);
         return new Response(
@@ -100,11 +124,11 @@ serve(async (req) => {
       }
     }
 
-    console.log('Creating session for therapist user:', therapistUser.id);
+    console.log('Creating session for therapist user:', profileData.id);
 
     // Create a session for the existing user
     const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.admin.createSession({
-      userId: therapistUser.id,
+      userId: profileData.id,
     });
 
     if (sessionError) {

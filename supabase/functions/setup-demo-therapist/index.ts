@@ -27,32 +27,46 @@ serve(async (req) => {
 
     const email = 'therapist@demo.com';
     const password = '0001';
-    const therapistUserId = '00000000-0000-0000-0000-000000000001';
 
-    // Check if profile exists
-    const { data: existingProfile } = await supabaseAdmin
+    // First, check if profile already exists by querying the database directly
+    const { data: existingProfile, error: profileQueryError } = await supabaseAdmin
       .from('profiles')
-      .select('id')
-      .eq('id', therapistUserId)
+      .select('id, email, is_therapist')
+      .eq('email', email)
       .maybeSingle();
 
-    // Delete existing auth user if exists
-    const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-    const existingTherapist = existingUsers?.users?.find(u => u.email === email);
-    
-    if (existingTherapist) {
-      console.log('Deleting existing auth user...');
-      await supabaseAdmin.auth.admin.deleteUser(existingTherapist.id);
+    if (profileQueryError) {
+      console.error('Error querying existing profile:', profileQueryError);
     }
 
-    // Delete profile if it exists and isn't the correct one
-    if (existingProfile && existingProfile.id !== therapistUserId) {
-      console.log('Deleting incorrect profile...');
+    // If profile exists, delete the auth user by ID (more reliable than listUsers)
+    if (existingProfile) {
+      console.log('Found existing profile with ID:', existingProfile.id);
+      console.log('Deleting existing auth user by ID...');
+      
+      const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(existingProfile.id);
+      
+      if (deleteError) {
+        console.error('Error deleting user:', deleteError);
+        // Continue anyway - the user might already be deleted from auth but profile remains
+      } else {
+        console.log('Auth user deleted successfully');
+      }
+
+      // Delete the profile record
+      console.log('Deleting existing profile...');
       await supabaseAdmin
         .from('profiles')
         .delete()
         .eq('id', existingProfile.id);
     }
+
+    // Delete any therapist records associated with this email
+    console.log('Cleaning up therapist records...');
+    await supabaseAdmin
+      .from('therapists')
+      .delete()
+      .eq('name', 'Dr. Sarah Mitchell');
 
     // Create new therapist user with correct password
     console.log('Creating new therapist user...');
@@ -95,8 +109,7 @@ serve(async (req) => {
     // Ensure therapist record exists
     const { error: therapistError } = await supabaseAdmin
       .from('therapists')
-      .upsert({
-        id: '550e8400-e29b-41d4-a716-446655440000',
+      .insert({
         user_id: authData.user.id,
         name: 'Dr. Sarah Mitchell',
         title: 'Clinical Psychologist',
@@ -105,8 +118,6 @@ serve(async (req) => {
         hourly_rate: 150,
         experience_years: 15,
         is_active: true
-      }, {
-        onConflict: 'id'
       });
 
     if (therapistError) {
