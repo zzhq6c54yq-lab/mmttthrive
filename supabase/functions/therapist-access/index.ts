@@ -10,6 +10,10 @@ const VALID_ACCESS_CODE = Deno.env.get('THERAPIST_ACCESS_CODE');
 const THERAPIST_EMAIL = Deno.env.get('THERAPIST_EMAIL');
 const THERAPIST_PASSWORD = Deno.env.get('THERAPIST_PASSWORD');
 
+// Rate limiting configuration
+const MAX_ATTEMPTS_PER_HOUR = 25;
+const RATE_LIMIT_WINDOW_MS = 3600000; // 1 hour in milliseconds
+
 if (!VALID_ACCESS_CODE || !THERAPIST_EMAIL || !THERAPIST_PASSWORD) {
   throw new Error('Missing required environment variables');
 }
@@ -44,10 +48,10 @@ serve(async (req) => {
       .select('*', { count: 'exact', head: true })
       .eq('operator', ip)
       .eq('action', 'therapist_access_attempt')
-      .gte('created_at', new Date(Date.now() - 3600000).toISOString());
+      .gte('created_at', new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString());
 
-    if (recentAttempts && recentAttempts >= 5) {
-      console.log('Rate limit exceeded for IP:', ip);
+    if (recentAttempts && recentAttempts >= MAX_ATTEMPTS_PER_HOUR) {
+      console.log(`Rate limit exceeded for IP: ${ip} (${recentAttempts}/${MAX_ATTEMPTS_PER_HOUR} attempts)`);
       await supabaseClient.from('auth_user_audit').insert({
         operator: ip,
         action: 'rate_limit_exceeded',
