@@ -40,25 +40,44 @@ serve(async (req) => {
       }
     );
 
-    console.log('Generating session for therapist@demo.com');
+    console.log('Looking up therapist user');
 
-    // Generate a magic link which includes the tokens we need
-    const { data, error } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'magiclink',
-      email: 'therapist@demo.com',
-    });
-
-    if (error) {
-      console.error('Error generating session:', error);
-      throw error;
+    // First, find the user by email
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.listUsers();
+    
+    if (userError) {
+      console.error('Error fetching users:', userError);
+      throw userError;
     }
 
-    console.log('Session generated successfully');
+    const therapistUser = userData.users.find(u => u.email === 'therapist@demo.com');
+    
+    if (!therapistUser) {
+      console.error('Therapist user not found');
+      return new Response(
+        JSON.stringify({ error: 'Therapist account not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('Creating session for therapist user:', therapistUser.id);
+
+    // Create a session for the existing user
+    const { data: sessionData, error: sessionError } = await supabaseAdmin.auth.admin.createSession({
+      userId: therapistUser.id,
+    });
+
+    if (sessionError) {
+      console.error('Error creating session:', sessionError);
+      throw sessionError;
+    }
+
+    console.log('Session created successfully');
 
     return new Response(
       JSON.stringify({ 
-        access_token: data.properties.access_token,
-        refresh_token: data.properties.refresh_token,
+        access_token: sessionData.access_token,
+        refresh_token: sessionData.refresh_token,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
