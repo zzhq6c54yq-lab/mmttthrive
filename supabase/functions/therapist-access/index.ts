@@ -117,27 +117,33 @@ serve(async (req) => {
       }
     );
 
-    // Try to sign in first - this is the most reliable way to check if user exists
-    const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
-      email: THERAPIST_EMAIL,
-      password: THERAPIST_PASSWORD,
-    });
-
-    // If sign in successful, return tokens immediately
-    if (signInData?.session && !signInError) {
-      console.log('Sign in successful');
-      return new Response(
-        JSON.stringify({ 
-          access_token: signInData.session.access_token,
-          refresh_token: signInData.session.refresh_token,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    // First check if user exists using admin API
+    const { data: existingUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error('Error listing users:', listError);
+      throw new Error(`Failed to check existing users: ${listError.message}`);
     }
 
-    // If sign in failed with invalid credentials, create the user
-    if (signInError?.message?.includes('Invalid login credentials')) {
-      console.log('User does not exist, creating therapist account');
+    const existingUser = existingUsers.users.find(u => u.email === THERAPIST_EMAIL);
+
+    if (existingUser) {
+      console.log('Therapist user exists, updating password to match environment variable');
+      
+      // User exists - update their password to match the env variable
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingUser.id,
+        { password: THERAPIST_PASSWORD }
+      );
+
+      if (updateError) {
+        console.error('Error updating therapist password:', updateError);
+        throw new Error(`Failed to update therapist password: ${updateError.message}`);
+      }
+
+      console.log('Password updated, signing in');
+    } else {
+      console.log('Therapist user does not exist, creating account');
       
       // Create the user
       const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
@@ -186,33 +192,22 @@ serve(async (req) => {
         throw new Error(`Failed to create therapist record: ${therapistError.message}`);
       }
 
-      console.log('Therapist account fully created, signing in');
-
-      // Now sign in with the newly created account
-      const { data: newSignInData, error: newSignInError } = await supabaseAdmin.auth.signInWithPassword({
-        email: THERAPIST_EMAIL,
-        password: THERAPIST_PASSWORD,
-      });
-
-      if (newSignInError || !newSignInData.session) {
-        console.error('Error signing in after creation:', newSignInError);
-        throw new Error(`Failed to sign in after creation: ${newSignInError?.message || 'No session returned'}`);
-      }
-
-      console.log('Sign in successful after creation');
-
-      return new Response(
-        JSON.stringify({ 
-          access_token: newSignInData.session.access_token,
-          refresh_token: newSignInData.session.refresh_token,
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.log('Therapist account fully created');
     }
 
-    // If sign in failed with some other error, throw it
-    console.error('Unexpected sign in error:', signInError);
-    throw new Error(`Sign in failed: ${signInError?.message || 'Unknown error'}`);
+    // Sign in with the therapist credentials (works for both existing and new users)
+    console.log('Signing in with therapist credentials');
+    const { data: signInData, error: signInError } = await supabaseAdmin.auth.signInWithPassword({
+      email: THERAPIST_EMAIL,
+      password: THERAPIST_PASSWORD,
+    });
+
+    if (signInError || !signInData.session) {
+      console.error('Error signing in:', signInError);
+      throw new Error(`Failed to sign in: ${signInError?.message || 'No session returned'}`);
+    }
+
+    console.log('Sign in successful');
 
     return new Response(
       JSON.stringify({ 
