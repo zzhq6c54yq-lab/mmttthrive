@@ -1,10 +1,9 @@
-
 import React from "react";
-import { Users, MessageSquare, VideoIcon, UserRound, Clock, Heart, ArrowRight, Activity } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Users, MessageSquare, VideoIcon, UserRound, Clock, Heart, Activity, Calendar as CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import useTranslation from "@/hooks/useTranslation";
+import ResourceCard from "./ResourceCard";
+import { motion } from "framer-motion";
 
 interface CommunitiesTabProps {
   onFeatureClick: (path: string) => void;
@@ -85,73 +84,60 @@ const CommunitiesTab: React.FC<CommunitiesTabProps> = ({ onFeatureClick }) => {
     }
   ];
   
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="prose dark:prose-invert max-w-none">
-        <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400">
+    <div className="space-y-8">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent mb-3">
           {isSpanish ? "Comunidades de Apoyo" : "Support Communities"}
         </h2>
-        <p className="text-gray-700 dark:text-gray-300">
+        <p className="text-muted-foreground">
           {isSpanish 
             ? "Conéctate con otros afectados por el cáncer para compartir experiencias y apoyo." 
             : "Connect with others affected by cancer to share experiences and support."}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {communityOptions.map(community => (
-          <Card key={community.id} className="border-blue-200 dark:border-blue-900/30 hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 dark:bg-blue-900/20 p-2 rounded-full">
-                  {community.icon}
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h3 className="font-medium text-blue-600 dark:text-blue-400">{community.title}</h3>
-                    
-                    {community.activeUsers && (
-                      <Badge variant="secondary" className="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
-                        {community.activeUsers}+ {isSpanish ? "activos" : "active"}
-                      </Badge>
-                    )}
-                    
-                    {community.upcomingEvents && (
-                      <Badge variant="secondary" className="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
-                        {community.upcomingEvents} {isSpanish ? "próximos" : "upcoming"}
-                      </Badge>
-                    )}
-                    
-                    {community.availableNow && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-300">
-                        {community.availableNow} {isSpanish ? "disponibles" : "available"}
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <p className="text-sm text-gray-600 dark:text-gray-400 my-2">{community.description}</p>
-                  
-                  {community.newPosts && (
-                    <div className="text-xs text-blue-600 dark:text-blue-400 mb-2">
-                      {community.newPosts} {isSpanish ? "publicaciones nuevas hoy" : "new posts today"}
-                    </div>
-                  )}
-                  
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => onFeatureClick(community.path)}
-                  >
-                    {isSpanish ? "Unirse y Participar" : "Join & Participate"}
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        {communityOptions.map(community => {
+          const badges = [];
+          if (community.activeUsers) badges.push({ label: isSpanish ? "activos" : "active", value: community.activeUsers, icon: <Users className="w-3 h-3" /> });
+          if (community.newPosts) badges.push({ label: isSpanish ? "nuevos" : "new", value: community.newPosts, icon: <MessageSquare className="w-3 h-3" /> });
+          if (community.upcomingEvents) badges.push({ label: isSpanish ? "próximos" : "upcoming", value: community.upcomingEvents, icon: <CalendarIcon className="w-3 h-3" /> });
+          if (community.availableNow) badges.push({ label: isSpanish ? "disponibles" : "available", value: community.availableNow, icon: <UserRound className="w-3 h-3" /> });
+          
+          return (
+            <motion.div key={community.id} variants={item}>
+              <ResourceCard
+                title={community.title}
+                description={community.description}
+                icon={community.icon}
+                onClick={() => onFeatureClick(community.path)}
+                buttonText={isSpanish ? "Unirse" : "Join"}
+                colorTheme="blue"
+                badges={badges}
+              />
+            </motion.div>
+          );
+        })}
+      </motion.div>
       
       <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800/30 rounded-lg p-5">
         <h3 className="font-medium text-blue-600 dark:text-blue-400 mb-4">

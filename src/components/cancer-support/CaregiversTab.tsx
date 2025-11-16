@@ -1,9 +1,9 @@
-
 import React from "react";
-import { HeartHandshake, BookOpen, MessageSquare, Calendar, FileText, Heart, ArrowRight } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { HeartHandshake, BookOpen, MessageSquare, Calendar, FileText, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useTranslation from "@/hooks/useTranslation";
+import ResourceCard from "./ResourceCard";
+import { motion } from "framer-motion";
 
 interface CaregiversTabProps {
   onFeatureClick: (path: string) => void;
@@ -69,56 +69,64 @@ const CaregiversTab: React.FC<CaregiversTabProps> = ({ onFeatureClick }) => {
     }
   ];
   
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="prose dark:prose-invert max-w-none">
-        <h2 className="text-2xl font-semibold text-purple-600 dark:text-purple-400">
+    <div className="space-y-8">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent mb-3">
           {isSpanish ? "Recursos para Cuidadores" : "Caregiver Resources"}
         </h2>
-        <p className="text-gray-700 dark:text-gray-300">
+        <p className="text-muted-foreground">
           {isSpanish 
             ? "Apoyo dedicado para quienes cuidan a seres queridos con cáncer." 
             : "Dedicated support for those caring for loved ones with cancer."}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         {caregiverResources.map(resource => (
-          <Card key={resource.id} className="border-purple-200 dark:border-purple-900/30 hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
-                <div className="bg-purple-100 dark:bg-purple-900/20 p-2 rounded-full">
-                  {resource.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-purple-600 dark:text-purple-400 mb-1">{resource.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{resource.description}</p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => onFeatureClick(resource.path)}
-                  >
-                    {isSpanish ? "Explorar" : "Explore"}
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <motion.div key={resource.id} variants={item}>
+            <ResourceCard
+              title={resource.title}
+              description={resource.description}
+              icon={resource.icon}
+              onClick={() => onFeatureClick(resource.path)}
+              buttonText={isSpanish ? "Explorar" : "Explore"}
+              colorTheme="purple"
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       
-      <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 mt-6 pb-4">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
         <Button 
-          className="bg-purple-500 hover:bg-purple-600 text-white"
+          className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
           onClick={() => onFeatureClick("cancer-support/caregiver-forum")}
         >
           {isSpanish ? "Foro de Discusión de Cuidadores" : "Caregiver Discussion Forum"}
         </Button>
         <Button 
           variant="outline" 
-          className="border-purple-300 text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400 dark:hover:bg-purple-900/20"
+          className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-purple-300/50 dark:border-purple-700/50 text-purple-600 dark:text-purple-400 hover:bg-white/70 dark:hover:bg-gray-800/70 transition-all duration-300"
           onClick={() => onFeatureClick("cancer-support/caregiver-groups")}
         >
           {isSpanish ? "Grupos de Apoyo" : "Support Groups"}
