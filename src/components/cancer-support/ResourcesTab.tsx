@@ -1,9 +1,9 @@
-
 import React from "react";
-import { BookOpen, FileText, Apple, Beaker, GraduationCap, DollarSign, UserCog, Scale, ArrowRight } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, FileText, Apple, Beaker, GraduationCap, DollarSign, UserCog, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useTranslation from "@/hooks/useTranslation";
+import ResourceCard from "./ResourceCard";
+import { motion } from "framer-motion";
 
 interface ResourcesTabProps {
   onFeatureClick: (path: string) => void;
@@ -90,105 +90,113 @@ const ResourcesTab: React.FC<ResourcesTabProps> = ({ onFeatureClick }) => {
     }
   ];
   
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="prose dark:prose-invert max-w-none">
-        <h2 className="text-2xl font-semibold text-cyan-600 dark:text-cyan-400">
+    <div className="space-y-8">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-500 to-cyan-600 bg-clip-text text-transparent mb-3">
           {isSpanish ? "Biblioteca de Recursos" : "Resource Library"}
         </h2>
-        <p className="text-gray-700 dark:text-gray-300">
+        <p className="text-muted-foreground">
           {isSpanish 
             ? "Acceso a información confiable y educativa sobre el cáncer." 
             : "Access to reliable, educational information about cancer."}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         {resourceItems.map(resource => (
-          <Card key={resource.id} className="border-cyan-200 dark:border-cyan-900/30 hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
-                <div className="bg-cyan-100 dark:bg-cyan-900/20 p-2 rounded-full">
-                  {resource.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-cyan-600 dark:text-cyan-400 mb-1">{resource.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{resource.description}</p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => onFeatureClick(resource.path)}
-                  >
-                    {isSpanish ? "Explorar" : "Explore"}
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <motion.div key={resource.id} variants={item}>
+            <ResourceCard
+              title={resource.title}
+              description={resource.description}
+              icon={resource.icon}
+              onClick={() => onFeatureClick(resource.path)}
+              buttonText={isSpanish ? "Ver" : "View"}
+              colorTheme="cyan"
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       
-      <div className="bg-cyan-50 dark:bg-cyan-900/10 border border-cyan-200 dark:border-cyan-800/30 rounded-lg p-5">
-        <h3 className="font-medium text-cyan-600 dark:text-cyan-400 mb-4">
-          {isSpanish ? "Recursos Prácticos" : "Practical Resources"}
-        </h3>
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-cyan-500 to-cyan-600 bg-clip-text text-transparent mb-4">
+            {isSpanish ? "Recursos Prácticos" : "Practical Resources"}
+          </h3>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {practicalResources.map(resource => (
             <Button 
               key={resource.id}
               variant="outline" 
-              className="border-cyan-300 text-cyan-600 dark:border-cyan-800 dark:text-cyan-400 justify-start"
+              size="sm"
+              className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-cyan-300/50 dark:border-cyan-700/50 text-cyan-600 dark:text-cyan-400 hover:bg-white/70 dark:hover:bg-gray-800/70 transition-all duration-300 flex items-center justify-center gap-2"
               onClick={() => onFeatureClick(resource.path)}
             >
               {resource.icon}
-              <span className="ml-2">{resource.title}</span>
+              <span className="text-sm">{resource.title}</span>
             </Button>
           ))}
         </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <Card className="border-cyan-200 dark:border-cyan-900/30">
-          <CardContent className="p-5">
-            <h3 className="font-semibold text-cyan-600 dark:text-cyan-400 mb-2">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+          <div className="bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/30 dark:to-blue-950/30 backdrop-blur-sm border border-cyan-300/50 dark:border-cyan-700/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent mb-2">
               {isSpanish ? "Historias de Sobrevivientes" : "Survivor Stories"}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               {isSpanish 
-                ? "Lea historias inspiradoras de sobrevivientes de cáncer."
-                : "Read inspiring stories from cancer survivors."}
+                ? "Lee historias inspiradoras de personas que han superado el cáncer"
+                : "Read inspiring stories from people who have overcome cancer"}
             </p>
             <Button 
-              className="bg-cyan-500 hover:bg-cyan-600 text-white"
+              variant="outline" 
+              size="sm"
+              className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-cyan-300/50 dark:border-cyan-700/50 text-cyan-600 dark:text-cyan-400 hover:bg-white/70 dark:hover:bg-gray-800/70 transition-all duration-300"
               onClick={() => onFeatureClick("cancer-support/survivor-stories")}
             >
               {isSpanish ? "Leer Historias" : "Read Stories"}
             </Button>
-          </CardContent>
-        </Card>
-        
-        <Card className="border-cyan-200 dark:border-cyan-900/30">
-          <CardContent className="p-5">
-            <h3 className="font-semibold text-cyan-600 dark:text-cyan-400 mb-2">
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-950/30 dark:to-pink-950/30 backdrop-blur-sm border border-purple-300/50 dark:border-purple-700/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-600 bg-clip-text text-transparent mb-2">
               {isSpanish ? "Inspiración Diaria" : "Daily Inspiration"}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               {isSpanish 
-                ? "Citas, mensajes y meditaciones para inspirarle diariamente."
-                : "Quotes, messages and meditations to inspire you daily."}
+                ? "Mensajes motivacionales y afirmaciones para cada día"
+                : "Motivational messages and affirmations for each day"}
             </p>
             <Button 
               variant="outline" 
-              className="border-cyan-300 text-cyan-600 hover:bg-cyan-50 dark:border-cyan-800 dark:text-cyan-400 dark:hover:bg-cyan-900/20"
+              size="sm"
+              className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-purple-300/50 dark:border-purple-700/50 text-purple-600 dark:text-purple-400 hover:bg-white/70 dark:hover:bg-gray-800/70 transition-all duration-300"
               onClick={() => onFeatureClick("cancer-support/daily-inspiration")}
             >
-              {isSpanish ? "Inspiración de Hoy" : "Today's Inspiration"}
+              {isSpanish ? "Ver Mensajes" : "View Messages"}
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

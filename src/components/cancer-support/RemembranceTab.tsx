@@ -1,11 +1,11 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Flower, BookOpen, HeartHandshake, MessageSquare, Star, Leaf, ArrowRight, Download, Heart, Sparkles } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Flower, BookOpen, HeartHandshake, MessageSquare, Star, Leaf, Download, Heart, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
+import ResourceCard from "./ResourceCard";
+import { motion } from "framer-motion";
 
 interface RemembranceTabProps {
   onFeatureClick: (path: string) => void;
@@ -617,39 +617,36 @@ Transforming loss into lasting love
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
         {remembranceResources.map(resource => (
-          <Card key={resource.id} className="border-2 border-rose-200 dark:border-rose-900/30 hover:shadow-lg hover:border-rose-300 dark:hover:border-rose-700/50 transition-all duration-300 transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-start space-x-4">
-                <div className="bg-gradient-to-br from-rose-100 to-purple-100 dark:from-rose-900/20 dark:to-purple-900/20 p-3 rounded-full">
-                  {resource.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg text-rose-600 dark:text-rose-400 mb-2">{resource.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">{resource.description}</p>
-                  <div className="flex gap-3">
-                    <Button 
-                      variant="default"
-                      size="sm" 
-                      className="bg-rose-500 hover:bg-rose-600 text-white flex-1"
-                      onClick={() => handleResourceClick(resource.path, resource.title)}
-                    >
-                      {isSpanish ? "Acceder" : "Access"}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      size="sm" 
-                      className="border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
-                      onClick={() => handleDownload(resource.downloadable, resource.fileName)}
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      {isSpanish ? "Descargar" : "Download"}
-                    </Button>
-                  </div>
+          <div key={resource.id} className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border-2 border-rose-300/50 dark:border-rose-700/50 rounded-xl p-6 hover:shadow-xl hover:border-rose-400/60 dark:hover:border-rose-600/60 transition-all duration-300">
+            <div className="flex items-start space-x-4">
+              <div className="bg-gradient-to-br from-rose-100 to-purple-100 dark:from-rose-900/20 dark:to-purple-900/20 p-3 rounded-full">
+                {resource.icon}
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-lg text-rose-600 dark:text-rose-400 mb-2">{resource.title}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{resource.description}</p>
+                <div className="flex gap-3">
+                  <Button 
+                    variant="default"
+                    size="sm" 
+                    className="bg-rose-500 hover:bg-rose-600 text-white flex-1"
+                    onClick={() => handleResourceClick(resource.path, resource.title)}
+                  >
+                    {isSpanish ? "Acceder" : "Access"}
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    size="sm" 
+                    className="border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+                    onClick={() => handleDownload(resource.downloadable, resource.fileName)}
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    {isSpanish ? "Descargar" : "Download"}
+                  </Button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
       

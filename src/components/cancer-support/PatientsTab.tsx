@@ -1,9 +1,9 @@
-
 import React from "react";
-import { Info, Calendar, Users, FileText, MessageSquare, BookOpen, PanelTop, ArrowRight } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Info, Calendar, Users, FileText, MessageSquare, BookOpen, PanelTop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useTranslation from "@/hooks/useTranslation";
+import ResourceCard from "./ResourceCard";
+import { motion } from "framer-motion";
 
 interface PatientsTabProps {
   onFeatureClick: (path: string) => void;
@@ -69,45 +69,53 @@ const PatientsTab: React.FC<PatientsTabProps> = ({ onFeatureClick }) => {
     }
   ];
   
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="prose dark:prose-invert max-w-none">
-        <h2 className="text-2xl font-semibold text-rose-600 dark:text-rose-400">
+    <div className="space-y-8">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent mb-3">
           {isSpanish ? "Recursos para Pacientes" : "Patient Resources"}
         </h2>
-        <p className="text-gray-700 dark:text-gray-300">
+        <p className="text-muted-foreground">
           {isSpanish 
             ? "Apoyo especializado para personas que están navegando su diagnóstico y tratamiento de cáncer." 
             : "Specialized support for individuals navigating cancer diagnosis and treatment."}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         {patientResources.map(resource => (
-          <Card key={resource.id} className="border-rose-200 dark:border-rose-900/30 hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-4">
-                <div className="bg-rose-100 dark:bg-rose-900/20 p-2 rounded-full">
-                  {resource.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-rose-600 dark:text-rose-400 mb-1">{resource.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{resource.description}</p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 p-0 h-auto hover:bg-transparent"
-                    onClick={() => onFeatureClick(resource.path)}
-                  >
-                    {isSpanish ? "Explorar" : "Explore"}
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <motion.div key={resource.id} variants={item}>
+            <ResourceCard
+              title={resource.title}
+              description={resource.description}
+              icon={resource.icon}
+              onClick={() => onFeatureClick(resource.path)}
+              buttonText={isSpanish ? "Explorar" : "Explore"}
+              colorTheme="rose"
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       
       <div className="bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-rose-800/30 p-4 rounded-lg">
         <div className="flex items-center space-x-3">
