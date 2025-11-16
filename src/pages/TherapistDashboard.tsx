@@ -273,33 +273,36 @@ export default function TherapistDashboard() {
     status: b.status
   })) || [];
 
-  // Transform data for EarningsTab
-  const payments = sessions?.map(s => ({
-    id: s.id,
-    date: s.session_date,
-    client_name: s.profiles?.display_name || 'Unknown Client',
-    session_type: 'video',
-    amount: therapist?.hourly_rate || 150,
-    status: 'completed'
+  // Transform data for EarningsTab - USE REAL PAYMENT DATA FROM BOOKINGS
+  const payments = allBookings?.map(b => ({
+    id: b.id,
+    date: b.appointment_date,
+    client_id: b.user_id,
+    client_name: b.profiles?.display_name || 'Unknown Client',
+    client_avatar: b.profiles?.avatar_url,
+    session_type: b.session_type, // Real session type from booking
+    session_status: b.status,
+    duration_minutes: b.duration_minutes,
+    amount: Number(b.payment_amount) || 0, // Real payment amount
+    status: b.payment_status, // Real payment status: paid, pending, failed
+    payment_method: b.payment_method || 'not_specified',
+    created_at: b.created_at
   })) || [];
 
+  // Calculate real monthly earnings from paid bookings
   const monthlyData = Array.from({ length: 6 }, (_, i) => {
     const date = new Date();
     date.setMonth(date.getMonth() - (5 - i));
-    const monthSessions = sessions?.filter(s => {
-      if (!s?.session_date) return false;
-      try {
-        const sessionDate = new Date(s.session_date);
-        if (isNaN(sessionDate.getTime())) return false;
-        return sessionDate.getMonth() === date.getMonth();
-      } catch {
-        return false;
-      }
-    }) || [];
+    const monthPayments = payments.filter(p => {
+      const paymentDate = new Date(p.date);
+      return paymentDate.getMonth() === date.getMonth() && 
+             paymentDate.getFullYear() === date.getFullYear() &&
+             p.status === 'paid'; // Only count paid payments
+    });
     
     return {
       month: date.toLocaleString('default', { month: 'short' }),
-      earnings: monthSessions.length * (therapist?.hourly_rate || 150)
+      earnings: monthPayments.reduce((sum, p) => sum + p.amount, 0)
     };
   });
 
