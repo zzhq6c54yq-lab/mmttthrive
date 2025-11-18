@@ -11,6 +11,7 @@ import QuickActions from './QuickActions';
 import CommandPalette from './CommandPalette';
 import AIContextualHelper from './AIContextualHelper';
 import LayoutControls from './LayoutControls';
+import HenryDialog from '@/components/henry/HenryDialog';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function EpicDashboard() {
@@ -18,6 +19,7 @@ export default function EpicDashboard() {
   const { user, profile, loading: userLoading } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [showHenryDialog, setShowHenryDialog] = useState(false);
 
   // Setup keyboard shortcuts
   useKeyboardShortcuts({
@@ -112,6 +114,20 @@ export default function EpicDashboard() {
       <CommandPalette 
         isOpen={isCommandPaletteOpen} 
         onClose={() => setIsCommandPaletteOpen(false)} 
+      />
+
+      {/* Henry Dialog */}
+      <HenryDialog 
+        isOpen={showHenryDialog} 
+        onOpenChange={setShowHenryDialog}
+        userName={profile?.display_name || 'there'}
+      />
+
+      {/* Hidden trigger button for YourDaySection */}
+      <button
+        id="henry-dialog-trigger"
+        className="hidden"
+        onClick={() => setShowHenryDialog(true)}
       />
     </div>
   );
