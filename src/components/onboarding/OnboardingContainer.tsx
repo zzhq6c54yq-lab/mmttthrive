@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useOnboardingFlow } from "@/hooks/useOnboardingFlow";
 import IntroScreen from "@/components/home/IntroScreen";
@@ -9,13 +9,10 @@ import SubscriptionScreen from "@/components/home/SubscriptionScreen";
 import SubscriptionAddOns from "@/components/home/SubscriptionAddOns";
 import CheckoutScreen from "@/components/home/CheckoutScreen";
 import VisionBoard from "@/components/home/VisionBoard";
-import MainDashboard from "@/components/home/MainDashboard";
-import QuickStartTutorial from "@/components/tutorials/QuickStartTutorial";
 
 const OnboardingContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showQuickStart, setShowQuickStart] = useState(false);
   const {
     currentStep,
     selectedMood,
@@ -87,58 +84,19 @@ const OnboardingContainer: React.FC = () => {
     goToStep('moodResponse');
   };
 
-  // Feature navigation for main dashboard
-  const navigateToFeature = (path: string) => {
-    navigate(path);
-  };
-
-  // Henry toggle (placeholder)
-  const handleHenryToggle = () => {
-    // Placeholder for Henry toggle
-  };
-
-  // Mark tutorial as completed
-  const markTutorialCompleted = () => {
-    localStorage.setItem('tutorialCompleted', 'true');
-  };
-
-  // Check if should show QuickStart tutorial after onboarding
+  // Redirect to dashboard after onboarding completion
   useEffect(() => {
     if (isOnboardingComplete || currentStep === 'completed') {
-      const hasSeenQuickStart = localStorage.getItem('hasSeenQuickStart');
-      if (!hasSeenQuickStart) {
-        // Small delay to ensure dashboard is rendered
-        setTimeout(() => {
-          setShowQuickStart(true);
-        }, 300);
-      }
+      navigate('/dashboard');
     }
-  }, [isOnboardingComplete, currentStep]);
+  }, [isOnboardingComplete, currentStep, navigate]);
 
-  // Render the appropriate screen
+  // Show loading message while redirecting
   if (isOnboardingComplete || currentStep === 'completed') {
     return (
-      <>
-        <MainDashboard
-          userName={userInfo.name}
-          showHenry={false}
-          onHenryToggle={handleHenryToggle}
-          selectedQualities={selectedQualities}
-          selectedGoals={selectedGoals}
-          navigateToFeature={navigateToFeature}
-          markTutorialCompleted={markTutorialCompleted}
-        />
-        
-        {/* Show QuickStart tutorial on first completion */}
-        <QuickStartTutorial
-          isOpen={showQuickStart}
-          onClose={() => setShowQuickStart(false)}
-          onComplete={() => {
-            markTutorialCompleted();
-            setShowQuickStart(false);
-          }}
-        />
-      </>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center">
+        <div className="text-white text-xl">Redirecting to your dashboard...</div>
+      </div>
     );
   }
 
