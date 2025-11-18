@@ -1,0 +1,337 @@
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+interface Message {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+interface RiskAssessment {
+  level: 'low' | 'moderate' | 'high' | 'crisis';
+  factors: string[];
+  confidence: number;
+  action: string;
+}
+
+interface IntentClassification {
+  primary: string;
+  confidence: number;
+  topics: string[];
+}
+
+// Risk classification using keyword patterns
+function assessRisk(message: string): RiskAssessment {
+  const lowerMessage = message.toLowerCase();
+  
+  // Crisis indicators
+  const crisisKeywords = ['suicide', 'kill myself', 'end my life', 'want to die', 'hurt myself', 'self harm'];
+  const hasCrisisKeyword = crisisKeywords.some(keyword => lowerMessage.includes(keyword));
+  
+  if (hasCrisisKeyword) {
+    return {
+      level: 'crisis',
+      factors: ['suicidal ideation', 'self-harm risk'],
+      confidence: 0.95,
+      action: 'immediate_crisis_intervention'
+    };
+  }
+  
+  // High risk indicators
+  const highRiskKeywords = ['severe depression', 'cant go on', 'hopeless', 'unbearable', 'overwhelming pain'];
+  const hasHighRisk = highRiskKeywords.some(keyword => lowerMessage.includes(keyword));
+  
+  if (hasHighRisk) {
+    return {
+      level: 'high',
+      factors: ['severe distress', 'hopelessness'],
+      confidence: 0.85,
+      action: 'escalate_to_crisis_agent'
+    };
+  }
+  
+  // Moderate risk indicators
+  const moderateRiskKeywords = ['anxious', 'depressed', 'stressed', 'worried', 'struggling'];
+  const hasModerateRisk = moderateRiskKeywords.some(keyword => lowerMessage.includes(keyword));
+  
+  if (hasModerateRisk) {
+    return {
+      level: 'moderate',
+      factors: ['emotional distress', 'coping difficulties'],
+      confidence: 0.75,
+      action: 'therapy_support'
+    };
+  }
+  
+  return {
+    level: 'low',
+    factors: [],
+    confidence: 0.9,
+    action: 'general_support'
+  };
+}
+
+// Intent classification
+function classifyIntent(message: string): IntentClassification {
+  const lowerMessage = message.toLowerCase();
+  const topics: string[] = [];
+  
+  if (lowerMessage.includes('sleep') || lowerMessage.includes('insomnia')) {
+    topics.push('sleep');
+  }
+  if (lowerMessage.includes('anxiety') || lowerMessage.includes('anxious') || lowerMessage.includes('panic')) {
+    topics.push('anxiety');
+  }
+  if (lowerMessage.includes('depression') || lowerMessage.includes('depressed') || lowerMessage.includes('sad')) {
+    topics.push('depression');
+  }
+  if (lowerMessage.includes('relationship') || lowerMessage.includes('partner') || lowerMessage.includes('family')) {
+    topics.push('relationships');
+  }
+  if (lowerMessage.includes('work') || lowerMessage.includes('job') || lowerMessage.includes('career')) {
+    topics.push('work');
+  }
+  if (lowerMessage.includes('meditation') || lowerMessage.includes('mindfulness') || lowerMessage.includes('breathing')) {
+    topics.push('wellness');
+  }
+  
+  const primary = topics.length > 0 ? topics[0] : 'general';
+  
+  return {
+    primary,
+    confidence: topics.length > 0 ? 0.8 : 0.6,
+    topics
+  };
+}
+
+// Route to appropriate agent based on risk and intent
+function selectAgent(risk: RiskAssessment, intent: IntentClassification): string {
+  if (risk.level === 'crisis' || risk.level === 'high') {
+    return 'crisis';
+  }
+  
+  if (intent.topics.includes('anxiety') || intent.topics.includes('depression')) {
+    return 'therapy';
+  }
+  
+  if (intent.topics.includes('wellness') || intent.topics.includes('sleep')) {
+    return 'wellness';
+  }
+  
+  return 'coaching';
+}
+
+// Get agent-specific system prompt
+function getAgentPrompt(agentType: string): string {
+  const basePrompt = "You are Henry, a kind, trauma-informed mental health companion in the ThriveMT wellness system.";
+  
+  const agentPrompts = {
+    crisis: `${basePrompt} You are in CRISIS MODE. The user is showing signs of severe distress or suicidal ideation. Your priority is immediate safety:
+- Express deep concern and empathy
+- Validate their pain without minimizing it
+- IMMEDIATELY provide crisis resources: National Suicide Prevention Lifeline (988), Crisis Text Line (text HOME to 741741)
+- Encourage them to call 911 or go to the nearest ER if in immediate danger
+- Ask if there's a trusted person they can reach out to right now
+- Stay calm, supportive, and focused on their immediate safety`,
+    
+    therapy: `${basePrompt} You are in THERAPY SUPPORT mode. Provide evidence-based therapeutic support:
+- Use active listening and reflection
+- Apply CBT, DBT, or mindfulness techniques as appropriate
+- Help identify thought patterns and coping strategies
+- Validate emotions while encouraging healthy perspectives
+- Suggest relevant ThriveMT tools (journaling, mood tracking, breathing exercises)
+- Keep responses concise but empathetic (3-5 sentences)`,
+    
+    wellness: `${basePrompt} You are in WELLNESS COACHING mode. Focus on holistic well-being:
+- Provide practical wellness tips and lifestyle guidance
+- Suggest meditation, breathing exercises, or relaxation techniques
+- Encourage healthy habits (sleep, exercise, nutrition)
+- Recommend ThriveMT wellness tools (binaural beats, guided meditation, progress tracking)
+- Keep tone encouraging and action-oriented`,
+    
+    coaching: `${basePrompt} You are in LIFE COACHING mode. Provide motivational support and practical guidance:
+- Help set achievable goals and action steps
+- Provide encouragement and accountability
+- Focus on strengths and resources
+- Suggest ThriveMT tools that match their goals
+- Keep tone warm, supportive, and solution-focused`
+  };
+  
+  return agentPrompts[agentType as keyof typeof agentPrompts] || agentPrompts.coaching;
+}
+
+// Call AI with agent-specific context
+async function callAI(messages: Message[], agentType: string): Promise<string> {
+  const togetherApiKey = Deno.env.get('TOGETHER_API_KEY');
+  
+  if (!togetherApiKey) {
+    throw new Error('TOGETHER_API_KEY not configured');
+  }
+  
+  const systemPrompt = getAgentPrompt(agentType);
+  
+  const response = await fetch("https://api.together.xyz/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${togetherApiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...messages
+      ],
+      max_tokens: 500,
+      temperature: 0.7,
+      top_p: 0.9,
+    })
+  });
+  
+  if (!response.ok) {
+    throw new Error(`AI API error: ${response.status}`);
+  }
+  
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || "I'm sorry, I'm having trouble responding right now. Please try again.";
+}
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+  
+  try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    
+    const { message, conversationId, userId } = await req.json();
+    
+    if (!message || !userId) {
+      throw new Error('Missing required fields: message, userId');
+    }
+    
+    // Get or create conversation
+    let conversation;
+    if (conversationId) {
+      const { data } = await supabase
+        .from('henry_conversations')
+        .select('*')
+        .eq('id', conversationId)
+        .single();
+      conversation = data;
+    }
+    
+    if (!conversation) {
+      const { data, error } = await supabase
+        .from('henry_conversations')
+        .insert({
+          user_id: userId,
+          message_count: 0,
+          current_risk_level: 'low'
+        })
+        .select()
+        .single();
+      
+      if (error) throw error;
+      conversation = data;
+    }
+    
+    // Assess risk and classify intent
+    const riskAssessment = assessRisk(message);
+    const intentClassification = classifyIntent(message);
+    const agentType = selectAgent(riskAssessment, intentClassification);
+    
+    // Store user message
+    await supabase.from('henry_messages').insert({
+      conversation_id: conversation.id,
+      role: 'user',
+      content: message,
+      risk_assessment: riskAssessment,
+      intent_classification: intentClassification
+    });
+    
+    // Store risk assessment
+    await supabase.from('henry_risk_assessments').insert({
+      conversation_id: conversation.id,
+      risk_level: riskAssessment.level,
+      risk_factors: riskAssessment.factors,
+      confidence_score: riskAssessment.confidence,
+      recommended_action: riskAssessment.action
+    });
+    
+    // Get conversation history (last 10 messages)
+    const { data: historyData } = await supabase
+      .from('henry_messages')
+      .select('role, content')
+      .eq('conversation_id', conversation.id)
+      .order('created_at', { ascending: true })
+      .limit(10);
+    
+    const conversationHistory: Message[] = historyData || [];
+    
+    // Get AI response
+    const aiResponse = await callAI(conversationHistory, agentType);
+    
+    // Store assistant message
+    await supabase.from('henry_messages').insert({
+      conversation_id: conversation.id,
+      role: 'assistant',
+      content: aiResponse,
+      agent_type: agentType
+    });
+    
+    // Update conversation
+    await supabase
+      .from('henry_conversations')
+      .update({
+        last_message_at: new Date().toISOString(),
+        message_count: conversation.message_count + 2,
+        current_risk_level: riskAssessment.level
+      })
+      .eq('id', conversation.id);
+    
+    // Track mood trend
+    await supabase.from('henry_mood_trends').insert({
+      user_id: userId,
+      conversation_id: conversation.id,
+      sentiment: riskAssessment.level === 'crisis' ? 'crisis' : 
+                 riskAssessment.level === 'high' ? 'negative' :
+                 riskAssessment.level === 'moderate' ? 'neutral' : 'positive',
+      topics: intentClassification.topics
+    });
+    
+    return new Response(
+      JSON.stringify({
+        response: aiResponse,
+        conversationId: conversation.id,
+        agentType,
+        riskLevel: riskAssessment.level,
+        intent: intentClassification.primary
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
+    
+  } catch (error) {
+    console.error('Error in henry-multi-agent function:', error);
+    
+    return new Response(
+      JSON.stringify({
+        error: error.message,
+        response: "I'm experiencing some technical difficulties. Please try again, or if this persists, consider reaching out to a mental health professional directly."
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
+  }
+});

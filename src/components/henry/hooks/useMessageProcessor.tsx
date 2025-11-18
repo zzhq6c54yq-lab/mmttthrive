@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { getHenryAiResponse } from "@/services/henryAiService";
+import { getHenryResponse } from "@/services/henryMultiAgentService";
 import { checkForEmergency, saveConversationToLocalStorage, analyzeSentiment } from "@/components/help/utils/messageHelpers";
 
 export interface Message {
@@ -174,17 +174,27 @@ export const useMessageProcessor = (
         setProcessing(false);
       }, 1000);
     } else {
-      // Use AI for more complex responses
-      getHenryAiResponse(text, conversationContext)
-        .then((responseText) => {
+      // Use multi-agent AI for more complex responses
+      (async () => {
+        try {
+          const response = await getHenryResponse(text);
+          
           const henryMessage: Message = {
-            text: responseText,
+            text: response.response,
             isUser: false,
             timestamp: new Date()
           };
           
+          // Check for crisis mode
+          if (response.riskLevel === 'crisis' || response.riskLevel === 'high') {
+            setEmergencyMode(true);
+            if (options.onEmergencyDetected) {
+              options.onEmergencyDetected();
+            }
+          }
+          
           addMessage(henryMessage);
-          updateConversationContext(responseText, false);
+          updateConversationContext(response.response, false);
           setProcessing(false);
           
           const allMessages = [...conversationContext.map(c => {
@@ -199,8 +209,7 @@ export const useMessageProcessor = (
           if (allMessages.length % 5 === 0) {
             saveConversation(allMessages);
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error('Error getting AI response:', error);
           const fallbackMessage: Message = {
             text: "I'm sorry, I'm having trouble responding right now. Please try again, or if this persists, consider reaching out to a mental health professional directly.",
@@ -211,7 +220,8 @@ export const useMessageProcessor = (
           addMessage(fallbackMessage);
           updateConversationContext(fallbackMessage.text, false);
           setProcessing(false);
-        });
+        }
+      })();
     }
   };
 
