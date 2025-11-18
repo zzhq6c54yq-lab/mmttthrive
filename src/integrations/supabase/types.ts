@@ -1464,6 +1464,115 @@ export type Database = {
           },
         ]
       }
+      henry_conversations: {
+        Row: {
+          current_risk_level: string | null
+          id: string
+          last_message_at: string | null
+          message_count: number | null
+          metadata: Json | null
+          started_at: string | null
+          user_id: string
+        }
+        Insert: {
+          current_risk_level?: string | null
+          id?: string
+          last_message_at?: string | null
+          message_count?: number | null
+          metadata?: Json | null
+          started_at?: string | null
+          user_id: string
+        }
+        Update: {
+          current_risk_level?: string | null
+          id?: string
+          last_message_at?: string | null
+          message_count?: number | null
+          metadata?: Json | null
+          started_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      henry_messages: {
+        Row: {
+          agent_type: string | null
+          content: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          intent_classification: Json | null
+          risk_assessment: Json | null
+          role: string
+        }
+        Insert: {
+          agent_type?: string | null
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          intent_classification?: Json | null
+          risk_assessment?: Json | null
+          role: string
+        }
+        Update: {
+          agent_type?: string | null
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          intent_classification?: Json | null
+          risk_assessment?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "henry_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      henry_mood_trends: {
+        Row: {
+          conversation_id: string | null
+          created_at: string | null
+          id: string
+          mood_score: number | null
+          sentiment: string | null
+          topics: string[] | null
+          user_id: string
+        }
+        Insert: {
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          mood_score?: number | null
+          sentiment?: string | null
+          topics?: string[] | null
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          mood_score?: number | null
+          sentiment?: string | null
+          topics?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_mood_trends_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "henry_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       henry_questions: {
         Row: {
           category: Database["public"]["Enums"]["henry_category"]
@@ -1496,6 +1605,54 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      henry_risk_assessments: {
+        Row: {
+          confidence_score: number | null
+          conversation_id: string
+          created_at: string | null
+          id: string
+          message_id: string | null
+          recommended_action: string | null
+          risk_factors: string[] | null
+          risk_level: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          message_id?: string | null
+          recommended_action?: string | null
+          risk_factors?: string[] | null
+          risk_level: string
+        }
+        Update: {
+          confidence_score?: number | null
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          message_id?: string | null
+          recommended_action?: string | null
+          risk_factors?: string[] | null
+          risk_level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "henry_risk_assessments_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "henry_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "henry_risk_assessments_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "henry_messages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       insight_tokens: {
         Row: {
