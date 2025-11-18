@@ -69,15 +69,19 @@ export default function EpicDashboard() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center p-4">
         <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-md text-center">
           <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Unable to Load Dashboard</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">
+            {!user ? 'Authentication Required' : 'Profile Setup Required'}
+          </h2>
           <p className="text-white/70 mb-6">
-            We couldn't load your profile. Please try refreshing the page or logging in again.
+            {!user 
+              ? "Please log in to access your dashboard." 
+              : "Your profile needs to be set up. Let's complete your onboarding."}
           </p>
           <button
-            onClick={() => navigate('/auth')}
+            onClick={() => navigate(!user ? '/auth' : '/onboarding')}
             className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            Return to Login
+            {!user ? 'Login' : 'Complete Setup'}
           </button>
         </div>
       </div>

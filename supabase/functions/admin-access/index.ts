@@ -92,38 +92,31 @@ serve(async (req) => {
 
     // Valid access code - now ensure admin account exists and sign in
     
-    // Check if admin user exists
-    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+    let adminUser;
     
-    if (listError) {
-      console.error('Error listing users:', listError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to verify admin account' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    // Try to create admin account (will fail gracefully if exists)
+    console.log('Attempting to create/verify admin account...');
+    
+    const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
+      email: adminEmail,
+      password: adminPassword,
+      email_confirm: true,
+    });
 
-    let adminUser = users?.find(u => u.email === adminEmail);
-
-    // Create admin account if it doesn't exist
-    if (!adminUser) {
-      console.log('Creating admin account...');
-      
-      const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
-        email: adminEmail,
-        password: adminPassword,
-        email_confirm: true,
-      });
-
-      if (createError) {
+    if (createError) {
+      // If user already exists, that's fine - we'll sign in next
+      if (!createError.message.includes('already registered') && 
+          !createError.message.includes('User already registered')) {
         console.error('Error creating admin user:', createError);
         return new Response(
           JSON.stringify({ error: 'Failed to create admin account' }),
           { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-
+      console.log('Admin account already exists, proceeding to sign in...');
+    } else {
       adminUser = newUser.user;
+      console.log(`Admin account created: ${adminEmail}`);
 
       // Assign admin role
       const { error: roleError } = await supabase.from('user_roles').insert({
@@ -135,8 +128,6 @@ serve(async (req) => {
         console.error('Error assigning admin role:', roleError);
         // Continue anyway - they can still access with the user
       }
-
-      console.log(`Admin account created: ${adminEmail}`);
     }
 
     // Sign in as admin user
@@ -153,9 +144,31 @@ serve(async (req) => {
       );
     }
 
+    // Ensure admin role is assigned (check if role exists, create if not)
+    const { data: existingRole } = await supabase
+      .from('user_roles')
+      .select('*')
+      .eq('user_id', signInData.user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (!existingRole) {
+      console.log('Assigning admin role to existing user...');
+      const { error: roleError } = await supabase.from('user_roles').insert({
+        user_id: signInData.user.id,
+        role: 'admin',
+      });
+
+      if (roleError) {
+        console.error('Error assigning admin role:', roleError);
+      } else {
+        console.log('Admin role assigned successfully');
+      }
+    }
+
     // Log successful access
     await supabase.from('auth_user_audit').insert({
-      user_id: adminUser.id,
+      user_id: signInData.user.id,
       action: 'admin_access_granted',
       operator: adminEmail,
       details: {
