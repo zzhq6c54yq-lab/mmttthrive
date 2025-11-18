@@ -5,6 +5,7 @@ import QuickCheckIn from '../../today/QuickCheckIn';
 import TodaysFocus from '../../today/TodaysFocus';
 import { DashboardData } from '@/hooks/useTodayDashboard';
 import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from '../widgets/SmartWidgets';
+import { useLayoutTracking } from '@/hooks/useLayoutTracking';
 
 interface YourDaySectionProps {
   dashboardData: DashboardData;
@@ -12,6 +13,13 @@ interface YourDaySectionProps {
 }
 
 export default function YourDaySection({ dashboardData, onCheckInComplete }: YourDaySectionProps) {
+  const { trackClick } = useLayoutTracking({ 
+    sectionId: 'your-day',
+    trackScroll: true,
+    trackClicks: true,
+    trackTime: true
+  });
+
   return (
     <div className="space-y-6">
       {/* Quick Check-In */}
