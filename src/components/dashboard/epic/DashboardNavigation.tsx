@@ -36,13 +36,13 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
           {/* Logo & Greeting */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 text-[#B87333]">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <path d="M50,20 Q65,20 75,35 L75,70 Q75,85 50,95 Q25,85 25,70 L25,35 Q35,20 50,20 Z" 
-                        fill="none" stroke="currentColor" strokeWidth="3"/>
-                  <path d="M50,55 L45,50 Q40,45 40,40 Q40,35 45,35 Q50,35 50,40 Q50,35 55,35 Q60,35 60,40 Q60,45 55,50 Z" 
-                        fill="currentColor"/>
-                </svg>
+              {/* Use the actual bronze head logo */}
+              <div className="relative w-10 h-10">
+                <img 
+                  src="/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png" 
+                  alt="ThriveMT Logo" 
+                  className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(184,115,51,0.6)]"
+                />
               </div>
               <span className="font-bold text-white text-xl hidden sm:inline">ThriveMT</span>
             </div>
@@ -94,24 +94,9 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
                 <DropdownMenuLabel className="text-gray-300">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium text-white">{userName}</p>
-                    <p className="text-xs text-gray-400">Manage your account</p>
+                    <p className="text-xs text-gray-400">My Account</p>
                   </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-white/10" />
-                <DropdownMenuItem 
-                  onClick={() => navigate('/profile')}
-                  className="text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer"
-                >
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => navigate('/settings')}
-                  className="text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer"
-                >
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-white/10" />
                 <DropdownMenuItem 
                   onClick={logout}

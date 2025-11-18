@@ -30,7 +30,7 @@ interface ToolkitSectionProps {
 
 export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, profile } = useUser();
   const { trackClick } = useLayoutTracking({ 
     sectionId: 'toolkit',
     trackScroll: true,
@@ -76,7 +76,7 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
         { name: 'Binaural Beats', path: '/binaural-beats', description: 'Sound therapy for relaxation' },
       ]
     },
-    {
+    ...(!profile?.primary_portal ? [{
       id: 'specialized-programs',
       name: 'Specialized Programs',
       icon: Users,
@@ -88,7 +88,7 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
         { name: 'First Responders', path: '/first-responders-welcome', description: 'Support for first responders' },
         { name: 'Substance Abuse Support', path: '/substance-abuse-sponsor', description: 'Recovery support tools' },
       ]
-    },
+    }] : []),
     {
       id: 'creative',
       name: 'Creative & Expression',
