@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2, Settings } from "lucide-react";
+import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2, Settings, Sparkles, Star, Clock, Video, Shield, Award, Check, Play } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
 import { Separator } from "@/components/ui/separator";
@@ -18,6 +18,8 @@ import { AnimatedProgressBar } from "@/components/therapy/AnimatedProgressBar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTherapists } from "@/hooks/useTherapists";
 import { BookingFlow } from "@/components/therapy/BookingFlow";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 const insuranceProviders = [
   "Blue Cross Blue Shield",
@@ -469,12 +471,16 @@ const TherapistMatchingDialog = () => {
     <>
     <Dialog>
       <DialogTrigger asChild>
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Button className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white font-medium w-full shadow-lg hover:shadow-xl transition-all">
-            <Search className="mr-2 h-4 w-4" />
-            Match Me With A Therapist
-          </Button>
-        </motion.div>
+        <Button
+          size="lg"
+          className="h-16 px-12 bg-gradient-to-r from-[#D4AF37] to-rose-500 hover:from-[#B8941F] hover:to-rose-600 text-black font-bold text-lg rounded-xl shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group"
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></span>
+          <span className="relative flex items-center justify-center gap-2">
+            Find Your Therapist Now
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </span>
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[700px] backdrop-blur-xl bg-background/95 border-muted shadow-2xl">
         <DialogHeader>
@@ -556,47 +562,178 @@ const RealTimeTherapy = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-br from-[hsl(var(--primary))] via-[hsl(var(--primary-glow))] to-[hsl(var(--primary))] text-white py-16 relative overflow-hidden"
-      >
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl" />
+      {/* PREMIUM CINEMATIC HERO SECTION */}
+      <div className="relative min-h-[90vh] flex items-center overflow-hidden">
+        {/* Dynamic gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-[#1a1510] to-gray-900">
+          <div className="absolute inset-0 bg-[url('/hero-pattern.svg')] opacity-5"></div>
+          {/* Animated orbs */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#D4AF37]/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-rose-500/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
-        
-        <div className="container px-4 max-w-6xl mx-auto relative z-10">
-          <div className="flex justify-between items-center mb-8">
-            <Link to="/home" className="inline-flex items-center text-white hover:text-white/80 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-            <HomeButton />
+
+        <div className="container relative z-10 px-4 mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* LEFT: Copy */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
+              {/* Back button */}
+              <Link to="/dashboard" className="inline-flex items-center text-[#D4AF37] hover:text-[#E5C5A1] transition-colors">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Dashboard
+              </Link>
+
+              {/* Announcement badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full px-5 py-2 backdrop-blur-sm"
+              >
+                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                <span className="text-sm font-medium text-[#D4AF37]">500+ sessions completed this month</span>
+              </motion.div>
+
+              {/* Main headline */}
+              <h1 className="text-6xl md:text-7xl font-bold leading-[1.1]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#E5C5A1] to-white">
+                  Real Therapy.
+                </span>
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-rose-400">
+                  Real Results.
+                </span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="text-2xl text-gray-300 leading-relaxed max-w-xl">
+                Connect with licensed therapists who understand your journey. Video or phone sessions, on your schedule.
+              </p>
+
+              {/* Social proof stats */}
+              <div className="flex flex-wrap gap-8 pt-4">
+                <div>
+                  <div className="text-4xl font-bold text-[#D4AF37]">10,000+</div>
+                  <div className="text-sm text-gray-400">Happy Clients</div>
+                </div>
+                <div>
+                  <div className="text-4xl font-bold text-[#D4AF37]">50+</div>
+                  <div className="text-sm text-gray-400">Licensed Therapists</div>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <div className="text-4xl font-bold text-[#D4AF37]">4.9</div>
+                    <Star className="w-6 h-6 fill-[#D4AF37] text-[#D4AF37]" />
+                  </div>
+                  <div className="text-sm text-gray-400">Average Rating</div>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <TherapistMatchingDialog />
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-16 px-8 border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-xl font-semibold"
+                  onClick={() => {
+                    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  See How It Works
+                  <Play className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="flex items-center gap-6 pt-6 border-t border-white/10">
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <Check className="w-5 h-5 text-green-500" />
+                  <span>HIPAA Compliant</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <Check className="w-5 h-5 text-green-500" />
+                  <span>Board Certified</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <Check className="w-5 h-5 text-green-500" />
+                  <span>Insurance Accepted</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* RIGHT: Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative hidden lg:block"
+            >
+              {/* Floating testimonial cards */}
+              <div className="relative">
+                <motion.div
+                  animate={{ y: [0, -20, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-10 -left-10 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 shadow-2xl max-w-xs z-10"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-gradient-to-br from-[#D4AF37] to-rose-500">JM</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="font-semibold text-white text-sm">Jennifer M.</div>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-[#D4AF37] text-[#D4AF37]" />)}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-300">
+                    "Finally found a therapist who gets it. Life-changing experience."
+                  </p>
+                </motion.div>
+
+                {/* Main image */}
+                <div className="relative rounded-3xl overflow-hidden border-4 border-[#D4AF37]/30 shadow-2xl">
+                  <img
+                    src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=80"
+                    alt="Therapist session"
+                    className="w-full h-[600px] object-cover"
+                  />
+                  {/* Overlay badge */}
+                  <div className="absolute bottom-6 left-6 right-6 bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-sm text-gray-400 mb-1">Next available session</div>
+                        <div className="text-xl font-bold text-white">Today at 2:00 PM</div>
+                      </div>
+                      <Button size="sm" className="bg-[#D4AF37] hover:bg-[#B8941F] text-black font-semibold">
+                        Book Now
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Another floating card */}
+                <motion.div
+                  animate={{ y: [0, 20, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute -bottom-10 -right-10 bg-gradient-to-br from-rose-500/20 to-purple-500/20 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl z-10"
+                >
+                  <div className="text-4xl font-bold text-white mb-1">96%</div>
+                  <div className="text-sm text-gray-300">Would recommend to a friend</div>
+                </motion.div>
+              </div>
+            </motion.div>
           </div>
-          <motion.h1 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-4xl md:text-5xl font-light mb-4"
-          >
-            Real-Time Therapy
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-xl text-white/90 max-w-3xl"
-          >
-            Connect with licensed therapists through secure video sessions that fit your schedule and needs.
-          </motion.p>
         </div>
-      </motion.div>
+      </div>
 
       {/* Main Content */}
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
+      <div id="how-it-works" className="container px-4 py-12 max-w-6xl mx-auto">
         {/* Find a Therapist Section */}
         <section className="mb-16">
           <h2 className="text-3xl font-light mb-8">Find a Therapist That's Right for You</h2>
