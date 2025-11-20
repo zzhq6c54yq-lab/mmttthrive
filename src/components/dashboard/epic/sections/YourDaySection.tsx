@@ -56,6 +56,133 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
       <QuickCheckIn onCheckInComplete={onCheckInComplete} />
       </div>
 
+      {/* Premium Real-Time Therapy Marketing Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/30 bg-gradient-to-br from-gray-900 via-[#1a1510] to-gray-900 shadow-2xl"
+      >
+        {/* Animated background particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-[#D4AF37]/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+
+        <div className="relative z-10 grid md:grid-cols-2 gap-8 p-10">
+          {/* LEFT SIDE: Visual + Social Proof */}
+          <div className="space-y-6">
+            {/* Premium badge */}
+            <div className="inline-flex items-center gap-2 bg-[#D4AF37]/20 backdrop-blur-sm border border-[#D4AF37]/40 rounded-full px-4 py-2">
+              <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+              <span className="text-sm font-medium text-[#D4AF37]">Premium Feature</span>
+            </div>
+
+            {/* Main headline */}
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#E5C5A1] to-[#D4AF37] mb-3 leading-tight">
+                Talk to a Real Therapist
+              </h2>
+              <p className="text-xl text-gray-300 leading-relaxed">
+                Professional, licensed therapists ready to support your mental health journey
+              </p>
+            </div>
+
+            {/* Trust indicators with real stats */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-[#D4AF37]">500+</div>
+                <div className="text-sm text-gray-400 mt-1">Sessions Completed</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-[#D4AF37]">4.9★</div>
+                <div className="text-sm text-gray-400 mt-1">Average Rating</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-[#D4AF37]">50+</div>
+                <div className="text-sm text-gray-400 mt-1">Licensed Therapists</div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE: CTA + Value Props */}
+          <div className="flex flex-col justify-center space-y-6">
+            {/* Key benefits with icons */}
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-[#D4AF37]/20 rounded-lg flex-shrink-0">
+                  <svg className="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-1">Video or Phone Sessions</h4>
+                  <p className="text-sm text-gray-400">Connect from anywhere, on your schedule</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-rose-500/20 rounded-lg flex-shrink-0">
+                  <svg className="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-1">100% Confidential</h4>
+                  <p className="text-sm text-gray-400">HIPAA-compliant, secure platform</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-500/20 rounded-lg flex-shrink-0">
+                  <Award className="w-5 h-5 text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-1">Licensed Professionals</h4>
+                  <p className="text-sm text-gray-400">All therapists are board-certified</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Pricing teaser */}
+            <div className="bg-gradient-to-r from-[#D4AF37]/10 to-rose-500/10 border border-[#D4AF37]/30 rounded-xl p-5">
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-3xl font-bold text-white">$80</span>
+                <span className="text-gray-400">/session</span>
+                <span className="ml-auto">
+                  <span className="bg-green-500/20 text-green-400 border border-green-500/30 text-xs font-semibold px-2 py-1 rounded-full">
+                    Insurance Accepted
+                  </span>
+                </span>
+              </div>
+              <p className="text-sm text-gray-400">As low as $15 with insurance • First session 50% off</p>
+            </div>
+
+            {/* Primary CTA Button */}
+            <button
+              onClick={() => {
+                trackClick({ component: 'real-time-therapy-cta' });
+                navigate('/real-time-therapy');
+              }}
+              className="w-full h-16 bg-gradient-to-r from-[#D4AF37] via-[#E5C5A1] to-[#D4AF37] hover:from-[#B8941F] hover:via-[#D4AF37] hover:to-[#B8941F] text-black font-bold text-lg rounded-xl shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></span>
+              <span className="relative flex items-center justify-center gap-2">
+                Find Your Therapist
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </span>
+            </button>
+
+            {/* Trust badge */}
+            <p className="text-center text-xs text-gray-500 flex items-center justify-center gap-2">
+              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Backed by 10,000+ satisfied clients
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Explore Portals Card */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
