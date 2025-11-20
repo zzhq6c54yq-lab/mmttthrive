@@ -94,37 +94,81 @@ const MiniSession: React.FC = () => {
     switch (step) {
       case 1:
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-foreground">Ground & Scan</h2>
-            <p className="text-muted-foreground">Let's start by checking in with how you're feeling right now.</p>
+          <div className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-white mb-2">Ground & Scan</h2>
+              <p className="text-gray-400">Let's check in with how you're feeling right now</p>
+            </div>
             
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-foreground font-medium">
-                  <Heart className="w-5 h-5 text-rose-500" />
-                  Mood: {mood}/10
-                </label>
-                <Slider value={[mood]} onValueChange={(v) => setMood(v[0])} min={1} max={10} step={1} />
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-rose-500/20 rounded-lg">
+                      <Heart className="w-6 h-6 text-rose-400" />
+                    </div>
+                    <span className="text-white font-semibold text-lg">Mood</span>
+                  </div>
+                  <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-400">{mood}/10</span>
+                </div>
+                <Slider 
+                  value={[mood]} 
+                  onValueChange={(v) => setMood(v[0])} 
+                  min={1} 
+                  max={10} 
+                  step={1}
+                  className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-gradient-to-br [&_[role=slider]]:from-rose-400 [&_[role=slider]]:to-pink-500 [&_[role=slider]]:border-2 [&_[role=slider]]:border-white [&_[role=slider]]:shadow-lg"
+                />
               </div>
 
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-foreground font-medium">
-                  <Brain className="w-5 h-5 text-blue-500" />
-                  Anxiety: {anxiety}/10
-                </label>
-                <Slider value={[anxiety]} onValueChange={(v) => setAnxiety(v[0])} min={1} max={10} step={1} />
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-500/20 rounded-lg">
+                      <Brain className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <span className="text-white font-semibold text-lg">Anxiety</span>
+                  </div>
+                  <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">{anxiety}/10</span>
+                </div>
+                <Slider 
+                  value={[anxiety]} 
+                  onValueChange={(v) => setAnxiety(v[0])} 
+                  min={1} 
+                  max={10} 
+                  step={1}
+                  className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-gradient-to-br [&_[role=slider]]:from-amber-400 [&_[role=slider]]:to-orange-500 [&_[role=slider]]:border-2 [&_[role=slider]]:border-white [&_[role=slider]]:shadow-lg"
+                />
               </div>
 
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-foreground font-medium">
-                  <Zap className="w-5 h-5 text-yellow-500" />
-                  Energy: {energy}/10
-                </label>
-                <Slider value={[energy]} onValueChange={(v) => setEnergy(v[0])} min={1} max={10} step={1} />
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-yellow-500/20 rounded-lg">
+                      <Zap className="w-6 h-6 text-yellow-400" />
+                    </div>
+                    <span className="text-white font-semibold text-lg">Energy</span>
+                  </div>
+                  <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-400">{energy}/10</span>
+                </div>
+                <Slider 
+                  value={[energy]} 
+                  onValueChange={(v) => setEnergy(v[0])} 
+                  min={1} 
+                  max={10} 
+                  step={1}
+                  className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-gradient-to-br [&_[role=slider]]:from-yellow-400 [&_[role=slider]]:to-amber-500 [&_[role=slider]]:border-2 [&_[role=slider]]:border-white [&_[role=slider]]:shadow-lg"
+                />
               </div>
             </div>
 
-            <Button onClick={() => setStep(2)} className="w-full">Continue</Button>
+            <Button 
+              onClick={() => setStep(2)} 
+              className="w-full bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 hover:from-purple-600 hover:via-blue-600 hover:to-purple-600 text-white font-bold py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] text-lg"
+              size="lg"
+            >
+              Continue
+            </Button>
           </div>
         );
 
@@ -255,18 +299,25 @@ const MiniSession: React.FC = () => {
   };
 
   return (
-    <Page title="Between-Session Companion" returnToMain>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-[#1a1520] to-gray-900 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Between-Session Companion</h1>
-          <p className="text-muted-foreground">AI-powered support when you need it</p>
+          <div className="inline-flex items-center gap-3 mb-4">
+            <div className="p-3 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl">
+              <Sparkles className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400">
+            Between-Session Companion
+          </h1>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">AI-powered support when you need it most</p>
         </div>
 
-        <Card className="p-8 bg-card">
+        <Card className="p-10 bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-xl border-purple-500/20 shadow-2xl">
           {renderStep()}
         </Card>
       </div>
-    </Page>
+    </div>
   );
 };
 

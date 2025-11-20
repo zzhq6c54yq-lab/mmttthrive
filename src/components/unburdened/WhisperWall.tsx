@@ -30,13 +30,14 @@ export default function WhisperWall() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-6">
+    <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Navigation Tabs */}
-      <nav className="flex gap-2 border-b border-border pb-2">
+      <nav className="flex gap-2 p-2 bg-white/5 backdrop-blur-sm rounded-xl border border-rose-500/20">
         <Button
           variant={view === "portal" ? "default" : "ghost"}
           size="sm"
           onClick={() => setView("portal")}
+          className={view === "portal" ? "bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold shadow-lg" : "text-gray-300 hover:text-white hover:bg-white/10"}
         >
           Let it Out
         </Button>
@@ -44,6 +45,7 @@ export default function WhisperWall() {
           variant={view === "heartboard" ? "default" : "ghost"}
           size="sm"
           onClick={() => setView("heartboard")}
+          className={view === "heartboard" ? "bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold shadow-lg" : "text-gray-300 hover:text-white hover:bg-white/10"}
         >
           Heartboard
         </Button>
@@ -52,6 +54,7 @@ export default function WhisperWall() {
             variant={view === "reflection" ? "default" : "ghost"}
             size="sm"
             onClick={() => setView("reflection")}
+            className={view === "reflection" ? "bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold shadow-lg" : "text-gray-300 hover:text-white hover:bg-white/10"}
           >
             Reflection
           </Button>
