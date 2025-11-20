@@ -24,7 +24,7 @@ serve(async (req) => {
     const { data: therapist, error: therapistError } = await supabase
       .from('therapists')
       .select('id, name, user_id')
-      .eq('status', 'active')
+      .eq('is_active', true)
       .limit(1)
       .single();
 

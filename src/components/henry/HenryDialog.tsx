@@ -178,7 +178,7 @@ const HenryDialog: React.FC<HenryDialogProps> = ({
         </div>
 
         <div className="flex-shrink-0 px-6 pt-6 pb-4">
-          <HenryHeader />
+          <HenryHeader onClose={() => onOpenChange(false)} />
         </div>
 
         <div className="absolute right-4 top-24 z-40 flex flex-col gap-2">
