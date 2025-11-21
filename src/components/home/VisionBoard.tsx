@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Sparkles, Heart, Brain, Target, Star, Lightbulb, ArrowRight } from "lucide-react";
+import { Check, Sparkles, Heart, Brain, Target, Star, Lightbulb, ArrowRight, Smile, Users, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -130,7 +130,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     { 
       id: "focused", 
       label: isSpanish ? "Enfocado" : "Focused", 
-      icon: "🎯", 
+      icon: <Target className="w-6 h-6 text-[#D4AF37]" />, 
       description: isSpanish ? "Dirigiendo tu energía con intención" : "Directing your energy with intention" 
     },
     { 
@@ -142,7 +142,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     { 
       id: "joyful", 
       label: isSpanish ? "Alegre" : "Joyful", 
-      icon: "😊", 
+      icon: <Smile className="w-6 h-6 text-[#D4AF37]" />, 
       description: isSpanish ? "Encontrando deleite en los momentos cotidianos" : "Finding delight in everyday moments" 
     },
     { 
@@ -182,7 +182,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     { 
       id: "better-relationships", 
       label: isSpanish ? "Mejores Relaciones" : "Better Relationships", 
-      icon: "🤝", 
+      icon: <Users className="w-6 h-6 text-[#D4AF37]" />, 
       description: isSpanish ? "Nutriendo conexiones que importan" : "Nurturing connections that matter" 
     },
     { 
@@ -200,7 +200,7 @@ const VisionBoard: React.FC<VisionBoardProps> = ({
     { 
       id: "building-confidence", 
       label: isSpanish ? "Construir Confianza" : "Building Confidence", 
-      icon: "💪", 
+      icon: <Zap className="w-6 h-6 text-[#D4AF37]" />, 
       description: isSpanish ? "Fortaleciendo tu autoconfianza" : "Strengthening your self-belief" 
     },
     { 

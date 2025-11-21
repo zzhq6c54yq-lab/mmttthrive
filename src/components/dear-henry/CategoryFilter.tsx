@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Star, AlertCircle, Users, Zap, Cloud, Target, Shield, TrendingUp } from 'lucide-react';
 
 interface CategoryFilterProps {
   selectedCategory: string | null;
@@ -8,14 +9,14 @@ interface CategoryFilterProps {
 }
 
 const categories = [
-  { value: null, label: 'All Topics', emoji: '🌟' },
-  { value: 'anxiety', label: 'Anxiety', emoji: '😰' },
-  { value: 'relationships', label: 'Relationships', emoji: '💑' },
-  { value: 'self-esteem', label: 'Self-Esteem', emoji: '💪' },
-  { value: 'depression', label: 'Depression', emoji: '😔' },
-  { value: 'purpose', label: 'Purpose', emoji: '🎯' },
-  { value: 'trauma', label: 'Trauma', emoji: '🩹' },
-  { value: 'motivation', label: 'Motivation', emoji: '🚀' },
+  { value: null, label: 'All Topics', icon: <Star className="w-4 h-4" /> },
+  { value: 'anxiety', label: 'Anxiety', icon: <AlertCircle className="w-4 h-4" /> },
+  { value: 'relationships', label: 'Relationships', icon: <Users className="w-4 h-4" /> },
+  { value: 'self-esteem', label: 'Self-Esteem', icon: <Zap className="w-4 h-4" /> },
+  { value: 'depression', label: 'Depression', icon: <Cloud className="w-4 h-4" /> },
+  { value: 'purpose', label: 'Purpose', icon: <Target className="w-4 h-4" /> },
+  { value: 'trauma', label: 'Trauma', icon: <Shield className="w-4 h-4" /> },
+  { value: 'motivation', label: 'Motivation', icon: <TrendingUp className="w-4 h-4" /> },
 ];
 
 const CategoryFilter: React.FC<CategoryFilterProps> = ({
@@ -44,7 +45,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                   : 'hover:border-amber-500'
               }`}
             >
-              <span className="mr-2">{category.emoji}</span>
+              <span className="mr-2 text-[#D4AF37]">{category.icon}</span>
               {category.label}
             </Button>
           </motion.div>

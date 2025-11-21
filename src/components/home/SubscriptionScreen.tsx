@@ -186,7 +186,7 @@ const SubscriptionScreen: React.FC<SubscriptionScreenProps> = ({
         <div className="text-center mb-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#B87333] via-[#E5C5A1] to-[#B87333] animate-gradient-x" style={{backgroundSize: '200% auto'}}>{translations.title}</h2>
           <p className="text-xl text-gray-300 mb-4">{translations.subtitle}</p>
-          <p className="text-lg text-[#E5C5A1] font-semibold">✨ Start your mental wellness journey with plans designed for every need ✨</p>
+          <p className="text-lg text-[#E5C5A1] font-semibold">Start your mental wellness journey with plans designed for every need</p>
           
           {/* Enhanced Billing cycle toggle */}
           <div className="flex items-center justify-center mt-8">

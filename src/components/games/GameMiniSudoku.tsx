@@ -152,7 +152,7 @@ const GameMiniSudoku: React.FC<GameMiniSudokuProps> = ({ game, onComplete }) => 
       {completed ? (
         <>
           <div className="text-green-700 font-semibold mb-2">
-            {getTranslatedText("miniSudokuFeedbackSolved") || "Sudoku solved! 🥳"}
+            {getTranslatedText("miniSudokuFeedbackSolved") || "Sudoku solved!"}
           </div>
           <Button className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white mt-1" onClick={handleRestart}>
             {getTranslatedText("miniSudokuPlayAgain") || "Play Again"}

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Moon, Sun, BarChart3, Target, TrendingUp, Bed, Coffee, Smartphone, Eye } from "lucide-react";
+import { Calendar, Clock, Moon, Sun, BarChart3, Target, TrendingUp, Bed, Coffee, Smartphone, Eye, AlertCircle } from "lucide-react";
 import BackButton from "@/components/navigation/BackButton";
 import HomeButton from "@/components/HomeButton";
 import { useToast } from "@/hooks/use-toast";
@@ -89,7 +89,7 @@ const SleepTracker: React.FC = () => {
     { id: "caffeine", label: "Caffeine", icon: "☕" },
     { id: "alcohol", label: "Alcohol", icon: "🍷" },
     { id: "screen-time", label: "Screen Time", icon: "📱" },
-    { id: "stress", label: "Stress", icon: "😰" },
+    { id: "stress", label: "Stress", icon: <AlertCircle className="w-5 h-5" /> },
     { id: "no-caffeine", label: "No Caffeine", icon: "🚫☕" },
     { id: "meditation", label: "Meditation", icon: "🧘" },
     { id: "reading", label: "Reading", icon: "📚" }

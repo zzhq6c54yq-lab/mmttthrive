@@ -19,6 +19,7 @@ interface ChatMessage {
   timestamp: string;
   reactions?: {
     type: string;
+    icon?: React.ReactNode;
     count: number;
     userReacted: boolean;
   }[];
@@ -57,7 +58,7 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
           content: "Welcome everyone to our Anxiety Support Circle! I'm Alex, a licensed therapist specializing in anxiety disorders. This is a safe space for all of us to share experiences and support each other.",
           timestamp: "10:00 AM",
           reactions: [
-            { type: "❤️", count: 5, userReacted: false },
+            { type: "heart", icon: <Heart className="w-4 h-4" />, count: 5, userReacted: false },
             { type: "👍", count: 3, userReacted: false }
           ]
         },
@@ -69,7 +70,7 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
           content: "Thanks for having this group. I've been struggling with social anxiety for years, and it's been getting worse since starting my new job. Looking forward to connecting with others who understand.",
           timestamp: "10:05 AM",
           reactions: [
-            { type: "❤️", count: 4, userReacted: false },
+            { type: "heart", icon: <Heart className="w-4 h-4" />, count: 4, userReacted: false },
             { type: "🤗", count: 2, userReacted: false }
           ]
         },
@@ -351,15 +352,15 @@ const ChatRoomDialog: React.FC<ChatRoomDialogProps> = ({
                         <div className="flex gap-1 mt-1 opacity-0 hover:opacity-100 transition-opacity">
                           <button
                             className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            onClick={() => handleReaction(message.id, "👍")}
+                            onClick={() => handleReaction(message.id, "thumbsup")}
                           >
-                            <span>👍</span>
+                            <ThumbsUp className="w-4 h-4" />
                           </button>
                           <button
                             className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            onClick={() => handleReaction(message.id, "❤️")}
+                            onClick={() => handleReaction(message.id, "heart")}
                           >
-                            <span>❤️</span>
+                            <Heart className="w-4 h-4" />
                           </button>
                         </div>
                       )}

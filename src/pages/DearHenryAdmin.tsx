@@ -133,7 +133,7 @@ const DearHenryAdmin: React.FC = () => {
       if (error) throw error;
 
       toast({
-        title: "Answer Generated! ✨",
+        title: "Answer Generated!",
         description: "Henry's response has been published.",
       });
 

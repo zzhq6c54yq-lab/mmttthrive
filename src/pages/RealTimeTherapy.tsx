@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2, Settings, Sparkles, Star, Clock, Video, Shield, Award, Check, Play } from "lucide-react";
+import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCheck, Calendar, CreditCard, Users, Loader2, Settings, Sparkles, Star, Clock, Video, Shield, Award, Check, Play, Brain, Cloud, AlertCircle, Heart, Home, Briefcase, User, Fingerprint, Rainbow, RefreshCw, Utensils, TrendingUp, Activity } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
 import { Separator } from "@/components/ui/separator";
@@ -33,21 +33,21 @@ const insuranceProviders = [
 ];
 
 const therapistKeywords = [
-  { name: "Anxiety", icon: "💭" },
-  { name: "Depression", icon: "😔" },
-  { name: "Trauma", icon: "🛡️" },
-  { name: "PTSD", icon: "⚡" },
-  { name: "Grief", icon: "💔" },
-  { name: "Relationships", icon: "👫" },
-  { name: "Family Issues", icon: "👨‍👩‍👧‍👦" },
-  { name: "Work Stress", icon: "💼" },
-  { name: "Self-Esteem", icon: "🔍" },
-  { name: "Identity", icon: "🧩" },
-  { name: "LGBTQ+", icon: "🌈" },
-  { name: "Addiction", icon: "🔄" },
-  { name: "Eating Disorders", icon: "🍽️" },
-  { name: "Life Transitions", icon: "🔄" },
-  { name: "Chronic Illness", icon: "🏥" }
+  { name: "Anxiety", icon: <Brain className="w-5 h-5" /> },
+  { name: "Depression", icon: <Cloud className="w-5 h-5" /> },
+  { name: "Trauma", icon: <Shield className="w-5 h-5" /> },
+  { name: "PTSD", icon: <AlertCircle className="w-5 h-5" /> },
+  { name: "Grief", icon: <Heart className="w-5 h-5" /> },
+  { name: "Relationships", icon: <Users className="w-5 h-5" /> },
+  { name: "Family Issues", icon: <Home className="w-5 h-5" /> },
+  { name: "Work Stress", icon: <Briefcase className="w-5 h-5" /> },
+  { name: "Self-Esteem", icon: <User className="w-5 h-5" /> },
+  { name: "Identity", icon: <Fingerprint className="w-5 h-5" /> },
+  { name: "LGBTQ+", icon: <Rainbow className="w-5 h-5" /> },
+  { name: "Addiction", icon: <RefreshCw className="w-5 h-5" /> },
+  { name: "Eating Disorders", icon: <Utensils className="w-5 h-5" /> },
+  { name: "Life Transitions", icon: <TrendingUp className="w-5 h-5" /> },
+  { name: "Chronic Illness", icon: <Activity className="w-5 h-5" /> }
 ];
 
 const importantFacts = [
@@ -175,7 +175,7 @@ const TherapistMatchingDialog = () => {
                       : "hover:border-[hsl(var(--primary))]/50 hover:shadow-md hover:bg-muted/30"}
                   `}
                 >
-                  <span className="text-xl mr-2">{keyword.icon}</span>
+                  <div className="mr-2 text-[#D4AF37]">{keyword.icon}</div>
                   <span className="font-medium">{keyword.name}</span>
                   {concerns.includes(keyword.name) && (
                     <motion.div

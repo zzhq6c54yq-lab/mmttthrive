@@ -16,7 +16,7 @@ const AdolescentDashboard: React.FC = () => {
             Hey {user?.email?.split('@')[0] || 'Friend'} 👋
           </h1>
           <p className="text-purple-200 text-lg">
-            🌟 Your mental health journey matters. You're not alone in this.
+            Your mental health journey matters. You're not alone in this.
           </p>
         </div>
 
