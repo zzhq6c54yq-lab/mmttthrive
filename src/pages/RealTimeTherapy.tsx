@@ -587,16 +587,6 @@ const RealTimeTherapy = () => {
                 Back to Dashboard
               </Link>
 
-              {/* Announcement badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full px-5 py-2 backdrop-blur-sm"
-              >
-                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
-                <span className="text-sm font-medium text-[#D4AF37]">500+ sessions completed this month</span>
-              </motion.div>
 
               {/* Main headline */}
               <h1 className="text-6xl md:text-7xl font-bold leading-[1.1]">

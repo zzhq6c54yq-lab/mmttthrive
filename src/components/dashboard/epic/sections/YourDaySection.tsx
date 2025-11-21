@@ -147,18 +147,23 @@ export default function YourDaySection({ dashboardData, onCheckInComplete }: You
               </div>
             </div>
 
-            {/* Pricing teaser */}
-            <div className="bg-gradient-to-r from-[#D4AF37]/10 to-rose-500/10 border border-[#D4AF37]/30 rounded-xl p-5">
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-3xl font-bold text-white">$80</span>
-                <span className="text-gray-400">/session</span>
-                <span className="ml-auto">
-                  <span className="bg-green-500/20 text-green-400 border border-green-500/30 text-xs font-semibold px-2 py-1 rounded-full">
-                    Insurance Accepted
-                  </span>
-                </span>
-              </div>
-              <p className="text-sm text-gray-400">As low as $15 with insurance • First session 50% off</p>
+            {/* Payment Options */}
+            <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-xl p-5">
+              <h4 className="font-semibold text-white mb-3">Flexible Payment Options</h4>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></div>
+                  Insurance accepted - as low as $15/session
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></div>
+                  Sliding scale available
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></div>
+                  Financial assistance programs
+                </li>
+              </ul>
             </div>
 
             {/* Primary CTA Button */}
