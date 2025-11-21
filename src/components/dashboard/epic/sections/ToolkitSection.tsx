@@ -40,103 +40,37 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
-  const toolkitCategories = [
-    {
-      id: 'therapy',
-      name: 'Therapy & Professional Support',
-      icon: Heart,
-      color: 'from-rose-500 to-pink-500',
-      tools: [
-        { name: 'Real-Time Therapy', path: '/therapy', description: 'Book sessions with licensed therapists' },
-        { name: 'Between-Session Companion', path: '/mini-session', description: 'AI-powered micro-work between sessions' },
-        { name: 'Therapist Messaging', path: '/messages', description: 'Stay connected with your care team' },
-      ]
-    },
-    {
-      id: 'daily-wellness',
-      name: 'Daily Wellness',
-      icon: Activity,
-      color: 'from-green-500 to-emerald-500',
-      tools: [
-        { name: 'Daily Challenges', path: '/wellness-challenges', description: 'Complete challenges, earn rewards' },
-        { name: 'Mood Tracking', path: '/mood-tracker', description: 'Track your emotional patterns' },
-        { name: 'Journaling', path: '/journaling', description: 'Express your thoughts and feelings' },
-        { name: 'Gratitude Visualizer', path: '/gratitude', description: 'Visualize what you\'re grateful for' },
-      ]
-    },
-    {
-      id: 'mental-health',
-      name: 'Mental Health Tools',
-      icon: Brain,
-      color: 'from-blue-500 to-cyan-500',
-      tools: [
-        { name: 'Mental Health Assessments', path: '/mental-wellness', description: 'PHQ-9, GAD-7, PSS-10 and more' },
-        { name: 'Breathing Exercises', path: '/breathing', description: 'Calm your mind and body' },
-        { name: 'Meditation Studio', path: '/meditation', description: 'Guided meditation sessions' },
-        { name: 'Binaural Beats', path: '/binaural-beats', description: 'Sound therapy for relaxation' },
-      ]
-    },
-    {
-      id: 'creative',
-      name: 'Creative & Expression',
-      icon: Palette,
-      color: 'from-orange-500 to-amber-500',
-      tools: [
-        { name: 'Art Therapy', path: '/art-therapy', description: 'Express yourself through art' },
-        { name: 'Music Therapy', path: '/music-therapy', description: 'Healing through music' },
-        { name: 'Video Diary', path: '/video-diary', description: 'Record your journey' },
-      ]
-    },
-    {
-      id: 'community',
-      name: 'Community & Connection',
-      icon: Users,
-      color: 'from-pink-500 to-rose-500',
-      tools: [
-        { name: 'Support Wall', path: '/support-wall', description: 'Share and connect with others' },
-        { name: 'Workshops', path: '/workshops', description: 'Live and recorded workshops' },
-        { name: 'Dear Henry', path: '/henry', description: 'Anonymous advice and wisdom' },
-      ]
-    },
-    {
-      id: 'learning',
-      name: 'Learning & Growth',
-      icon: BookOpen,
-      color: 'from-indigo-500 to-blue-500',
-      tools: [
-        { name: 'Resource Library', path: '/resources', description: 'Educational materials' },
-        { name: 'Games & Quizzes', path: '/games-and-quizzes', description: 'Fun and educational activities' },
-        { name: 'Career Coaching', path: '/career-coaching', description: 'Professional development' },
-      ]
-    },
-    {
-      id: 'physical',
-      name: 'Physical Wellness',
-      icon: Dumbbell,
-      color: 'from-teal-500 to-green-500',
-      tools: [
-        { name: 'Sleep Tracker', path: '/sleep-tracker', description: 'Monitor your sleep patterns' },
-        { name: 'Alternative Therapies', path: '/alternative-therapies', description: 'Explore holistic options' },
-        { name: 'Wellness Challenges', path: '/wellness-challenges', description: 'Physical wellness goals' },
-      ]
-    },
+  // Unified list of all features/tools
+  const allTools = [
+    { name: 'Real-Time Therapy', path: '/therapy', description: 'Book sessions with licensed therapists', icon: Heart },
+    { name: 'Between-Session Companion', path: '/mini-session', description: 'AI-powered micro-work between sessions', icon: Sparkles },
+    { name: 'Therapist Messaging', path: '/messages', description: 'Stay connected with your care team', icon: Users },
+    { name: 'Daily Challenges', path: '/wellness-challenges', description: 'Complete challenges, earn rewards', icon: Activity },
+    { name: 'Mood Tracking', path: '/mood-tracker', description: 'Track your emotional patterns', icon: Heart },
+    { name: 'Journaling', path: '/journaling', description: 'Express your thoughts and feelings', icon: BookOpen },
+    { name: 'Gratitude Visualizer', path: '/gratitude', description: 'Visualize what you\'re grateful for', icon: Sparkles },
+    { name: 'Mental Health Assessments', path: '/mental-wellness', description: 'PHQ-9, GAD-7, PSS-10 and more', icon: Brain },
+    { name: 'Breathing Exercises', path: '/breathing', description: 'Calm your mind and body', icon: Activity },
+    { name: 'Meditation Studio', path: '/meditation', description: 'Guided meditation sessions', icon: Brain },
+    { name: 'Binaural Beats', path: '/binaural-beats', description: 'Sound therapy for relaxation', icon: Music },
+    { name: 'Art Therapy', path: '/art-therapy', description: 'Express yourself through art', icon: Palette },
+    { name: 'Music Therapy', path: '/music-therapy', description: 'Healing through music', icon: Music },
+    { name: 'Video Diary', path: '/video-diary', description: 'Record your journey', icon: Activity },
+    { name: 'Support Wall', path: '/support-wall', description: 'Share and connect with others', icon: Users },
+    { name: 'Workshops', path: '/workshops', description: 'Live and recorded workshops', icon: BookOpen },
+    { name: 'Dear Henry', path: '/henry', description: 'Anonymous advice and wisdom', icon: Heart },
+    { name: 'Resource Library', path: '/resources', description: 'Educational materials', icon: BookOpen },
+    { name: 'Games & Quizzes', path: '/games-and-quizzes', description: 'Fun and educational activities', icon: Sparkles },
+    { name: 'Career Coaching', path: '/career-coaching', description: 'Professional development', icon: Briefcase },
+    { name: 'Sleep Tracker', path: '/sleep-tracker', description: 'Monitor your sleep patterns', icon: Activity },
+    { name: 'Alternative Therapies', path: '/alternative-therapies', description: 'Explore holistic options', icon: Heart },
+    { name: 'Wellness Challenges', path: '/wellness-challenges', description: 'Physical wellness goals', icon: Dumbbell },
   ];
 
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategories(prev =>
-      prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
-    );
-  };
-
-  const filteredCategories = toolkitCategories.map(category => ({
-    ...category,
-    tools: category.tools.filter(tool =>
-      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tool.description.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  })).filter(category => category.tools.length > 0);
+  const filteredTools = allTools.filter(tool =>
+    tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    tool.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Card className="bg-gray-800/40 border-gray-700/50 backdrop-blur-sm p-6">
@@ -158,20 +92,40 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
         />
       </div>
 
-      {/* Toolkit Categories */}
-      <div className="space-y-3">
-        {filteredCategories.map((category) => (
-          <ToolCategoryCard
-            key={category.id}
-            category={category}
-            isExpanded={expandedCategories.includes(category.id)}
-            onToggle={() => toggleCategory(category.id)}
-            onToolClick={(path) => navigate(path)}
-          />
-        ))}
+      {/* Unified Toolkit Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {filteredTools.map((tool) => {
+          const Icon = tool.icon;
+          return (
+            <Card
+              key={tool.path}
+              onClick={() => {
+                trackClick({ toolPath: tool.path });
+                navigate(tool.path);
+              }}
+              className="group cursor-pointer bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border-[#D4AF37]/30 hover:border-[#D4AF37]/60 hover:shadow-lg hover:shadow-[#D4AF37]/20 transition-all duration-300 overflow-hidden"
+            >
+              <div className="p-5 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-[#D4AF37]/20 to-[#E5C5A1]/10 border border-[#D4AF37]/20 group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="w-6 h-6 text-[#D4AF37]" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white text-base mb-1 group-hover:text-[#D4AF37] transition-colors">
+                    {tool.name}
+                  </h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    {tool.description}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
       </div>
 
-      {filteredCategories.length === 0 && (
+      {filteredTools.length === 0 && (
         <div className="text-center py-8 text-gray-400">
           No tools found matching "{searchQuery}"
         </div>

@@ -186,7 +186,7 @@ export function QuickNotesWidget() {
   };
 
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm p-4">
+    <Card className="bg-card/50 border-border/50 backdrop-blur-sm p-4 relative z-10">
       <div className="flex items-center justify-between mb-3">
         <h4 className="text-sm font-semibold flex items-center gap-2">
           <StickyNote className="w-4 h-4 text-yellow-500" />
@@ -205,7 +205,7 @@ export function QuickNotesWidget() {
         onClick={handleSave}
         disabled={!note.trim() || saving}
         size="sm"
-        className="w-full"
+        className="w-full relative z-20"
         variant="secondary"
       >
         <Save className="w-3 h-3 mr-2" />

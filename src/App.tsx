@@ -26,6 +26,8 @@ import ArtTherapy from "./pages/ArtTherapy";
 import Home from "./pages/Home";
 import ProgressReports from "./pages/ProgressReports";
 import ProgressAnalytics from "./pages/ProgressAnalytics";
+import WeeklyGoals from "./pages/WeeklyGoals";
+import MonthlyGoals from "./pages/MonthlyGoals";
 import MentalWellnessTools from "./pages/MentalWellnessTools";
 import MentalWellnessAssessments from "./pages/MentalWellnessAssessments";
 import GamesAndQuizzes from "./pages/GamesAndQuizzes";
@@ -180,6 +182,8 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/progress-reports" element={<ProgressReports />} />
           <Route path="/progress-analytics" element={<ProgressAnalytics />} />
+          <Route path="/weekly-goals" element={<WeeklyGoals />} />
+          <Route path="/monthly-goals" element={<MonthlyGoals />} />
           <Route path="/mental-wellness" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-tools" element={<MentalWellnessTools />} />
           <Route path="/mental-wellness-tools/breathing" element={<BreathingExercise />} />
