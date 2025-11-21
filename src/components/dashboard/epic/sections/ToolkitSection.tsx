@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
   Heart, 
@@ -13,16 +12,18 @@ import {
   Activity,
   Palette,
   Search,
-  ChevronDown,
-  ChevronUp,
   Briefcase,
   Dumbbell
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import ToolCategoryCard from '../widgets/ToolCategoryCard';
 import { useLayoutTracking } from '@/hooks/useLayoutTracking';
 import { useUser } from '@/contexts/UserContext';
-import { supabase } from '@/integrations/supabase/client';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface ToolkitSectionProps {
   userGoals: string[];
@@ -77,7 +78,7 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-white mb-1">Your Wellness Toolkit</h2>
-          <p className="text-sm text-gray-400">All your mental health resources in one place</p>
+          <p className="text-sm text-gray-400">Swipe to explore all features</p>
         </div>
       </div>
 
@@ -92,41 +93,63 @@ export default function ToolkitSection({ userGoals }: ToolkitSectionProps) {
         />
       </div>
 
-      {/* Unified Toolkit Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filteredTools.map((tool) => {
-          const Icon = tool.icon;
-          return (
-            <Card
-              key={tool.path}
-              onClick={() => {
-                trackClick({ toolPath: tool.path });
-                navigate(tool.path);
-              }}
-              className="group cursor-pointer bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/5 border-[#D4AF37]/30 hover:border-[#D4AF37]/60 hover:shadow-lg hover:shadow-[#D4AF37]/20 transition-all duration-300 overflow-hidden"
-            >
-              <div className="p-5 space-y-3">
-                <div className="flex items-start justify-between">
-                  <div className="p-3 rounded-lg bg-gradient-to-br from-[#D4AF37]/20 to-[#E5C5A1]/10 border border-[#D4AF37]/20 group-hover:scale-110 transition-transform duration-300">
-                    <Icon className="w-6 h-6 text-[#D4AF37]" />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white text-base mb-1 group-hover:text-[#D4AF37] transition-colors">
-                    {tool.name}
-                  </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed">
-                    {tool.description}
-                  </p>
-                </div>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-
-      {filteredTools.length === 0 && (
-        <div className="text-center py-8 text-gray-400">
+      {/* Horizontal Carousel */}
+      {filteredTools.length > 0 ? (
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {filteredTools.map((tool) => {
+              const Icon = tool.icon;
+              return (
+                <CarouselItem key={tool.path} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                  <Card
+                    onClick={() => {
+                      trackClick({ toolPath: tool.path });
+                      navigate(tool.path);
+                    }}
+                    className="group cursor-pointer overflow-hidden border-[#D4AF37]/30 hover:border-[#D4AF37]/60 transition-all duration-300 h-[400px] relative"
+                  >
+                    {/* Cover Image with Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 via-gray-900/80 to-gray-900/95">
+                      <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-30 transition-opacity">
+                        <Icon className="w-32 h-32 text-[#D4AF37]" />
+                      </div>
+                    </div>
+                    
+                    {/* Content Overlay */}
+                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                      {/* Top - Icon */}
+                      <div className="flex justify-start">
+                        <div className="p-3 rounded-xl bg-[#D4AF37]/20 backdrop-blur-sm border border-[#D4AF37]/30">
+                          <Icon className="w-6 h-6 text-[#D4AF37]" />
+                        </div>
+                      </div>
+                      
+                      {/* Bottom - Title & Description */}
+                      <div className="space-y-2">
+                        <h3 className="font-bold text-white text-xl group-hover:text-[#D4AF37] transition-colors">
+                          {tool.name}
+                        </h3>
+                        <p className="text-sm text-gray-300 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {tool.description}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex -left-4 bg-gray-900/90 border-[#D4AF37]/30 text-[#D4AF37] hover:bg-gray-800 hover:border-[#D4AF37]/60" />
+          <CarouselNext className="hidden md:flex -right-4 bg-gray-900/90 border-[#D4AF37]/30 text-[#D4AF37] hover:bg-gray-800 hover:border-[#D4AF37]/60" />
+        </Carousel>
+      ) : (
+        <div className="text-center py-12 text-gray-400">
           No tools found matching "{searchQuery}"
         </div>
       )}

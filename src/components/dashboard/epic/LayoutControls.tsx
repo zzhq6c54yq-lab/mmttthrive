@@ -49,15 +49,15 @@ export default function LayoutControls() {
   };
   
   return (
-    <div className="fixed bottom-24 right-6 z-40">
+    <div className="fixed bottom-32 right-8 z-30">
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <Button
-            size="lg"
-            className="rounded-full shadow-2xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+            size="default"
+            variant="outline"
+            className="rounded-full shadow-xl bg-gray-900/90 border-[#D4AF37]/30 text-white hover:bg-gray-800 hover:border-[#D4AF37]/60 transition-all"
           >
-            <Layout className="w-5 h-5 mr-2" />
-            Layout
+            <Layout className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
         
