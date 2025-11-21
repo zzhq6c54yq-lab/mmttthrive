@@ -85,7 +85,7 @@ const QACard: React.FC<QACardProps> = ({ item, onUpdate }) => {
         setHasAppreciated(true);
         
         toast({
-          title: "❤️ You earned an Insight Token!",
+          title: "You earned an Insight Token!",
           description: "Keep engaging to unlock more rewards.",
         });
       }

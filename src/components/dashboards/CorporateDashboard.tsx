@@ -16,7 +16,7 @@ const CorporateDashboard: React.FC = () => {
             Welcome back, {user?.email?.split('@')[0] || 'Professional'} 💼
           </h1>
           <p className="text-blue-200 text-lg">
-            🎯 Peak performance starts with mental wellness.
+            Peak performance starts with mental wellness.
           </p>
         </div>
 

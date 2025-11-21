@@ -7,7 +7,7 @@ import ThriveButton from "@/components/navigation/ThriveButton";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 import NavigationBar from "@/components/navigation/NavigationBar";
 import useFeatureActions, { ActionButtonConfig } from "@/hooks/useFeatureActions";
-import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe } from "lucide-react";
+import { BookOpen, Calendar, Users, HeartHandshake, LifeBuoy, Lightbulb, Clock, Globe, Star, TrendingUp, Sparkles } from "lucide-react";
 import ActionButton from "@/components/navigation/ActionButton";
 
 // Early Childhood Portal (Ages 2-7)
@@ -223,7 +223,11 @@ const MiddleChildhoodPortal: React.FC = () => {
               Cool resources for school-age explorers!
             </p>
           </div>
-          <div className="text-4xl mt-4 md:mt-0">🌟 🚀 🛸</div>
+          <div className="text-4xl mt-4 md:mt-0">
+            <Star className="w-12 h-12 text-[#D4AF37] inline-block mr-2" />
+            <TrendingUp className="w-12 h-12 text-[#D4AF37] inline-block mr-2" />
+            <Sparkles className="w-12 h-12 text-[#D4AF37] inline-block" />
+          </div>
         </div>
         
         {/* Content grid */}

@@ -16,7 +16,7 @@ const DefaultDashboard: React.FC = () => {
             Welcome to Omni Solus, {user?.email?.split('@')[0] || 'Friend'}
           </h1>
           <p className="text-blue-200 text-lg">
-            🌟 Your journey to better mental health starts here.
+            Your journey to better mental health starts here.
           </p>
         </div>
 

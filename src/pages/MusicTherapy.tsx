@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Volume2, Music2, Mic, Radio, Headphones, Heart, Share2, Download, Plus, Settings, Clock, TrendingUp, BarChart3, Users } from "lucide-react";
 import Page from '@/components/Page';
 import StudioEnvironment from '@/components/music-therapy/StudioEnvironment';
 import AudioVisualizer from '@/components/music-therapy/AudioVisualizer';
@@ -774,7 +775,7 @@ const MusicTherapy: React.FC = () => {
                 <p className="text-white/70 text-sm">Express and process emotions through musical creation</p>
               </div>
               <div className="text-center space-y-2">
-                <div className="text-2xl">🤝</div>
+                <div className="text-2xl"><Users className="w-8 h-8 text-[#D4AF37] mx-auto" /></div>
                 <h3 className="text-white font-medium">Social Connection</h3>
                 <p className="text-white/70 text-sm">Share your musical journey and connect with others</p>
               </div>

@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Star, Sparkles } from "lucide-react";
 import ThriveButton from "@/components/navigation/ThriveButton";
 import PortalBackButton from "@/components/navigation/PortalBackButton";
 
@@ -32,7 +32,7 @@ const AdolescentSelection: React.FC = () => {
       borderColor: "border-purple-300",
       image: "https://images.unsplash.com/photo-1472162072942-cd5147eb3902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
       id: "middle-childhood",
-      icon: "🌟"
+      icon: <Star className="w-6 h-6" />
     },
     {
       title: "Adolescence",
@@ -43,7 +43,7 @@ const AdolescentSelection: React.FC = () => {
       borderColor: "border-blue-300",
       image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
       id: "adolescence",
-      icon: "✨"
+      icon: <Sparkles className="w-6 h-6" />
     }
   ];
 
@@ -79,8 +79,12 @@ const AdolescentSelection: React.FC = () => {
         <div className="absolute top-10 left-[10%] w-12 h-12 text-3xl animate-bounce">🎈</div>
         <div className="absolute top-16 right-[20%] w-12 h-12 text-3xl animate-[bounce_4s_infinite]">⭐</div>
         <div className="absolute top-40 left-[30%] w-12 h-12 text-3xl animate-[bounce_5s_infinite]">🎈</div>
-        <div className="absolute bottom-20 right-[15%] w-12 h-12 text-3xl animate-[bounce_6s_infinite]">🌟</div>
-        <div className="absolute bottom-40 left-[15%] w-12 h-12 text-3xl animate-[bounce_7s_infinite]">✨</div>
+        <div className="absolute bottom-20 right-[15%] w-12 h-12 text-3xl animate-[bounce_6s_infinite]">
+          <Star className="w-12 h-12 text-[#D4AF37]" />
+        </div>
+        <div className="absolute bottom-40 left-[15%] w-12 h-12 text-3xl animate-[bounce_7s_infinite]">
+          <Sparkles className="w-12 h-12 text-[#D4AF37]" />
+        </div>
       </div>
       
       <div className="max-w-6xl mx-auto relative z-10">

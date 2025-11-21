@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Star, ArrowLeft, Calendar, DollarSign, Award, Clock, Video } from "lucide-react";
+import { Star, ArrowLeft, Calendar, DollarSign, Award, Clock, Video, Info } from "lucide-react";
 import { BookingFlow } from "@/components/therapy/BookingFlow";
 import AvailabilityCalendar from "@/components/therapist/AvailabilityCalendar";
 
@@ -130,9 +130,9 @@ export default function TherapistProfile() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 text-lg font-semibold text-primary">
-                  <DollarSign className="h-5 w-5" />
-                  ${therapist.hourly_rate}/hour
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Info className="h-4 w-4" />
+                  Pricing discussed during consultation
                 </div>
               </div>
             </div>

@@ -16,7 +16,7 @@ const GoldenYearsDashboard: React.FC = () => {
             Hello, {user?.email?.split('@')[0] || 'Friend'} 🌅
           </h1>
           <p className="text-amber-200 text-lg">
-            ✨ Your golden years deserve golden care. You've earned this peace.
+            Your golden years deserve golden care. You've earned this peace.
           </p>
         </div>
 

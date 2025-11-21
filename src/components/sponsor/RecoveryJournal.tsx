@@ -10,7 +10,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, Save, Pencil, Star, UserCheck, Heart, ArrowUp, ArrowDown, File, MessageCircle } from "lucide-react";
+import { Calendar as CalendarIcon, Save, Pencil, Star, UserCheck, Heart, ArrowUp, ArrowDown, File, MessageCircle, Cloud } from "lucide-react";
 
 interface JournalEntry {
   id: string;
@@ -25,7 +25,7 @@ const moodEmojis = {
   "great": "😄",
   "good": "🙂",
   "okay": "😐",
-  "difficult": "😔",
+  "difficult": <Cloud className="w-5 h-5 text-gray-500" />,
   "struggling": "😣"
 };
 

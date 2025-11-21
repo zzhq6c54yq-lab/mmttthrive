@@ -59,7 +59,7 @@ const GoalSetting = () => {
     setShowForm(false);
     
     toast({
-      title: "Goal Created! 🎯",
+      title: "Goal Created!",
       description: "Your SMART goal has been added successfully",
     });
   };

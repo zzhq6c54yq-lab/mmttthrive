@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, List, Calendar, Clock, Save, Download, Star, Sparkles, PenLine, History, ChevronRight, Quote, MessageSquare } from "lucide-react";
+import { ArrowLeft, BookOpen, List, Calendar, Clock, Save, Download, Star, Sparkles, PenLine, History, ChevronRight, Quote, MessageSquare, Smile, Cloud, AlertCircle, Zap, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -162,12 +162,12 @@ const Journaling = () => {
   ];
 
   const moods = [
-    { name: "Happy", emoji: "😊" },
-    { name: "Calm", emoji: "😌" },
-    { name: "Sad", emoji: "😔" },
-    { name: "Anxious", emoji: "😰" },
-    { name: "Energetic", emoji: "⚡" },
-    { name: "Tired", emoji: "😴" },
+    { name: "Happy", icon: <Smile className="w-5 h-5" /> },
+    { name: "Calm", icon: <Smile className="w-5 h-5" /> },
+    { name: "Sad", icon: <Cloud className="w-5 h-5" /> },
+    { name: "Anxious", icon: <AlertCircle className="w-5 h-5" /> },
+    { name: "Energetic", icon: <Zap className="w-5 h-5" /> },
+    { name: "Tired", icon: <Moon className="w-5 h-5" /> },
     { name: "Grateful", emoji: "🙏" },
     { name: "Frustrated", emoji: "😤" },
   ];

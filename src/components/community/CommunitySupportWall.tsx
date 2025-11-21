@@ -3,7 +3,7 @@ import { useSupportWall, SupportWallCategory } from "@/hooks/useSupportWall";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, Search, TrendingUp, Pin } from "lucide-react";
+import { MessageCircle, Search, TrendingUp, Pin, Heart } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
 import { PostCard } from "./PostCard";
 import { PostComposer } from "./PostComposer";
@@ -89,7 +89,7 @@ const CommunitySupportWall: React.FC = () => {
                 <div key={post.id} className="text-sm bg-background/50 p-3 rounded-lg">
                   <p className="text-foreground line-clamp-2 italic">"{post.content}"</p>
                   <div className="flex gap-3 mt-2 text-xs text-muted-foreground">
-                    <span>❤️ {post.hearts}</span>
+                    <Heart className="w-4 h-4 text-[#D4AF37]" /> {post.hearts}
                     <span>💬 {post.comment_count}</span>
                   </div>
                 </div>

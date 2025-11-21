@@ -1,6 +1,6 @@
 
 import React from "react";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -81,7 +81,8 @@ const HenryButton: React.FC<HenryButtonProps> = ({
               📋 Get personalized recommendations
             </Button>
             <Button variant="outline" size="sm" className="justify-start">
-              🎯 Set wellness goals
+              <Target className="w-4 h-4 text-[#D4AF37] mr-2" />
+              Set wellness goals
             </Button>
           </div>
         </div>

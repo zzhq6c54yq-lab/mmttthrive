@@ -76,7 +76,7 @@ export const ArtToolbar: React.FC<Props> = ({
           className={btn(tool === "STAMP")}
           onClick={() => setTool("STAMP")}
           title="Stamp - Add joy and playfulness"
-        >✨ Stamp</button>
+        >Stamp</button>
       </div>
 
       {tool === "STAMP" && (

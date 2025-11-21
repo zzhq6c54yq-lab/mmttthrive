@@ -34,21 +34,21 @@ const categoryColors: Record<string, string> = {
 };
 
 const gradientMap: Record<string, string> = {
-  purple: 'from-purple-500/20 to-indigo-600/20 border-purple-500/30 hover:border-purple-500/50',
-  blue: 'from-blue-500/20 to-cyan-600/20 border-blue-500/30 hover:border-blue-500/50',
-  green: 'from-green-500/20 to-emerald-600/20 border-green-500/30 hover:border-green-500/50',
-  indigo: 'from-indigo-500/20 to-violet-600/20 border-indigo-500/30 hover:border-indigo-500/50',
-  yellow: 'from-yellow-500/20 to-amber-600/20 border-yellow-500/30 hover:border-yellow-500/50',
-  teal: 'from-teal-500/20 to-cyan-600/20 border-teal-500/30 hover:border-teal-500/50',
-  orange: 'from-orange-500/20 to-amber-600/20 border-orange-500/30 hover:border-orange-500/50',
-  red: 'from-red-500/20 to-rose-600/20 border-red-500/30 hover:border-red-500/50',
-  emerald: 'from-emerald-500/20 to-green-600/20 border-emerald-500/30 hover:border-emerald-500/50',
-  violet: 'from-violet-500/20 to-purple-600/20 border-violet-500/30 hover:border-violet-500/50',
-  pink: 'from-pink-500/20 to-rose-600/20 border-pink-500/30 hover:border-pink-500/50',
-  slate: 'from-slate-500/20 to-gray-600/20 border-slate-500/30 hover:border-slate-500/50',
-  cyan: 'from-cyan-500/20 to-teal-600/20 border-cyan-500/30 hover:border-cyan-500/50',
-  rose: 'from-rose-500/20 to-pink-600/20 border-rose-500/30 hover:border-rose-500/50',
-  amber: 'from-amber-500/20 to-orange-600/20 border-amber-500/30 hover:border-amber-500/50',
+  purple: 'from-[#D4AF37]/20 to-[#B8941F]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  blue: 'from-[#E5C5A1]/20 to-[#D4AF37]/15 border-[#E5C5A1]/30 hover:border-[#E5C5A1]/60',
+  green: 'from-[#D4AF37]/20 to-[#B8941F]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  indigo: 'from-[#B8941F]/20 to-[#D4AF37]/15 border-[#B8941F]/30 hover:border-[#B8941F]/60',
+  yellow: 'from-[#D4AF37]/20 to-[#E5C5A1]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  teal: 'from-[#E5C5A1]/20 to-[#D4AF37]/15 border-[#E5C5A1]/30 hover:border-[#E5C5A1]/60',
+  orange: 'from-[#D4AF37]/20 to-[#B8941F]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  red: 'from-[#B8941F]/20 to-[#D4AF37]/15 border-[#B8941F]/30 hover:border-[#B8941F]/60',
+  emerald: 'from-[#D4AF37]/20 to-[#E5C5A1]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  violet: 'from-[#E5C5A1]/20 to-[#D4AF37]/15 border-[#E5C5A1]/30 hover:border-[#E5C5A1]/60',
+  pink: 'from-[#D4AF37]/20 to-[#B8941F]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  slate: 'from-[#B8941F]/20 to-[#D4AF37]/15 border-[#B8941F]/30 hover:border-[#B8941F]/60',
+  cyan: 'from-[#D4AF37]/20 to-[#E5C5A1]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
+  rose: 'from-[#E5C5A1]/20 to-[#D4AF37]/15 border-[#E5C5A1]/30 hover:border-[#E5C5A1]/60',
+  amber: 'from-[#D4AF37]/20 to-[#B8941F]/15 border-[#D4AF37]/30 hover:border-[#D4AF37]/60',
 };
 
 export default function AllFeatures() {
