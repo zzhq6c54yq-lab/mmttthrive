@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, Users, Grid3x3, TrendingUp, User, LogOut, Settings } from 'lucide-react';
+import { Home, TrendingUp, LogOut, Calendar, CalendarDays } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
@@ -25,8 +25,8 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
 
   const navItems = [
     { label: 'Today', icon: Home, path: '/' },
-    { label: 'All Tools', icon: Grid3x3, path: '/home' },
-    { label: 'Explore Portals', icon: Users, path: '/home' },
+    { label: 'Weekly Goals', icon: Calendar, path: '/weekly-goals' },
+    { label: 'Monthly Goals', icon: CalendarDays, path: '/monthly-goals' },
     { label: 'Progress', icon: TrendingUp, path: '/progress-analytics' },
   ];
 

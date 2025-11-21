@@ -747,46 +747,76 @@ const RealTimeTherapy = () => {
       {/* Main Content */}
       <div id="how-it-works" className="container px-4 py-12 max-w-6xl mx-auto">
         {/* Find a Therapist Section */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-light mb-8">Find a Therapist That's Right for You</h2>
+        <section id="how-it-works" className="mb-16 scroll-mt-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+              How It Works
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Connect with the perfect therapist in three simple steps
+            </p>
+          </motion.div>
           
-          <Card className="p-6 mb-10 bg-gradient-to-r from-[#F8F4EC] to-[#F3F0E9]">
-            <CardContent className="p-0">
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-medium mb-2">What issues would you like to address?</h3>
-                <p className="text-gray-600">
-                  We'll match you with therapists specialized in your areas of concern
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                {[
-                  { title: "Find the Perfect Match", icon: <Users className="h-6 w-6 text-[#B87333]" />, description: "Answer a few questions and we'll connect you with therapists that fit your unique needs and preferences" },
-                  { title: "Schedule an Appointment", icon: <Calendar className="h-6 w-6 text-[#B87333]" />, description: "Choose from available time slots that work with your schedule for in-person or virtual sessions" },
-                  { title: "Simplified Payment", icon: <CreditCard className="h-6 w-6 text-[#B87333]" />, description: "We work with most major insurance providers and offer transparent self-pay options" },
-                ].map((item, i) => (
-                  <div key={i} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                    <div className="flex justify-center mb-2">
-                      {item.icon}
-                    </div>
-                    <h4 className="text-center font-medium mb-1">{item.title}</h4>
-                    <p className="text-center text-sm text-gray-600">{item.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {[
+              { 
+                title: "Find the Perfect Match", 
+                icon: <Users className="h-8 w-8" />, 
+                description: "Answer a few questions and we'll connect you with therapists that fit your unique needs and preferences",
+                gradient: "from-[#D4AF37]/20 to-[#E5C5A1]/10"
+              },
+              { 
+                title: "Schedule Your Session", 
+                icon: <Calendar className="h-8 w-8" />, 
+                description: "Choose from available time slots that work with your schedule for in-person or virtual sessions",
+                gradient: "from-blue-500/20 to-cyan-500/10"
+              },
+              { 
+                title: "Start Your Journey", 
+                icon: <Video className="h-8 w-8" />, 
+                description: "Connect via our secure HIPAA-compliant platform and begin your path to wellness",
+                gradient: "from-purple-500/20 to-pink-500/10"
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className={`relative group bg-gradient-to-br ${item.gradient} backdrop-blur-sm border border-white/10 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300`}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 to-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+                <div className="relative z-10">
+                  <div className="inline-flex p-4 rounded-xl bg-white/10 backdrop-blur-sm mb-6 text-[#D4AF37] group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
                   </div>
-                ))}
-              </div>
-
-              <TherapistMatchingDialog />
-            </CardContent>
-          </Card>
+                  <div className="absolute -top-4 -right-4 text-6xl font-bold text-white/5 group-hover:text-white/10 transition-colors">
+                    {i + 1}
+                  </div>
+                  <h4 className="text-xl font-semibold mb-3 text-white">{item.title}</h4>
+                  <p className="text-gray-300 leading-relaxed">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-10"
+            className="mb-12"
           >
-            <h3 className="text-xl mb-6">Browse by Common Concerns</h3>
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+            <h3 className="text-2xl font-semibold text-white mb-8 text-center">
+              Browse by Common Concerns
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {therapistKeywords.slice(0, 10).map((keyword, index) => (
                 <motion.div
                   key={index}
@@ -794,15 +824,15 @@ const RealTimeTherapy = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ scale: 1.05, rotate: 2 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <Button 
                     variant="outline"
-                    className="flex flex-col h-auto py-4 w-full hover:bg-[hsl(var(--primary))]/10 hover:text-[hsl(var(--primary))] hover:border-[hsl(var(--primary))] hover:shadow-lg transition-all duration-300"
+                    className="flex flex-col h-auto py-6 w-full bg-white/5 border-white/10 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] hover:border-[#D4AF37] hover:shadow-lg hover:shadow-[#D4AF37]/20 transition-all duration-300"
                   >
-                    <span className="text-2xl mb-1">{keyword.icon}</span>
-                    <span className="text-sm text-center">{keyword.name}</span>
+                    <span className="text-2xl mb-2 text-[#D4AF37]">{keyword.icon}</span>
+                    <span className="text-sm text-center text-white">{keyword.name}</span>
                   </Button>
                 </motion.div>
               ))}
@@ -813,40 +843,46 @@ const RealTimeTherapy = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid md:grid-cols-2 gap-8"
+            className="grid md:grid-cols-2 gap-12 items-center"
           >
-            <motion.img 
+            <motion.div
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
-              src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80&w=800&ixlib=rb-4.0.3"
-              alt="Woman in online therapy session"
-              className="w-full rounded-lg object-cover h-[300px] md:h-full shadow-lg"
-            />
-            <div>
-              <h3 className="text-xl mb-4 font-medium">How Online Therapy Works</h3>
+              className="relative overflow-hidden rounded-2xl shadow-2xl"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80&w=800&ixlib=rb-4.0.3"
+                alt="Woman in online therapy session"
+                className="w-full object-cover h-[400px] md:h-[500px]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent"></div>
+            </motion.div>
+            <div className="space-y-6">
+              <h3 className="text-3xl font-bold text-white drop-shadow-lg">
+                Professional Support, On Your Terms
+              </h3>
               <ul className="space-y-4">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-[#B87333] mr-2 mt-1 flex-shrink-0" />
-                  <span>Complete a brief questionnaire about your needs and preferences</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-[#B87333] mr-2 mt-1 flex-shrink-0" />
-                  <span>Browse therapist profiles and select someone you connect with</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-[#B87333] mr-2 mt-1 flex-shrink-0" />
-                  <span>Schedule your first session at a time that works for you</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-[#B87333] mr-2 mt-1 flex-shrink-0" />
-                  <span>Connect via our secure video platform from anywhere</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-[#B87333] mr-2 mt-1 flex-shrink-0" />
-                  <span>Continue regular sessions to build a therapeutic relationship</span>
-                </li>
+                {[
+                  "Complete a brief questionnaire about your needs and preferences",
+                  "Browse therapist profiles and select someone you connect with",
+                  "Schedule your first session at a time that works for you",
+                  "Connect via our secure HIPAA-compliant platform from anywhere",
+                  "Build a lasting therapeutic relationship with regular sessions"
+                ].map((item, idx) => (
+                  <motion.li
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <CheckCircle className="h-6 w-6 text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300 leading-relaxed">{item}</span>
+                  </motion.li>
+                ))}
               </ul>
-              <div className="mt-6">
+              <div className="pt-4">
                 <TherapistMatchingDialog />
               </div>
             </div>
@@ -860,12 +896,15 @@ const RealTimeTherapy = () => {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-light mb-8">Insurance Information</h2>
-          <p className="mb-6 text-lg text-muted-foreground">
-            We work with most major insurance providers to make therapy accessible and affordable. 
-            Verify your coverage during the sign-up process.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+              Insurance & Payment Options
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              We work with most major insurance providers to make therapy accessible and affordable
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {insuranceProviders.map((provider, index) => (
               <motion.div
                 key={index}
@@ -875,15 +914,22 @@ const RealTimeTherapy = () => {
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ scale: 1.05, y: -4 }}
               >
-                <Card className="p-4 text-center hover:border-[hsl(var(--primary))]/50 hover:shadow-lg transition-all duration-300 cursor-pointer">
-                  {provider}
+                <Card className="p-6 text-center bg-white/5 border-white/10 hover:border-[#D4AF37]/50 hover:shadow-lg hover:shadow-[#D4AF37]/10 transition-all duration-300 cursor-pointer">
+                  <span className="text-white font-medium">{provider}</span>
                 </Card>
               </motion.div>
             ))}
           </div>
-          <p className="mt-6 text-muted-foreground">
-            Don't see your insurance? Contact us to discuss other payment options and sliding scale fees.
-          </p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="mt-8 text-center"
+          >
+            <p className="text-gray-400">
+              Don't see your insurance? <Link to="/contact" className="text-[#D4AF37] hover:text-[#E5C5A1] underline">Contact us</Link> to discuss sliding scale fees and other payment options
+            </p>
+          </motion.div>
         </motion.section>
 
         {/* Before You Start Section */}
@@ -891,9 +937,17 @@ const RealTimeTherapy = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          className="mb-16"
         >
-          <h2 className="text-3xl font-light mb-8">Things to Know Before Starting</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+              What to Expect
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Important information before you begin your therapy journey
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
             {importantFacts.map((fact, index) => (
               <motion.div
                 key={index}
@@ -901,19 +955,22 @@ const RealTimeTherapy = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -6 }}
               >
-                <Card className="p-6 hover:shadow-lg transition-all duration-300 h-full border-muted hover:border-[hsl(var(--primary))]/30">
+                <Card className="p-8 h-full bg-gradient-to-br from-white/5 to-white/[0.02] border-white/10 hover:border-[#D4AF37]/30 hover:shadow-xl hover:shadow-[#D4AF37]/5 transition-all duration-300">
                   <div className="flex gap-4">
                     <motion.div
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.5 }}
+                      className="flex-shrink-0"
                     >
-                      <Info className="h-6 w-6 text-[hsl(var(--primary))] flex-shrink-0" />
+                      <div className="p-3 rounded-xl bg-[#D4AF37]/20 border border-[#D4AF37]/30">
+                        <Info className="h-6 w-6 text-[#D4AF37]" />
+                      </div>
                     </motion.div>
                     <div>
-                      <h3 className="text-xl mb-2 font-medium">{fact.title}</h3>
-                      <p className="text-muted-foreground">{fact.description}</p>
+                      <h3 className="text-xl mb-3 font-semibold text-white">{fact.title}</h3>
+                      <p className="text-gray-300 leading-relaxed">{fact.description}</p>
                     </div>
                   </div>
                 </Card>
@@ -924,9 +981,9 @@ const RealTimeTherapy = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-12 text-center"
+            className="mt-16 text-center"
           >
-            <p className="text-lg mb-6 max-w-3xl mx-auto text-muted-foreground">
+            <p className="text-2xl mb-8 max-w-3xl mx-auto text-white font-medium drop-shadow-lg">
               Ready to take the first step on your mental health journey?
             </p>
             <TherapistMatchingDialog />

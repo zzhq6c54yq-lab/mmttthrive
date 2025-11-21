@@ -64,7 +64,12 @@ export function useTodayDashboard() {
   });
 
   const loadDashboardData = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('[Dashboard] No user found, skipping data load');
+      return;
+    }
+
+    console.log('[Dashboard] Loading dashboard data for user:', user.id);
 
     try {
       setLoading(true);
@@ -205,6 +210,15 @@ export function useTodayDashboard() {
         };
       }
 
+      console.log('[Dashboard] Data loaded successfully:', {
+        planCount: todaysPlan.length,
+        streak: streakData.data?.current_streak || 0,
+        checkIns: checkInsData.data?.length || 0,
+        appointments: appointmentsData.data?.length || 0,
+        hasWallet: !!walletData.data,
+        hasInsight: !!insightData.data
+      });
+
       setDashboardData({
         profile: profile,
         todaysPlan,
@@ -221,7 +235,22 @@ export function useTodayDashboard() {
         }
       });
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      console.error('[Dashboard] Error loading dashboard data:', error);
+      // Set empty data to prevent loading indefinitely
+      setDashboardData({
+        profile: profile,
+        todaysPlan: [],
+        checkInStreak: 0,
+        recentCheckIns: [],
+        upcomingAppointments: [],
+        rewardsWallet: { current_points: 0, copay_credits_usd: 0, lifetime_earned: 0 },
+        latestInsight: null,
+        weeklyStats: {
+          challengesCompleted: 0,
+          latestAssessment: null,
+          moodTrend: []
+        }
+      });
     } finally {
       setLoading(false);
     }
