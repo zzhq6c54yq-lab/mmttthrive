@@ -54,10 +54,10 @@ export const WellnessCreditsWidget: React.FC<WellnessCreditsWidgetProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-gradient-to-br from-primary/10 via-background to-primary/5 border border-primary/30 rounded-lg p-6"
+      className="bg-gradient-to-br from-[#D4AF37]/5 to-background border border-[#D4AF37]/30 rounded-lg p-6"
     >
-      <h3 className="text-xl font-bold mb-4 text-shadow flex items-center gap-2">
-        <Coins className="w-5 h-5 text-primary" />
+      <h3 className="text-2xl font-bold mb-6 text-shadow flex items-center gap-2">
+        <Coins className="w-5 h-5 text-[#D4AF37]" />
         Wellness Credits
       </h3>
 
@@ -71,9 +71,9 @@ export const WellnessCreditsWidget: React.FC<WellnessCreditsWidgetProps> = ({
       </div>
 
       {/* Section 2: Co-pay Credits */}
-      <div className="mb-4 pb-4 border-b border-border">
+      <div className="mb-4 pb-4 border-b border-[#D4AF37]/20">
         <p className="text-sm text-muted-foreground mb-1">Co-pay Credits</p>
-        <h4 className="text-3xl font-bold text-green-500 mb-2 flex items-center gap-2">
+        <h4 className="text-3xl font-bold text-[#D4AF37] mb-2 flex items-center gap-2">
           <DollarSign className="w-6 h-6" />
           {copayCredits.toFixed(2)}
         </h4>
@@ -83,10 +83,10 @@ export const WellnessCreditsWidget: React.FC<WellnessCreditsWidgetProps> = ({
       </div>
 
       {/* Section 3: This Month */}
-      <div className="mb-4 pb-4 border-b border-border">
+      <div className="mb-4 pb-4 border-b border-[#D4AF37]/20">
         <p className="text-sm text-muted-foreground mb-1">This Month</p>
         <div className="flex items-center gap-2 mb-2">
-          <TrendingUp className="w-5 h-5 text-green-500" />
+          <TrendingUp className="w-5 h-5 text-[#D4AF37]" />
           <p className="text-xl font-bold">
             You've offset {offsetPercentage.toFixed(0)}% of therapy costs
           </p>
@@ -95,10 +95,10 @@ export const WellnessCreditsWidget: React.FC<WellnessCreditsWidgetProps> = ({
       </div>
 
       {/* Level Up Bar */}
-      <div className="bg-gradient-to-r from-primary/20 to-primary/30 rounded-lg p-4 mb-4">
+      <div className="bg-gradient-to-r from-[#D4AF37]/10 to-[#B8941F]/10 rounded-lg p-4 mb-4 border border-[#D4AF37]/20">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <Crown className="w-4 h-4 text-primary" />
+            <Crown className="w-4 h-4 text-[#D4AF37]" />
             <p className="text-sm font-semibold">Level: {currentLevel} Member</p>
           </div>
           {currentLevel === 'Bronze' && <p className="text-xs text-muted-foreground">0% back</p>}
@@ -117,7 +117,7 @@ export const WellnessCreditsWidget: React.FC<WellnessCreditsWidgetProps> = ({
       </div>
 
       <div className="flex gap-2">
-        <Button className="flex-1" onClick={() => navigate('/rewards')}>
+        <Button variant="gold" className="flex-1" onClick={() => navigate('/rewards')}>
           View All Rewards
         </Button>
         <Button variant="outline" onClick={() => navigate('/rewards')}>

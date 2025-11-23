@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, BookOpen, Activity, Plus } from 'lucide-react';
+import { MessageSquare, BookOpen, Sunrise, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
@@ -16,7 +16,6 @@ interface TodayOverviewCardProps {
   onCheckInComplete: () => void;
 }
 
-const moodEmojis = ['😢', '😟', '😐', '😊', '😄'];
 const quickTags = ['Stressed', 'Tired', 'Anxious', 'Hopeful', 'Energized', 'Grateful'];
 
 export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
@@ -63,25 +62,12 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-background via-background to-primary/5 border border-border rounded-lg p-6"
+      className="bg-gradient-to-br from-[#D4AF37]/5 to-background border border-[#D4AF37]/30 rounded-lg p-6"
     >
       <div className="grid md:grid-cols-2 gap-6">
         {/* Left: Mood Check-In */}
         <div>
-          <h3 className="text-lg font-bold mb-3">How are you feeling right now?</h3>
-          
-          <div className="flex items-center justify-between mb-4">
-            {moodEmojis.map((emoji, idx) => (
-              <span
-                key={idx}
-                className={`text-3xl transition-transform ${
-                  moodValue[0] === idx + 1 ? 'scale-125' : 'opacity-50'
-                }`}
-              >
-                {emoji}
-              </span>
-            ))}
-          </div>
+          <h3 className="text-2xl font-bold mb-4 text-shadow">How are you feeling right now?</h3>
           
           <Slider
             value={moodValue}
@@ -97,7 +83,7 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
               <Button
                 key={tag}
                 size="sm"
-                variant={selectedTags.includes(tag) ? 'default' : 'outline'}
+                variant={selectedTags.includes(tag) ? 'gold' : 'outline'}
                 onClick={() => toggleTag(tag)}
               >
                 {tag}
@@ -105,7 +91,7 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
             ))}
           </div>
 
-          <Button onClick={handleQuickCheckIn} disabled={saving} className="w-full">
+          <Button variant="gold" onClick={handleQuickCheckIn} disabled={saving} className="w-full">
             Save Check-in
           </Button>
 
@@ -128,8 +114,8 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
 
         {/* Right: Today's Plan */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-bold">Today's Plan</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-2xl font-bold text-shadow">Today's Plan</h3>
             <div className="flex items-center gap-2">
               <Label htmlFor="auto-plan" className="text-xs text-muted-foreground">
                 Auto-plan
@@ -159,20 +145,22 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
               todaysPlan.map((activity) => (
                 <div
                   key={activity.id}
-                  className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-[#D4AF37]/5 rounded-lg border border-[#D4AF37]/20"
                 >
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{activity.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {activity.time_of_day === 'morning' && '🌅 Morning'}
-                      {activity.time_of_day === 'afternoon' && '☀️ Afternoon'}
-                      {activity.time_of_day === 'evening' && '🌙 Evening'}
-                      {' · '}
-                      {activity.estimated_minutes} min
-                    </p>
+                  <div className="flex items-center gap-2 flex-1">
+                    {activity.time_of_day === 'morning' && <Sunrise className="w-4 h-4 text-[#D4AF37]" />}
+                    {activity.time_of_day === 'afternoon' && <Sun className="w-4 h-4 text-[#D4AF37]" />}
+                    {activity.time_of_day === 'evening' && <Moon className="w-4 h-4 text-[#D4AF37]" />}
+                    <div>
+                      <p className="text-sm font-medium">{activity.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {activity.time_of_day?.charAt(0).toUpperCase() + activity.time_of_day?.slice(1)} · {activity.estimated_minutes} min
+                      </p>
+                    </div>
                   </div>
                   <Button
                     size="sm"
+                    variant="gold"
                     onClick={() => activity.route_path && navigate(activity.route_path)}
                   >
                     Start
@@ -185,11 +173,7 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
       </div>
 
       {/* Quick Actions */}
-      <div className="flex flex-wrap gap-3 pt-6 border-t border-border mt-6">
-        <Button size="sm" variant="outline" onClick={() => navigate('/quick-check-in')}>
-          <Plus className="w-4 h-4 mr-1" />
-          Check-in
-        </Button>
+      <div className="flex flex-wrap gap-3 pt-6 border-t border-[#D4AF37]/20 mt-6">
         <Button size="sm" variant="outline" onClick={() => navigate('/journal')}>
           <BookOpen className="w-4 h-4 mr-1" />
           Journal
@@ -197,10 +181,6 @@ export const TodayOverviewCard: React.FC<TodayOverviewCardProps> = ({
         <Button size="sm" variant="outline" onClick={() => navigate('/therapy')}>
           <MessageSquare className="w-4 h-4 mr-1" />
           Message therapist
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => navigate('/exercises')}>
-          <Activity className="w-4 h-4 mr-1" />
-          Start exercise
         </Button>
       </div>
     </motion.div>

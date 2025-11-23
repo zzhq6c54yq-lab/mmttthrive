@@ -19,10 +19,10 @@ export const HenryDailyInsight: React.FC<HenryDailyInsightProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
-      className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/30 rounded-lg p-6"
+      className="bg-gradient-to-br from-[#D4AF37]/10 to-[#B8941F]/10 border border-[#D4AF37]/30 rounded-lg p-6"
     >
       <div className="flex items-center gap-2 mb-3">
-        <Lightbulb className="w-5 h-5 text-indigo-400" />
+        <Lightbulb className="w-5 h-5 text-[#D4AF37]" />
         <h4 className="text-lg font-bold text-shadow">Henry's Insight for You</h4>
       </div>
       <p className="text-sm text-foreground mb-4">
@@ -30,7 +30,7 @@ export const HenryDailyInsight: React.FC<HenryDailyInsightProps> = ({
       </p>
       <div className="flex flex-wrap gap-2">
         {onSetReminder && (
-          <Button size="sm" onClick={onSetReminder}>
+          <Button size="sm" variant="gold" onClick={onSetReminder}>
             <Bell className="w-4 h-4 mr-1" />
             Set a morning reminder
           </Button>

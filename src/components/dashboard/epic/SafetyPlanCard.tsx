@@ -20,11 +20,11 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="border-2 border-blue-500/50 bg-blue-500/10 rounded-lg p-6"
+      className="border-2 border-[#D4AF37]/30 bg-[#D4AF37]/5 rounded-lg p-6"
     >
       <div className="flex items-center gap-2 mb-4">
-        <Shield className="w-5 h-5 text-blue-400" />
-        <h3 className="text-lg font-bold text-shadow">Your Safety Plan</h3>
+        <Shield className="w-5 h-5 text-[#D4AF37]" />
+        <h3 className="text-2xl font-bold text-shadow">Your Safety Plan</h3>
         <Button size="sm" variant="ghost" className="ml-auto">
           <Edit className="w-4 h-4 mr-1" />
           Edit
@@ -38,7 +38,7 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
       <div className="space-y-4">
         {/* Step 1: Breathe */}
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-[#D4AF37]/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
             1
           </div>
           <div className="flex-1">
@@ -55,7 +55,7 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
 
         {/* Step 2: Reach Out */}
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-[#D4AF37]/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
             2
           </div>
           <div className="flex-1">
@@ -81,7 +81,7 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
 
         {/* Step 3: Crisis Resources */}
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-destructive/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
             3
           </div>
           <div className="flex-1">
@@ -101,7 +101,7 @@ export const SafetyPlanCard: React.FC<SafetyPlanCardProps> = ({
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-border">
+      <div className="mt-4 pt-4 border-t border-[#D4AF37]/20">
         <p className="text-xs text-muted-foreground text-center">
           You're not alone. Help is always available.
         </p>
