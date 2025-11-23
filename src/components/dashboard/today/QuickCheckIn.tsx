@@ -76,8 +76,8 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
       }
 
       toast({
-        title: "Check-in saved",
-        description: "Thanks for checking in. Showing up counts.",
+        title: "We see you",
+        description: "Thank you for showing up today. That takes strength.",
       });
 
       // Reset form
@@ -91,8 +91,8 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
     } catch (error) {
       console.error('Error saving check-in:', error);
       toast({
-        title: "Error",
-        description: "Failed to save check-in. Please try again.",
+        title: "Let's try that again",
+        description: "Something didn't work. We're here when you're ready.",
         variant: "destructive"
       });
     } finally {
@@ -106,13 +106,46 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
     );
   };
 
+  // Get time-aware greeting
+  const getTimeAwareGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 5) return { text: "How are you holding up?", emoji: "🌙" };
+    if (hour < 12) return { text: "Good morning! How are you feeling today?", emoji: "🌅" };
+    if (hour < 17) return { text: "How's your day going?", emoji: "☀️" };
+    if (hour < 21) return { text: "How has your evening been?", emoji: "🌆" };
+    return { text: "Checking in before rest?", emoji: "✨" };
+  };
+
+  const greeting = getTimeAwareGreeting();
+
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
-      <CardHeader>
-        <CardTitle className="text-xl">Good morning! 👋</CardTitle>
-        <p className="text-sm text-muted-foreground">Quick check-in (optional)</p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <Card className="bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden relative">
+        {/* Subtle animated background */}
+        <div className="absolute inset-0 opacity-5">
+          <motion.div
+            className="absolute w-64 h-64 bg-[#D4AF37] rounded-full blur-3xl"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, 50, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        </div>
+        
+        <CardHeader className="relative z-10">
+          <CardTitle className="text-xl">{greeting.emoji} {greeting.text}</CardTitle>
+          <p className="text-sm text-muted-foreground">Share what's on your mind (completely optional)</p>
+        </CardHeader>
+      <CardContent className="space-y-4 relative z-10">
         {/* Tags */}
         <div>
           <label className="text-sm font-medium mb-2 block">What describes today?</label>
@@ -133,25 +166,35 @@ export default function QuickCheckIn({ onCheckInComplete }: { onCheckInComplete?
 
         {/* Note */}
         <div>
-          <label className="text-sm font-medium mb-2 block">Anything you want to note? (optional)</label>
+          <label className="text-sm font-medium mb-2 block">What's on your mind? (optional)</label>
           <Textarea
-            placeholder="How are you feeling today?"
+            placeholder="Sometimes it helps just to write it down..."
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
-            className="resize-none"
+            className="resize-none bg-background/50 backdrop-blur-sm"
           />
         </div>
 
         {/* Save Button */}
-        <Button 
-          onClick={handleSaveCheckIn}
-          disabled={saving}
-          className="w-full"
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
         >
-          {saving ? 'Saving...' : 'Save Check-In'}
-        </Button>
+          <Button 
+            onClick={handleSaveCheckIn}
+            disabled={saving}
+            className="w-full bg-gradient-to-r from-[#B87333] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#B87333] transition-all duration-300"
+          >
+            {saving ? 'Saving your check-in...' : 'Check In'}
+          </Button>
+        </motion.div>
+        
+        <p className="text-xs text-center text-muted-foreground pt-2">
+          Showing up counts. Even the smallest check-in matters.
+        </p>
       </CardContent>
     </Card>
+    </motion.div>
   );
 }
