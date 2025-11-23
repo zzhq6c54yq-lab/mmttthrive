@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, MessageSquare, Lightbulb, Gift, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -50,17 +50,18 @@ export const NotificationBell: React.FC = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const getNotificationIcon = (type: Notification['type']) => {
+    const iconClass = "w-5 h-5 text-[#D4AF37]";
     switch (type) {
       case 'therapist_message':
-        return '💬';
+        return <MessageSquare className={iconClass} />;
       case 'ai_insight':
-        return '💡';
+        return <Lightbulb className={iconClass} />;
       case 'reward':
-        return '🎁';
+        return <Gift className={iconClass} />;
       case 'streak_milestone':
-        return '🔥';
+        return <Flame className={iconClass} />;
       default:
-        return '📢';
+        return <Bell className={iconClass} />;
     }
   };
 
@@ -94,9 +95,9 @@ export const NotificationBell: React.FC = () => {
                 key={notification.id}
                 className="flex items-start gap-3 px-3 py-3 cursor-pointer"
               >
-                <span className="text-2xl flex-shrink-0">
+                <div className="flex-shrink-0 mt-0.5">
                   {getNotificationIcon(notification.type)}
-                </span>
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">
                     {notification.title}
@@ -109,7 +110,7 @@ export const NotificationBell: React.FC = () => {
                   </p>
                 </div>
                 {!notification.read && (
-                  <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-1" />
+                  <div className="w-2 h-2 rounded-full bg-[#D4AF37] flex-shrink-0 mt-1" />
                 )}
               </DropdownMenuItem>
             ))}

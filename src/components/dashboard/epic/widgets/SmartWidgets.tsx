@@ -33,11 +33,11 @@ export function MoodPulseWidget({ moodData = [] }: MoodPulseWidgetProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-gradient-to-br from-background via-background to-primary/5 border border-border rounded-lg p-6"
+      className="bg-gradient-to-br from-[#D4AF37]/5 to-background border border-[#D4AF37]/30 rounded-lg p-6"
     >
       <div className="flex items-center gap-2 mb-4">
-        <Heart className="w-5 h-5 text-primary" />
-        <h3 className="font-bold text-shadow">Mood Pulse</h3>
+        <Heart className="w-5 h-5 text-[#D4AF37]" />
+        <h3 className="text-2xl font-bold text-shadow">Mood Pulse</h3>
       </div>
       
       <div className="h-32 mb-3">
@@ -101,11 +101,11 @@ export function StreakProtectorWidget({ streak }: StreakProtectorWidgetProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-gradient-to-br from-background via-background to-orange-500/10 border border-border rounded-lg p-6"
+      className="bg-gradient-to-br from-[#D4AF37]/5 to-background border border-[#D4AF37]/30 rounded-lg p-6"
     >
       <div className="flex items-center gap-2 mb-4">
-        <Flame className="w-5 h-5 text-orange-500" />
-        <h3 className="font-bold text-shadow">Streak Protector</h3>
+        <Flame className="w-5 h-5 text-[#D4AF37]" />
+        <h3 className="text-2xl font-bold text-shadow">Streak Protector</h3>
       </div>
       
       <div className="text-center mb-4">
@@ -119,9 +119,11 @@ export function StreakProtectorWidget({ streak }: StreakProtectorWidgetProps) {
             repeatDelay: 2
           }}
         >
-          <p className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
-            <Flame className="w-8 h-8 text-orange-500" />
-            {streak} days
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/20 mb-2">
+            <Flame className="w-8 h-8 text-[#D4AF37]" />
+          </div>
+          <p className="text-3xl font-bold mb-2">
+            {streak}-day streak
           </p>
         </motion.div>
         
@@ -135,16 +137,17 @@ export function StreakProtectorWidget({ streak }: StreakProtectorWidgetProps) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-3 p-2 bg-orange-500/20 border border-orange-500/50 rounded-lg"
+            className="mt-3 p-2 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg flex items-center justify-center gap-2"
           >
-            <p className="text-xs text-orange-400">
-              ⏰ You have {hoursLeft}h left to keep your streak
+            <Clock className="w-4 h-4 text-[#D4AF37]" />
+            <p className="text-xs text-[#D4AF37]">
+              You have {hoursLeft}h left to keep your streak
             </p>
           </motion.div>
         )}
       </div>
 
-      <Button className="w-full" size="sm" variant="outline">
+      <Button variant="gold" className="w-full" size="sm">
         Do a 1-minute win
       </Button>
       
