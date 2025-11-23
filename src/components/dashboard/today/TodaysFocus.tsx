@@ -60,9 +60,9 @@ export default function TodaysFocus({ activities }: TodaysFocusProps) {
   return (
     <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle className="text-xl">Today's Focus</CardTitle>
+        <CardTitle className="text-xl">Your Path Forward</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Based on your goals, here's your next step:
+          We've thought about what might help you today:
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -128,9 +128,14 @@ export default function TodaysFocus({ activities }: TodaysFocusProps) {
           );
         })}
 
-        <p className="text-xs text-center text-muted-foreground pt-2 border-t border-border/30">
-          Don't worry about doing everything. Even one step today matters.
-        </p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-xs text-center text-muted-foreground pt-2 border-t border-border/30"
+        >
+          You don't have to do it all. Just one small step forward counts.
+        </motion.p>
       </CardContent>
     </Card>
   );

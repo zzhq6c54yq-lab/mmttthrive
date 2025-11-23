@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTodayDashboard } from '@/hooks/useTodayDashboard';
 import { useDashboardState } from '@/hooks/useDashboardState';
 import { useUser } from '@/contexts/UserContext';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle } from 'lucide-react';
 import DashboardNavigation from './DashboardNavigation';
 import { StatusChips } from './StatusChips';
 import { NewYourDaySection } from './sections/NewYourDaySection';
@@ -18,6 +17,8 @@ import AIContextualHelper from './AIContextualHelper';
 import LayoutControls from './LayoutControls';
 import HenryDialog from '@/components/henry/HenryDialog';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import EmpathyLoadingState from '@/components/shared/EmpathyLoadingState';
+import EmpathyErrorState from '@/components/shared/EmpathyErrorState';
 
 export default function EpicDashboard() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function EpicDashboard() {
   const { state: dashboardState } = useDashboardState(dashboardData);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [showHenryDialog, setShowHenryDialog] = useState(false);
+  const [showOpeningRitual, setShowOpeningRitual] = useState(true);
 
   // Setup keyboard shortcuts
   useKeyboardShortcuts({
@@ -54,68 +56,129 @@ export default function EpicDashboard() {
     }
   }, [loading, dashboardData]);
 
-  // Loading state
+  // Opening ritual
+  useEffect(() => {
+    if (!loading && dashboardData) {
+      const timer = setTimeout(() => setShowOpeningRitual(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, dashboardData]);
+
+  // Loading state with empathy
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 p-4 pb-20">
-        <div className="container mx-auto max-w-7xl space-y-6">
-          {/* Navigation skeleton */}
-          <Skeleton className="h-16 w-full bg-white/10" />
-          
-          {/* Your Day section skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Skeleton className="h-48 bg-white/10" />
-            <Skeleton className="h-48 bg-white/10 lg:col-span-2" />
-          </div>
-          
-          {/* Main content skeleton */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <Skeleton className="h-64 bg-white/10" />
-              <Skeleton className="h-64 bg-white/10" />
-            </div>
-            <div className="space-y-4">
-              <Skeleton className="h-32 bg-white/10" />
-              <Skeleton className="h-32 bg-white/10" />
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900">
+        <EmpathyLoadingState />
       </div>
     );
   }
 
-  // Error state - user not found
+  // Error state with empathy
   if (!user || !profile) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 flex items-center justify-center p-4">
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-md text-center">
-          <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">
-            {!user ? 'Authentication Required' : 'Profile Setup Required'}
-          </h2>
-          <p className="text-white/70 mb-6">
-            {!user 
-              ? "Please log in to access your dashboard." 
-              : "Your profile needs to be set up. Let's complete your onboarding."}
-          </p>
-          <button
-            onClick={() => navigate(!user ? '/auth' : '/onboarding')}
-            className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
-          >
-            {!user ? 'Login' : 'Complete Setup'}
-          </button>
-        </div>
+        <EmpathyErrorState
+          title={!user ? 'Please log in' : "Let's finish setting up"}
+          message={!user 
+            ? "We need you to log in so we can personalize your experience." 
+            : "Your profile isn't complete yet. Let's take a moment to finish it together."}
+          onRetry={() => navigate(!user ? '/auth' : '/onboarding')}
+          showHomeButton={false}
+        />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 pb-24">
-      {/* Navigation */}
-      <DashboardNavigation userName={profile?.display_name || 'there'} />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 pb-24 relative overflow-hidden">
+      {/* Ambient background particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-[#D4AF37]/20 rounded-full"
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+            }}
+            animate={{
+              y: [null, Math.random() * window.innerHeight],
+              opacity: [0, 0.5, 0],
+            }}
+            transition={{
+              duration: 10 + Math.random() * 5,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Main Content - New Command Center Layout */}
-      <div className="container mx-auto max-w-7xl px-4 space-y-6 mt-6">
+      {/* Opening Ritual */}
+      <AnimatePresence>
+        {showOpeningRitual && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 flex flex-col items-center justify-center"
+          >
+            {/* Breathing animation */}
+            <motion.div
+              animate={{
+                scale: [0.9, 1.1, 0.9],
+                opacity: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 3,
+                repeat: 0,
+              }}
+              className="text-center"
+            >
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-2xl text-gray-300 mb-8"
+              >
+                Welcome back, {profile?.display_name || 'friend'}
+              </motion.p>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.5, type: "spring" }}
+                className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B8941F] flex items-center justify-center"
+              >
+                <span className="text-3xl">✨</span>
+              </motion.div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                className="text-lg text-gray-400 mt-8"
+              >
+                Let's take a breath together
+              </motion.p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        <DashboardNavigation userName={profile?.display_name || 'there'} />
+      </motion.div>
+
+      {/* Main Content with staggered animations */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="container mx-auto max-w-7xl px-4 space-y-6 mt-6 relative z-10"
+      >
         <NewYourDaySection
           dashboardData={dashboardData}
           onCheckInComplete={refetch}
@@ -131,11 +194,18 @@ export default function EpicDashboard() {
           <QuickNotesWidget />
         </div>
 
-        <ToolkitSection userGoals={profile?.goals || []} />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <ToolkitSection userGoals={profile?.goals || []} />
+        </motion.div>
+        
         <QuickActions />
         <LayoutControls />
         <AIContextualHelper />
-      </div>
+      </motion.div>
 
       {/* Safety Strip */}
       <SafetyStrip />
