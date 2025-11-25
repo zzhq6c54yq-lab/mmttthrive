@@ -11,6 +11,7 @@ import { NewYourDaySection } from './sections/NewYourDaySection';
 import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from './widgets/SmartWidgets';
 import ToolkitSection from './sections/ToolkitSection';
 import SpecializedProgramsSection from './sections/SpecializedProgramsSection';
+import AssessmentsCarouselSection from './sections/AssessmentsCarouselSection';
 import SafetyStrip from '../today/SafetyStrip';
 import QuickActions from './QuickActions';
 import CommandPalette from './CommandPalette';
@@ -354,6 +355,9 @@ export default function EpicDashboard() {
 
         {/* Specialized Programs - Moved Up */}
         <SpecializedProgramsSection />
+
+        {/* Assessments Carousel Section */}
+        <AssessmentsCarouselSection />
 
         <NewYourDaySection
           dashboardData={dashboardData}

@@ -15,6 +15,7 @@ import EarningsTab from "@/components/therapist/EarningsTab";
 import { DocumentsTab } from "@/components/therapist/DocumentsTab";
 import { ProfileTab } from "@/components/therapist/ProfileTab";
 import { CalendarView } from "@/components/therapist/CalendarView";
+import VideoSessionTab from "@/components/therapist/VideoSessionTab";
 import { useTherapyBookings } from "@/hooks/useTherapyBookings";
 import { startOfWeek } from "date-fns";
 
@@ -384,12 +385,18 @@ export default function TherapistDashboard() {
         />
 
         <Tabs defaultValue="today" className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-8 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+          <TabsList className="grid grid-cols-3 md:grid-cols-9 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="today" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
               Today
+            </TabsTrigger>
+            <TabsTrigger 
+              value="video-session" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
+            >
+              Video Session
             </TabsTrigger>
             <TabsTrigger 
               value="clients" 
@@ -449,6 +456,13 @@ export default function TherapistDashboard() {
                 activeClients: stats.activeClients,
                 sessionsThisWeek: stats.sessionsThisWeek
               }}
+            />
+          </TabsContent>
+
+          <TabsContent value="video-session" className="animate-fade-in">
+            <VideoSessionTab 
+              hasActiveSession={false}
+              upcomingBookings={upcomingBookings}
             />
           </TabsContent>
 
