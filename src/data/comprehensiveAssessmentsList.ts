@@ -2,8 +2,10 @@
 // This file contains the full expanded assessment library
 
 import { MentalHealthAssessment } from './mentalHealthAssessments';
+import { newComprehensiveAssessments } from './comprehensiveAssessmentsNew';
 
 export const expandedAssessments: MentalHealthAssessment[] = [
+  ...newComprehensiveAssessments,
   // Additional 36 assessments to complete the 40-assessment library
   
   // PSWQ - Penn State Worry Questionnaire (16 questions)

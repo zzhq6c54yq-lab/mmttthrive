@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, AlertTriangle, Clock, Users, Star, ArrowLeft, ArrowRight } from 'lucide-react';
 import { MentalHealthAssessment, AssessmentQuestion } from '@/data/mentalHealthAssessments';
+import { AssessmentResultsOverview } from './AssessmentResultsOverview';
 import useTranslation from '@/hooks/useTranslation';
 
 interface AssessmentModalProps {
@@ -54,10 +55,25 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ assessment, open, onO
   };
 
   const calculateScore = () => {
-    // Simple scoring for demo - in real implementation, use assessment.scoring
-    const totalQuestions = assessment.questions.length;
-    const answeredQuestions = Object.keys(answers).length;
-    return Math.floor((answeredQuestions / totalQuestions) * 100);
+    // Calculate actual score based on assessment's scoring system
+    let totalScore = 0;
+    
+    assessment.questions.forEach((question) => {
+      const answer = answers[question.id];
+      if (answer !== undefined) {
+        if (typeof answer === 'number') {
+          totalScore += answer;
+        } else if (typeof answer === 'string') {
+          // For multiple choice, find the index
+          const optionIndex = question.options?.indexOf(answer);
+          if (optionIndex !== undefined && optionIndex !== -1) {
+            totalScore += optionIndex;
+          }
+        }
+      }
+    });
+    
+    return totalScore;
   };
 
   const getScoreInterpretation = (score: number) => {
@@ -391,6 +407,31 @@ const AssessmentModal: React.FC<AssessmentModalProps> = ({ assessment, open, onO
 
   const renderResultsStep = () => {
     const score = calculateScore();
+
+    // Check if assessment has enhanced result overview
+    if (assessment.resultOverview) {
+      return (
+        <div className="space-y-6">
+          <AssessmentResultsOverview
+            assessment={assessment}
+            score={score}
+            answers={answers}
+            isSpanish={isSpanish}
+          />
+          
+          <div className="flex gap-4">
+            <Button variant="outline" onClick={resetModal} className="flex-1">
+              {translations.retakeAssessment}
+            </Button>
+            <Button onClick={() => onOpenChange(false)} className="flex-1">
+              {translations.close}
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    // Fallback to simple results
     const interpretation = getScoreInterpretation(score);
 
     return (

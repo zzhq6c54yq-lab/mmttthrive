@@ -4,6 +4,55 @@ import anxietyImage from '@/assets/assessment-anxiety.jpg';
 import depressionImage from '@/assets/assessment-depression.jpg';
 import stressImage from '@/assets/assessment-stress.jpg';
 
+export interface Subscale {
+  name: string;
+  nameSpanish: string;
+  questionIds: string[];
+  maxScore: number;
+  interpretations: {
+    range: [number, number];
+    level: string;
+    levelSpanish: string;
+    description: string;
+    descriptionSpanish: string;
+  }[];
+}
+
+export interface PatternInsight {
+  pattern: string;
+  insight: string;
+  insightSpanish: string;
+  recommendations: string[];
+  recommendationsSpanish: string[];
+}
+
+export interface OverallInterpretation {
+  scoreRange: { min: number; max: number };
+  title: string;
+  titleSpanish: string;
+  fullDescription: string;
+  fullDescriptionSpanish: string;
+  strengths: string[];
+  strengthsSpanish: string[];
+  areasForGrowth: string[];
+  areasForGrowthSpanish: string[];
+  actionSteps: string[];
+  actionStepsSpanish: string[];
+  resources: string[];
+  professionalGuidance: string;
+  professionalGuidanceSpanish: string;
+}
+
+export interface ResultOverview {
+  title: string;
+  titleSpanish: string;
+  introduction: string;
+  introductionSpanish: string;
+  subscales?: Subscale[];
+  overallInterpretations: OverallInterpretation[];
+  patternInsights?: PatternInsight[];
+}
+
 export interface MentalHealthAssessment {
   id: string;
   title: string;
@@ -27,6 +76,7 @@ export interface MentalHealthAssessment {
   disclaimer: string;
   disclaimerSpanish: string;
   professionalReferral: boolean;
+  resultOverview?: ResultOverview;
 }
 
 export interface AssessmentQuestion {
