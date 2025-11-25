@@ -117,6 +117,7 @@ import EducatorsBurnoutAssessment from "./pages/EducatorsBurnoutAssessment";
 import EducatorsClassroomStressAssessment from "./pages/EducatorsClassroomStressAssessment";
 import EducatorsWorkLifeBalanceAssessment from "./pages/EducatorsWorkLifeBalanceAssessment";
 import GenerativeVideo from "./pages/GenerativeVideo";
+import AIWorkshopStudio from "./pages/AIWorkshopStudio";
 import HospitalityWelcome from "./pages/HospitalityWelcome";
 import HospitalityPortal from "./pages/HospitalityPortal";
 import HospitalityStressAssessment from "./pages/HospitalityStressAssessment";
@@ -486,6 +487,7 @@ function App() {
           <Route path="/unburdened" element={<Unburdened />} />
           
           <Route path="/all-workshops" element={<AllWorkshopsPage />} />
+          <Route path="/ai-workshop-studio" element={<AIWorkshopStudio />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
             </Routes>
