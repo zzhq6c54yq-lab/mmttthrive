@@ -16,6 +16,7 @@ import { DocumentsTab } from "@/components/therapist/DocumentsTab";
 import { ProfileTab } from "@/components/therapist/ProfileTab";
 import { CalendarView } from "@/components/therapist/CalendarView";
 import VideoSessionTab from "@/components/therapist/VideoSessionTab";
+import RequestsTab from "@/components/therapist/RequestsTab";
 import { useTherapyBookings } from "@/hooks/useTherapyBookings";
 import { startOfWeek } from "date-fns";
 
@@ -385,12 +386,19 @@ export default function TherapistDashboard() {
         />
 
         <Tabs defaultValue="today" className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-9 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
+          <TabsList className="grid grid-cols-3 md:grid-cols-10 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="today" 
               className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3"
             >
               Today
+            </TabsTrigger>
+            <TabsTrigger 
+              value="requests" 
+              className="data-[state=active]:bg-[#B87333]/90 data-[state=active]:text-white py-3 relative"
+            >
+              Requests
+              {/* Badge count can be added here */}
             </TabsTrigger>
             <TabsTrigger 
               value="video-session" 
@@ -457,6 +465,10 @@ export default function TherapistDashboard() {
                 sessionsThisWeek: stats.sessionsThisWeek
               }}
             />
+          </TabsContent>
+
+          <TabsContent value="requests" className="animate-fade-in">
+            <RequestsTab />
           </TabsContent>
 
           <TabsContent value="video-session" className="animate-fade-in">
