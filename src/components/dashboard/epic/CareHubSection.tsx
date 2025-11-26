@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { DashboardData } from '@/hooks/useTodayDashboard';
 import { AppointmentModal } from './AppointmentModal';
+import { RequestTherapistContact } from '@/components/client/RequestTherapistContact';
 
 interface CareHubSectionProps {
   dashboardData: DashboardData;
@@ -20,6 +21,15 @@ export const CareHubSection: React.FC<CareHubSectionProps> = ({ dashboardData })
   if (!hasTherapist) {
     return (
       <div className="space-y-6">
+        {/* Contact Dr. Damien Pena Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+        >
+          <RequestTherapistContact />
+        </motion.div>
+
         {/* Card 1: Connect with a Licensed Therapist - Hero Layout */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

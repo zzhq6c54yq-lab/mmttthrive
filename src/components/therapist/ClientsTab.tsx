@@ -3,7 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, MessageSquare, Calendar, FileText } from "lucide-react";
+import { Search, MessageSquare, Calendar, FileText, Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 interface Client {
@@ -24,8 +25,14 @@ interface ClientsTabProps {
 }
 
 export default function ClientsTab({ clients }: ClientsTabProps) {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+
+  const handleCallClient = (clientUserId: string) => {
+    const sessionId = `session_${clientUserId}_${Date.now()}`;
+    navigate(`/therapist-video-session/${sessionId}`);
+  };
 
   const filteredClients = clients.filter((client) => {
     const matchesSearch = client.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -133,13 +140,18 @@ export default function ClientsTab({ clients }: ClientsTabProps) {
               )}
 
               <div className="flex gap-2">
+                <Button 
+                  size="sm" 
+                  variant="gold" 
+                  className="flex-1"
+                  onClick={() => handleCallClient(client.user_id)}
+                >
+                  <Video className="h-3 w-3 mr-1" />
+                  Call
+                </Button>
                 <Button size="sm" variant="outline" className="flex-1">
                   <MessageSquare className="h-3 w-3 mr-1" />
                   Message
-                </Button>
-                <Button size="sm" variant="outline" className="flex-1">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  Schedule
                 </Button>
                 <Button size="sm" variant="outline">
                   <FileText className="h-3 w-3" />

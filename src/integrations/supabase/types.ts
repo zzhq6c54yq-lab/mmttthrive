@@ -3970,6 +3970,56 @@ export type Database = {
           },
         ]
       }
+      therapist_requests: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string | null
+          priority: string
+          request_type: string
+          responded_at: string | null
+          status: string
+          therapist_id: string | null
+          updated_at: string | null
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          priority?: string
+          request_type: string
+          responded_at?: string | null
+          status?: string
+          therapist_id?: string | null
+          updated_at?: string | null
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          priority?: string
+          request_type?: string
+          responded_at?: string | null
+          status?: string
+          therapist_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "therapist_requests_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       therapists: {
         Row: {
           approach: string | null
