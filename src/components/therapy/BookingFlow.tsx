@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { CreditCard, Calendar as CalendarIcon, Clock, CheckCircle, Loader2 } from "lucide-react";
+import { CreditCard, Calendar as CalendarIcon, Clock, CheckCircle, Loader2, Tag } from "lucide-react";
 import { format, addDays, setHours, setMinutes } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { therapyBookingSchema } from "@/lib/validations";
@@ -26,6 +28,7 @@ const timeSlots = [
 
 export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }: BookingFlowProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState("");
@@ -34,9 +37,48 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
   const [paymentMethod, setPaymentMethod] = useState("credit_card");
   const [isProcessing, setIsProcessing] = useState(false);
   const [bookingComplete, setBookingComplete] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check authentication
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Login Required",
+          description: "Please log in to book a session",
+          variant: "destructive",
+        });
+        onClose();
+        navigate('/auth?returnTo=/real-time-therapy');
+        return;
+      }
+      setIsAuthenticated(true);
+    };
+    checkAuth();
+  }, [navigate, onClose, toast]);
 
   const calculateTotal = () => {
+    if (promoApplied) return "0.00";
     return ((hourlyRate * duration) / 60).toFixed(2);
+  };
+
+  const handleApplyPromo = () => {
+    if (promoCode.toLowerCase() === "thrivemt") {
+      setPromoApplied(true);
+      toast({
+        title: "Promo Code Applied! 🎉",
+        description: "100% discount - Your session is now free!",
+      });
+    } else {
+      toast({
+        title: "Invalid Promo Code",
+        description: "Please check the code and try again",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleBooking = async () => {
@@ -78,9 +120,10 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
           session_type: validation.data.session_type,
           concerns: validation.data.concerns || null,
           notes: validation.data.notes || null,
-          payment_status: "paid",
+          payment_status: promoApplied ? "free" : "paid",
           payment_amount: parseFloat(calculateTotal()),
-          payment_method: paymentMethod,
+          payment_method: promoApplied ? "promo_code" : paymentMethod,
+          promo_code: promoApplied ? promoCode : null,
           status: "scheduled",
         }]);
 
@@ -203,7 +246,44 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
       case 3:
         return (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Payment (Simulated)</h2>
+            <h2 className="text-xl font-semibold">Payment</h2>
+            
+            {/* Promo Code Section */}
+            <Card className="bg-gradient-to-br from-[#D4AF37]/5 to-[#B8941F]/5 border-[#D4AF37]/30">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Tag className="h-4 w-4 text-[#D4AF37]" />
+                  <Label className="text-sm font-semibold">Have a promo code?</Label>
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Enter promo code"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    disabled={promoApplied}
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={handleApplyPromo}
+                    variant="outline"
+                    disabled={promoApplied || !promoCode}
+                    className="border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
+                  >
+                    Apply
+                  </Button>
+                </div>
+                {promoApplied && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-3 flex items-center gap-2 text-green-600 dark:text-green-400"
+                  >
+                    <CheckCircle className="h-4 w-4" />
+                    <span className="text-sm font-medium">100% discount applied! Session is FREE! 🎉</span>
+                  </motion.div>
+                )}
+              </CardContent>
+            </Card>
             
             <Card className="bg-muted/50">
               <CardContent className="p-4">
@@ -215,35 +295,47 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
                   <span>Duration</span>
                   <span>{duration} minutes</span>
                 </div>
+                {promoApplied && (
+                  <div className="flex justify-between mb-2 text-green-600 dark:text-green-400">
+                    <span>Discount (ThriveMT)</span>
+                    <span>-100%</span>
+                  </div>
+                )}
                 <div className="border-t pt-2 mt-2 flex justify-between font-bold">
                   <span>Total</span>
-                  <span>${calculateTotal()}</span>
+                  <span className={promoApplied ? "text-green-600 dark:text-green-400" : ""}>
+                    ${calculateTotal()}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
-            <div>
-              <Label>Payment Method (Simulated)</Label>
-              <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                <div className="flex items-center space-x-2 mt-2">
-                  <RadioGroupItem value="credit_card" id="credit_card" />
-                  <Label htmlFor="credit_card">
-                    <CreditCard className="inline h-4 w-4 mr-2" />
-                    Credit Card
-                  </Label>
+            {!promoApplied && (
+              <>
+                <div>
+                  <Label>Payment Method (Simulated)</Label>
+                  <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <RadioGroupItem value="credit_card" id="credit_card" />
+                      <Label htmlFor="credit_card">
+                        <CreditCard className="inline h-4 w-4 mr-2" />
+                        Credit Card
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="insurance" id="insurance" />
+                      <Label htmlFor="insurance">Insurance</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="insurance" id="insurance" />
-                  <Label htmlFor="insurance">Insurance</Label>
-                </div>
-              </RadioGroup>
-            </div>
 
-            <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-              <p className="text-sm text-blue-900 dark:text-blue-100">
-                💳 This is a simulated payment. No actual charges will be made. In production, this would integrate with Stripe for real payments.
-              </p>
-            </div>
+                <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="text-sm text-blue-900 dark:text-blue-100">
+                    💳 This is a simulated payment. No actual charges will be made.
+                  </p>
+                </div>
+              </>
+            )}
 
             <div className="border-t pt-4">
               <h3 className="font-semibold mb-2">Booking Summary</h3>
@@ -316,12 +408,15 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
               <Button
                 onClick={handleBooking}
                 disabled={isProcessing}
+                className={promoApplied ? "bg-green-600 hover:bg-green-700" : ""}
               >
                 {isProcessing ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     Processing...
                   </>
+                ) : promoApplied ? (
+                  "Confirm Booking (FREE)"
                 ) : (
                   `Confirm & Pay $${calculateTotal()}`
                 )}

@@ -4109,6 +4109,7 @@ export type Database = {
           payment_amount: number
           payment_method: string | null
           payment_status: string
+          promo_code: string | null
           session_type: string
           status: string
           therapist_id: string
@@ -4126,6 +4127,7 @@ export type Database = {
           payment_amount: number
           payment_method?: string | null
           payment_status?: string
+          promo_code?: string | null
           session_type?: string
           status?: string
           therapist_id: string
@@ -4143,6 +4145,7 @@ export type Database = {
           payment_amount?: number
           payment_method?: string | null
           payment_status?: string
+          promo_code?: string | null
           session_type?: string
           status?: string
           therapist_id?: string
