@@ -76,17 +76,23 @@ const WorkshopsCarouselSection: React.FC<WorkshopsCarouselSectionProps> = ({ tra
                       className="group cursor-pointer overflow-hidden border-gray-700/50 hover:border-[#D4AF37]/50 transition-all duration-300 h-[400px] flex flex-col"
                       onClick={() => handleWorkshopClick(workshop.id, workshop.title)}
                     >
-                      {/* Cover Image with Icon Overlay */}
-                      <div className={`relative h-48 overflow-hidden ${workshop.color}`}>
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/30 via-transparent to-[#B8941F]/20 group-hover:from-[#D4AF37]/40 transition-all duration-300" />
+                      {/* Cover Image */}
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={workshop.coverImage} 
+                          alt={workshop.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/40 via-black/20 to-[#B8941F]/40 group-hover:from-[#D4AF37]/50 transition-all duration-300" />
                         
-                        {/* Icon */}
+                        {/* Icon Overlay */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <motion.div
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             transition={{ duration: 0.3 }}
+                            className="bg-black/40 backdrop-blur-sm rounded-full p-6"
                           >
-                            <Icon className="h-20 w-20 text-[#D4AF37] drop-shadow-lg" />
+                            <Icon className="h-16 w-16 text-[#D4AF37] drop-shadow-2xl" />
                           </motion.div>
                         </div>
 

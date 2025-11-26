@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/contexts/UserContext";
+import { useWebRTC } from "@/hooks/useWebRTC";
 import { Loader2 } from "lucide-react";
 import VideoSessionHeader from "./video-session/VideoSessionHeader";
 import VideoSessionControls from "./video-session/VideoSessionControls";
@@ -25,10 +26,46 @@ export default function TherapistVideoSession() {
   const [therapistId, setTherapistId] = useState<string | null>(null);
   const [clientId, setClientId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [useRealWebRTC, setUseRealWebRTC] = useState(false);
   
   // Video refs
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  
+  // Check if current user is therapist (for WebRTC initiator role)
+  const isTherapist = useMemo(() => 
+    user?.email?.includes('therapist') || user?.email?.includes('damien'), 
+    [user]
+  );
+  
+  // Initialize WebRTC for real video calling
+  const {
+    localStream: webrtcLocalStream,
+    remoteStream: webrtcRemoteStream,
+    isConnected: webrtcConnected,
+    connectionState: webrtcConnectionState,
+    toggleMute: webrtcToggleMute,
+    toggleVideo: webrtcToggleVideo,
+  } = useWebRTC({
+    sessionId: sessionId || '',
+    isInitiator: isTherapist,
+    onRemoteStream: (stream) => {
+      console.log('Remote stream received via WebRTC');
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = stream;
+      }
+    },
+    onConnectionStateChange: (state) => {
+      console.log('WebRTC connection state:', state);
+      if (state === 'connected') {
+        setUseRealWebRTC(true);
+        toast({
+          title: "Video Call Connected",
+          description: "Real-time video connection established",
+        });
+      }
+    },
+  });
   
   // State
   const [isMuted, setIsMuted] = useState(false);
@@ -80,11 +117,22 @@ export default function TherapistVideoSession() {
     initUser();
   }, [navigate, toast, searchParams]);
 
-  // Initialize video stream
+  // Initialize video stream (WebRTC or fallback)
   useEffect(() => {
     if (!therapistId) return;
 
     const initializeStream = async () => {
+      // If WebRTC is connected, use that stream
+      if (useRealWebRTC && webrtcLocalStream) {
+        setLocalStream(webrtcLocalStream);
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = webrtcLocalStream;
+        }
+        await logSessionEvent('webrtc_session_started');
+        return;
+      }
+
+      // Otherwise initialize local stream as fallback
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: facingMode },
@@ -111,11 +159,11 @@ export default function TherapistVideoSession() {
     initializeStream();
 
     return () => {
-      if (localStream) {
+      if (localStream && !useRealWebRTC) {
         localStream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [therapistId]);
+  }, [therapistId, useRealWebRTC, webrtcLocalStream]);
 
   // Monitor connection quality (mock - implement real WebRTC stats)
   useEffect(() => {
@@ -144,6 +192,15 @@ export default function TherapistVideoSession() {
   };
 
   const toggleMute = () => {
+    // Use WebRTC toggle if connected
+    if (useRealWebRTC && webrtcToggleMute) {
+      const muted = webrtcToggleMute();
+      setIsMuted(muted);
+      logSessionEvent('audio_toggled', { muted });
+      return;
+    }
+
+    // Fallback to local stream
     if (localStream) {
       const audioTrack = localStream.getAudioTracks()[0];
       if (audioTrack) {
@@ -155,6 +212,15 @@ export default function TherapistVideoSession() {
   };
 
   const toggleVideo = () => {
+    // Use WebRTC toggle if connected
+    if (useRealWebRTC && webrtcToggleVideo) {
+      const videoOff = webrtcToggleVideo();
+      setIsVideoOff(videoOff);
+      logSessionEvent('video_toggled', { off: videoOff });
+      return;
+    }
+
+    // Fallback to local stream
     if (localStream) {
       const videoTrack = localStream.getVideoTracks()[0];
       if (videoTrack) {
