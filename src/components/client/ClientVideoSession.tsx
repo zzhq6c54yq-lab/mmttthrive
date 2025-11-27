@@ -21,6 +21,7 @@ export default function ClientVideoSession() {
   
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const dragConstraintsRef = useRef<HTMLDivElement>(null);
 
   // Client is NOT the initiator in WebRTC
   const {
@@ -96,7 +97,10 @@ export default function ClientVideoSession() {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex flex-col">
+    <div 
+      ref={dragConstraintsRef}
+      className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex flex-col"
+    >
       {/* Header */}
       <div className="bg-black/40 backdrop-blur-sm border-b border-white/10 p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -127,6 +131,7 @@ export default function ClientVideoSession() {
             autoPlay
             playsInline
             className="w-full h-full object-cover"
+            style={{ transform: 'translateZ(0)' }}
           />
           {!isConnected && (
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1A1A1A] to-[#2D2D2D]">
@@ -146,16 +151,19 @@ export default function ClientVideoSession() {
         {/* Client Video (Picture-in-Picture) */}
         <motion.div
           drag
+          dragConstraints={dragConstraintsRef}
           dragMomentum={false}
           dragElastic={0}
           className="absolute bottom-24 right-6 w-64 h-48 rounded-lg overflow-hidden border-2 border-[#D4AF37]/50 shadow-2xl cursor-move"
+          style={{ willChange: 'transform' }}
         >
           <video
             ref={localVideoRef}
             autoPlay
             muted
             playsInline
-            className="w-full h-full object-cover mirror"
+            className="w-full h-full object-cover"
+            style={{ transform: 'translateZ(0) scaleX(-1)' }}
           />
           {isVideoOff && (
             <div className="absolute inset-0 bg-gray-900 flex items-center justify-center">

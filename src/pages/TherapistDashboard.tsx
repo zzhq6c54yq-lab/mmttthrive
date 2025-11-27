@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +23,8 @@ export default function TherapistDashboard() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState("today");
+  const [selectedClientId, setSelectedClientId] = useState<string>("");
 
   // Get current user
   const { data: user } = useQuery({
@@ -155,6 +157,11 @@ export default function TherapistDashboard() {
     },
     enabled: !!therapist?.id,
   });
+
+  const handleSwitchToMessagesTab = (clientId: string) => {
+    setSelectedClientId(clientId);
+    setActiveTab("clients");
+  };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -364,7 +371,7 @@ export default function TherapistDashboard() {
           nextSessionTime={nextSessionTime}
         />
 
-        <Tabs defaultValue="today" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-2 bg-black/30 mb-8 p-1 rounded-lg h-auto">
             <TabsTrigger 
               value="today" 
@@ -412,11 +419,15 @@ export default function TherapistDashboard() {
                 activeClients: stats.activeClients,
                 sessionsThisWeek: stats.sessionsThisWeek
               }}
+              onSwitchToMessagesTab={handleSwitchToMessagesTab}
             />
           </TabsContent>
 
           <TabsContent value="clients" className="animate-fade-in">
-            <ClientsMessagesTab therapistId={therapist.id} />
+            <ClientsMessagesTab 
+              therapistId={therapist.id}
+              preSelectedClientId={selectedClientId}
+            />
           </TabsContent>
 
           <TabsContent value="schedule" className="animate-fade-in space-y-6">

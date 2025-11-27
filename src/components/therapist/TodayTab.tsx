@@ -1,9 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Video, Clock, MessageSquare, AlertCircle, Calendar } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Video, Clock, MessageSquare, AlertCircle, Calendar, Send, Reply } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface TodayTabProps {
   upcomingAppointments: any[];
@@ -13,10 +18,20 @@ interface TodayTabProps {
     activeClients: number;
     sessionsThisWeek: number;
   };
+  onSwitchToMessagesTab: (clientId: string) => void;
 }
 
-export default function TodayTab({ upcomingAppointments, recentMessages, stats }: TodayTabProps) {
+export default function TodayTab({ 
+  upcomingAppointments, 
+  recentMessages,
+  stats,
+  onSwitchToMessagesTab
+}: TodayTabProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyMessage, setReplyMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
   const priorityClients = upcomingAppointments
     .filter(apt => {
@@ -37,6 +52,38 @@ export default function TodayTab({ upcomingAppointments, recentMessages, stats }
 
   const handleStartSession = (appointmentId: string, clientName: string) => {
     navigate(`/therapist-video-session?id=${appointmentId}&client=${encodeURIComponent(clientName)}`);
+  };
+
+  const handleQuickReply = async (clientId: string) => {
+    if (!replyMessage.trim()) return;
+    
+    setSending(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      await supabase.from('therapist_messages').insert({
+        therapist_id: user?.id,
+        client_id: clientId,
+        message_text: replyMessage,
+        sender_type: 'therapist'
+      });
+
+      toast({
+        title: "Message sent",
+        description: "Your reply has been sent successfully.",
+      });
+      
+      setReplyMessage("");
+      setReplyingTo(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -181,9 +228,14 @@ export default function TodayTab({ upcomingAppointments, recentMessages, stats }
             <CardTitle className="text-white flex items-center justify-between">
               <span>Recent Messages</span>
               {recentMessages.length > 0 && (
-                <Badge className="bg-[#B87333]/20 text-[#B87333]">
-                  {recentMessages.filter(m => !m.is_read).length} unread
-                </Badge>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => onSwitchToMessagesTab('')}
+                  className="text-[#B87333] hover:text-[#E5C5A1] hover:bg-white/5"
+                >
+                  View All
+                </Button>
               )}
             </CardTitle>
           </CardHeader>
@@ -197,35 +249,82 @@ export default function TodayTab({ upcomingAppointments, recentMessages, stats }
               recentMessages.slice(0, 5).map((message) => (
                 <div 
                   key={message.id} 
-                  className="p-3 bg-white/5 rounded-lg hover:bg-white/10 cursor-pointer transition-all border border-white/10"
+                  className="p-4 bg-white/5 rounded-lg border border-white/10 hover:border-white/20 transition-all"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#B87333]/20 flex items-center justify-center flex-shrink-0">
-                      <MessageSquare className="h-4 w-4 text-[#B87333]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="font-medium text-white truncate">{message.client_name}</p>
-                        {!message.is_read && (
-                          <span className="w-2 h-2 bg-[#B87333] rounded-full" />
-                        )}
+                  <div
+                    className="cursor-pointer mb-3"
+                    onClick={() => onSwitchToMessagesTab(message.client_id)}
+                  >
+                    <div className="flex items-start gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={message.avatar_url} />
+                        <AvatarFallback className="bg-[#B87333]/20 text-[#B87333]">
+                          {message.client_name?.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <p className="font-medium text-white">{message.client_name}</p>
+                          {!message.is_read && (
+                            <span className="w-2 h-2 bg-[#B87333] rounded-full" />
+                          )}
+                        </div>
+                        <p className="text-sm text-white/60 line-clamp-2">{message.message_text}</p>
+                        <p className="text-xs text-white/40 mt-1">
+                          {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                        </p>
                       </div>
-                      <p className="text-sm text-white/60 line-clamp-2">{message.message_text}</p>
-                      <p className="text-xs text-white/40 mt-1">
-                        {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
-                      </p>
                     </div>
                   </div>
+
+                  {replyingTo === message.id ? (
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Type your reply..."
+                        value={replyMessage}
+                        onChange={(e) => setReplyMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleQuickReply(message.client_id);
+                          }
+                        }}
+                        className="flex-1 bg-white/5 border-white/10"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={() => handleQuickReply(message.client_id)}
+                        disabled={sending || !replyMessage.trim()}
+                        className="bg-[#B87333] hover:bg-[#B8941F] text-black"
+                      >
+                        <Send className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setReplyingTo(null);
+                          setReplyMessage("");
+                        }}
+                        className="text-white/60 hover:text-white"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setReplyingTo(message.id)}
+                      className="border-white/20 text-white/70 hover:text-white hover:bg-white/5"
+                    >
+                      <Reply className="h-3 w-3 mr-1" />
+                      Reply
+                    </Button>
+                  )}
                 </div>
               ))
             )}
-            <Button 
-              variant="outline" 
-              className="w-full border-white/20 text-white/70 hover:text-white hover:bg-white/5"
-              onClick={() => navigate('/therapist-dashboard')}
-            >
-              View All Messages
-            </Button>
           </CardContent>
         </Card>
       </div>
