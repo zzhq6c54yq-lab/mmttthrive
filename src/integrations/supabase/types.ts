@@ -4667,6 +4667,36 @@ export type Database = {
         }
         Relationships: []
       }
+      video_call_invites: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          session_id: string
+          status: string
+          therapist_id: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          session_id: string
+          status?: string
+          therapist_id: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          session_id?: string
+          status?: string
+          therapist_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       video_diary_recordings: {
         Row: {
           created_at: string | null

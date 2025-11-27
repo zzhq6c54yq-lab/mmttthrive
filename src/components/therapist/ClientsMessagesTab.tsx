@@ -4,7 +4,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, Search, User, MessageSquare, Loader2, Calendar } from 'lucide-react';
+import { Send, Search, User, MessageSquare, Loader2, Calendar, Video } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
@@ -30,14 +31,16 @@ interface Message {
 
 interface ClientsMessagesTabProps {
   therapistId: string;
+  preSelectedClientId?: string;
 }
 
-export default function ClientsMessagesTab({ therapistId }: ClientsMessagesTabProps) {
+export default function ClientsMessagesTab({ therapistId, preSelectedClientId }: ClientsMessagesTabProps) {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [newMessage, setNewMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -83,6 +86,16 @@ export default function ClientsMessagesTab({ therapistId }: ClientsMessagesTabPr
     },
     enabled: !!therapistId,
   });
+
+  // Handle pre-selected client
+  useEffect(() => {
+    if (preSelectedClientId && clients) {
+      const client = clients.find((c: any) => c.id === preSelectedClientId);
+      if (client) {
+        setSelectedClient(client);
+      }
+    }
+  }, [preSelectedClientId, clients]);
 
   // Get messages for selected client
   const { data: messages, isLoading: messagesLoading } = useQuery({
@@ -265,13 +278,21 @@ export default function ClientsMessagesTab({ therapistId }: ClientsMessagesTabPr
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="border-[#D4AF37]/40">
-                    <User className="w-4 h-4 mr-2" />
-                    View Profile
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-[#D4AF37]/40"
+                    onClick={() => {
+                      const sessionId = crypto.randomUUID();
+                      navigate(`/therapist-video-session/${sessionId}?clientId=${selectedClient.id}`);
+                    }}
+                  >
+                    <Video className="w-4 h-4 mr-2" />
+                    Call Client
                   </Button>
                   <Button variant="outline" size="sm" className="border-[#D4AF37]/40">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Schedule
+                    <User className="w-4 h-4 mr-2" />
+                    Profile
                   </Button>
                 </div>
               </div>

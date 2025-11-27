@@ -31,6 +31,7 @@ export default function TherapistVideoSession() {
   // Video refs
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const dragConstraintsRef = useRef<HTMLDivElement>(null);
   
   // Check if current user is therapist (for WebRTC initiator role)
   const isTherapist = useMemo(() => 
@@ -388,11 +389,11 @@ export default function TherapistVideoSession() {
           autoPlay
           playsInline
           className="w-full h-full object-cover"
-          style={{ transform: 'scaleX(-1)' }}
+          style={{ transform: 'translateZ(0)' }}
         />
 
-        {/* Placeholder for client video - only shown when NOT connected AND no video stream */}
-        {!webrtcConnected && !remoteVideoRef.current?.srcObject && (
+        {/* Placeholder - only shown when no remote stream */}
+        {!remoteVideoRef.current?.srcObject && (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#D4AF37]/20 to-background/50">
             <div className="text-center space-y-4">
               <div className="w-32 h-32 rounded-full bg-[#D4AF37]/20 border-4 border-[#D4AF37] mx-auto flex items-center justify-center">
@@ -409,10 +410,11 @@ export default function TherapistVideoSession() {
         {/* Therapist Video (Draggable PiP) */}
         <motion.div
           drag
+          dragConstraints={dragConstraintsRef}
           dragMomentum={false}
           dragElastic={0}
-          dragConstraints={{ top: 0, left: 0, right: 500, bottom: 500 }}
           className="absolute bottom-6 right-6 w-64 h-48 rounded-xl overflow-hidden shadow-2xl border-2 border-[hsl(var(--primary))] cursor-move z-10"
+          style={{ willChange: 'transform' }}
         >
           <video
             ref={localVideoRef}
@@ -420,7 +422,7 @@ export default function TherapistVideoSession() {
             playsInline
             muted
             className="w-full h-full object-cover"
-            style={{ transform: 'scaleX(-1)' }}
+            style={{ transform: 'translateZ(0) scaleX(-1)' }}
           />
           <div className="absolute bottom-2 left-2 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
             You
