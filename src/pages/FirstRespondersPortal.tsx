@@ -1,250 +1,148 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Shield, Users, Calendar, Book, Heart, Headphones, Activity, Phone, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import HomeButton from "@/components/HomeButton";
 
-const FirstRespondersPortal = () => {
+import React, { useState } from "react";
+import Page from "@/components/Page";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Flame, Shield, HeartPulse, Users, AlertCircle, BookOpen, Calendar } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import useTranslation from "@/hooks/useTranslation";
+import FirstRespondersDashboard from "@/components/first-responders/FirstRespondersDashboard";
+import FirstRespondersResources from "@/components/first-responders/FirstRespondersResources";
+import FirstRespondersCommunity from "@/components/first-responders/FirstRespondersCommunity";
+import FirstRespondersAssessments from "@/components/first-responders/FirstRespondersAssessments";
+import FirstRespondersWorkshops from "@/components/first-responders/FirstRespondersWorkshops";
+
+const FirstRespondersPortal: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const { isSpanish } = useTranslation();
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops'>('dashboard');
+  
+  const handleFeatureClick = (feature: string) => {
+    toast({
+      title: isSpanish ? "Navegando" : "Navigating", 
+      description: isSpanish ? "Accediendo a recursos específicos para primeros respondedores" : "Accessing specific resources for first responders",
+      duration: 2000
+    });
+    
+    if (feature === "resources") {
+      setActiveTab("resources");
+    } else if (feature === "workshops") {
+      setActiveTab("workshops");
+    } else if (feature === "community-support") {
+      setActiveTab("community");
+    } else if (feature === "mental-wellness/assessments") {
+      setActiveTab("assessments");
+    } else {
+      navigate(`/${feature}`, { 
+        state: { 
+          fromSpecializedProgram: true,
+          preventTutorial: true,
+          returnToPortal: "/first-responders-portal",
+          portalState: {
+            activeTab,
+            returnToMain: location.state?.returnToMain,
+            preventTutorial: location.state?.preventTutorial
+          }
+        }
+      });
+    }
+  };
+
+  const handleTabChange = (tab: 'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops') => {
+    setActiveTab(tab);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="bg-gradient-to-r from-[#1a1a1f] to-[#212124] text-white py-12 relative">
-        <div className="container px-4 max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
-            <HomeButton />
+    <Page 
+      title={isSpanish ? "Portal de Primeros Respondedores" : "First Responders Portal"} 
+      returnToMain={location.state?.returnToMain}
+    >
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-red-900/90 to-orange-900/90 p-6 rounded-xl backdrop-blur-md border border-red-500/30 shadow-lg relative overflow-hidden">
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+            <div className="p-4 bg-white/10 rounded-full">
+              <Flame className="h-10 w-10 text-red-400" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                {isSpanish ? "Recursos para Primeros Respondedores" : "Resources for First Responders"}
+              </h2>
+              <p className="text-white/80">
+                {isSpanish 
+                  ? "Recursos especializados de bienestar mental diseñados específicamente para bomberos, paramédicos, EMTs y personal de emergencias."
+                  : "Specialized mental wellness resources designed specifically for firefighters, paramedics, EMTs, and emergency personnel."}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[#0F1319] border border-red-900/30 rounded-lg overflow-hidden shadow-lg">
+          <div className="flex overflow-x-auto scrollbar-hide">
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'dashboard' 
+                  ? 'border-red-500 text-red-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('dashboard')}
+            >
+              Dashboard
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'resources' 
+                  ? 'border-red-500 text-red-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('resources')}
+            >
+              Resources
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'community' 
+                  ? 'border-red-500 text-red-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('community')}
+            >
+              Community
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'assessments' 
+                  ? 'border-red-500 text-red-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('assessments')}
+            >
+              Assessments
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'workshops' 
+                  ? 'border-red-500 text-red-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('workshops')}
+            >
+              Workshops
+            </button>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-light mb-4">First Responders Portal</h1>
-          <p className="text-xl text-gray-300 max-w-3xl">Access resources and support tailored for first responders.</p>
+          <div className="p-6">
+            {activeTab === 'dashboard' && <FirstRespondersDashboard onFeatureClick={handleFeatureClick} />}
+            {activeTab === 'resources' && <FirstRespondersResources />}
+            {activeTab === 'community' && <FirstRespondersCommunity />}
+            {activeTab === 'assessments' && <FirstRespondersAssessments />}
+            {activeTab === 'workshops' && <FirstRespondersWorkshops />}
+          </div>
         </div>
       </div>
-
-      <div className="container px-4 py-12 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Mental Health & Wellness */}
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-[#B87333]" />
-                Mental Health & Wellness
-              </CardTitle>
-              <CardDescription>Tools and resources for mental well-being.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="secondary" asChild>
-                  <Link to="/first-responders/stress-management" className="w-full text-left">
-                    Stress Management Techniques
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/journaling" className="w-full text-left">
-                    Journaling Prompts
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/mindfulness-sleep" className="w-full text-left">
-                    Mindfulness & Sleep Exercises
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/binaural-beats" className="w-full text-left">
-                    Binaural Beats for Focus
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/mental-wellness/assessments" className="w-full text-left">
-                    Mental Health Assessments
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Peer & Critical Support */}
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-[#B87333]" />
-                Peer & Critical Support
-              </CardTitle>
-              <CardDescription>Connect with peers and access critical support services.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="secondary" asChild>
-                  <Link to="/first-responders/peer-support" className="w-full text-left">
-                    Peer Support Groups
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/community-support" className="w-full text-left">
-                    Online Community Forum
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/virtual-meetings" className="w-full text-left">
-                    Virtual Support Meetings
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/real-time-therapy" className="w-full text-left">
-                    Real-Time Therapy Options
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/first-responders/critical-support" className="w-full text-left">
-                    Critical Incident Support
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Resources & Education */}
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Book className="h-5 w-5 text-[#B87333]" />
-                Resources & Education
-              </CardTitle>
-              <CardDescription>Access articles, guides, and educational content.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="secondary" asChild>
-                  <Link to="/first-responders-resources" className="w-full text-left">
-                    Informational Articles
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/workshops" className="w-full text-left">
-                    Upcoming Workshops
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/resource-library" className="w-full text-left">
-                    Resource Library
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/alternative-therapies" className="w-full text-left">
-                    Alternative Therapies
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/wellness-challenges" className="w-full text-left">
-                    Wellness Challenges
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Holistic Wellness */}
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Heart className="h-5 w-5 text-[#B87333]" />
-                Holistic Wellness
-              </CardTitle>
-              <CardDescription>Explore holistic approaches to well-being.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="secondary" asChild>
-                  <Link to="/holistic-wellness" className="w-full text-left">
-                    Holistic Wellness Overview
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/alternative-therapies" className="w-full text-left">
-                    Explore Alternative Therapies
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/guided-practice/mindfulness" className="w-full text-left">
-                    Guided Mindfulness Practices
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Calendar & Scheduling */}
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-[#B87333]" />
-                Calendar & Scheduling
-              </CardTitle>
-              <CardDescription>Schedule appointments and manage your wellness activities.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="secondary" asChild>
-                  <Link to="/virtual-meetings" className="w-full text-left">
-                    Schedule Virtual Meetings
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/workshops" className="w-full text-left">
-                    View Upcoming Workshops
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/real-time-therapy" className="w-full text-left">
-                    Book Therapy Sessions
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Additional Resources */}
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Headphones className="h-5 w-5 text-[#B87333]" />
-                Additional Resources
-              </CardTitle>
-              <CardDescription>Explore more tools and resources for support.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <Button variant="secondary" asChild>
-                  <Link to="/video-diary" className="w-full text-left">
-                    Video Diary
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/games-and-quizzes" className="w-full text-left">
-                    Games and Quizzes
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/contact" className="w-full text-left">
-                    Contact Support
-                  </Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link to="/crisis-support" className="w-full text-left">
-                    Crisis Support
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
+    </Page>
   );
 };
 
