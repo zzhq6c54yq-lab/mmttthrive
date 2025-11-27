@@ -8,7 +8,7 @@ import { HenryMiniWidget } from '../HenryMiniWidget';
 import { HenryDailyInsight } from '../HenryDailyInsight';
 import { WellnessCreditsWidget } from '../WellnessCreditsWidget';
 import { SafetyPlanCard } from '../SafetyPlanCard';
-import { useNavigate } from 'react-router-dom';
+import HenryDialog from '@/components/henry/HenryDialog';
 
 interface NewYourDaySectionProps {
   dashboardData: DashboardData;
@@ -19,8 +19,8 @@ export const NewYourDaySection: React.FC<NewYourDaySectionProps> = ({
   dashboardData,
   onCheckInComplete,
 }) => {
-  const navigate = useNavigate();
   const [henryWidgetVisible, setHenryWidgetVisible] = useState(true);
+  const [isHenryDialogOpen, setIsHenryDialogOpen] = useState(false);
 
   // Generate contextual Henry message based on mood data
   const getHenryMessage = () => {
@@ -53,7 +53,7 @@ export const NewYourDaySection: React.FC<NewYourDaySectionProps> = ({
       {henryWidgetVisible && (
         <HenryMiniWidget
           message={getHenryMessage()}
-          onStart={() => navigate('/henry')}
+          onStart={() => setIsHenryDialogOpen(true)}
           onDismiss={() => setHenryWidgetVisible(false)}
         />
       )}
@@ -67,7 +67,7 @@ export const NewYourDaySection: React.FC<NewYourDaySectionProps> = ({
           // TODO: Set reminder logic
           alert('Reminder set for 9:00 AM');
         }}
-        onAskHenry={() => navigate('/henry')}
+        onAskHenry={() => setIsHenryDialogOpen(true)}
       />
 
       {/* Wellness Credits Widget */}
@@ -79,6 +79,12 @@ export const NewYourDaySection: React.FC<NewYourDaySectionProps> = ({
 
       {/* Safety Plan Card */}
       <SafetyPlanCard />
+
+      {/* Henry Dialog */}
+      <HenryDialog 
+        isOpen={isHenryDialogOpen} 
+        onOpenChange={setIsHenryDialogOpen}
+      />
     </div>
   );
 };
