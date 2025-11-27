@@ -2,41 +2,19 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Siren, ShieldAlert, Users, Calendar, Star, ChevronRight, Brain, AlertCircle, FileText, Phone } from "lucide-react";
+import { Siren, ShieldAlert, Users, Calendar, Star, ChevronRight, Brain, AlertCircle, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ThriveButton from "@/components/navigation/ThriveButton";
 
-const FirstRespondersDashboard = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+interface FirstRespondersDashboardProps {
+  onFeatureClick: (feature: string) => void;
+}
+
+const FirstRespondersDashboard: React.FC<FirstRespondersDashboardProps> = ({ onFeatureClick }) => {
   const { toast } = useToast();
-  
-  const handleButtonClick = (path: string, title: string) => {
-    toast({
-      title: `Navigating to ${title}`,
-      description: "Loading your requested resource...",
-      duration: 1500,
-    });
-    
-    navigate(path, {
-      state: {
-        preventTutorial: true,
-        returnToMain: false,
-        returnToPortal: "/first-responders-portal",
-        stayInPortal: true,
-        portalType: "first-responders"
-      }
-    });
-  };
 
   return (
     <div className="space-y-8">
-      {/* Add ThriveButton at the top */}
-      <div className="flex justify-end mb-4">
-        <ThriveButton className="shadow-lg" />
-      </div>
-
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-lg border border-red-900/30 bg-gradient-to-r from-red-950 to-red-900 p-6">
         <div className="relative z-10">
@@ -47,14 +25,14 @@ const FirstRespondersDashboard = () => {
           <div className="flex flex-wrap gap-3">
             <Button 
               className="bg-red-700 hover:bg-red-800 text-white" 
-              onClick={() => handleButtonClick("/first-responders-resources", "First Responder Resources")}
+              onClick={() => onFeatureClick("resources")}
             >
               Explore Resources
             </Button>
             <Button 
               variant="outline" 
               className="border-red-500 text-red-300 hover:bg-red-900/50" 
-              onClick={() => handleButtonClick("/crisis-support", "Crisis Support")}
+              onClick={() => onFeatureClick("crisis-support")}
             >
               Get Immediate Help
             </Button>
@@ -69,7 +47,7 @@ const FirstRespondersDashboard = () => {
           <Button 
             variant="link" 
             className="text-red-400" 
-            onClick={() => handleButtonClick("/first-responders-resources", "Support Programs")}
+            onClick={() => onFeatureClick("resources")}
           >
             View All <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
@@ -80,9 +58,9 @@ const FirstRespondersDashboard = () => {
             <CardHeader>
               <div className="flex items-center gap-2 text-red-400">
                 <Brain className="h-5 w-5" />
-                <CardTitle>Stress Management</CardTitle>
+                <CardTitle className="text-white">Stress Management</CardTitle>
               </div>
-              <CardDescription>Tools for managing high-stress situations</CardDescription>
+              <CardDescription className="text-white/60">Tools for managing high-stress situations</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-white/70">
@@ -92,7 +70,7 @@ const FirstRespondersDashboard = () => {
             <CardFooter>
               <Button 
                 className="w-full bg-red-700 hover:bg-red-800 text-white"
-                onClick={() => handleButtonClick("/first-responders/stress-management", "Stress Management")}
+                onClick={() => onFeatureClick("stress-management")}
               >
                 Learn More
               </Button>
@@ -103,9 +81,9 @@ const FirstRespondersDashboard = () => {
             <CardHeader>
               <div className="flex items-center gap-2 text-red-400">
                 <Users className="h-5 w-5" />
-                <CardTitle>Peer Support</CardTitle>
+                <CardTitle className="text-white">Peer Support</CardTitle>
               </div>
-              <CardDescription>Connect with fellow first responders</CardDescription>
+              <CardDescription className="text-white/60">Connect with fellow first responders</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-white/70">
@@ -115,7 +93,7 @@ const FirstRespondersDashboard = () => {
             <CardFooter>
               <Button 
                 className="w-full bg-red-700 hover:bg-red-800 text-white"
-                onClick={() => handleButtonClick("/first-responders/peer-support", "Peer Support")}
+                onClick={() => onFeatureClick("community-support")}
               >
                 Connect Now
               </Button>
@@ -126,9 +104,9 @@ const FirstRespondersDashboard = () => {
             <CardHeader>
               <div className="flex items-center gap-2 text-red-400">
                 <ShieldAlert className="h-5 w-5" />
-                <CardTitle>Critical Incident Support</CardTitle>
+                <CardTitle className="text-white">Critical Incident Support</CardTitle>
               </div>
-              <CardDescription>Post-incident mental health resources</CardDescription>
+              <CardDescription className="text-white/60">Post-incident mental health resources</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-white/70">
@@ -138,7 +116,7 @@ const FirstRespondersDashboard = () => {
             <CardFooter>
               <Button 
                 className="w-full bg-red-700 hover:bg-red-800 text-white"
-                onClick={() => handleButtonClick("/first-responders/critical-support", "Critical Incident Support")}
+                onClick={() => onFeatureClick("crisis-support")}
               >
                 Access Support
               </Button>
@@ -162,7 +140,7 @@ const FirstRespondersDashboard = () => {
             <Button 
               size="sm" 
               className="bg-red-700 hover:bg-red-800 text-white"
-              onClick={() => handleButtonClick("/crisis-support", "Crisis Support")}
+              onClick={() => onFeatureClick("crisis-support")}
             >
               Call Now
             </Button>
@@ -179,7 +157,7 @@ const FirstRespondersDashboard = () => {
             <Button 
               size="sm" 
               className="bg-red-700 hover:bg-red-800 text-white"
-              onClick={() => handleButtonClick("/first-responders-resources", "Resources")}
+              onClick={() => onFeatureClick("resources")}
             >
               Download
             </Button>
@@ -205,13 +183,7 @@ const FirstRespondersDashboard = () => {
                 variant="outline" 
                 size="sm" 
                 className="border-red-500 text-red-300 hover:bg-red-900/50"
-                onClick={() => {
-                  toast({
-                    title: "Successfully Registered",
-                    description: "You have been registered for the workshop. A confirmation has been sent to your email.",
-                    duration: 3000,
-                  });
-                }}
+                onClick={() => onFeatureClick("workshops")}
               >
                 Register
               </Button>
@@ -232,7 +204,7 @@ const FirstRespondersDashboard = () => {
                 variant="outline" 
                 size="sm" 
                 className="border-red-500 text-red-300 hover:bg-red-900/50"
-                onClick={() => handleButtonClick("/first-responders/peer-support", "Peer Support")}
+                onClick={() => onFeatureClick("community-support")}
               >
                 Join Group
               </Button>

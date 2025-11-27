@@ -70,9 +70,9 @@ const TransportDashboard: React.FC = () => {
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Wellbeing Overview */}
-        <Card>
+        <Card className="bg-[#141921] border-blue-900/30">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium flex items-center">
+            <CardTitle className="text-lg font-medium flex items-center text-white">
               <Heart className="mr-2 h-5 w-5 text-blue-500" />
               Your Wellbeing Overview
             </CardTitle>
@@ -81,7 +81,7 @@ const TransportDashboard: React.FC = () => {
             <div className="space-y-4">
               {wellbeingData.map((item) => (
                 <div key={item.name} className="space-y-1">
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-sm text-white">
                     <span>{item.name}</span>
                     <span className="font-medium">{item.value}%</span>
                   </div>
@@ -91,7 +91,7 @@ const TransportDashboard: React.FC = () => {
             </div>
             <Button 
               variant="ghost" 
-              className="w-full mt-4 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+              className="w-full mt-4 text-blue-400 hover:text-blue-300 hover:bg-blue-900/50"
               onClick={() => navigateToPath("/transport-assessments/wellbeing")}
             >
               Take Wellbeing Assessment
@@ -101,9 +101,9 @@ const TransportDashboard: React.FC = () => {
         </Card>
         
         {/* Road Stress Factors */}
-        <Card>
+        <Card className="bg-[#141921] border-blue-900/30">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-medium">Road Stress Factors</CardTitle>
+            <CardTitle className="text-lg font-medium text-white">Road Stress Factors</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[220px]">
@@ -112,7 +112,7 @@ const TransportDashboard: React.FC = () => {
                   data={roadStressData}
                   margin={{ top: 10, right: 10, left: 0, bottom: 20 }}
                 >
-                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#fff' }} />
                   <YAxis hide />
                   <Tooltip />
                   <Bar dataKey="value" fill="#3B82F6" radius={[4, 4, 0, 0]} />
@@ -121,7 +121,7 @@ const TransportDashboard: React.FC = () => {
             </div>
             <Button 
               variant="ghost" 
-              className="w-full mt-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+              className="w-full mt-2 text-blue-400 hover:text-blue-300 hover:bg-blue-900/50"
               onClick={() => navigateToPath("/transport-assessments/stress")}
             >
               Take Stress Assessment
@@ -133,9 +133,9 @@ const TransportDashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Quick Resources */}
-        <Card className="md:col-span-2">
+        <Card className="md:col-span-2 bg-[#141921] border-blue-900/30">
           <CardHeader>
-            <CardTitle className="text-lg font-medium">Quick Resources</CardTitle>
+            <CardTitle className="text-lg font-medium text-white">Quick Resources</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -143,10 +143,10 @@ const TransportDashboard: React.FC = () => {
                 <Button
                   key={index}
                   variant="outline"
-                  className="h-auto py-4 flex flex-col items-center justify-center text-center border-blue-200 hover:border-blue-500 hover:bg-blue-50"
+                  className="h-auto py-4 flex flex-col items-center justify-center text-center border-blue-700/50 hover:border-blue-500 hover:bg-blue-900/50 text-white"
                   onClick={() => navigateToPath(resource.path)}
                 >
-                  <resource.icon className="h-8 w-8 text-blue-500 mb-2" />
+                  <resource.icon className="h-8 w-8 text-blue-400 mb-2" />
                   <span className="text-sm">{resource.title}</span>
                 </Button>
               ))}
@@ -155,9 +155,9 @@ const TransportDashboard: React.FC = () => {
         </Card>
         
         {/* Upcoming Events */}
-        <Card>
+        <Card className="bg-[#141921] border-blue-900/30">
           <CardHeader>
-            <CardTitle className="text-lg font-medium flex items-center">
+            <CardTitle className="text-lg font-medium flex items-center text-white">
               <CalendarRange className="mr-2 h-5 w-5 text-blue-500" />
               Upcoming Events
             </CardTitle>
@@ -167,11 +167,11 @@ const TransportDashboard: React.FC = () => {
               {upcomingEvents.map((event, index) => (
                 <div 
                   key={index}
-                  className="p-3 rounded-lg border border-blue-100 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all"
+                  className="p-3 rounded-lg border border-blue-900/30 hover:border-blue-700/50 hover:bg-blue-900/20 cursor-pointer transition-all"
                   onClick={() => navigateToPath("/transport-workshops")}
                 >
-                  <h3 className="font-medium text-gray-800">{event.title}</h3>
-                  <p className="text-sm text-gray-500">{event.date} • {event.time}</p>
+                  <h3 className="font-medium text-white">{event.title}</h3>
+                  <p className="text-sm text-white/60">{event.date} • {event.time}</p>
                 </div>
               ))}
             </div>
@@ -180,9 +180,9 @@ const TransportDashboard: React.FC = () => {
       </div>
       
       {/* Weekly Mood Tracking */}
-      <Card>
+      <Card className="bg-[#141921] border-blue-900/30">
         <CardHeader>
-          <CardTitle className="text-lg font-medium flex items-center">
+          <CardTitle className="text-lg font-medium flex items-center text-white">
             <Brain className="mr-2 h-5 w-5 text-blue-500" />
             Weekly Mood Tracking
           </CardTitle>
@@ -194,14 +194,14 @@ const TransportDashboard: React.FC = () => {
                 data={moodData}
                 margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
               >
-                <XAxis dataKey="name" />
-                <YAxis domain={[0, 10]} />
+                <XAxis dataKey="name" tick={{ fill: '#fff' }} />
+                <YAxis domain={[0, 10]} tick={{ fill: '#fff' }} />
                 <Tooltip />
                 <Bar dataKey="mood" fill="#3B82F6" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-sm text-center mt-2 text-gray-500">Your mood trend for this week (scale: 1-10)</p>
+          <p className="text-sm text-center mt-2 text-white/60">Your mood trend for this week (scale: 1-10)</p>
         </CardContent>
       </Card>
     </div>
