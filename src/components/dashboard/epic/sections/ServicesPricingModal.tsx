@@ -1,7 +1,8 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { DollarSign, Users, Sparkles, Package } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { DollarSign, Users, Sparkles, Package, Info } from 'lucide-react';
 import { therapyPricing, coachingPricing, addOns, groupSessions, bundles } from '@/data/servicePricing';
 
 interface ServicesPricingModalProps {
@@ -35,33 +36,67 @@ const ServicesPricingModal: React.FC<ServicesPricingModalProps> = ({ isOpen, onO
                 {/* Self-Pay */}
                 <div className="space-y-3">
                   <h4 className="text-lg font-semibold text-bronze-200">Self-Pay</h4>
-                  {therapyPricing.selfPay.map((item, idx) => (
-                    <div key={idx} className="bg-[#1a2332]/50 rounded-lg p-4 border border-bronze-300/10">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-semibold text-bronze-100">{item.service}</p>
-                          <p className="text-sm text-muted-foreground">{item.duration}</p>
+                {therapyPricing.selfPay.map((item, idx) => (
+                  <Popover key={idx}>
+                    <PopoverTrigger asChild>
+                      <button className="w-full text-left bg-[#1a2332]/50 rounded-lg p-4 border border-bronze-300/10 hover:border-bronze-300/30 hover:bg-[#1a2332]/70 transition-all cursor-pointer group">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-semibold text-bronze-100 flex items-center gap-2">
+                              {item.service}
+                              <Info className="w-4 h-4 text-bronze-300/50 group-hover:text-bronze-300 transition-colors" />
+                            </p>
+                            <p className="text-sm text-muted-foreground">{item.duration}</p>
+                          </div>
+                          <p className="text-xl font-bold text-bronze-300">${item.price}</p>
                         </div>
-                        <p className="text-xl font-bold text-bronze-300">${item.price}</p>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-[#1a2332] border-bronze-300/20 text-bronze-100">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-bronze-200">{item.service}</h4>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <div className="flex justify-between items-center pt-2 border-t border-bronze-300/10">
+                          <span className="text-sm">{item.duration}</span>
+                          <span className="font-bold text-bronze-300">${item.price}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    </PopoverContent>
+                  </Popover>
+                ))}
                 </div>
 
                 {/* Insurance */}
                 <div className="space-y-3">
                   <h4 className="text-lg font-semibold text-bronze-200">Insurance Rates</h4>
-                  {therapyPricing.insurance.map((item, idx) => (
-                    <div key={idx} className="bg-[#1a2332]/50 rounded-lg p-4 border border-bronze-300/10">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-semibold text-bronze-100">{item.service}</p>
-                          <p className="text-sm text-muted-foreground">{item.duration}</p>
+                {therapyPricing.insurance.map((item, idx) => (
+                  <Popover key={idx}>
+                    <PopoverTrigger asChild>
+                      <button className="w-full text-left bg-[#1a2332]/50 rounded-lg p-4 border border-bronze-300/10 hover:border-bronze-300/30 hover:bg-[#1a2332]/70 transition-all cursor-pointer group">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-semibold text-bronze-100 flex items-center gap-2">
+                              {item.service}
+                              <Info className="w-4 h-4 text-bronze-300/50 group-hover:text-bronze-300 transition-colors" />
+                            </p>
+                            <p className="text-sm text-muted-foreground">{item.duration}</p>
+                          </div>
+                          <p className="text-xl font-bold text-bronze-300">${item.price}</p>
                         </div>
-                        <p className="text-xl font-bold text-bronze-300">${item.price}</p>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-[#1a2332] border-bronze-300/20 text-bronze-100">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-bronze-200">{item.service}</h4>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <div className="flex justify-between items-center pt-2 border-t border-bronze-300/10">
+                          <span className="text-sm">{item.duration}</span>
+                          <span className="font-bold text-bronze-300">${item.price}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    </PopoverContent>
+                  </Popover>
+                ))}
                 </div>
               </div>
             </section>
@@ -77,13 +112,30 @@ const ServicesPricingModal: React.FC<ServicesPricingModalProps> = ({ isOpen, onO
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {coachingPricing.map((item, idx) => (
-                  <div key={idx} className="bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 border border-bronze-300/20 rounded-lg p-4">
-                    <div className="space-y-2">
-                      <p className="font-semibold text-bronze-100">{item.service}</p>
-                      <p className="text-sm text-muted-foreground">{item.duration}</p>
-                      <p className="text-2xl font-bold text-bronze-300">${item.price}</p>
-                    </div>
-                  </div>
+                  <Popover key={idx}>
+                    <PopoverTrigger asChild>
+                      <button className="w-full text-left bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 border border-bronze-300/20 hover:border-bronze-300/40 rounded-lg p-4 transition-all cursor-pointer group">
+                        <div className="space-y-2">
+                          <p className="font-semibold text-bronze-100 flex items-center gap-2">
+                            {item.service}
+                            <Info className="w-4 h-4 text-bronze-300/50 group-hover:text-bronze-300 transition-colors" />
+                          </p>
+                          <p className="text-sm text-muted-foreground">{item.duration}</p>
+                          <p className="text-2xl font-bold text-bronze-300">${item.price}</p>
+                        </div>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-[#1a2332] border-bronze-300/20 text-bronze-100">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-bronze-200">{item.service}</h4>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <div className="flex justify-between items-center pt-2 border-t border-bronze-300/10">
+                          <span className="text-sm">{item.duration}</span>
+                          <span className="font-bold text-bronze-300">${item.price}</span>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 ))}
               </div>
             </section>
@@ -99,14 +151,30 @@ const ServicesPricingModal: React.FC<ServicesPricingModalProps> = ({ isOpen, onO
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {addOns.map((item, idx) => (
-                  <div key={idx} className="bg-[#1a2332]/50 rounded-lg p-4 border border-bronze-300/10">
-                    <div className="flex justify-between items-center">
-                      <p className="font-semibold text-bronze-100">{item.service}</p>
-                      <p className="text-xl font-bold text-bronze-300">
-                        ${item.price}{item.period}
-                      </p>
-                    </div>
-                  </div>
+                  <Popover key={idx}>
+                    <PopoverTrigger asChild>
+                      <button className="w-full text-left bg-[#1a2332]/50 rounded-lg p-4 border border-bronze-300/10 hover:border-bronze-300/30 hover:bg-[#1a2332]/70 transition-all cursor-pointer group">
+                        <div className="flex justify-between items-center">
+                          <p className="font-semibold text-bronze-100 flex items-center gap-2">
+                            {item.service}
+                            <Info className="w-4 h-4 text-bronze-300/50 group-hover:text-bronze-300 transition-colors" />
+                          </p>
+                          <p className="text-xl font-bold text-bronze-300">
+                            ${item.price}{item.period}
+                          </p>
+                        </div>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-[#1a2332] border-bronze-300/20 text-bronze-100">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-bronze-200">{item.service}</h4>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <div className="flex justify-between items-center pt-2 border-t border-bronze-300/10">
+                          <span className="font-bold text-bronze-300">${item.price}{item.period}</span>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 ))}
               </div>
             </section>
@@ -122,13 +190,30 @@ const ServicesPricingModal: React.FC<ServicesPricingModalProps> = ({ isOpen, onO
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {groupSessions.map((item, idx) => (
-                  <div key={idx} className="bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 border border-bronze-300/20 rounded-lg p-4">
-                    <div className="space-y-2">
-                      <p className="font-semibold text-bronze-100">{item.service}</p>
-                      <p className="text-sm text-muted-foreground">{item.duration}</p>
-                      <p className="text-2xl font-bold text-bronze-300">${item.price}</p>
-                    </div>
-                  </div>
+                  <Popover key={idx}>
+                    <PopoverTrigger asChild>
+                      <button className="w-full text-left bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 border border-bronze-300/20 hover:border-bronze-300/40 rounded-lg p-4 transition-all cursor-pointer group">
+                        <div className="space-y-2">
+                          <p className="font-semibold text-bronze-100 flex items-center gap-2">
+                            {item.service}
+                            <Info className="w-4 h-4 text-bronze-300/50 group-hover:text-bronze-300 transition-colors" />
+                          </p>
+                          <p className="text-sm text-muted-foreground">{item.duration}</p>
+                          <p className="text-2xl font-bold text-bronze-300">${item.price}</p>
+                        </div>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-[#1a2332] border-bronze-300/20 text-bronze-100">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-bronze-200">{item.service}</h4>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <div className="flex justify-between items-center pt-2 border-t border-bronze-300/10">
+                          <span className="text-sm">{item.duration}</span>
+                          <span className="font-bold text-bronze-300">${item.price}</span>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 ))}
               </div>
             </section>
@@ -210,17 +295,6 @@ const ServicesPricingModal: React.FC<ServicesPricingModalProps> = ({ isOpen, onO
               </div>
             </section>
 
-            <div className="h-px bg-gradient-to-r from-transparent via-bronze-300/20 to-transparent" />
-
-            {/* Footer Note */}
-            <div className="bg-blue-950/20 border border-blue-500/30 rounded-lg p-4">
-              <p className="text-sm text-blue-200 mb-2">
-                <span className="font-semibold">💡 Pricing Note:</span> All prices include a 40% profit margin to sustain ThriveMT's operations.
-              </p>
-              <p className="text-sm text-blue-100">
-                Use promo code <span className="font-bold text-bronze-300">ThriveMT</span> for 100% discount on your first therapy session.
-              </p>
-            </div>
           </div>
         </ScrollArea>
       </DialogContent>

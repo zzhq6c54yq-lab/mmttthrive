@@ -2,41 +2,41 @@
 
 export const therapyPricing = {
   selfPay: [
-    { service: "Individual Therapy", duration: "30 min", price: 35 },
-    { service: "Individual Therapy", duration: "45 min", price: 52 },
-    { service: "Individual Therapy", duration: "60 min", price: 70 },
-    { service: "Couples Therapy", duration: "60 min", price: 92 },
-    { service: "Family Therapy", duration: "60 min", price: 100 },
+    { service: "Individual Therapy", duration: "30 min", price: 35, description: "A focused session for quick check-ins, addressing specific concerns, or building on previous work. Ideal for maintenance or brief interventions." },
+    { service: "Individual Therapy", duration: "45 min", price: 52, description: "Our most popular format. Enough time to explore emotions deeply, process experiences, and develop personalized coping strategies." },
+    { service: "Individual Therapy", duration: "60 min", price: 70, description: "Extended session for complex issues, trauma processing, or intensive therapeutic work requiring more time and depth." },
+    { service: "Couples Therapy", duration: "60 min", price: 92, description: "Work on communication, conflict resolution, intimacy, and relationship dynamics with your partner in a safe, guided environment." },
+    { service: "Family Therapy", duration: "60 min", price: 100, description: "Address family dynamics, improve communication between family members, and work through shared challenges together." },
   ],
   insurance: [
-    { service: "Individual Therapy", duration: "30 min", price: 110 },
-    { service: "Individual Therapy", duration: "45 min", price: 160 },
-    { service: "Individual Therapy", duration: "60 min", price: 220 },
-    { service: "Couples Therapy", duration: "60 min", price: 240 },
-    { service: "Family Therapy", duration: "60 min", price: 260 },
+    { service: "Individual Therapy", duration: "30 min", price: 110, description: "A focused session for quick check-ins, addressing specific concerns, or building on previous work. Ideal for maintenance or brief interventions." },
+    { service: "Individual Therapy", duration: "45 min", price: 160, description: "Our most popular format. Enough time to explore emotions deeply, process experiences, and develop personalized coping strategies." },
+    { service: "Individual Therapy", duration: "60 min", price: 220, description: "Extended session for complex issues, trauma processing, or intensive therapeutic work requiring more time and depth." },
+    { service: "Couples Therapy", duration: "60 min", price: 240, description: "Work on communication, conflict resolution, intimacy, and relationship dynamics with your partner in a safe, guided environment." },
+    { service: "Family Therapy", duration: "60 min", price: 260, description: "Address family dynamics, improve communication between family members, and work through shared challenges together." },
   ]
 };
 
 export const coachingPricing = [
-  { service: "Coaching Session", duration: "30 min", price: 25 },
-  { service: "Coaching Session", duration: "45 min", price: 37 },
-  { service: "Coaching Session", duration: "60 min", price: 47 },
-  { service: "Accountability Coaching", duration: "30 min", price: 25 },
-  { service: "Motivation / Goal Setting", duration: "45 min", price: 37 },
+  { service: "Coaching Session", duration: "30 min", price: 25, description: "Quick coaching check-in to review goals, troubleshoot obstacles, and plan your next steps. Perfect for busy schedules." },
+  { service: "Coaching Session", duration: "45 min", price: 37, description: "Balanced session for goal setting, action planning, and working through challenges with your dedicated coach." },
+  { service: "Coaching Session", duration: "60 min", price: 47, description: "Deep-dive coaching for comprehensive goal work, life transitions, and sustained personal development." },
+  { service: "Accountability Coaching", duration: "30 min", price: 25, description: "Stay on track with regular check-ins focused on your commitments, progress tracking, and motivation." },
+  { service: "Motivation / Goal Setting", duration: "45 min", price: 37, description: "Clarify your vision, set meaningful goals, and create actionable plans to achieve what matters most to you." },
 ];
 
 export const addOns = [
-  { service: "Unlimited Messaging w/ Therapist", price: 129, period: "/month" },
-  { service: "Unlimited Messaging w/ Coach", price: 59, period: "/month" },
-  { service: "Safety Plan Review / Crisis Prevention", price: 25, period: "" },
-  { service: "Weekly Support Check-in", price: 19, period: "/week" },
+  { service: "Unlimited Messaging w/ Therapist", price: 129, period: "/month", description: "Message your therapist anytime between sessions. Get support when you need it, with responses within 24-48 hours." },
+  { service: "Unlimited Messaging w/ Coach", price: 59, period: "/month", description: "Stay connected with your coach between sessions. Quick questions, progress updates, and encouragement on demand." },
+  { service: "Safety Plan Review / Crisis Prevention", price: 25, period: "", description: "Develop or review your personalized crisis prevention plan with professional guidance. Essential for high-risk periods." },
+  { service: "Weekly Support Check-in", price: 19, period: "/week", description: "Brief weekly touchpoint to maintain momentum, celebrate wins, and address emerging concerns early." },
 ];
 
 export const groupSessions = [
-  { service: "Anxiety Skills", duration: "60 min", price: 18 },
-  { service: "Trauma Recovery", duration: "60 min", price: 22 },
-  { service: "Men's / Women's Support Circles", duration: "60 min", price: 15 },
-  { service: "Accountability Group", duration: "60 min", price: 12 },
+  { service: "Anxiety Skills", duration: "60 min", price: 18, description: "Learn evidence-based anxiety management in a supportive group. Includes breathing techniques, cognitive tools, and peer support." },
+  { service: "Trauma Recovery", duration: "60 min", price: 22, description: "Process trauma with others who understand. Guided by a trauma-informed facilitator in a safe, healing environment." },
+  { service: "Men's / Women's Support Circles", duration: "60 min", price: 15, description: "Connect with others in gender-specific groups. Share experiences, gain perspective, and build community." },
+  { service: "Accountability Group", duration: "60 min", price: 12, description: "Stay motivated with peers who share your commitment to growth. Celebrate wins and support each other through challenges." },
 ];
 
 export const bundles = {
