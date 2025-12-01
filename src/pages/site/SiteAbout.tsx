@@ -17,7 +17,12 @@ const SiteAbout = () => {
         <div className="mb-16">
           <Card className="bg-black border-[#D4AF37]/20 p-12 text-center">
             <Target className="w-16 h-16 text-bronze-400 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
+            <h2 className="text-3xl font-bold mb-4" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Our Mission</h2>
             <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
               To make mental health support simple, affordable, modern, and accessible to everyone who needs it.
             </p>
@@ -28,7 +33,12 @@ const SiteAbout = () => {
         <div className="mb-16">
           <Card className="bg-black border-[#D4AF37]/20 p-12 text-center">
             <Eye className="w-16 h-16 text-bronze-400 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Vision</h2>
+            <h2 className="text-3xl font-bold mb-4" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Our Vision</h2>
             <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
               A world where high-quality emotional support is available anytime, anywhere — where getting help is as easy as opening an app.
             </p>
@@ -37,7 +47,12 @@ const SiteAbout = () => {
 
         {/* Values */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Our Values</h2>
+          <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="bg-black border-[#D4AF37]/20 p-8">
               <Heart className="w-10 h-10 text-bronze-400 mb-4" />
@@ -74,7 +89,12 @@ const SiteAbout = () => {
 
         {/* Story */}
         <div className="bg-black border border-[#D4AF37]/20 rounded-lg p-12">
-          <h2 className="text-3xl font-bold text-center mb-6 text-foreground">Our Story</h2>
+          <h2 className="text-3xl font-bold text-center mb-6" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Our Story</h2>
           <div className="max-w-3xl mx-auto text-foreground/80 space-y-4">
             <p>
               ThriveMT was born from a simple observation: mental health care is too expensive, too hard to access, and often doesn't work with modern life.

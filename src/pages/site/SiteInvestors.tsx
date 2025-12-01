@@ -27,7 +27,12 @@ const SiteInvestors = () => {
         <div className="container mx-auto max-w-6xl">
           {/* Market Snapshot */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Market Snapshot</h2>
+            <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Market Snapshot</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="bg-black border-[#D4AF37]/20 p-6 text-center">
                 <TrendingUp className="w-10 h-10 text-bronze-400 mx-auto mb-4" />
@@ -54,7 +59,12 @@ const SiteInvestors = () => {
 
           {/* Competitive Advantage */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Our Advantage</h2>
+            <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Our Advantage</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Card className="bg-black border-[#D4AF37]/20 p-6">
                 <h3 className="text-xl font-bold text-bronze-400 mb-4">Lower Cost, Higher Quality</h3>
@@ -85,7 +95,12 @@ const SiteInvestors = () => {
 
           {/* Business Model */}
           <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
-            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Business Model</h2>
+            <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Business Model</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <DollarSign className="w-12 h-12 text-bronze-400 mx-auto mb-4" />
