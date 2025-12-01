@@ -21,7 +21,7 @@ const CollegePortal: React.FC = () => {
       duration: 2000
     });
     
-    navigate(`/${feature}`, { 
+    navigate(`/app/${feature}`, { 
       state: { 
         fromSpecializedProgram: true, 
         preventTutorial: true 

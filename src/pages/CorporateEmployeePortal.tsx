@@ -22,7 +22,7 @@ const CorporateEmployeePortal = () => {
       duration: 1500
     });
     
-    navigate("/corporate-wellness", { 
+    navigate("/app/corporate-wellness", { 
       state: { 
         resource: resourceName
       }
@@ -37,7 +37,7 @@ const CorporateEmployeePortal = () => {
     });
     
     setTimeout(() => {
-      navigate("/corporate-wellness", { 
+      navigate("/app/corporate-wellness", { 
         state: { 
           workshop: workshopName,
           showWorkshopContent: true 
@@ -790,7 +790,7 @@ const CorporateEmployeePortal = () => {
                       <Button 
                         variant="outline" 
                         className="w-full text-[#3B82F6] border-[#3B82F6]"
-                        onClick={() => navigate("/crisis-support")}
+                        onClick={() => navigate("/app/crisis-support")}
                       >
                         View All Crisis Resources
                       </Button>

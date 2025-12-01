@@ -39,7 +39,7 @@ const AdminPortal: React.FC = () => {
     if (loading) return;
     
     if (!user) {
-      navigate('/');
+      navigate('/app/auth');
       return;
     }
 
@@ -50,7 +50,7 @@ const AdminPortal: React.FC = () => {
 
       if (!data) {
         await logAction(AUDIT_ACTIONS.ADMIN_ACCESS_UNAUTHORIZED);
-        navigate('/');
+        navigate('/app/dashboard');
         return;
       }
 
@@ -58,7 +58,7 @@ const AdminPortal: React.FC = () => {
       await logAction(AUDIT_ACTIONS.PORTAL_ACCESSED);
     } catch (error) {
       console.error('Error checking admin access:', error);
-      navigate('/');
+      navigate('/app/dashboard');
     } finally {
       setCheckingAccess(false);
     }

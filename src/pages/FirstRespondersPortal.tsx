@@ -36,11 +36,11 @@ const FirstRespondersPortal: React.FC = () => {
     } else if (feature === "mental-wellness/assessments") {
       setActiveTab("assessments");
     } else {
-      navigate(`/${feature}`, { 
+      navigate(`/app/${feature}`, { 
         state: { 
           fromSpecializedProgram: true,
           preventTutorial: true,
-          returnToPortal: "/first-responders-portal",
+          returnToPortal: "/app/first-responders-portal",
           portalState: {
             activeTab,
             returnToMain: location.state?.returnToMain,
