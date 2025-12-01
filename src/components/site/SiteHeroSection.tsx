@@ -38,7 +38,7 @@ const SiteHeroSection = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className={`text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r ${getGradientColors()} bg-clip-text text-transparent leading-tight`}
+          className={`text-5xl md:text-7xl font-bold mb-6 pb-2 bg-gradient-to-r ${getGradientColors()} bg-clip-text text-transparent leading-normal`}
         >
           {title}
         </motion.h1>

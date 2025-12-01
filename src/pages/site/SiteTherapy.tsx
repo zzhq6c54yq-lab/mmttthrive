@@ -32,7 +32,12 @@ const SiteTherapy = () => {
         <div className="container mx-auto max-w-6xl">
           {/* Session Lengths */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Session Lengths</h2>
+            <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Session Lengths</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="bg-black border-[#D4AF37]/20 p-6">
                 <h3 className="text-xl font-bold text-bronze-400 mb-2">30 Minutes</h3>
@@ -51,7 +56,12 @@ const SiteTherapy = () => {
 
           {/* Self-Pay Pricing */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Self-Pay Pricing</h2>
+            <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Self-Pay Pricing</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {therapyPricing.selfPay.slice(0, 3).map((item, idx) => (
                 <Card key={idx} className="bg-black border-[#D4AF37]/20 p-8">
@@ -67,7 +77,12 @@ const SiteTherapy = () => {
 
           {/* Insurance */}
           <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
-            <h2 className="text-3xl font-bold text-center mb-4 text-foreground">Insurance Accepted</h2>
+            <h2 className="text-3xl font-bold text-center mb-4" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Insurance Accepted</h2>
             <p className="text-center text-foreground/80 mb-6 max-w-2xl mx-auto">
               We accept most major insurance plans. Your therapist is paid the same high rate, ensuring quality care.
             </p>
@@ -79,7 +94,12 @@ const SiteTherapy = () => {
 
           {/* Specialties */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Our Specialties</h2>
+            <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Our Specialties</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {["Anxiety", "Depression", "Trauma", "Military/Veteran Care", "Family & Relationships", "BPD & DBT", "Holistic Therapy", "Mindfulness"].map((specialty, idx) => (
                 <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 text-center">

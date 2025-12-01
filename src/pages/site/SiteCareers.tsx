@@ -28,7 +28,12 @@ const SiteCareers = () => {
 
         {/* Benefits */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Why Therapists Love Working With Us</h2>
+          <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Why Therapists Love Working With Us</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: DollarSign, title: "Highest Pay", desc: "Best compensation on telehealth platforms" },
@@ -49,7 +54,12 @@ const SiteCareers = () => {
 
         {/* Compensation */}
         <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Compensation</h2>
+          <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Compensation</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div>
               <h3 className="text-2xl font-bold text-bronze-400 mb-4">What You'll Earn</h3>
@@ -76,7 +86,12 @@ const SiteCareers = () => {
 
         {/* Requirements */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Requirements</h2>
+          <h2 className="text-3xl font-bold text-center mb-8" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Requirements</h2>
           <Card className="bg-black border-[#D4AF37]/20 p-8 max-w-2xl mx-auto">
             <ul className="space-y-3 text-foreground/80">
               <li>• Active clinical license (LCSW, LPC, LMFT, PhD, PsyD)</li>
@@ -90,7 +105,12 @@ const SiteCareers = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Join?</h2>
+          <h2 className="text-3xl font-bold mb-6" style={{
+              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Ready to Join?</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
               Apply Now

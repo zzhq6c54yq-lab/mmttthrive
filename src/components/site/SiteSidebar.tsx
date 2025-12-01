@@ -49,7 +49,6 @@ const SiteSidebar = ({ collapsed = false }: SiteSidebarProps) => {
       items: [
         { icon: Info, label: "About Us", path: "/site/about" },
         { icon: Briefcase, label: "Careers", path: "/site/careers" },
-        { icon: Users, label: "Coach Portal", path: "/coach-intro" },
         { icon: TrendingUp, label: "Investors", path: "/site/investors" },
       ]
     },

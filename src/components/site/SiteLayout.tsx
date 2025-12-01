@@ -8,9 +8,9 @@ const SiteLayout = () => {
   const showSidebar = location.pathname !== "/site" && location.pathname.startsWith("/site");
 
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen bg-black flex overflow-x-hidden">
       {showSidebar && <SiteSidebar />}
-      <div className={`flex-1 flex flex-col ${showSidebar ? "md:ml-64" : ""}`}>
+      <div className={`flex-1 flex flex-col overflow-x-hidden ${showSidebar ? "md:ml-64" : ""}`}>
         <main className="flex-1">
           <Outlet />
         </main>
