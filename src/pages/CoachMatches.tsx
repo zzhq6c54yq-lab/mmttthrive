@@ -16,7 +16,7 @@ const CoachMatches = () => {
   const { data: coaches, isLoading } = useCoaches();
 
   if (!preferences || Object.keys(preferences).length === 0) {
-    navigate("/coach-questionnaire");
+    navigate("/app/coach-questionnaire");
     return null;
   }
 
@@ -67,7 +67,7 @@ const CoachMatches = () => {
           </div>
           <Button
             variant="link"
-            onClick={() => navigate("/coach-questionnaire")}
+            onClick={() => navigate("/app/coach-questionnaire")}
             className="mt-3 p-0 h-auto text-primary"
           >
             Retake questionnaire

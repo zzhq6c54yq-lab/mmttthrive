@@ -23,7 +23,7 @@ export const useWorkshopNavigation = () => {
       duration: 2000,
     });
 
-    navigate(`/workshop/${workshopId}`, { 
+    navigate(`/app/workshop/${workshopId}`, { 
       state: { 
         workshopTitle,
         preventTutorial: true 

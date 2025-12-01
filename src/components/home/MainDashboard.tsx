@@ -33,13 +33,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({
   const { isSpanish } = useTranslation();
 
   const handleWorkshopClick = (workshopId: string, workshopTitle: string) => {
-    console.log("[MainDashboard] Workshop clicked:", workshopId, workshopTitle);
     toast({
       title: isSpanish ? "Navegando al taller..." : "Navigating to workshop...",
       description: workshopTitle,
       duration: 1500,
     });
-    navigate(`/workshop/${workshopId}`);
+    navigate(`/app/workshop/${workshopId}`);
   };
 
   return (

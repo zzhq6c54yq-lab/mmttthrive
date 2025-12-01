@@ -6,35 +6,39 @@ export const useFeatureNavigation = () => {
   const location = useLocation();
   
   const handleNavigate = (path: string) => {
-    // Map old paths to new working paths
+    // Map old paths to new working paths (all with /app prefix)
     const pathMapping: Record<string, string> = {
-      "/mental-wellness": "/mental-wellness-tools",
-      "/games-and-quizzes": "/games-and-quizzes",
-      "/small-business-portal": "/small-business-welcome",
-      "/employee-dashboard": "/employee-welcome",
-      "/cancer-support": "/cancer-support-welcome",
-      "/career-coaching": "/career-coaching",
-      "/meditation-studio": "/meditation-studio",
-      "/aa-sponsor": "/my-sponsor",
-      "/real-time-therapy": "/real-time-therapy",
-      "/holistic-wellness": "/holistic-wellness",
-      "/community-support": "/community-support",
-      "/binaural-beats": "/binaural-beats",
-      "/journaling": "/journaling",
-      "/mindfulness-sleep": "/mindfulness-sleep",
-      "/video-diary": "/video-diary",
-      "/resource-library": "/resource-library",
-      "/wellness-challenges": "/wellness-challenges",
-      "/workshops": "/workshops",
-      "/progress-reports": "/progress-reports",
-      "/family-resources": "/family-resources",
-      "/alternative-therapies": "/alternative-therapies",
-      "/virtual-meetings": "/virtual-meetings",
-      "/sleep-tracker": "/sleep-tracker"
+      "/mental-wellness": "/app/mental-wellness-tools",
+      "/games-and-quizzes": "/app/games-and-quizzes",
+      "/small-business-portal": "/app/small-business-welcome",
+      "/employee-dashboard": "/app/employee-welcome",
+      "/cancer-support": "/app/cancer-support-welcome",
+      "/career-coaching": "/app/career-coaching",
+      "/meditation-studio": "/app/meditation-studio",
+      "/aa-sponsor": "/app/my-sponsor",
+      "/real-time-therapy": "/app/real-time-therapy",
+      "/holistic-wellness": "/app/holistic-wellness",
+      "/community-support": "/app/community-support",
+      "/binaural-beats": "/app/binaural-beats",
+      "/journaling": "/app/journaling",
+      "/mindfulness-sleep": "/app/mindfulness-sleep",
+      "/video-diary": "/app/video-diary",
+      "/resource-library": "/app/resource-library",
+      "/wellness-challenges": "/app/wellness-challenges",
+      "/workshops": "/app/workshops",
+      "/progress-reports": "/app/progress-reports",
+      "/family-resources": "/app/family-resources",
+      "/alternative-therapies": "/app/alternative-therapies",
+      "/virtual-meetings": "/app/virtual-meetings",
+      "/sleep-tracker": "/app/sleep-tracker"
     };
 
-    // Get the mapped path or use the original path
-    const finalPath = pathMapping[path] || path;
+    // Get the mapped path or use the original path with /app prefix if not already prefixed
+    let finalPath = pathMapping[path] || path;
+    if (!finalPath.startsWith('/app') && !finalPath.startsWith('/home') && !finalPath.startsWith('/therapy')) {
+      finalPath = `/app${finalPath.startsWith('/') ? finalPath : '/' + finalPath}`;
+    }
+
     
     // Add directToAssessment flag for assessment-related features
     const isAssessmentRelated = 
@@ -68,7 +72,7 @@ export const useFeatureNavigation = () => {
       });
     } else if (isSmallBusiness) {
       // Navigate to selection screen instead
-      navigate("/small-business-selection", {
+      navigate("/app/small-business-selection", {
         state: {
           ...currentState,
           preventTutorial: true,
@@ -79,7 +83,7 @@ export const useFeatureNavigation = () => {
       });
     } else if (isEmployee) {
       // Direct to employee welcome path
-      navigate("/employee-welcome", {
+      navigate("/app/employee-welcome", {
         state: {
           ...currentState,
           preventTutorial: true,

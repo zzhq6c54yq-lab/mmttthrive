@@ -40,24 +40,24 @@ export const useFeatureActions = () => {
   const getPortalBasePath = () => {
     const path = location.pathname;
     
-    if (path.includes("golden-years")) return "/golden-years-portal";
+    if (path.includes("golden-years")) return "/app/golden-years-portal";
     if (path.includes("adolescent")) {
       // Get the selected age group to maintain it
       const ageGroup = location.state?.ageGroup || "adolescence";
-      return "/adolescent-portal";
+      return "/app/adolescent-portal";
     }
-    if (path.includes("dod")) return "/dod-portal";
-    if (path.includes("college")) return "/college-portal";
-    if (path.includes("small-business")) return "/small-business-portal";
-    if (path.includes("law-enforcement")) return "/law-enforcement-portal";
-    if (path.includes("first-responders")) return "/first-responders-portal";
-    if (path.includes("educators")) return "/educators-portal";
-    if (path.includes("hospitality")) return "/hospitality-portal";
-    if (path.includes("transport")) return "/transport-portal";
-    if (path.includes("chronic-illness")) return "/chronic-illness-portal";
+    if (path.includes("dod")) return "/app/dod-portal";
+    if (path.includes("college")) return "/app/college-portal";
+    if (path.includes("small-business")) return "/app/small-business-portal";
+    if (path.includes("law-enforcement")) return "/app/law-enforcement-portal";
+    if (path.includes("first-responders")) return "/app/first-responders-portal";
+    if (path.includes("educators")) return "/app/educators-portal";
+    if (path.includes("hospitality")) return "/app/hospitality-portal";
+    if (path.includes("transport")) return "/app/transport-portal";
+    if (path.includes("chronic-illness")) return "/app/chronic-illness-portal";
     
-    // Default to main app
-    return "/";
+    // Default to main app dashboard
+    return "/app/dashboard";
   };
 
   // Generic function to handle action button clicks
@@ -108,37 +108,37 @@ export const useFeatureActions = () => {
       switch (type) {
         case 'workshop':
           // Navigate to specific workshop - keep in portal context if needed
-          navigationPath = inPortal ? `/${portalPrefix}-workshops/${id || ''}` : `/workshop/${id}`;
+          navigationPath = inPortal ? `/${portalPrefix}-workshops/${id || ''}` : `/app/workshop/${id}`;
           break;
           
         case 'assessment':
           // Navigate directly to assessment - keep in portal context if needed
-          navigationPath = inPortal ? `/${portalPrefix}-assessments/${id || ''}` : `/mental-wellness/assessments/${id || ''}`;
+          navigationPath = inPortal ? `/${portalPrefix}-assessments/${id || ''}` : `/app/mental-wellness/assessments/${id || ''}`;
           break;
           
         case 'practice':
           // Navigate to guided practice
-          navigationPath = inPortal ? `/${portalPrefix}-practice/${id || ''}` : `/guided-practice/${id || ''}`;
+          navigationPath = inPortal ? `/${portalPrefix}-practice/${id || ''}` : `/app/guided-practice/${id || ''}`;
           break;
           
         case 'discussion':
           // Navigate to community discussions - keep in portal context if needed
-          navigationPath = inPortal ? `/${portalPrefix}-community` : `/community-support`;
+          navigationPath = inPortal ? `/${portalPrefix}-community` : `/app/community-support`;
           break;
           
         case 'join':
           // Join virtual meeting or group - keep in portal context if needed
-          navigationPath = inPortal ? `/${portalPrefix}-meetings` : `/virtual-meetings`;
+          navigationPath = inPortal ? `/${portalPrefix}-meetings` : `/app/virtual-meetings`;
           break;
           
         case 'redeem':
           // Navigate to redemption page
-          navigationPath = `/copay-credits`;
+          navigationPath = `/app/copay-credits`;
           break;
           
         case 'record':
           // For video diary recording
-          navigationPath = `/video-diary/record`;
+          navigationPath = `/app/video-diary/record`;
           break;
       }
     }
@@ -211,7 +211,7 @@ export const useFeatureActions = () => {
     
     // Always return to main dashboard, never to intro screen
     localStorage.setItem('hasCompletedOnboarding', 'true');
-    navigate('/', { 
+    navigate('/app/dashboard', { 
       state: { 
         screenState: 'main',
         returnToMain: true,
