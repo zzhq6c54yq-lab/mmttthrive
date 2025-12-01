@@ -32,7 +32,11 @@ import { DashboardFooter } from './sections/DashboardFooter';
 import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
 
-export default function EpicDashboard() {
+interface EpicDashboardProps {
+  demoMode?: boolean;
+}
+
+export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) {
   const navigate = useNavigate();
   const { user, profile, loading: userLoading } = useUser();
   const { dashboardData, loading: dashboardLoading, refetch } = useTodayDashboard();
@@ -52,12 +56,12 @@ export default function EpicDashboard() {
     onCommandPalette: () => setIsCommandPaletteOpen(true)
   });
 
-  // Redirect to auth if not authenticated
+  // Redirect to auth if not authenticated (skip for demo mode)
   useEffect(() => {
-    if (!userLoading && !user) {
-      navigate('/auth');
+    if (!userLoading && !user && !demoMode) {
+      navigate('/app/auth');
     }
-  }, [user, userLoading, navigate]);
+  }, [user, userLoading, navigate, demoMode]);
 
   const loading = userLoading || dashboardLoading;
 
@@ -129,8 +133,8 @@ export default function EpicDashboard() {
     );
   }
 
-  // Error state with empathy
-  if (!user || !profile) {
+  // Error state with empathy (skip for demo mode)
+  if ((!user || !profile) && !demoMode) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 flex items-center justify-center p-4">
         <EmpathyErrorState
@@ -138,12 +142,18 @@ export default function EpicDashboard() {
           message={!user 
             ? "We need you to log in so we can personalize your experience." 
             : "Your profile isn't complete yet. Let's take a moment to finish it together."}
-          onRetry={() => navigate(!user ? '/auth' : '/onboarding')}
+          onRetry={() => navigate(!user ? '/app/auth' : '/app/onboarding')}
           showHomeButton={false}
         />
       </div>
     );
   }
+
+  // Provide fallback profile data for demo users
+  const displayProfile = profile || {
+    display_name: 'Demo User',
+    goals: []
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 pb-24 relative overflow-hidden">
@@ -240,8 +250,8 @@ export default function EpicDashboard() {
                   <h2 className="text-4xl font-light text-foreground mb-2">
                     {getTimeBasedGreeting()}
                   </h2>
-                  <p className="text-xl text-muted-foreground font-light">
-                    We're glad you're here, {profile?.display_name?.split(' ')[0] || 'friend'}
+                   <p className="text-xl text-muted-foreground font-light">
+                    We're glad you're here, {displayProfile?.display_name?.split(' ')[0] || 'friend'}
                   </p>
                 </motion.div>
               )}
@@ -325,7 +335,7 @@ export default function EpicDashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.6 }}
       >
-        <DashboardNavigation userName={profile?.display_name?.split(' ')[0] || 'there'} />
+        <DashboardNavigation userName={displayProfile?.display_name?.split(' ')[0] || 'there'} />
       </motion.div>
 
       {/* Main Content with staggered animations */}
@@ -343,7 +353,7 @@ export default function EpicDashboard() {
         >
           <WelcomeHomeHero
             user={user}
-            profile={profile}
+            profile={displayProfile}
             lastCheckIn={lastCheckIn}
             moodTrend={dashboardData.weeklyStats.moodTrend}
             checkInStreak={dashboardData.checkInStreak}
@@ -357,7 +367,7 @@ export default function EpicDashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <HenryCompanionSection
-            userName={profile?.display_name?.split(' ')[0] || user?.email?.split('@')[0]}
+            userName={displayProfile?.display_name?.split(' ')[0] || user?.email?.split('@')[0]}
             onChatWithHenry={() => setShowHenryDialog(true)}
           />
         </motion.div>
@@ -394,7 +404,7 @@ export default function EpicDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          <ToolkitSection userGoals={profile?.goals || []} />
+          <ToolkitSection userGoals={displayProfile?.goals || []} />
         </motion.div>
 
         {/* Learning & Discovery Section */}

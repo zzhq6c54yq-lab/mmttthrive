@@ -41,7 +41,7 @@ const Dashboard: React.FC = () => {
 
   // Show dashboard for demo users OR authenticated users
   if (isDemoUser || (user && profile)) {
-    return <EpicDashboard />;
+    return <EpicDashboard demoMode={isDemoUser} />;
   }
 
   return null; // Will redirect via useEffect
