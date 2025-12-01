@@ -12,30 +12,16 @@ const SiteEntry = () => {
   useEffect(() => {
     const timers = [
       setTimeout(() => setStage(1), 500),    // ThriveMT text fades in
-      setTimeout(() => setStage(2), 4000),   // Logo fades in
-      setTimeout(() => setStage(3), 7000),   // "Build the Best You" fades in
-      setTimeout(() => setStage(4), 10000),  // Button appears with light sweep
+      setTimeout(() => setStage(2), 5000),   // Logo fades in
+      setTimeout(() => setStage(3), 9500),   // "Build the Best You" fades in
+      setTimeout(() => setStage(4), 13000),  // Button appears with light sweep
     ];
     
     return () => timers.forEach(clearTimeout);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] relative overflow-hidden flex items-center justify-center">
-      {/* Elegant marble-like background with soft glow */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at center, rgba(245,245,245,0.08) 0%, rgba(212,165,116,0.03) 30%, transparent 60%)',
-        }}
-      />
-      {/* Subtle marble texture overlay */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(212,165,116,0.05) 0%, transparent 50%)',
-        }}
-      />
+    <div className="min-h-screen bg-[#000000] relative overflow-hidden flex items-center justify-center">
 
       {/* Stacked vertical layout - all elements fade in smoothly */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6">
@@ -44,14 +30,14 @@ const SiteEntry = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 1 ? 1 : 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 2.5, ease: "easeInOut" }}
         >
           <img 
             src={thriveTextLogo} 
             alt="ThriveMT" 
             className="w-96 h-auto"
             style={{ 
-              filter: 'drop-shadow(0 0 40px rgba(212,165,116,0.5))'
+              filter: 'drop-shadow(0 0 30px rgba(255,180,100,0.6))'
             }}
           />
         </motion.div>
@@ -60,15 +46,12 @@ const SiteEntry = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 2 ? 1 : 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 2.5, ease: "easeInOut" }}
         >
           <img 
             src={thriveOutlineLogo} 
             alt="ThriveMT Logo" 
             className="w-64 h-64"
-            style={{ 
-              filter: 'drop-shadow(0 0 60px rgba(212,165,116,0.4)) drop-shadow(0 0 30px rgba(255,255,255,0.2))' 
-            }}
           />
         </motion.div>
 
@@ -76,10 +59,10 @@ const SiteEntry = () => {
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 3 ? 1 : 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 2.5, ease: "easeInOut" }}
           className="text-6xl md:text-7xl font-bold text-center leading-tight"
           style={{
-            background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+            background: 'linear-gradient(135deg, #FFE4C4 0%, #FFB347 40%, #FF8C00 70%, #CD853F 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -92,14 +75,14 @@ const SiteEntry = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 4 ? 1 : 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 2, ease: "easeInOut" }}
         >
           <Button
             size="xl"
             onClick={() => navigate("/site/home")}
             className="relative overflow-hidden text-black font-bold text-xl px-20 py-8 rounded-lg"
             style={{
-              background: 'linear-gradient(90deg, #B87333 0%, #D4A574 25%, #FFFFFF 50%, #D4A574 75%, #B87333 100%)',
+              background: 'linear-gradient(90deg, #CD853F 0%, #FFB347 25%, #FFFFFF 50%, #FFB347 75%, #CD853F 100%)',
               backgroundSize: '200% 100%',
               animation: 'light-sweep 2s ease-in-out infinite',
             }}
