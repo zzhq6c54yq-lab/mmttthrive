@@ -19,7 +19,7 @@ export default function ClientPortal() {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        navigate("/auth");
+        navigate("/app/auth");
         return;
       }
 
@@ -46,7 +46,7 @@ export default function ClientPortal() {
       title: "Logged out",
       description: "You have been successfully logged out.",
     });
-    navigate("/auth");
+    navigate("/app/auth");
   };
 
   if (!userId) {

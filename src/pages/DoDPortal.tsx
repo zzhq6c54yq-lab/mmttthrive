@@ -42,11 +42,11 @@ const DoDPortal: React.FC = () => {
       setActiveTab("assessments");
     } else {
       // For other features, navigate as before but maintain context
-      navigate(`/${feature}`, { 
+      navigate(`/app/${feature}`, { 
         state: { 
           fromSpecializedProgram: true,
           preventTutorial: true,
-          returnToPortal: "/dod-portal", // Add this to enable returning to portal
+          returnToPortal: "/app/dod-portal", // Add this to enable returning to portal
           portalState: {
             activeTab,
             returnToMain,

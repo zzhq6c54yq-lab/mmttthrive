@@ -35,11 +35,11 @@ const LawEnforcementPortal: React.FC = () => {
     } else if (feature === "mental-wellness/assessments") {
       setActiveTab("assessments");
     } else {
-      navigate(`/${feature}`, { 
+      navigate(`/app/${feature}`, { 
         state: { 
           fromSpecializedProgram: true,
           preventTutorial: true,
-          returnToPortal: "/law-enforcement-portal",
+          returnToPortal: "/app/law-enforcement-portal",
           portalState: {
             activeTab,
             returnToMain: location.state?.returnToMain,

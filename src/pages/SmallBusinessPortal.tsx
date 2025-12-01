@@ -38,7 +38,7 @@ const SmallBusinessPortal: React.FC = () => {
       duration: 2000
     });
     
-    navigate(`/${path}`, { 
+    navigate(`/app/${path}`, { 
       state: { 
         fromSpecializedProgram: true, 
         preventTutorial: true 

@@ -40,11 +40,12 @@ const GoldenYearsPortal: React.FC = () => {
     });
 
     // Navigate to the appropriate path with correct state
-    navigate(featurePaths[feature] || `/golden-years-${feature.toLowerCase().replace(/\s+/g, '-')}`, {
+    const navPath = featurePaths[feature] || `/app/golden-years-${feature.toLowerCase().replace(/\s+/g, '-')}`;
+    navigate(navPath.startsWith('/app') ? navPath : `/app${navPath}`, {
       state: { 
         stayInPortal: true,
         preventTutorial: true,
-        portalPath: '/golden-years-portal',
+        portalPath: '/app/golden-years-portal',
         featureName: feature
       }
     });

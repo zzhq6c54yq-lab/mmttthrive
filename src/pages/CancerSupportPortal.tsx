@@ -57,13 +57,11 @@ const CancerSupportPortal: React.FC = () => {
       finalPath = path.startsWith('/') ? path : `/${path}`;
     }
     
-    console.log("[CancerSupportPortal] Final navigation path:", finalPath);
-    
-    navigate(finalPath, { 
+    navigate(finalPath.startsWith('/app') ? finalPath : `/app${finalPath}`, { 
       state: { 
         fromCancerSupport: true, 
         preventTutorial: true,
-        returnToPortal: "/cancer-support-portal",
+        returnToPortal: "/app/cancer-support-portal",
         cancerSupportContext: true,
         specializedContent: true,
         portalTab: activeTab
