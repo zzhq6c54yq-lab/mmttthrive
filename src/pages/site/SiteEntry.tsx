@@ -37,90 +37,76 @@ const SiteEntry = () => {
         }}
       />
 
-      {/* Stacked vertical layout - all elements stay visible once they appear */}
+      {/* Stacked vertical layout - all elements fade in smoothly */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6">
         
-        {/* Stage 1+: ThriveMT Text Logo */}
-        {stage >= 1 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-          >
-            <img 
-              src={thriveTextLogo} 
-              alt="ThriveMT" 
-              className="w-96 h-auto"
-              style={{ 
-                mixBlendMode: 'screen',
-                WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
-                maskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
-                filter: 'drop-shadow(0 0 40px rgba(212,165,116,0.5))'
-              }}
-            />
-          </motion.div>
-        )}
+        {/* ThriveMT Text Logo - Fades in at stage 1 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: stage >= 1 ? 1 : 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        >
+          <img 
+            src={thriveTextLogo} 
+            alt="ThriveMT" 
+            className="w-96 h-auto"
+            style={{ 
+              filter: 'drop-shadow(0 0 40px rgba(212,165,116,0.5))'
+            }}
+          />
+        </motion.div>
 
-        {/* Stage 2+: Outline Head Logo */}
-        {stage >= 2 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-          >
-            <img 
-              src={thriveOutlineLogo} 
-              alt="ThriveMT Logo" 
-              className="w-64 h-64"
-              style={{ 
-                mixBlendMode: 'screen',
-                WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
-                maskImage: 'radial-gradient(ellipse 80% 80% at center, black 60%, transparent 100%)',
-                filter: 'drop-shadow(0 0 60px rgba(212,165,116,0.4)) drop-shadow(0 0 30px rgba(255,255,255,0.2))' 
-              }}
-            />
-          </motion.div>
-        )}
+        {/* Outline Head Logo - Fades in at stage 2 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: stage >= 2 ? 1 : 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        >
+          <img 
+            src={thriveOutlineLogo} 
+            alt="ThriveMT Logo" 
+            className="w-64 h-64"
+            style={{ 
+              filter: 'drop-shadow(0 0 60px rgba(212,165,116,0.4)) drop-shadow(0 0 30px rgba(255,255,255,0.2))' 
+            }}
+          />
+        </motion.div>
 
-        {/* Stage 3+: "Build the Best You" Headline */}
-        {stage >= 3 && (
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="text-6xl md:text-7xl font-bold text-center leading-tight"
+        {/* "Build the Best You" Headline - Fades in at stage 3 */}
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: stage >= 3 ? 1 : 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="text-6xl md:text-7xl font-bold text-center leading-tight"
+          style={{
+            background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+        >
+          Build the Best You
+        </motion.h1>
+
+        {/* ENTER Button with Light Sweep - Fades in at stage 4 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: stage >= 4 ? 1 : 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        >
+          <Button
+            size="xl"
+            onClick={() => navigate("/site/home")}
+            className="relative overflow-hidden text-black font-bold text-xl px-20 py-8 rounded-lg"
             style={{
-              background: 'linear-gradient(135deg, #E8D4C0 0%, #D4A574 50%, #B87333 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              background: 'linear-gradient(90deg, #B87333 0%, #D4A574 25%, #FFFFFF 50%, #D4A574 75%, #B87333 100%)',
+              backgroundSize: '200% 100%',
+              animation: 'light-sweep 2s ease-in-out infinite',
             }}
           >
-            Build the Best You
-          </motion.h1>
-        )}
-
-        {/* Stage 4+: ENTER Button with Light Sweep */}
-        {stage >= 4 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          >
-            <Button
-              size="xl"
-              onClick={() => navigate("/site/home")}
-              className="relative overflow-hidden text-black font-bold text-xl px-20 py-8 rounded-lg"
-              style={{
-                background: 'linear-gradient(90deg, #B87333 0%, #D4A574 25%, #FFFFFF 50%, #D4A574 75%, #B87333 100%)',
-                backgroundSize: '200% 100%',
-                animation: 'light-sweep 2s ease-in-out infinite',
-              }}
-            >
-              ENTER
-            </Button>
-          </motion.div>
-        )}
+            ENTER
+          </Button>
+        </motion.div>
       </div>
 
       {/* CSS Animation for Light Sweep */}
