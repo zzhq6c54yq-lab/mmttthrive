@@ -137,7 +137,7 @@ export default function WeeklyGlance({
         <Button
           variant="outline"
           className="w-full"
-          onClick={() => navigate('/progress-analytics')}
+          onClick={() => navigate('/app/progress-analytics')}
         >
           View Full Insights
           <ArrowRight className="w-4 h-4 ml-2" />

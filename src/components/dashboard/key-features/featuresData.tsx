@@ -60,7 +60,7 @@ export const getFeatures = (isSpanish: boolean): FeatureItem[] => [
     description: isSpanish ? "Rastrea tu progreso y alcanza tus objetivos de bienestar." : "Track your progress and reach your wellness goals.",
     icon: <BarChart3 className="w-6 h-6" />,
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-    path: "/progress-analytics",
+    path: "/app/progress-analytics",
     color: "blue"
   },
   {
