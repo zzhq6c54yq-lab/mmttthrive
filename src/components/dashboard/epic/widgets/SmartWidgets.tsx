@@ -80,7 +80,7 @@ export function MoodPulseWidget({ moodData = [] }: MoodPulseWidgetProps) {
           size="sm" 
           variant="outline" 
           className="flex-1"
-          onClick={() => navigate('/progress-analytics')}
+          onClick={() => navigate('/app/progress-analytics')}
         >
           See Insights
         </Button>
@@ -88,7 +88,7 @@ export function MoodPulseWidget({ moodData = [] }: MoodPulseWidgetProps) {
           size="sm" 
           variant="outline" 
           className="flex-1"
-          onClick={() => navigate('/weekly-goals')}
+          onClick={() => navigate('/app/weekly-goals')}
         >
           Set a Focus Goal
         </Button>
@@ -194,7 +194,7 @@ export function ProgressRingWidget({ completed, total }: ProgressRingWidgetProps
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm p-4 cursor-pointer hover:bg-card/70 transition-colors" onClick={() => navigate('/weekly-goals')}>
+    <Card className="bg-card/50 border-border/50 backdrop-blur-sm p-4 cursor-pointer hover:bg-card/70 transition-colors" onClick={() => navigate('/app/weekly-goals')}>
       <div className="flex items-center justify-between mb-3">
         <h4 className="text-sm font-semibold flex items-center gap-2">
           <CheckCircle className="w-4 h-4 text-green-500" />
@@ -206,7 +206,7 @@ export function ProgressRingWidget({ completed, total }: ProgressRingWidgetProps
         {total === 0 ? (
           <div className="text-center py-6">
             <p className="text-sm text-muted-foreground mb-3">No goals set yet</p>
-            <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); navigate('/weekly-goals'); }}>
+            <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); navigate('/app/weekly-goals'); }}>
               Set Goals
             </Button>
           </div>

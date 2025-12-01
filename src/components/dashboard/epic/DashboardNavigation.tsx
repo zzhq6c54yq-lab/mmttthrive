@@ -49,10 +49,10 @@ export default function DashboardNavigation({ userName }: DashboardNavigationPro
   };
 
   const navItems = [
-    { label: 'Today', icon: Home, path: '/' },
-    { label: 'Weekly Goals', icon: Calendar, path: '/weekly-goals' },
-    { label: 'Monthly Goals', icon: CalendarDays, path: '/monthly-goals' },
-    { label: 'Progress', icon: TrendingUp, path: '/progress-analytics' },
+    { label: 'Today', icon: Home, path: '/app/dashboard' },
+    { label: 'Weekly Goals', icon: Calendar, path: '/app/weekly-goals' },
+    { label: 'Monthly Goals', icon: CalendarDays, path: '/app/monthly-goals' },
+    { label: 'Progress', icon: TrendingUp, path: '/app/progress-analytics' },
   ];
 
   return (

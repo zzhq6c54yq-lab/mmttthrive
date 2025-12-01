@@ -33,7 +33,7 @@ export default function ProgressSection({ dashboardData }: ProgressSectionProps)
             size="sm"
             onClick={() => {
               trackClick({ action: 'view-analytics' });
-              navigate('/progress-analytics');
+              navigate('/app/progress-analytics');
             }}
             className="text-[#E5C5A1] hover:text-[#B87333]"
           >

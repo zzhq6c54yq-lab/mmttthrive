@@ -64,7 +64,7 @@ export default function TodayDashboard() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate('/progress-analytics')}
+              onClick={() => navigate('/app/progress-analytics')}
               className="text-white hover:bg-white/10"
             >
               <TrendingUp className="w-4 h-4 mr-2" />

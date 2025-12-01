@@ -87,7 +87,7 @@ export default function AIContextualHelper() {
         action: {
           label: 'View progress',
           onClick: () => {
-            window.location.href = '/progress-analytics';
+            window.location.href = '/app/progress-analytics';
             handleDismiss('achievement_50');
           }
         }

@@ -59,9 +59,9 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     { id: 'binaural', title: 'Binaural Beats', category: 'tool', icon: <Music className="w-4 h-4" />, path: '/binaural-beats', keywords: ['binaural', 'beats', 'sound', 'therapy'], estimatedTime: '20 min' },
     
     // Navigation
-    { id: 'dashboard', title: 'Dashboard', category: 'navigation', icon: <Activity className="w-4 h-4" />, path: '/dashboard', keywords: ['dashboard', 'home', 'main'] },
-    { id: 'progress', title: 'Progress Analytics', category: 'navigation', icon: <TrendingUp className="w-4 h-4" />, path: '/progress-analytics', keywords: ['progress', 'analytics', 'stats', 'chart'] },
-    { id: 'profile', title: 'My Profile', category: 'navigation', icon: <Users className="w-4 h-4" />, path: '/profile', keywords: ['profile', 'settings', 'account'] },
+    { id: 'dashboard', title: 'Dashboard', category: 'navigation', icon: <Activity className="w-4 h-4" />, path: '/app/dashboard', keywords: ['dashboard', 'home', 'main'] },
+    { id: 'progress', title: 'Progress Analytics', category: 'navigation', icon: <TrendingUp className="w-4 h-4" />, path: '/app/progress-analytics', keywords: ['progress', 'analytics', 'stats', 'chart'] },
+    { id: 'profile', title: 'My Profile', category: 'navigation', icon: <Users className="w-4 h-4" />, path: '/app/profile', keywords: ['profile', 'settings', 'account'] },
     
     // Help
     { id: 'crisis', title: 'Emergency Help', category: 'help', icon: <Heart className="w-4 h-4" />, path: '/crisis-resources', keywords: ['emergency', 'crisis', 'help', 'urgent', 'suicide'] },
