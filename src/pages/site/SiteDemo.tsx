@@ -6,7 +6,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteDemo = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       <SiteHeroSection
         title="Experience It Yourself"
         subtitle="No signup. No pressure. Just explore."
@@ -36,7 +36,7 @@ const SiteDemo = () => {
               "Sample mental health quiz (GAD-7 / PHQ-9)",
               "Basic navigation & dashboard",
             ].map((feature, idx) => (
-              <Card key={idx} className="bg-[#141921] border-bronze-500/20 p-4 flex items-center gap-3">
+              <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 flex items-center gap-3">
                 <Check className="w-6 h-6 text-bronze-400 flex-shrink-0" />
                 <span className="text-foreground">{feature}</span>
               </Card>
@@ -46,7 +46,7 @@ const SiteDemo = () => {
 
         {/* App Preview Placeholder */}
         <div className="mb-16">
-          <Card className="bg-[#141921] border-bronze-500/20 p-8">
+          <Card className="bg-black border-[#D4AF37]/20 p-8">
             <div className="aspect-video bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 rounded-lg flex items-center justify-center">
               <div className="text-center">
                 <PlayCircle className="w-20 h-20 text-bronze-400 mx-auto mb-4" />

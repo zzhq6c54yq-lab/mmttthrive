@@ -13,11 +13,12 @@ const FloatingHenryAssistant: React.FC<FloatingHenryAssistantProps> = ({ classNa
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  // Don't show on auth/onboarding pages
+  // Don't show on auth/onboarding/marketing site pages
   if (location.pathname === '/auth' || 
       location.pathname === '/onboarding' || 
       location.pathname === '/' || 
-      location.pathname === '/auth/confirm') {
+      location.pathname === '/auth/confirm' ||
+      location.pathname.startsWith('/site')) {
     return null;
   }
 

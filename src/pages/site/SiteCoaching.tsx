@@ -7,7 +7,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteCoaching = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       {/* Hero */}
       <SiteHeroSection
         title="Your Goals Deserve a Partner"
@@ -35,7 +35,7 @@ const SiteCoaching = () => {
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Coaching Pricing</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {coachingPricing.slice(0, 3).map((item, idx) => (
-                <Card key={idx} className="bg-[#141921] border-bronze-500/20 p-8">
+                <Card key={idx} className="bg-black border-[#D4AF37]/20 p-8">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-bronze-400 mb-2">{item.duration}</div>
                     <div className="text-4xl font-bold text-foreground mb-4">${item.price}</div>
@@ -59,7 +59,7 @@ const SiteCoaching = () => {
                 { icon: Users, title: "Relationship Support", desc: "Communication and connection skills" },
                 { icon: Sparkles, title: "Trauma-Informed Peer", desc: "Supportive guidance with lived experience" },
               ].map((coach, idx) => (
-                <Card key={idx} className="bg-[#141921] border-bronze-500/20 p-6">
+                <Card key={idx} className="bg-black border-[#D4AF37]/20 p-6">
                   <coach.icon className="w-10 h-10 text-bronze-400 mb-4" />
                   <h3 className="text-xl font-bold text-foreground mb-2">{coach.title}</h3>
                   <p className="text-foreground/60">{coach.desc}</p>
@@ -69,7 +69,7 @@ const SiteCoaching = () => {
           </div>
 
           {/* Coaching vs Therapy */}
-          <div className="mb-16 bg-[#141921] rounded-lg p-8">
+          <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Coaching vs Therapy</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div>

@@ -27,7 +27,7 @@ const SiteContact = () => {
   };
 
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       <SiteHeroSection
         title="We're Here for You"
         subtitle="Questions? Ideas? Just want to talk? Reach out."
@@ -38,7 +38,7 @@ const SiteContact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <div className="space-y-8">
-              <Card className="bg-[#141921] border-bronze-500/20 p-8">
+              <Card className="bg-black border-[#D4AF37]/20 p-8">
                 <Mail className="w-10 h-10 text-bronze-400 mb-4" />
                 <h3 className="text-xl font-bold text-foreground mb-2">General Support</h3>
                 <a href="mailto:support@thrivemt.com" className="text-bronze-400 hover:text-bronze-300">
@@ -63,7 +63,7 @@ const SiteContact = () => {
             </div>
 
             {/* Contact Form */}
-            <Card className="bg-[#141921] border-bronze-500/20 p-8">
+            <Card className="bg-black border-[#D4AF37]/20 p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Name</label>
@@ -72,7 +72,7 @@ const SiteContact = () => {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Your name"
                     required
-                    className="bg-[#0F1319] border-bronze-500/20"
+                    className="bg-black border-[#D4AF37]/20"
                   />
                 </div>
 
@@ -84,14 +84,14 @@ const SiteContact = () => {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="your@email.com"
                     required
-                    className="bg-[#0F1319] border-bronze-500/20"
+                    className="bg-black border-[#D4AF37]/20"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">I am a...</label>
                   <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
-                    <SelectTrigger className="bg-[#0F1319] border-bronze-500/20">
+                    <SelectTrigger className="bg-black border-[#D4AF37]/20">
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
                     <SelectContent>
@@ -113,7 +113,7 @@ const SiteContact = () => {
                     placeholder="Tell us how we can help..."
                     rows={6}
                     required
-                    className="bg-[#0F1319] border-bronze-500/20"
+                    className="bg-black border-[#D4AF37]/20"
                   />
                 </div>
 

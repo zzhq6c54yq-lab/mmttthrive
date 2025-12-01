@@ -4,7 +4,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteAbout = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       <SiteHeroSection
         title="Built by People Who Understand"
         subtitle="Because mental health deserves more than an app."
@@ -15,7 +15,7 @@ const SiteAbout = () => {
 
         {/* Mission */}
         <div className="mb-16">
-          <Card className="bg-[#141921] border-bronze-500/20 p-12 text-center">
+          <Card className="bg-black border-[#D4AF37]/20 p-12 text-center">
             <Target className="w-16 h-16 text-bronze-400 mx-auto mb-6" />
             <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
             <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
@@ -26,7 +26,7 @@ const SiteAbout = () => {
 
         {/* Vision */}
         <div className="mb-16">
-          <Card className="bg-[#141921] border-bronze-500/20 p-12 text-center">
+          <Card className="bg-black border-[#D4AF37]/20 p-12 text-center">
             <Eye className="w-16 h-16 text-bronze-400 mx-auto mb-6" />
             <h2 className="text-3xl font-bold text-foreground mb-4">Our Vision</h2>
             <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
@@ -39,7 +39,7 @@ const SiteAbout = () => {
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="bg-[#141921] border-bronze-500/20 p-8">
+            <Card className="bg-black border-[#D4AF37]/20 p-8">
               <Heart className="w-10 h-10 text-bronze-400 mb-4" />
               <h3 className="text-xl font-bold text-foreground mb-2">Compassion</h3>
               <p className="text-foreground/60">Every interaction is designed with empathy and care</p>
@@ -73,7 +73,7 @@ const SiteAbout = () => {
         </div>
 
         {/* Story */}
-        <div className="bg-[#141921] rounded-lg p-12">
+        <div className="bg-black border border-[#D4AF37]/20 rounded-lg p-12">
           <h2 className="text-3xl font-bold text-center mb-6 text-foreground">Our Story</h2>
           <div className="max-w-3xl mx-auto text-foreground/80 space-y-4">
             <p>
