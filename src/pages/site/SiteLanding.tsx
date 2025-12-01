@@ -7,7 +7,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteLanding = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       {/* Hero Section */}
       <SiteHeroSection
         title="Modern Mental Health for Real Life"
@@ -28,7 +28,7 @@ const SiteLanding = () => {
       </SiteHeroSection>
 
       {/* Why Choose ThriveMT */}
-      <section className="py-20 px-6 bg-[#141921]">
+      <section className="py-20 px-6 bg-black">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
             Why People Choose ThriveMT
@@ -42,7 +42,7 @@ const SiteLanding = () => {
               { icon: Brain, text: "AI-powered support 24/7" },
               { icon: TrendingUp, text: "Progress tracking & habit tools" },
             ].map((item, idx) => (
-              <Card key={idx} className="bg-[#1A1F2C] border-bronze-500/20 p-6">
+              <Card key={idx} className="bg-black border-[#D4AF37]/20 p-6">
                 <item.icon className="w-8 h-8 text-bronze-400 mb-4" />
                 <p className="text-foreground">{item.text}</p>
               </Card>
@@ -59,7 +59,7 @@ const SiteLanding = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Link to="/site/therapy">
-              <Card className="bg-[#141921] border-bronze-500/20 p-8 hover:border-bronze-500/40 transition-all cursor-pointer">
+              <Card className="bg-black border-[#D4AF37]/20 p-8 hover:border-[#D4AF37]/40 transition-all cursor-pointer">
                 <h3 className="text-2xl font-bold text-bronze-400 mb-4">Therapy</h3>
                 <p className="text-foreground/80">Licensed clinicians, insurance & self-pay options</p>
               </Card>
@@ -81,7 +81,7 @@ const SiteLanding = () => {
       </section>
 
       {/* Featured Bundles */}
-      <section className="py-20 px-6 bg-[#141921]">
+      <section className="py-20 px-6 bg-black">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
             Featured Bundles
@@ -89,7 +89,7 @@ const SiteLanding = () => {
           <p className="text-center text-foreground/60 mb-12">Save money with our combined service packages</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {bundles.hybrid.slice(0, 3).map((bundle, idx) => (
-              <Card key={idx} className={`bg-[#1A1F2C] border-bronze-500/20 p-8 ${bundle.popular ? 'ring-2 ring-bronze-500' : ''}`}>
+              <Card key={idx} className={`bg-black border-[#D4AF37]/20 p-8 ${bundle.popular ? 'ring-2 ring-[#D4AF37]' : ''}`}>
                 {bundle.popular && (
                   <div className="bg-bronze-500 text-black text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
                     MOST POPULAR

@@ -7,7 +7,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteTherapy = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       {/* Hero */}
       <SiteHeroSection
         title="Healing Starts with Being Heard"
@@ -34,7 +34,7 @@ const SiteTherapy = () => {
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Session Lengths</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="bg-[#141921] border-bronze-500/20 p-6">
+                <Card className="bg-black border-[#D4AF37]/20 p-6">
                 <h3 className="text-xl font-bold text-bronze-400 mb-2">30 Minutes</h3>
                 <p className="text-foreground/80">Short check-in sessions for quick support</p>
               </Card>
@@ -54,7 +54,7 @@ const SiteTherapy = () => {
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Self-Pay Pricing</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {therapyPricing.selfPay.slice(0, 3).map((item, idx) => (
-                <Card key={idx} className="bg-[#141921] border-bronze-500/20 p-8">
+                <Card key={idx} className="bg-black border-[#D4AF37]/20 p-8">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-bronze-400 mb-2">{item.duration}</div>
                     <div className="text-4xl font-bold text-foreground mb-4">${item.price}</div>
@@ -66,7 +66,7 @@ const SiteTherapy = () => {
           </div>
 
           {/* Insurance */}
-          <div className="mb-16 bg-[#141921] rounded-lg p-8">
+          <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
             <h2 className="text-3xl font-bold text-center mb-4 text-foreground">Insurance Accepted</h2>
             <p className="text-center text-foreground/80 mb-6 max-w-2xl mx-auto">
               We accept most major insurance plans. Your therapist is paid the same high rate, ensuring quality care.
@@ -82,7 +82,7 @@ const SiteTherapy = () => {
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Our Specialties</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {["Anxiety", "Depression", "Trauma", "Military/Veteran Care", "Family & Relationships", "BPD & DBT", "Holistic Therapy", "Mindfulness"].map((specialty, idx) => (
-                <Card key={idx} className="bg-[#141921] border-bronze-500/20 p-4 text-center">
+                <Card key={idx} className="bg-black border-[#D4AF37]/20 p-4 text-center">
                   <Check className="w-6 h-6 text-bronze-400 mx-auto mb-2" />
                   <p className="text-foreground">{specialty}</p>
                 </Card>

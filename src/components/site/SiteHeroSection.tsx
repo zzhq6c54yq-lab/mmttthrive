@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 
 interface SiteHeroSectionProps {
   title: string;
@@ -14,19 +14,6 @@ const SiteHeroSection = ({
   children,
   accentColor = "bronze"
 }: SiteHeroSectionProps) => {
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([]);
-
-  useEffect(() => {
-    // Generate 15 particles for hero sections
-    const newParticles = Array.from({ length: 15 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 2,
-    }));
-    setParticles(newParticles);
-  }, []);
-
   const getGradientColors = () => {
     switch (accentColor) {
       case "lavender":
@@ -36,47 +23,14 @@ const SiteHeroSection = ({
       case "rose":
         return "from-rose-400 to-rose-600";
       default:
-        return "from-bronze-400 to-bronze-600";
+        return "from-[#D4AF37] to-[#B8941F]";
     }
   };
 
   return (
-    <section className="relative py-20 px-6 overflow-hidden bg-gradient-to-br from-[#0F1319] via-[#141921] to-[#1A1F2C]">
-      {/* Animated Particles */}
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute w-1 h-1 bg-bronze-400/40 rounded-full"
-          style={{
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-          }}
-          animate={{
-            opacity: [0.2, 0.6, 0.2],
-            scale: [1, 1.5, 1],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-
-      {/* Breathing Accent Glow */}
-      <motion.div
-        className="absolute top-0 right-0 w-96 h-96 bg-bronze-500/10 rounded-full blur-[120px]"
-        animate={{
-          opacity: [0.2, 0.4, 0.2],
-          scale: [1, 1.3, 1],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+    <section className="relative py-24 px-6 overflow-hidden bg-black">
+      {/* Subtle bronze accent line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-30" />
 
       {/* Content */}
       <div className="container mx-auto relative z-10 text-center max-w-4xl">
@@ -84,10 +38,7 @@ const SiteHeroSection = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className={`text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r ${getGradientColors()} bg-clip-text text-transparent`}
-          style={{
-            textShadow: "0 0 30px rgba(184, 115, 51, 0.3)",
-          }}
+          className={`text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r ${getGradientColors()} bg-clip-text text-transparent leading-tight`}
         >
           {title}
         </motion.h1>
@@ -96,7 +47,7 @@ const SiteHeroSection = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl md:text-2xl text-foreground/80 mb-8"
+          className="text-xl md:text-2xl text-white/70 mb-8 leading-relaxed"
         >
           {subtitle}
         </motion.p>

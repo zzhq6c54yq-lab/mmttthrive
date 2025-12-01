@@ -6,7 +6,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteInvestors = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       <SiteHeroSection
         title="Shape the Future of Wellness"
         subtitle="$68B market. 30% YoY growth. We're just getting started."
@@ -29,7 +29,7 @@ const SiteInvestors = () => {
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Market Snapshot</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="bg-[#141921] border-bronze-500/20 p-6 text-center">
+              <Card className="bg-black border-[#D4AF37]/20 p-6 text-center">
                 <TrendingUp className="w-10 h-10 text-bronze-400 mx-auto mb-4" />
                 <div className="text-3xl font-bold text-foreground mb-2">$68B</div>
                 <p className="text-foreground/60">Global mental health tech market</p>
@@ -56,7 +56,7 @@ const SiteInvestors = () => {
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Our Advantage</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="bg-[#141921] border-bronze-500/20 p-6">
+              <Card className="bg-black border-[#D4AF37]/20 p-6">
                 <h3 className="text-xl font-bold text-bronze-400 mb-4">Lower Cost, Higher Quality</h3>
                 <p className="text-foreground/80">
                   Lower session costs for clients while paying therapists more than competitors. Our 40% margin model ensures profitability while prioritizing quality care.
@@ -84,7 +84,7 @@ const SiteInvestors = () => {
           </div>
 
           {/* Business Model */}
-          <div className="mb-16 bg-[#141921] rounded-lg p-8">
+          <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
             <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Business Model</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">

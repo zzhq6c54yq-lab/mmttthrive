@@ -6,7 +6,7 @@ import SiteHeroSection from "@/components/site/SiteHeroSection";
 
 const SiteCareers = () => {
   return (
-    <div className="bg-[#0F1319]">
+    <div className="bg-black">
       <SiteHeroSection
         title="Join the Movement"
         subtitle="Help us build the future of mental health care."
@@ -38,7 +38,7 @@ const SiteCareers = () => {
               { icon: Heart, title: "Modern Tools", desc: "AI-assisted workflows make your job easier" },
               { icon: Shield, title: "Trauma-Informed", desc: "Leadership that understands the work" },
             ].map((benefit, idx) => (
-              <Card key={idx} className="bg-[#141921] border-bronze-500/20 p-6">
+              <Card key={idx} className="bg-black border-[#D4AF37]/20 p-6">
                 <benefit.icon className="w-10 h-10 text-bronze-400 mb-4" />
                 <h3 className="text-xl font-bold text-foreground mb-2">{benefit.title}</h3>
                 <p className="text-foreground/60">{benefit.desc}</p>
@@ -48,7 +48,7 @@ const SiteCareers = () => {
         </div>
 
         {/* Compensation */}
-        <div className="mb-16 bg-[#141921] rounded-lg p-8">
+        <div className="mb-16 bg-black border border-[#D4AF37]/20 rounded-lg p-8">
           <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Compensation</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div>
@@ -77,7 +77,7 @@ const SiteCareers = () => {
         {/* Requirements */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Requirements</h2>
-          <Card className="bg-[#141921] border-bronze-500/20 p-8 max-w-2xl mx-auto">
+          <Card className="bg-black border-[#D4AF37]/20 p-8 max-w-2xl mx-auto">
             <ul className="space-y-3 text-foreground/80">
               <li>• Active clinical license (LCSW, LPC, LMFT, PhD, PsyD)</li>
               <li>• Liability insurance</li>
