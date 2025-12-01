@@ -112,7 +112,7 @@ const CoachQuestionnaire = () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      navigate("/coach-matches", { state: { preferences: answers } });
+      navigate("/app/coach-matches", { state: { preferences: answers } });
     }
   };
 
@@ -120,7 +120,7 @@ const CoachQuestionnaire = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
-      navigate('/coach-intro');
+      navigate('/app/coach-intro');
     }
   };
 

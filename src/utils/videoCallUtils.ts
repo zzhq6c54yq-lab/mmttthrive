@@ -22,5 +22,5 @@ export const initiateVideoCall = async (
   }
   
   // Navigate therapist to video session
-  navigate(`/therapist-video-session/${sessionId}?clientId=${clientId}`);
+  navigate(`/app/therapist-video-session/${sessionId}?clientId=${clientId}`);
 };

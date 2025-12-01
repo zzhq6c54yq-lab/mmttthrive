@@ -417,7 +417,7 @@ const CoachIntro = () => {
               <Button 
                 size="lg"
                 variant="gold"
-                onClick={() => navigate('/coach-questionnaire')}
+                onClick={() => navigate('/app/coach-questionnaire')}
                 className="group"
               >
                 Match Me to My Coach
@@ -426,7 +426,7 @@ const CoachIntro = () => {
               <Button 
                 size="lg"
                 variant="gold-outline"
-                onClick={() => navigate('/coach-matches')}
+                onClick={() => navigate('/app/coach-matches')}
               >
                 Browse All Coaches
               </Button>

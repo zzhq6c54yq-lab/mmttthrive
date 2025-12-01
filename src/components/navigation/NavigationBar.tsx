@@ -38,7 +38,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
       duration: 1500,
     });
     
-    navigate("/home");
+    navigate("/app/home");
   };
 
   return (
