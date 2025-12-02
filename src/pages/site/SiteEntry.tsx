@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import thriveTextLogo from "@/assets/thrivemt-text-logo.png";
 import thriveOutlineLogo from "@/assets/thrivemt-outline-logo.png";
 
 const SiteEntry = () => {
@@ -11,10 +10,12 @@ const SiteEntry = () => {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStage(1), 500),    // ThriveMT text fades in
-      setTimeout(() => setStage(2), 3000),   // Logo fades in
-      setTimeout(() => setStage(3), 5500),   // "Build the Best You" fades in
-      setTimeout(() => setStage(4), 8000),   // Button appears with light sweep
+      setTimeout(() => setStage(1), 500),    // "Thrive" text fades in
+      setTimeout(() => setStage(2), 2000),   // "MT" ignites with glow
+      setTimeout(() => setStage(3), 3500),   // Light beam shoots down
+      setTimeout(() => setStage(4), 4500),   // Logo illuminates & pulses
+      setTimeout(() => setStage(5), 5500),   // "Build the Best You" fades in
+      setTimeout(() => setStage(6), 8000),   // Button appears with light sweep
     ];
     
     return () => timers.forEach(clearTimeout);
@@ -23,39 +24,93 @@ const SiteEntry = () => {
   return (
     <div className="min-h-screen bg-[#000000] relative overflow-hidden flex items-center justify-center">
 
-      {/* Stacked vertical layout - all elements fade in smoothly */}
+      {/* Stacked vertical layout - cinematic animation sequence */}
       <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6">
         
-        {/* ThriveMT Text Logo - Fades in at stage 1 */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 1 ? 1 : 0 }}
-          transition={{ duration: 4, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          <img 
-            src={thriveTextLogo} 
-            alt="ThriveMT" 
-            className="w-96 h-auto"
-          />
-        </motion.div>
+        {/* ThriveMT Text Logo - Split into "Thrive" and "MT" */}
+        <div className="relative flex items-baseline gap-0">
+          {/* "Thrive" Text - Fades in at stage 1 */}
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: stage >= 1 ? 1 : 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="text-8xl md:text-9xl font-bold tracking-tight"
+            style={{ color: '#FFFFFF' }}
+          >
+            Thrive
+          </motion.span>
 
-        {/* Outline Head Logo - Fades in at stage 2 */}
+          {/* "MT" Text - Ignites with glow at stage 2 */}
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: stage >= 2 ? 1 : 0,
+            }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className={`text-8xl md:text-9xl font-bold tracking-tight ${stage >= 2 ? 'mt-glow' : ''}`}
+            style={{
+              background: stage >= 2 ? 'linear-gradient(135deg, #B87333 0%, #D4A574 50%, #D4AF37 100%)' : '#FFFFFF',
+              WebkitBackgroundClip: stage >= 2 ? 'text' : 'unset',
+              WebkitTextFillColor: stage >= 2 ? 'transparent' : '#FFFFFF',
+              backgroundClip: stage >= 2 ? 'text' : 'unset',
+              position: 'relative',
+            }}
+          >
+            MT
+            {/* Light burst behind MT letters */}
+            {stage >= 2 && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 2, opacity: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="absolute inset-0 -z-10"
+                style={{
+                  background: 'radial-gradient(circle, rgba(212, 165, 116, 0.8) 0%, rgba(212, 165, 116, 0.4) 50%, transparent 70%)',
+                  filter: 'blur(20px)',
+                }}
+              />
+            )}
+          </motion.span>
+        </div>
+
+        {/* Light Beam shooting down from MT to Logo - Stage 3 */}
+        {stage >= 3 && stage < 4 && (
+          <motion.div
+            initial={{ y: -100, scaleY: 0.5, opacity: 0 }}
+            animate={{ y: 100, scaleY: 1, opacity: [0, 1, 0] }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="absolute w-2 h-32 z-20"
+            style={{
+              background: 'linear-gradient(180deg, #D4AF37 0%, #D4A574 50%, transparent 100%)',
+              filter: 'blur(4px)',
+              top: '35%',
+            }}
+          />
+        )}
+
+        {/* Outline Head Logo - Illuminates at stage 4 and pulses continuously */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 2 ? 1 : 0 }}
-          transition={{ duration: 3, ease: "easeInOut" }}
+          animate={{ 
+            opacity: stage >= 4 ? 1 : 0,
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className={`relative ${stage >= 4 ? 'logo-pulse' : ''}`}
         >
           <img 
             src={thriveOutlineLogo} 
             alt="ThriveMT Logo" 
             className="w-64 h-64"
+            style={{
+              filter: stage >= 4 ? 'drop-shadow(0 0 30px #D4A574) brightness(1.2)' : 'none',
+            }}
           />
         </motion.div>
 
-        {/* "Build the Best You" Headline - Fades in at stage 3 */}
+        {/* "Build the Best You" Headline - Fades in at stage 5 */}
         <motion.h1
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 3 ? 1 : 0 }}
+          animate={{ opacity: stage >= 5 ? 1 : 0 }}
           transition={{ duration: 3, ease: "easeInOut" }}
           className="text-6xl md:text-7xl font-bold text-center leading-tight"
           style={{
@@ -68,10 +123,10 @@ const SiteEntry = () => {
           Build the Best You
         </motion.h1>
 
-        {/* ENTER Button with Light Sweep - Fades in at stage 4 */}
+        {/* ENTER Button with Light Sweep - Fades in at stage 6 */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 4 ? 1 : 0 }}
+          animate={{ opacity: stage >= 6 ? 1 : 0 }}
           transition={{ duration: 2, ease: "easeInOut" }}
         >
           <Button
@@ -89,7 +144,7 @@ const SiteEntry = () => {
         </motion.div>
       </div>
 
-      {/* CSS Animation for Light Sweep */}
+      {/* CSS Animations */}
       <style>{`
         @keyframes light-sweep {
           0% {
@@ -97,6 +152,36 @@ const SiteEntry = () => {
           }
           100% {
             background-position: 200% center;
+          }
+        }
+
+        .mt-glow {
+          animation: mt-glow-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes mt-glow-pulse {
+          0%, 100% { 
+            text-shadow: 0 0 20px #B87333, 0 0 40px #D4A574;
+            filter: brightness(1);
+          }
+          50% { 
+            text-shadow: 0 0 40px #D4AF37, 0 0 80px #D4A574, 0 0 120px #B87333;
+            filter: brightness(1.2);
+          }
+        }
+
+        .logo-pulse {
+          animation: logo-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logo-pulse {
+          0%, 100% { 
+            filter: drop-shadow(0 0 30px #D4A574) brightness(1.2);
+            transform: scale(1);
+          }
+          50% { 
+            filter: drop-shadow(0 0 60px #D4AF37) drop-shadow(0 0 100px #B87333) brightness(1.5);
+            transform: scale(1.03);
           }
         }
       `}</style>
