@@ -53,6 +53,8 @@ import AdminPortal from "./pages/AdminPortal";
 import HolisticWellness from "./pages/HolisticWellness";
 import AlternativeTherapies from "./pages/AlternativeTherapies";
 import AlternativeTherapyDetail from "./pages/AlternativeTherapyDetail";
+import BadgesPage from "./pages/Badges";
+import BarterApplicationPage from "./pages/BarterApplication";
 import BinauralBeats from "./pages/BinauralBeats";
 import Journaling from "./pages/Journaling";
 import MindfulnessSleep from "./pages/MindfulnessSleep";

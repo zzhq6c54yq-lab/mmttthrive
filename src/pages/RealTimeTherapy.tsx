@@ -5,6 +5,7 @@ import { ArrowLeft, MessageCircle, CheckCircle, Info, ArrowRight, Search, FileCh
 import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
 import { Separator } from "@/components/ui/separator";
+import { FinancialAssistanceCard } from "@/components/therapy/FinancialAssistanceCard";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
