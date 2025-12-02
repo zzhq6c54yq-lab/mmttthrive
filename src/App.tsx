@@ -55,6 +55,9 @@ import AlternativeTherapies from "./pages/AlternativeTherapies";
 import AlternativeTherapyDetail from "./pages/AlternativeTherapyDetail";
 import BadgesPage from "./pages/Badges";
 import BarterApplicationPage from "./pages/BarterApplication";
+import LifeTransitions from "./pages/LifeTransitions";
+import SupportCircle from "./pages/SupportCircle";
+import BuddySystem from "./pages/BuddySystem";
 import BinauralBeats from "./pages/BinauralBeats";
 import Journaling from "./pages/Journaling";
 import MindfulnessSleep from "./pages/MindfulnessSleep";
@@ -183,6 +186,7 @@ import SiteCoaching from "@/pages/site/SiteCoaching";
 import SiteMeetHenry from "@/pages/site/SiteMeetHenry";
 import SitePricing from "@/pages/site/SitePricing";
 import SiteDemo from "@/pages/site/SiteDemo";
+import SiteEngagement from "@/pages/site/SiteEngagement";
 import SiteCareers from "@/pages/site/SiteCareers";
 import SiteInvestors from "@/pages/site/SiteInvestors";
 import SiteAbout from "@/pages/site/SiteAbout";
@@ -209,6 +213,7 @@ function App() {
             <Route path="/henry" element={<SiteMeetHenry />} />
             <Route path="/pricing" element={<SitePricing />} />
             <Route path="/demo" element={<SiteDemo />} />
+            <Route path="/engagement" element={<SiteEngagement />} />
             <Route path="/careers" element={<SiteCareers />} />
             <Route path="/investors" element={<SiteInvestors />} />
             <Route path="/about" element={<SiteAbout />} />
@@ -397,6 +402,10 @@ function App() {
           <Route path="/app/resource-library" element={<ResourceLibrary />} />
           <Route path="/app/wellness-challenges" element={<WellnessChallenges />} />
           <Route path="/app/wellness-challenges/:id" element={<WellnessChallenges />} />
+          <Route path="/app/badges" element={<BadgesPage />} />
+          <Route path="/app/life-transitions" element={<LifeTransitions />} />
+          <Route path="/app/support-circle" element={<SupportCircle />} />
+          <Route path="/app/buddy-system" element={<BuddySystem />} />
           <Route path="/app/my-sponsor" element={<MySponsor />} />
           <Route path="/app/aa-sponsor" element={<AASponsor />} />
           <Route path="/app/substance-abuse-sponsor" element={<SubstanceAbuseSponsor />} />
