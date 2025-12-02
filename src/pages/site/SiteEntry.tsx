@@ -76,7 +76,7 @@ const SiteEntry = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: stage >= 3 ? 1 : 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-6xl md:text-7xl font-bold text-center leading-tight whitespace-nowrap"
+          className="text-4xl md:text-5xl font-bold text-center leading-tight whitespace-nowrap px-4"
           style={{
             background: 'linear-gradient(135deg, #FFFFFF 0%, #E8D4C0 30%, #D4A574 60%, #B87333 100%)',
             WebkitBackgroundClip: 'text',
@@ -100,7 +100,7 @@ const SiteEntry = () => {
             style={{
               background: 'linear-gradient(90deg, #B87333 0%, #D4A574 15%, #FFFFFF 40%, #FFFFFF 60%, #D4A574 85%, #B87333 100%)',
               backgroundSize: '300% 100%',
-              animation: 'light-sweep 4s ease-in-out infinite',
+              animation: 'light-sweep 8s ease-in-out infinite',
             }}
           >
             ENTER
