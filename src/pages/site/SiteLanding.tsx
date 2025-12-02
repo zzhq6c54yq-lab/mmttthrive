@@ -38,9 +38,9 @@ const SiteLanding = () => {
               { icon: Clock, text: "Fast access to therapists & coaches" },
               { icon: Heart, text: "Premium quality care with affordable options" },
               { icon: Shield, text: "Insurance accepted for therapy" },
-              { icon: Users, text: "30, 45, and 60-minute session options" },
+              { icon: Users, text: "Support circles & accountability partners" },
               { icon: Brain, text: "AI-powered support 24/7" },
-              { icon: TrendingUp, text: "Progress tracking & habit tools" },
+              { icon: TrendingUp, text: "Achievement badges & progress tracking" },
             ].map((item, idx) => (
               <Card key={idx} className="bg-black border-[#D4AF37]/20 p-6">
                 <item.icon className="w-8 h-8 text-bronze-400 mb-4" />

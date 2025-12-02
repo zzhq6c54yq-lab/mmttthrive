@@ -32,6 +32,10 @@ import { DashboardFooter } from './sections/DashboardFooter';
 import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
 import { BadgesSection } from './sections/BadgesSection';
+import { LifeTransitionsSection } from './sections/LifeTransitionsSection';
+import { SupportCircleSection } from './sections/SupportCircleSection';
+import { BuddySystemSection } from './sections/BuddySystemSection';
+import { CommunityGroupsSection } from './sections/CommunityGroupsSection';
 
 interface EpicDashboardProps {
   demoMode?: boolean;
@@ -473,6 +477,23 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
           transition={{ delay: 1.0, duration: 0.6 }}
         >
           <SpecializedProgramsSection />
+        </motion.div>
+
+        {/* Section Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent my-8" />
+
+        {/* Engagement Features Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          className="grid md:grid-cols-2 gap-6"
+        >
+          <BadgesSection />
+          <LifeTransitionsSection />
+          <SupportCircleSection />
+          <BuddySystemSection />
+          <CommunityGroupsSection />
         </motion.div>
 
         {/* Section Divider */}
