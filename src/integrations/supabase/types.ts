@@ -5224,6 +5224,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_health_connections: {
+        Row: {
+          access_token: string | null
+          created_at: string
+          enabled: boolean
+          id: string
+          last_sync_at: string | null
+          provider: string
+          refresh_token: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          last_sync_at?: string | null
+          provider: string
+          refresh_token?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          last_sync_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_insights: {
         Row: {
           confidence_score: number | null

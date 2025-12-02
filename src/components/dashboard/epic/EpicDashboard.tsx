@@ -9,6 +9,8 @@ import DashboardNavigation from './DashboardNavigation';
 import { StatusChips } from './StatusChips';
 import { NewYourDaySection } from './sections/NewYourDaySection';
 import { MoodPulseWidget, StreakProtectorWidget, ProgressRingWidget, QuickNotesWidget } from './widgets/SmartWidgets';
+import HealthSyncWidget from './widgets/HealthSyncWidget';
+import MicroGoalsWidget from './widgets/MicroGoalsWidget';
 import ToolkitSection from './sections/ToolkitSection';
 import SpecializedProgramsSection from './sections/SpecializedProgramsSection';
 import LearningDiscoverySection from './sections/LearningDiscoverySection';
@@ -416,11 +418,29 @@ export default function EpicDashboard({ demoMode = false }: EpicDashboardProps) 
           />
         </motion.div>
 
-        {/* Conversational Check-In - Daily Engagement */}
+        {/* Micro-Goals Widget */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <MicroGoalsWidget />
+        </motion.div>
+
+        {/* Health Sync Widget */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55, duration: 0.6 }}
+        >
+          <HealthSyncWidget />
+        </motion.div>
+
+        {/* Conversational Check-In - Daily Engagement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
         >
           <ConversationalCheckIn onComplete={refetch} />
         </motion.div>

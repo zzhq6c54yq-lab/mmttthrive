@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { therapyPricing, coachingPricing, addOns, groupSessions, bundles } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import PricingCalculator from "@/components/site/PricingCalculator";
+import InsuranceChecker from "@/components/site/InsuranceChecker";
 
 const SitePricing = () => {
   return (
@@ -20,6 +22,28 @@ const SitePricing = () => {
 
       <div className="py-20 px-6">
         <div className="container mx-auto max-w-6xl">
+          {/* Interactive Pricing Calculator */}
+          <section className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#E8D4C0] via-[#D4A574] to-[#B87333] bg-clip-text text-transparent">
+                Calculate Your Investment
+              </h2>
+              <p className="text-foreground/70 text-lg">Get a personalized pricing estimate in seconds</p>
+            </div>
+            <PricingCalculator />
+          </section>
+
+          {/* Insurance Coverage Checker */}
+          <section className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#E8D4C0] via-[#D4A574] to-[#B87333] bg-clip-text text-transparent">
+                Check Your Insurance
+              </h2>
+              <p className="text-foreground/70 text-lg">See if we accept your insurance in seconds</p>
+            </div>
+            <InsuranceChecker />
+          </section>
+
           {/* Therapy Pricing */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-foreground">Therapy Pricing</h2>
