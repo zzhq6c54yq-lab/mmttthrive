@@ -369,6 +369,63 @@ export type Database = {
         }
         Relationships: []
       }
+      barter_applications: {
+        Row: {
+          availability: string[] | null
+          can_contribute: number | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          income_range: string | null
+          notes: string | null
+          phone: string | null
+          preferred_service: string | null
+          reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          session_cost: number | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          availability?: string[] | null
+          can_contribute?: number | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          income_range?: string | null
+          notes?: string | null
+          phone?: string | null
+          preferred_service?: string | null
+          reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          session_cost?: number | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          availability?: string[] | null
+          can_contribute?: number | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          income_range?: string | null
+          notes?: string | null
+          phone?: string | null
+          preferred_service?: string | null
+          reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          session_cost?: number | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       binaural_sessions: {
         Row: {
           created_at: string | null
@@ -416,6 +473,74 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      buddy_matches: {
+        Row: {
+          created_at: string | null
+          ended_at: string | null
+          goals_shared: Json | null
+          id: string
+          matched_at: string | null
+          status: string | null
+          user_1_id: string
+          user_2_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          ended_at?: string | null
+          goals_shared?: Json | null
+          id?: string
+          matched_at?: string | null
+          status?: string | null
+          user_1_id: string
+          user_2_id: string
+        }
+        Update: {
+          created_at?: string | null
+          ended_at?: string | null
+          goals_shared?: Json | null
+          id?: string
+          matched_at?: string | null
+          status?: string | null
+          user_1_id?: string
+          user_2_id?: string
+        }
+        Relationships: []
+      }
+      buddy_messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          match_id: string
+          message: string
+          read: boolean | null
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          match_id: string
+          message: string
+          read?: boolean | null
+          sender_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          match_id?: string
+          message?: string
+          read?: boolean | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buddy_messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "buddy_matches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       campaign_analytics: {
         Row: {
@@ -845,6 +970,39 @@ export type Database = {
         }
         Relationships: []
       }
+      community_groups: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          member_count: number | null
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          member_count?: number | null
+          name: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          member_count?: number | null
+          name?: string
+        }
+        Relationships: []
+      }
       community_impact: {
         Row: {
           anonymous_quote: string | null
@@ -871,6 +1029,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      community_service_hours: {
+        Row: {
+          barter_application_id: string | null
+          created_at: string | null
+          credit_value: number | null
+          hours_logged: number
+          id: string
+          service_date: string
+          service_description: string
+          user_id: string
+          verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          barter_application_id?: string | null
+          created_at?: string | null
+          credit_value?: number | null
+          hours_logged: number
+          id?: string
+          service_date: string
+          service_description: string
+          user_id: string
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          barter_application_id?: string | null
+          created_at?: string | null
+          credit_value?: number | null
+          hours_logged?: number
+          id?: string
+          service_date?: string
+          service_description?: string
+          user_id?: string
+          verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_service_hours_barter_application_id_fkey"
+            columns: ["barter_application_id"]
+            isOneToOne: false
+            referencedRelation: "barter_applications"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       compliance_violations: {
         Row: {
@@ -1710,6 +1918,38 @@ export type Database = {
         }
         Relationships: []
       }
+      group_memberships: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string | null
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string | null
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string | null
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_memberships_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "community_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       henry_answers: {
         Row: {
           answer_text: string
@@ -2269,6 +2509,42 @@ export type Database = {
           milestone_type?: string
           title?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      life_transition_programs: {
+        Row: {
+          content: Json | null
+          created_at: string | null
+          description: string | null
+          duration_weeks: number | null
+          icon_name: string | null
+          id: string
+          name: string
+          resources: Json | null
+          slug: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string | null
+          description?: string | null
+          duration_weeks?: number | null
+          icon_name?: string | null
+          id?: string
+          name: string
+          resources?: Json | null
+          slug: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string | null
+          description?: string | null
+          duration_weeks?: number | null
+          icon_name?: string | null
+          id?: string
+          name?: string
+          resources?: Json | null
+          slug?: string
         }
         Relationships: []
       }
@@ -3308,6 +3584,80 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_checkin_responses: {
+        Row: {
+          id: string
+          message_sent: string | null
+          mood_extracted: number | null
+          responded_at: string | null
+          sent_at: string | null
+          subscription_id: string
+          user_response: string | null
+        }
+        Insert: {
+          id?: string
+          message_sent?: string | null
+          mood_extracted?: number | null
+          responded_at?: string | null
+          sent_at?: string | null
+          subscription_id: string
+          user_response?: string | null
+        }
+        Update: {
+          id?: string
+          message_sent?: string | null
+          mood_extracted?: number | null
+          responded_at?: string | null
+          sent_at?: string | null
+          subscription_id?: string
+          user_response?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_checkin_responses_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "sms_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sms_subscriptions: {
+        Row: {
+          created_at: string | null
+          frequency: string | null
+          id: string
+          is_active: boolean | null
+          phone_number: string
+          phone_verified: boolean | null
+          preferred_time: string | null
+          timezone: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          frequency?: string | null
+          id?: string
+          is_active?: boolean | null
+          phone_number: string
+          phone_verified?: boolean | null
+          preferred_time?: string | null
+          timezone?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          frequency?: string | null
+          id?: string
+          is_active?: boolean | null
+          phone_number?: string
+          phone_verified?: boolean | null
+          preferred_time?: string | null
+          timezone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       sso_configurations: {
         Row: {
           config: Json | null
@@ -3410,6 +3760,116 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      success_stories: {
+        Row: {
+          challenge_type: string[] | null
+          created_at: string | null
+          featured: boolean | null
+          id: string
+          is_anonymous: boolean | null
+          is_approved: boolean | null
+          story: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          challenge_type?: string[] | null
+          created_at?: string | null
+          featured?: boolean | null
+          id?: string
+          is_anonymous?: boolean | null
+          is_approved?: boolean | null
+          story: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          challenge_type?: string[] | null
+          created_at?: string | null
+          featured?: boolean | null
+          id?: string
+          is_anonymous?: boolean | null
+          is_approved?: boolean | null
+          story?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      support_circle_members: {
+        Row: {
+          accepted_at: string | null
+          can_view_appointments: boolean | null
+          can_view_mood: boolean | null
+          can_view_progress: boolean | null
+          circle_id: string
+          email: string
+          emergency_contact: boolean | null
+          id: string
+          invite_status: string | null
+          invited_at: string | null
+          name: string | null
+          relationship: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          can_view_appointments?: boolean | null
+          can_view_mood?: boolean | null
+          can_view_progress?: boolean | null
+          circle_id: string
+          email: string
+          emergency_contact?: boolean | null
+          id?: string
+          invite_status?: string | null
+          invited_at?: string | null
+          name?: string | null
+          relationship?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          can_view_appointments?: boolean | null
+          can_view_mood?: boolean | null
+          can_view_progress?: boolean | null
+          circle_id?: string
+          email?: string
+          emergency_contact?: boolean | null
+          id?: string
+          invite_status?: string | null
+          invited_at?: string | null
+          name?: string | null
+          relationship?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_circle_members_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "support_circles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_circles: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       support_tickets: {
         Row: {
@@ -4491,6 +4951,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          icon_name: string | null
+          id: string
+          image_url: string | null
+          name: string
+          points_value: number | null
+          requirements: Json | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          points_value?: number | null
+          requirements?: Json | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          points_value?: number | null
+          requirements?: Json | null
+        }
+        Relationships: []
+      }
       user_cohorts: {
         Row: {
           avg_ltv: number | null
@@ -4535,6 +5031,38 @@ export type Database = {
           user_count?: number | null
         }
         Relationships: []
+      }
+      user_earned_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string | null
+          id: string
+          metadata: Json | null
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string | null
+          id?: string
+          metadata?: Json | null
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string | null
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_earned_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "user_badges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_goals: {
         Row: {
@@ -4735,6 +5263,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_transition_enrollments: {
+        Row: {
+          completed_at: string | null
+          current_week: number | null
+          enrolled_at: string | null
+          id: string
+          program_id: string
+          progress: Json | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          current_week?: number | null
+          enrolled_at?: string | null
+          id?: string
+          program_id: string
+          progress?: Json | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          current_week?: number | null
+          enrolled_at?: string | null
+          id?: string
+          program_id?: string
+          progress?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_transition_enrollments_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "life_transition_programs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       video_call_invites: {
         Row: {

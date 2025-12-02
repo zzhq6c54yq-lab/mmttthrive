@@ -13,6 +13,7 @@ import { CreditCard, Calendar as CalendarIcon, Clock, CheckCircle, Loader2, Tag 
 import { format, addDays, setHours, setMinutes } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { therapyBookingSchema } from "@/lib/validations";
+import { BarterPaymentOption } from "./BarterPaymentOption";
 
 interface BookingFlowProps {
   therapistId: string;
@@ -247,6 +248,9 @@ export function BookingFlow({ therapistId, therapistName, hourlyRate, onClose }:
         return (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Payment</h2>
+            
+            {/* Barter/Financial Assistance Option */}
+            <BarterPaymentOption />
             
             {/* Promo Code Section */}
             <Card className="bg-gradient-to-br from-[#D4AF37]/5 to-[#B8941F]/5 border-[#D4AF37]/30">

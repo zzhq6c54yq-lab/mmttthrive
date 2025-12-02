@@ -31,6 +31,7 @@ import { WeeklyProgressSection } from './sections/WeeklyProgressSection';
 import { DashboardFooter } from './sections/DashboardFooter';
 import { THRIVE_LOGO } from '@/constants/branding';
 import { useLastSeen } from '@/hooks/useLastSeen';
+import { BadgesSection } from './sections/BadgesSection';
 
 interface EpicDashboardProps {
   demoMode?: boolean;
