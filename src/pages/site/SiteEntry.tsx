@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { HeadOutlineSVG } from "@/components/site/HeadOutlineSVG";
+import thrivemtLogo from "@/assets/thrivemt-logo.png";
 
 const SiteEntry = () => {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const SiteEntry = () => {
           </motion.span>
         </div>
 
-        {/* SVG Head Logo with Light Trail Animation - Stage 2 */}
+        {/* Logo Image - Stage 2 */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ 
@@ -64,7 +64,14 @@ const SiteEntry = () => {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="relative w-80 h-80 md:w-96 md:h-96"
         >
-          <HeadOutlineSVG isAnimating={stage >= 2} />
+          <img 
+            src={thrivemtLogo}
+            alt="ThriveMT Logo"
+            className="w-full h-full object-contain"
+            style={{
+              filter: 'drop-shadow(0 0 20px #c98a5c) drop-shadow(0 0 40px #c98a5caa)'
+            }}
+          />
         </motion.div>
 
         {/* "Build the Best You" Headline - Fades in at stage 3 */}
