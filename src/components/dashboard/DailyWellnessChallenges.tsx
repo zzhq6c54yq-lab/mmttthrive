@@ -133,7 +133,6 @@ const DailyWellnessChallenges: React.FC = () => {
           <div className="flex space-x-4 mb-6">
             <button
               onClick={() => {
-                console.log('Wellness tab clicked');
                 setActiveTab('wellness');
               }}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all z-10 relative ${
@@ -146,7 +145,6 @@ const DailyWellnessChallenges: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                console.log('Mental health tab clicked');
                 setActiveTab('mental');
               }}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all z-10 relative ${

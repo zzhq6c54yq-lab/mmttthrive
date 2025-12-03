@@ -57,8 +57,6 @@ const UserLead: React.FC = () => {
 
   // Handle form submission
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Form submitted:", values);
-    
     // Add submission to list
     setSubmissions([
       {

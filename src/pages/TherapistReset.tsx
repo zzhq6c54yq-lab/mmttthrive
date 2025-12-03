@@ -24,8 +24,6 @@ export default function TherapistReset() {
 
   const verifyToken = async () => {
     try {
-      console.log('Verifying reset token...');
-      
       const { data, error } = await supabase.functions.invoke('verify-therapist-reset', {
         body: { token }
       });

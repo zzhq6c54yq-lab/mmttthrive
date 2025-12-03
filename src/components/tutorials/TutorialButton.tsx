@@ -63,18 +63,9 @@ const TutorialButton: React.FC<TutorialButtonProps> = ({
     const screenState = state?.screenState;
     const isMainDashboard = location.pathname === "/" && screenState === "main";
     
-    console.log("TutorialButton clicked:", { 
-      isMainDashboard, 
-      pathname: location.pathname, 
-      screenState, 
-      featureId: currentFeatureId
-    });
-    
     if (isMainDashboard || location.pathname === "/" || currentFeatureId === 'dashboard') {
-      console.log("Opening QuickStart tutorial");
       setShowQuickStart(true);
     } else {
-      console.log("Opening Feature tutorial for:", currentFeatureId);
       setShowTutorial(true);
     }
   };

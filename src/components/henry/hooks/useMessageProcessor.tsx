@@ -110,7 +110,6 @@ export const useMessageProcessor = (
               timestamp: new Date(m.created_at)
             }));
             setConversationContext(formatted);
-            console.log('[MessageProcessor] Loaded', formatted.length, 'messages from database');
             return;
           }
         }
@@ -177,7 +176,6 @@ export const useMessageProcessor = (
         }));
 
         await supabase.from('henry_messages_v2').insert(messagesToInsert);
-        console.log('[MessageProcessor] Saved to database');
       } catch (error) {
         console.error('[MessageProcessor] Failed to save to database:', error);
       }

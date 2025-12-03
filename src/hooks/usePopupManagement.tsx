@@ -36,7 +36,6 @@ export const usePopupManagement = (screenState: string) => {
   useEffect(() => {
     // Track previous screen state
     const prevScreenState = localStorage.getItem('prevScreenState');
-    console.log("usePopupManagement - Current screen:", screenState, "Previous screen:", prevScreenState);
     
     // Check if tutorials should be prevented
     const preventTutorial = sessionStorage.getItem('preventTutorial') === 'true' || 
@@ -60,7 +59,6 @@ export const usePopupManagement = (screenState: string) => {
 
   // Method to mark tutorial as completed
   const markTutorialCompleted = () => {
-    console.log("Marking tutorial as completed");
     setPopupsShown(prev => ({ ...prev, mainTutorial: true, transitionTutorial: true }));
     setShowMainTutorial(false);
     localStorage.setItem('dashboardTutorialShown', 'true');

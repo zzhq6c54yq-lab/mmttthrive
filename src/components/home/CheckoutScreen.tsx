@@ -56,11 +56,8 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
 
     // Wait for loading to complete and check authentication
     if (loading) {
-      console.log('UserContext still loading, please wait...');
       return;
     }
-
-    console.log('User authentication state:', { user, loading });
 
     if (!user) {
       // For free plans, allow proceeding without authentication

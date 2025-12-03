@@ -127,7 +127,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
 
   // Handle mood selection - Show resources for sad/overwhelmed immediately
   const handleMoodClick = (mood: any) => {
-    console.log(`[MoodScreen] User selected mood: ${mood.id}`);
     setSelectedMood(mood.id);
     
     // For sad/overwhelmed moods, show resources first
@@ -135,7 +134,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
       setShowResourcesDialog(true);
     } else if (mood.id) {
       // For other moods, proceed directly
-      console.log(`[MoodScreen] Calling onMoodSelect with mood: ${mood.id}`);
       onMoodSelect(mood.id as any);
     }
   };
@@ -144,7 +142,6 @@ const MoodScreen: React.FC<MoodScreenProps> = ({ onMoodSelect }) => {
   const handleResourcesContinue = () => {
     setShowResourcesDialog(false);
     if (selectedMood) {
-      console.log(`[MoodScreen] Continuing after resources dialog with mood: ${selectedMood}`);
       onMoodSelect(selectedMood as any);
     }
   };

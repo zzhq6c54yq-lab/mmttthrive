@@ -23,7 +23,6 @@ const ThriveHeader: React.FC<ThriveHeaderProps> = ({
   const [showHenryDialog, setShowHenryDialog] = useState(false);
   
   const handleHenryButtonClick = () => {
-    console.log("[ThriveHeader] Henry button clicked - opening dialog");
     setShowHenryDialog(true);
   };
   

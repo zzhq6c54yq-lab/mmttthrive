@@ -28,8 +28,6 @@ const ResourceDownload: React.FC<ResourceDownloadProps> = ({ resource }) => {
 
   const handleDownload = () => {
     // In a real implementation, this would download the actual resource
-    // For now, we'll just show a placeholder action
-    console.log(`Downloading: ${resource.title}`);
   };
 
   return (

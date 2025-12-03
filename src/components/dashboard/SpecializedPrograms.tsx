@@ -17,7 +17,7 @@ const SpecializedPrograms: React.FC = () => {
 
   useEffect(() => {
     const handleLanguageChange = () => {
-      console.log("Language changed, updating specialized programs");
+      // Language change handled silently
     };
     
     window.addEventListener('languageChange', handleLanguageChange);

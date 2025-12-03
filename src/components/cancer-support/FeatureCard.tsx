@@ -27,7 +27,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("[FeatureCard] Card clicked:", title);
     onClick();
   };
 

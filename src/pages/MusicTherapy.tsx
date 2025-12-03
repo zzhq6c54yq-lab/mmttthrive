@@ -142,8 +142,6 @@ const MusicTherapy: React.FC = () => {
 
       // Set BPM
       Tone.Transport.bpm.value = bpm;
-      
-      console.log('Audio setup complete');
     } catch (error) {
       console.error('Error setting up audio:', error);
       toast({
