@@ -31,7 +31,6 @@ const ConnectionManager: React.FC = () => {
       if (error) {
         // Check if table doesn't exist yet
         if (error.message?.includes('relation') || error.message?.includes('does not exist')) {
-          console.log('Parent connections feature not yet configured');
           return;
         }
         throw error;

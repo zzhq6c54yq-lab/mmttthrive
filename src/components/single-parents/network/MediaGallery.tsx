@@ -33,7 +33,6 @@ const MediaGallery: React.FC = () => {
       if (connectionsError) {
         // Check if table doesn't exist yet
         if (connectionsError.message?.includes('relation') || connectionsError.message?.includes('does not exist')) {
-          console.log('Parent connections feature not yet configured');
           setIsLoading(false);
           return;
         }

@@ -7,7 +7,6 @@ export const useMoodState = () => {
   const { toast } = useToast();
 
   const handleMoodSelect = (mood: 'happy' | 'ok' | 'neutral' | 'down' | 'sad' | 'overwhelmed') => {
-    console.log("[useMoodState] Selected mood:", mood);
     setSelectedMood(mood);
     
     // Show a toast to confirm the mood selection to the user

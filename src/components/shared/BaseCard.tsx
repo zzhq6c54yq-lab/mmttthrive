@@ -27,7 +27,6 @@ const BaseCard: React.FC<BaseCardProps> = ({
 }) => {
   const handleClick = () => {
     if (onClick) {
-      console.log("[BaseCard] Navigating to:", path);
       onClick(path);
     }
   };
@@ -56,7 +55,6 @@ const BaseCard: React.FC<BaseCardProps> = ({
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
     const fallback = getFallbackImage(id);
-    console.log("[BaseCard] Image failed to load, using fallback:", fallback);
     target.src = fallback;
   };
 

@@ -111,9 +111,6 @@ const ResourceLibrary: React.FC = () => {
       description: `Loading ${resource.type}...`,
       duration: 2000,
     });
-    
-    // For demonstration purposes, we're just logging
-    console.log("Clicked on resource:", resource);
   };
   
   const categories = [

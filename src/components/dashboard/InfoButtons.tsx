@@ -9,17 +9,14 @@ const InfoButtons: React.FC = () => {
   const { isSpanish } = useTranslation();
 
   const handleBarterSystem = () => {
-    console.log("Barter System clicked");
     navigate("/app/barter-system");
   };
 
   const handleUpgradePlan = () => {
-    console.log("Upgrade Plan clicked");
     navigate("/app/subscription-plans");
   };
 
   const handleOmniCredits = () => {
-    console.log("Omni Credits clicked");
     navigate("/app/copay-credits");
   };
 

@@ -17,7 +17,6 @@ const RemembranceTab: React.FC<RemembranceTabProps> = ({ onFeatureClick }) => {
   const { toast } = useToast();
   
   const handleResourceClick = (path: string, title: string) => {
-    console.log("[RemembranceTab] Navigating to:", path);
     toast({
       title: isSpanish ? "Accediendo a Recursos Especiales" : "Accessing Special Resources",
       description: title,

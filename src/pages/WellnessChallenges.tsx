@@ -198,8 +198,6 @@ const WellnessChallenges: React.FC = () => {
         duration: 3000
       });
     }
-
-    console.log(`Toggling completion for challenge: ${id}`);
   };
 
   const handleRedeemPoints = () => {

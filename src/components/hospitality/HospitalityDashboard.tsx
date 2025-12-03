@@ -60,11 +60,11 @@ const HospitalityDashboard: React.FC = () => {
       description: "Connect with others in the hospitality industry",
       icon: <Users className="h-5 w-5 text-blue-500" />,
       action: () => {
-        navigate("/hospitality-community", {
+        navigate("/app/hospitality-community", {
           state: {
             stayInPortal: true,
             preventTutorial: true,
-            portalPath: "/hospitality-portal",
+            portalPath: "/app/hospitality-portal",
             tab: "community"
           }
         });
@@ -161,11 +161,11 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/hospitality-resources", { 
+                onClick={() => navigate("/app/hospitality-resources", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
-                    portalPath: "/hospitality-portal",
+                    portalPath: "/app/hospitality-portal",
                     tab: "resources" 
                   } 
                 })}
@@ -183,11 +183,11 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/hospitality-resources", { 
+                onClick={() => navigate("/app/hospitality-resources", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
-                    portalPath: "/hospitality-portal",
+                    portalPath: "/app/hospitality-portal",
                     tab: "resources" 
                   } 
                 })}
@@ -215,11 +215,11 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/hospitality-workshops", { 
+                onClick={() => navigate("/app/hospitality-workshops", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
-                    portalPath: "/hospitality-portal",
+                    portalPath: "/app/hospitality-portal",
                     tab: "workshops" 
                   } 
                 })}
@@ -237,11 +237,11 @@ const HospitalityDashboard: React.FC = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-purple-600 dark:text-purple-400"
-                onClick={() => navigate("/hospitality-workshops", { 
+                onClick={() => navigate("/app/hospitality-workshops", { 
                   state: { 
                     stayInPortal: true, 
                     preventTutorial: true,
-                    portalPath: "/hospitality-portal",
+                    portalPath: "/app/hospitality-portal",
                     tab: "workshops" 
                   } 
                 })}

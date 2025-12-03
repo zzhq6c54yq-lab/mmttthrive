@@ -33,7 +33,6 @@ const SmallBusinessExperience: React.FC = () => {
       description: "Loading your resource...",
       duration: 2000
     });
-    console.log(`Navigating to: ${path}`);
   };
   
   const businessResources = [

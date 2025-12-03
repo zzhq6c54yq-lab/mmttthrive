@@ -35,8 +35,6 @@ const CancerSupportPortal: React.FC = () => {
   };
 
   const handleFeatureClick = (path: string) => {
-    console.log("[CancerSupportPortal] Navigating to:", path);
-    
     toast({
       title: isSpanish ? "Accediendo a Recursos Especializados" : "Accessing Specialized Resources",
       description: isSpanish ? "Cargando contenido específico de apoyo contra el cáncer" : "Loading specific cancer support content",
