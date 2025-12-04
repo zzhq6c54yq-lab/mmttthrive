@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { therapyPricing } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import { FinancialHelpBanner } from "@/components/therapy/FinancialHelpBanner";
 
 const SiteTherapy = () => {
   return (
@@ -109,6 +110,9 @@ const SiteTherapy = () => {
               ))}
             </div>
           </div>
+
+          {/* Financial Help Banner */}
+          <FinancialHelpBanner className="mb-16" />
         </div>
       </div>
     </div>

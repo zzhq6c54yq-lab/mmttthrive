@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ArrowLeft, Calendar, MessageCircle, Star, Award, Clock, Check, Shield, Medal, ThumbsUp } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FinancialHelpBanner } from "@/components/therapy/FinancialHelpBanner";
 
 interface Therapist {
   id: number;
@@ -175,6 +175,9 @@ const TherapistMatches = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Financial Help Banner */}
+        <FinancialHelpBanner className="mb-10" />
 
         <div className="mt-10 text-center">
           <p className="mb-6">Don't see a therapist that feels right for you?</p>
