@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "@/components/HomeButton";
 import { Separator } from "@/components/ui/separator";
 import { FinancialAssistanceCard } from "@/components/therapy/FinancialAssistanceCard";
+import { FinancialHelpBanner } from "@/components/therapy/FinancialHelpBanner";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -922,6 +923,9 @@ const RealTimeTherapy = () => {
             </p>
           </motion.div>
         </motion.section>
+
+        {/* Financial Help Banner */}
+        <FinancialHelpBanner className="mb-16" />
 
         {/* Before You Start Section */}
         <motion.section

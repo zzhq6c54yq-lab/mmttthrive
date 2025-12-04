@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, BookOpen, FileText, TrendingUp, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { FinancialHelpBanner } from "@/components/therapy/FinancialHelpBanner";
 
 const tools = [
   {
@@ -150,6 +151,9 @@ const TherapySupport = () => {
               </Card>
             ))}
           </div>
+
+          {/* Financial Help Banner */}
+          <FinancialHelpBanner className="mb-6" />
 
           <Card className="p-8 bg-gradient-to-br from-primary/5 to-primary/10 border-2">
             <div className="text-center space-y-4">
