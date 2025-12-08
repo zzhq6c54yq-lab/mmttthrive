@@ -24,7 +24,7 @@ const AdolescentWelcome: React.FC = () => {
       });
       
       setTimeout(() => {
-        navigate("/adolescent-selection", { 
+        navigate("/app/adolescent-selection", { 
           state: { 
             fromWelcome: true,
             stayInPortal: true,
@@ -39,7 +39,7 @@ const AdolescentWelcome: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#6d28d9] via-[#7e22ce] to-[#a21caf] text-white py-8 px-4 relative">
       {/* Navigation buttons */}
       <div className="absolute top-4 left-4 z-20">
-        <PortalBackButton returnPath="/" />
+        <PortalBackButton returnPath="/app/dashboard" />
       </div>
       <div className="absolute top-4 right-4 z-20">
         <ThriveButton size="sm" />

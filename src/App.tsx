@@ -391,6 +391,7 @@ function App() {
           <Route path="/app/therapist/:id" element={<TherapistProfile />} />
           <Route path="/app/therapist-admin" element={<TherapistAdmin />} />
           <Route path="/app/therapist-dashboard" element={<TherapistDashboard />} />
+          <Route path="/app/therapist-portal" element={<TherapistDashboard />} />
           <Route path="/app/therapist-video-session/:sessionId?" element={<TherapistVideoSession />} />
           <Route path="/app/client-video-session/:sessionId" element={<ClientVideoSession />} />
           <Route path="/app/signature-moments" element={<SignatureMoments />} />
@@ -402,6 +403,7 @@ function App() {
           <Route path="/app/coach-matches" element={<CoachMatches />} />
           <Route path="/app/coach/:id" element={<CoachProfile />} />
           <Route path="/app/coach-dashboard" element={<CoachDashboard />} />
+          <Route path="/app/coach-portal" element={<CoachDashboard />} />
           
           <Route path="/app/admin-portal" element={<AdminPortal />} />
           <Route path="/app/holistic-wellness" element={<HolisticWellness />} />

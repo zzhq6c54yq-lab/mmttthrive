@@ -15,7 +15,7 @@ const CancerSupportWelcome: React.FC = () => {
       description: "Accessing specialized resources for cancer patients and families",
       duration: 2000,
     });
-    navigate("/cancer-support-portal");
+    navigate("/app/cancer-support-portal");
   };
 
   // Define what users can expect from this program

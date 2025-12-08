@@ -54,7 +54,7 @@ const AdolescentSelection: React.FC = () => {
       duration: 1500,
     });
 
-    navigate("/adolescent-portal", { 
+    navigate("/app/adolescent-portal", { 
       state: { 
         ageGroup: id,
         stayInPortal: true,
@@ -67,7 +67,7 @@ const AdolescentSelection: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#6d28d9] via-[#7e22ce] to-[#a21caf] text-white py-8 px-4 relative">
       {/* Navigation buttons */}
       <div className="absolute top-4 left-4 z-20">
-        <PortalBackButton returnPath="/adolescent-welcome" />
+        <PortalBackButton returnPath="/app/adolescent-welcome" />
       </div>
       <div className="absolute top-4 right-4 z-20">
         <ThriveButton size="sm" />

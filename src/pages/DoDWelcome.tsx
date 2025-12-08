@@ -23,7 +23,7 @@ const DoDWelcome: React.FC = () => {
       });
       
       setTimeout(() => {
-        navigate("/dod-portal", { 
+        navigate("/app/dod-portal", { 
           state: { 
             fromWelcome: true,
             preventTutorial: true,

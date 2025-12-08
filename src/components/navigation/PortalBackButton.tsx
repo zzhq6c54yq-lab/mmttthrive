@@ -19,8 +19,15 @@ const PortalBackButton: React.FC<PortalBackButtonProps> = ({ returnPath, onClick
       return;
     }
     
+    // Ensure path has /app prefix for app routes
+    let targetPath = returnPath;
+    if (!returnPath.startsWith('/app') && !returnPath.startsWith('/home') && !returnPath.startsWith('/therapy') && 
+        !returnPath.startsWith('/coaching') && !returnPath.startsWith('/pricing') && returnPath !== '/') {
+      targetPath = `/app${returnPath.startsWith('/') ? returnPath : `/${returnPath}`}`;
+    }
+    
     // Otherwise use default navigation behavior
-    navigate(returnPath, { 
+    navigate(targetPath, { 
       state: { 
         stayInPortal: true,
         preventTutorial: true
