@@ -19,7 +19,7 @@ const ChronicIllnessWelcome: React.FC = () => {
       description: "Loading your personalized resources...",
       duration: 1500,
     });
-    navigate("/chronic-illness-portal", { 
+    navigate("/app/chronic-illness-portal", { 
       state: { 
         stayInPortal: true,
         preventTutorial: true

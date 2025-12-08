@@ -23,7 +23,7 @@ const CollegeWelcome: React.FC = () => {
       });
       
       setTimeout(() => {
-        navigate("/college-portal", { 
+        navigate("/app/college-portal", { 
           state: { 
             fromWelcome: true,
             preventTutorial: true,

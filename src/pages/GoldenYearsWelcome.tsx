@@ -23,7 +23,7 @@ const GoldenYearsWelcome: React.FC = () => {
       });
       
       setTimeout(() => {
-        navigate("/golden-years-portal", { 
+        navigate("/app/golden-years-portal", { 
           state: { 
             fromWelcome: true,
             stayInPortal: true,
@@ -42,7 +42,7 @@ const GoldenYearsWelcome: React.FC = () => {
         <div className="absolute -inset-[10%] w-[120%] h-[120%] bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 animate-[shimmer_12s_ease-in-out_infinite] opacity-20"></div>
       </div>
       <div className="absolute top-4 left-4 z-20">
-        <PortalBackButton returnPath="/" />
+        <PortalBackButton returnPath="/app/dashboard" />
       </div>
       <div className="absolute top-4 right-4 z-20">
         <ThriveButton size="sm" />

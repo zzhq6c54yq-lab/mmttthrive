@@ -48,8 +48,11 @@ const SpecializedProgramWelcome: React.FC<WelcomeScreenProps> = ({
         duration: 2000,
       });
       
+      // Ensure path has /app prefix
+      const targetPath = portalPath.startsWith('/app') ? portalPath : `/app${portalPath}`;
+      
       setTimeout(() => {
-        navigate(portalPath, { 
+        navigate(targetPath, { 
           state: { 
             fromWelcome: true,
             stayInPortal: true,

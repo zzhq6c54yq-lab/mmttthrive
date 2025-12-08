@@ -23,7 +23,7 @@ const SmallBusinessSelection: React.FC = () => {
     });
     
     if (userType === 'owner') {
-      navigate("/small-business-welcome", { 
+      navigate("/app/small-business-welcome", { 
         state: { 
           userType: 'owner',
           returnToMain: true,
@@ -31,7 +31,7 @@ const SmallBusinessSelection: React.FC = () => {
         } 
       });
     } else {
-      navigate("/employee-welcome", { 
+      navigate("/app/employee-welcome", { 
         state: { 
           userType: 'employee',
           returnToMain: true,
