@@ -196,6 +196,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "ai_match_logs_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "ai_match_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -323,6 +330,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_session_summaries_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
           {
@@ -1098,6 +1112,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_documents_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -3477,6 +3498,13 @@ export type Database = {
             referencedRelation: "therapists"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "profiles_assigned_therapist_id_fkey"
+            columns: ["assigned_therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       promo_codes: {
@@ -4562,6 +4590,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "support_tickets_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "support_tickets_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -4931,6 +4966,13 @@ export type Database = {
             referencedRelation: "therapists"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "therapist_availability_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       therapist_client_notes: {
@@ -4970,6 +5012,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "therapist_client_notes_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -5016,6 +5065,13 @@ export type Database = {
             referencedRelation: "therapists"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "therapist_credentials_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       therapist_messages: {
@@ -5058,6 +5114,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "therapist_messages_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -5125,6 +5188,13 @@ export type Database = {
             referencedRelation: "therapists"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "therapist_payouts_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       therapist_requests: {
@@ -5173,6 +5243,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "therapist_requests_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -5318,6 +5395,13 @@ export type Database = {
             referencedRelation: "therapists"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "therapy_bookings_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       therapy_sessions: {
@@ -5379,6 +5463,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "therapy_sessions_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -6355,6 +6446,57 @@ export type Database = {
           is_anonymous: boolean | null
           published_at: string | null
           question_text: string | null
+        }
+        Relationships: []
+      }
+      therapists_directory: {
+        Row: {
+          approach: string | null
+          bio: string | null
+          created_at: string | null
+          experience_years: number | null
+          hourly_rate: number | null
+          id: string | null
+          image_url: string | null
+          is_active: boolean | null
+          name: string | null
+          rating: number | null
+          specialties: string[] | null
+          title: string | null
+          total_reviews: number | null
+          video_url: string | null
+        }
+        Insert: {
+          approach?: string | null
+          bio?: string | null
+          created_at?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string | null
+          rating?: number | null
+          specialties?: string[] | null
+          title?: string | null
+          total_reviews?: number | null
+          video_url?: string | null
+        }
+        Update: {
+          approach?: string | null
+          bio?: string | null
+          created_at?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string | null
+          rating?: number | null
+          specialties?: string[] | null
+          title?: string | null
+          total_reviews?: number | null
+          video_url?: string | null
         }
         Relationships: []
       }
