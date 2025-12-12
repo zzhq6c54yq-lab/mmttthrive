@@ -26,7 +26,7 @@ serve(async (req) => {
     );
 
     const email = 'therapist@demo.com';
-    const password = '0001';
+    const password = Deno.env.get('THERAPIST_PASSWORD') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')?.slice(-8) || 'change-me';
     let userId: string;
 
     // Always list all users to find if therapist exists
@@ -53,7 +53,7 @@ serve(async (req) => {
       if (updateError) {
         console.error('Password update error:', updateError);
       } else {
-        console.log('Password updated to: 0001');
+        console.log('Password updated successfully');
       }
     } else {
       // Create new user
@@ -120,12 +120,12 @@ serve(async (req) => {
       console.log('Therapist record updated');
     }
 
-    console.log('Setup complete! Use code 0001 to login');
+    console.log('Therapist setup complete');
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: 'Therapist account ready! Use code 0001 in staff login',
+        message: 'Therapist account ready! Check Supabase secrets for access code.',
         userId: userId
       }),
       { 
