@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import Page from "@/components/Page";
-import { Brain, Heart, Zap, AlertCircle, BookOpen, MessageCircle, TrendingDown, Target, Sparkles } from "lucide-react";
+import { Brain, Heart, MessageCircle, Cloud, Anchor, BookOpen, ArrowLeft, ArrowRight, Sparkles, Save, Share2 } from "lucide-react";
 import { miniSessionSchema } from "@/lib/validations";
 
 const MiniSession: React.FC = () => {
@@ -17,26 +15,105 @@ const MiniSession: React.FC = () => {
   const [mood, setMood] = useState(5);
   const [anxiety, setAnxiety] = useState(5);
   const [energy, setEnergy] = useState(5);
-  const [urgeLevel, setUrgeLevel] = useState(0);
+  const [urgeLevel, setUrgeLevel] = useState(5);
   const [focus, setFocus] = useState<string>('');
   const [userTextPrimary, setUserTextPrimary] = useState('');
   const [userTextSecondary, setUserTextSecondary] = useState('');
   const [coaching, setCoaching] = useState('');
   const [summary, setSummary] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [userName, setUserName] = useState('friend');
+  const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Fetch user's display name
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.id) return;
+      setUserId(user.id);
+      
+      const { data } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('id', user.id)
+        .single();
+      
+      if (data?.display_name) {
+        setUserName(data.display_name.split(' ')[0]);
+      }
+    };
+    fetchUserProfile();
+  }, []);
+
+  // Time-aware greeting
+  const getTimeGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return { greeting: "Good morning", message: "I hope your day is off to a gentle start." };
+    if (hour < 17) return { greeting: "Hey there", message: "I've been thinking about you today." };
+    if (hour < 21) return { greeting: "Good evening", message: "I'm glad you're taking time for yourself." };
+    return { greeting: "It's getting late", message: "I'm glad you reached out." };
+  };
+
+  const timeContext = getTimeGreeting();
+
   const focusAreas = [
-    { id: 'racing_thoughts', label: 'Racing Thoughts', icon: Brain, color: 'bg-blue-500' },
-    { id: 'conflict', label: 'Process a Conflict', icon: MessageCircle, color: 'bg-purple-500' },
-    { id: 'low_mood', label: 'Low Mood', icon: TrendingDown, color: 'bg-indigo-500' },
-    { id: 'urge', label: 'Managing Urges', icon: AlertCircle, color: 'bg-red-500' },
-    { id: 'process_therapy', label: 'Process Therapy Session', icon: BookOpen, color: 'bg-green-500' }
+    { 
+      id: 'racing_thoughts', 
+      label: "My mind won't slow down",
+      icon: Brain,
+      description: "Racing thoughts or overthinking",
+      color: "from-blue-500/20 to-indigo-500/20"
+    },
+    { 
+      id: 'conflict', 
+      label: "I had a hard conversation",
+      icon: MessageCircle,
+      description: "Processing a conflict or difficult interaction",
+      color: "from-orange-500/20 to-red-500/20"
+    },
+    { 
+      id: 'low_mood', 
+      label: "I'm feeling down today",
+      icon: Cloud,
+      description: "Low mood or sadness",
+      color: "from-slate-500/20 to-gray-500/20"
+    },
+    { 
+      id: 'urge', 
+      label: "I'm struggling with urges",
+      icon: Anchor,
+      description: "Managing urges or cravings",
+      color: "from-purple-500/20 to-violet-500/20"
+    },
+    { 
+      id: 'process_therapy', 
+      label: "I want to reflect on therapy",
+      icon: BookOpen,
+      description: "Processing a recent therapy session",
+      color: "from-emerald-500/20 to-teal-500/20"
+    }
   ];
 
+  const getContextualPrompt = () => {
+    switch (focus) {
+      case "racing_thoughts":
+        return "What thoughts keep circling back? Don't worry about making sense — just let it out.";
+      case "conflict":
+        return "What happened? Sometimes just putting it into words helps.";
+      case "low_mood":
+        return "I'm sorry you're feeling this way. What's going on?";
+      case "urge":
+        return "I'm proud of you for reaching out. What are you noticing right now?";
+      case "process_therapy":
+        return "How did your session feel? What's sticking with you?";
+      default:
+        return "What's on your mind? This is a safe space.";
+    }
+  };
+
   const handleGenerate = async () => {
-    // Validate input
     const validation = miniSessionSchema.safeParse({
       focus,
       mood,
@@ -49,7 +126,7 @@ const MiniSession: React.FC = () => {
 
     if (!validation.success) {
       toast({
-        title: "Validation Error",
+        title: "Please share what's on your mind",
         description: validation.error.errors[0].message,
         variant: "destructive",
       });
@@ -59,7 +136,7 @@ const MiniSession: React.FC = () => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('mini-session', {
-        body: validation.data
+        body: { ...validation.data, userName }
       });
 
       if (error) throw error;
@@ -68,10 +145,9 @@ const MiniSession: React.FC = () => {
       setSummary(data.summary);
 
       // Save to database
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
+      if (userId) {
         await (supabase as any).from('mini_sessions').insert({
-          user_id: user.id,
+          user_id: userId,
           ...validation.data,
           coaching: data.coaching,
           summary: data.summary,
@@ -83,8 +159,8 @@ const MiniSession: React.FC = () => {
     } catch (error) {
       console.error('Error generating coaching:', error);
       toast({
-        title: "Error",
-        description: "Failed to generate coaching. Please try again.",
+        title: "Something went wrong",
+        description: "Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -92,207 +168,445 @@ const MiniSession: React.FC = () => {
     }
   };
 
+  // Henry Avatar Component
+  const HenryAvatar = ({ size = "lg", speaking = false }: { size?: "sm" | "lg"; speaking?: boolean }) => (
+    <motion.div 
+      className={`relative flex items-center justify-center ${size === "lg" ? "w-20 h-20" : "w-12 h-12"}`}
+      animate={speaking ? { scale: [1, 1.02, 1] } : {}}
+      transition={{ repeat: speaking ? Infinity : 0, duration: 2 }}
+    >
+      <div className={`absolute inset-0 bg-gradient-to-br from-bronze-500/30 to-bronze-700/20 rounded-full blur-xl ${speaking ? "animate-pulse" : ""}`} />
+      <div className={`relative ${size === "lg" ? "w-16 h-16" : "w-10 h-10"} rounded-full bg-gradient-to-br from-bronze-400 to-bronze-600 flex items-center justify-center shadow-lg`}>
+        <Heart className={`${size === "lg" ? "w-8 h-8" : "w-5 h-5"} text-white`} fill="white" />
+      </div>
+    </motion.div>
+  );
+
+  // Henry Speech Bubble
+  const HenrySpeech = ({ children }: { children: React.ReactNode }) => (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-gradient-to-br from-bronze-500/10 to-bronze-700/5 border border-bronze-500/20 rounded-2xl p-4 text-center max-w-md mx-auto"
+    >
+      <p className="text-foreground/90 text-lg leading-relaxed">{children}</p>
+    </motion.div>
+  );
+
+  // Progress Dots
+  const ProgressDots = () => (
+    <div className="flex items-center justify-center gap-2 mb-6">
+      {[1, 2, 3, 4].map((s) => (
+        <motion.div
+          key={s}
+          className={`w-2.5 h-2.5 rounded-full transition-colors ${
+            s === step 
+              ? "bg-bronze-500" 
+              : s < step 
+                ? "bg-bronze-500/60" 
+                : "bg-muted"
+          }`}
+          animate={s === step ? { scale: [1, 1.2, 1] } : {}}
+          transition={{ repeat: Infinity, duration: 2 }}
+        />
+      ))}
+    </div>
+  );
+
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-white mb-2">Ground & Scan</h2>
-              <p className="text-gray-400">Let's check in with how you're feeling right now</p>
-            </div>
-            
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-rose-500/20 rounded-lg">
-                      <Heart className="w-6 h-6 text-rose-400" />
-                    </div>
-                    <span className="text-white font-semibold text-lg">Mood</span>
-                  </div>
-                  <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-400">{mood}/10</span>
-                </div>
-                <Slider 
-                  value={[mood]} 
-                  onValueChange={(v) => setMood(v[0])} 
-                  min={1} 
-                  max={10} 
-                  step={1}
-                  className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-gradient-to-br [&_[role=slider]]:from-rose-400 [&_[role=slider]]:to-pink-500 [&_[role=slider]]:border-2 [&_[role=slider]]:border-white [&_[role=slider]]:shadow-lg"
-                />
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-500/20 rounded-lg">
-                      <Brain className="w-6 h-6 text-amber-400" />
-                    </div>
-                    <span className="text-white font-semibold text-lg">Anxiety</span>
-                  </div>
-                  <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">{anxiety}/10</span>
-                </div>
-                <Slider 
-                  value={[anxiety]} 
-                  onValueChange={(v) => setAnxiety(v[0])} 
-                  min={1} 
-                  max={10} 
-                  step={1}
-                  className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-gradient-to-br [&_[role=slider]]:from-amber-400 [&_[role=slider]]:to-orange-500 [&_[role=slider]]:border-2 [&_[role=slider]]:border-white [&_[role=slider]]:shadow-lg"
-                />
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-yellow-500/20 rounded-lg">
-                      <Zap className="w-6 h-6 text-yellow-400" />
-                    </div>
-                    <span className="text-white font-semibold text-lg">Energy</span>
-                  </div>
-                  <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-400">{energy}/10</span>
-                </div>
-                <Slider 
-                  value={[energy]} 
-                  onValueChange={(v) => setEnergy(v[0])} 
-                  min={1} 
-                  max={10} 
-                  step={1}
-                  className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-gradient-to-br [&_[role=slider]]:from-yellow-400 [&_[role=slider]]:to-amber-500 [&_[role=slider]]:border-2 [&_[role=slider]]:border-white [&_[role=slider]]:shadow-lg"
-                />
-              </div>
+          <motion.div
+            key="step1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-8"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <HenryAvatar size="lg" speaking />
+              <HenrySpeech>
+                {timeContext.greeting}, {userName}. 💛 {timeContext.message} Let's take a moment to check in together.
+              </HenrySpeech>
             </div>
 
-            <Button 
-              onClick={() => setStep(2)} 
-              className="w-full bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 hover:from-purple-600 hover:via-blue-600 hover:to-purple-600 text-white font-bold py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] text-lg"
-              size="lg"
-            >
-              Continue
-            </Button>
-          </div>
+            <div className="space-y-6 mt-8">
+              <p className="text-center text-muted-foreground">How are you feeling right now? There's no wrong answer.</p>
+              
+              <div className="space-y-6">
+                {/* Mood Slider */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-foreground/80">How's your heart feeling?</label>
+                    <span className="text-sm text-bronze-500 font-medium">{mood}/10</span>
+                  </div>
+                  <Slider
+                    value={[mood]}
+                    onValueChange={(v) => setMood(v[0])}
+                    max={10}
+                    min={1}
+                    step={1}
+                    className="[&_[role=slider]]:bg-bronze-500 [&_[role=slider]]:border-bronze-600"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Heavy</span>
+                    <span>Light & bright</span>
+                  </div>
+                </div>
+
+                {/* Anxiety Slider */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-foreground/80">How calm or restless?</label>
+                    <span className="text-sm text-bronze-500 font-medium">{anxiety}/10</span>
+                  </div>
+                  <Slider
+                    value={[anxiety]}
+                    onValueChange={(v) => setAnxiety(v[0])}
+                    max={10}
+                    min={1}
+                    step={1}
+                    className="[&_[role=slider]]:bg-bronze-500 [&_[role=slider]]:border-bronze-600"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Very calm</span>
+                    <span>Very restless</span>
+                  </div>
+                </div>
+
+                {/* Energy Slider */}
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-foreground/80">How's your energy today?</label>
+                    <span className="text-sm text-bronze-500 font-medium">{energy}/10</span>
+                  </div>
+                  <Slider
+                    value={[energy]}
+                    onValueChange={(v) => setEnergy(v[0])}
+                    max={10}
+                    min={1}
+                    step={1}
+                    className="[&_[role=slider]]:bg-bronze-500 [&_[role=slider]]:border-bronze-600"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Drained</span>
+                    <span>Energized</span>
+                  </div>
+                </div>
+              </div>
+
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-center text-sm text-bronze-500 mt-4"
+              >
+                Thanks for sharing that with me. 💛
+              </motion.p>
+            </div>
+
+            <div className="flex justify-end pt-4">
+              <Button 
+                onClick={() => setStep(2)}
+                className="bg-bronze-500 hover:bg-bronze-600 text-white"
+              >
+                Continue <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </div>
+          </motion.div>
         );
 
       case 2:
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-foreground">What brings you here today?</h2>
-            <p className="text-muted-foreground">Choose the area you'd like support with.</p>
+          <motion.div
+            key="step2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-8"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <HenryAvatar size="lg" speaking />
+              <HenrySpeech>
+                I'm here for whatever you need. What's weighing on you today?
+              </HenrySpeech>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid gap-3 mt-6">
               {focusAreas.map((area) => {
                 const Icon = area.icon;
+                const isSelected = focus === area.id;
                 return (
-                  <Card
+                  <motion.button
                     key={area.id}
-                    className={`p-6 cursor-pointer transition-all hover:scale-105 ${focus === area.id ? 'ring-2 ring-primary' : ''}`}
                     onClick={() => setFocus(area.id)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                      isSelected 
+                        ? "border-bronze-500 bg-bronze-500/10 shadow-lg" 
+                        : "border-border/50 hover:border-bronze-500/50 bg-card/50"
+                    }`}
                   >
-                    <div className="flex flex-col items-center gap-3 text-center">
-                      <div className={`p-3 rounded-full ${area.color}`}>
-                        <Icon className="w-6 h-6 text-white" />
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${area.color} flex items-center justify-center`}>
+                        <Icon className={`w-6 h-6 ${isSelected ? "text-bronze-500" : "text-foreground/70"}`} />
                       </div>
-                      <span className="font-medium text-foreground">{area.label}</span>
+                      <div>
+                        <p className={`font-medium ${isSelected ? "text-bronze-500" : "text-foreground"}`}>
+                          {area.label}
+                        </p>
+                        <p className="text-sm text-muted-foreground">{area.description}</p>
+                      </div>
                     </div>
-                  </Card>
+                  </motion.button>
                 );
               })}
             </div>
 
-            <div className="flex gap-4">
-              <Button variant="outline" onClick={() => setStep(1)} className="flex-1">Back</Button>
-              <Button onClick={() => setStep(3)} disabled={!focus} className="flex-1">Continue</Button>
+            {focus && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center text-sm text-bronze-500"
+              >
+                I hear you. Let's work through this together. 💛
+              </motion.p>
+            )}
+
+            <div className="flex justify-between pt-4">
+              <Button variant="outline" onClick={() => setStep(1)}>
+                <ArrowLeft className="mr-2 w-4 h-4" /> Back
+              </Button>
+              <Button 
+                onClick={() => setStep(3)}
+                disabled={!focus}
+                className="bg-bronze-500 hover:bg-bronze-600 text-white"
+              >
+                Continue <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
             </div>
-          </div>
+          </motion.div>
         );
 
       case 3:
         return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-foreground">Tell me more</h2>
-            
-            {focus === 'urge' && (
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-foreground font-medium">
-                  <AlertCircle className="w-5 h-5 text-red-500" />
-                  Urge Intensity: {urgeLevel}/10
-                </label>
-                <Slider value={[urgeLevel]} onValueChange={(v) => setUrgeLevel(v[0])} min={0} max={10} step={1} />
-                {urgeLevel > 7 && (
-                  <div className="p-4 bg-red-500/10 border border-red-500 rounded-lg">
-                    <p className="text-red-500 font-medium">If you're in crisis, please reach out to 988 or emergency services immediately.</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <label className="text-foreground font-medium">
-                {focus === 'racing_thoughts' && "What thoughts are coming up?"}
-                {focus === 'conflict' && "What happened?"}
-                {focus === 'low_mood' && "What's on your mind?"}
-                {focus === 'urge' && "What are you noticing?"}
-                {focus === 'process_therapy' && "What came up in your session?"}
-              </label>
-              <Textarea
-                value={userTextPrimary}
-                onChange={(e) => setUserTextPrimary(e.target.value)}
-                rows={6}
-                placeholder="Share what's on your mind..."
-                className="bg-card"
-              />
+          <motion.div
+            key="step3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-6"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <HenryAvatar size="lg" speaking />
+              <HenrySpeech>
+                {getContextualPrompt()}
+              </HenrySpeech>
             </div>
 
-            {focus === 'conflict' && (
-              <div className="space-y-2">
-                <label className="text-foreground font-medium">What do you wish you had said?</label>
+            <div className="space-y-4 mt-6">
+              <div className="relative">
                 <Textarea
-                  value={userTextSecondary}
-                  onChange={(e) => setUserTextSecondary(e.target.value)}
-                  rows={4}
-                  placeholder="If you could go back..."
-                  className="bg-card"
+                  value={userTextPrimary}
+                  onChange={(e) => setUserTextPrimary(e.target.value)}
+                  placeholder="This is a safe space. Take your time..."
+                  className="min-h-[180px] bg-amber-50/5 border-bronze-500/30 focus:border-bronze-500 rounded-xl p-4 text-foreground placeholder:text-muted-foreground/60 resize-none"
+                  style={{ 
+                    backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, rgba(184, 115, 51, 0.1) 31px, rgba(184, 115, 51, 0.1) 32px)",
+                    lineHeight: "32px",
+                    paddingTop: "8px"
+                  }}
                 />
+                <div className="absolute bottom-3 right-3 text-xs text-muted-foreground">
+                  {userTextPrimary.length > 0 && (
+                    <span className="text-bronze-500">You're doing great. Keep going. ✨</span>
+                  )}
+                </div>
               </div>
-            )}
 
-            <div className="flex gap-4">
-              <Button variant="outline" onClick={() => setStep(2)} className="flex-1">Back</Button>
-              <Button onClick={handleGenerate} disabled={!userTextPrimary || isLoading} className="flex-1">
-                {isLoading ? "Generating..." : "Get Support"}
+              {focus === 'conflict' && (
+                <div className="space-y-2">
+                  <label className="text-foreground/80 font-medium text-sm">What do you wish you had said?</label>
+                  <Textarea
+                    value={userTextSecondary}
+                    onChange={(e) => setUserTextSecondary(e.target.value)}
+                    rows={4}
+                    placeholder="If you could go back..."
+                    className="bg-amber-50/5 border-bronze-500/30 focus:border-bronze-500 rounded-xl"
+                  />
+                </div>
+              )}
+
+              {focus === 'urge' && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="space-y-3 p-4 bg-card/50 rounded-xl border border-border/50"
+                >
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-foreground/80">How intense is the urge right now?</label>
+                    <span className="text-sm text-bronze-500 font-medium">{urgeLevel}/10</span>
+                  </div>
+                  <Slider
+                    value={[urgeLevel]}
+                    onValueChange={(v) => setUrgeLevel(v[0])}
+                    max={10}
+                    min={1}
+                    step={1}
+                    className="[&_[role=slider]]:bg-bronze-500 [&_[role=slider]]:border-bronze-600"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Mild</span>
+                    <span>Very intense</span>
+                  </div>
+                  {urgeLevel > 7 && (
+                    <div className="p-3 bg-destructive/10 border border-destructive/30 rounded-lg">
+                      <p className="text-destructive text-sm">If you're in crisis, please reach out to 988 or emergency services immediately.</p>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </div>
+
+            <div className="flex justify-between pt-4">
+              <Button variant="outline" onClick={() => setStep(2)}>
+                <ArrowLeft className="mr-2 w-4 h-4" /> Back
+              </Button>
+              <Button 
+                onClick={handleGenerate}
+                disabled={isLoading || !userTextPrimary.trim()}
+                className="bg-bronze-500 hover:bg-bronze-600 text-white"
+              >
+                {isLoading ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ repeat: Infinity, duration: 1 }}
+                      className="mr-2"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                    </motion.div>
+                    Henry is thinking...
+                  </>
+                ) : (
+                  <>Share with Henry <ArrowRight className="ml-2 w-4 h-4" /></>
+                )}
               </Button>
             </div>
-          </div>
+          </motion.div>
         );
 
       case 4:
         return (
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Your Support</h2>
+          <motion.div
+            key="step4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-6"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <HenryAvatar size="lg" />
+              <motion.h2 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-xl font-semibold text-center text-foreground"
+              >
+                Henry's Thoughts for You
+              </motion.h2>
             </div>
-            
-            <Card className="p-6 bg-card/50">
-              <p className="text-foreground whitespace-pre-wrap">{coaching}</p>
-            </Card>
 
-            <div className="flex gap-4">
-              <Button variant="outline" onClick={() => navigate('/mini-session/history')} className="flex-1">
-                View History
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-bronze-500/10 to-bronze-700/5 border border-bronze-500/20 rounded-2xl p-6 space-y-4"
+              style={{
+                backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b87333' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"
+              }}
+            >
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                {coaching.split('\n').map((paragraph, i) => (
+                  <motion.p 
+                    key={i}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 + i * 0.1 }}
+                    className="text-foreground/90 leading-relaxed"
+                  >
+                    {paragraph}
+                  </motion.p>
+                ))}
+              </div>
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="pt-4 border-t border-bronze-500/20"
+              >
+                <p className="text-bronze-500 italic text-right">
+                  With care, Henry 💛
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {summary && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-card/50 border border-border/50 rounded-xl p-4"
+              >
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Session Summary</h3>
+                <p className="text-sm text-foreground/80">{summary}</p>
+              </motion.div>
+            )}
+
+            <div className="flex flex-wrap gap-3 justify-center pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/app/journaling')}
+                className="border-bronze-500/30 hover:bg-bronze-500/10"
+              >
+                <Save className="mr-2 w-4 h-4" /> Save to Journal
               </Button>
-              <Button onClick={() => {
-                setStep(1);
-                setFocus('');
-                setUserTextPrimary('');
-                setUserTextSecondary('');
-                setCoaching('');
-              }} className="flex-1">
-                New Session
+              <Button 
+                variant="outline"
+                onClick={() => toast({ title: "Shared with your therapist" })}
+                className="border-bronze-500/30 hover:bg-bronze-500/10"
+              >
+                <Share2 className="mr-2 w-4 h-4" /> Share with Therapist
               </Button>
             </div>
-          </div>
+
+            <div className="flex justify-center gap-4 pt-4">
+              <Button 
+                variant="ghost"
+                onClick={() => navigate('/app/mini-session-history')}
+              >
+                View Past Sessions
+              </Button>
+              <Button 
+                onClick={() => {
+                  setStep(1);
+                  setMood(5);
+                  setAnxiety(5);
+                  setEnergy(5);
+                  setFocus("");
+                  setUserTextPrimary("");
+                  setUserTextSecondary("");
+                  setCoaching("");
+                  setSummary("");
+                }}
+                className="bg-bronze-500 hover:bg-bronze-600 text-white"
+              >
+                Start New Session
+              </Button>
+            </div>
+          </motion.div>
         );
 
       default:
@@ -301,40 +615,38 @@ const MiniSession: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-[#1a1510] to-gray-900">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden border-b border-white/10 py-12">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
-        </div>
-
-        <div className="container relative z-10 px-4 mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
+    <div className="min-h-screen bg-gradient-to-br from-amber-950/20 via-background to-bronze-950/10">
+      <div className="container max-w-2xl mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/app/dashboard')}
+            className="mb-4 text-muted-foreground hover:text-foreground"
           >
-            <Badge className="mb-4 bg-purple-500/20 text-purple-400 border-purple-500/40">
-              Mental Health Core
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-2xl">
-              Between-Session Companion
+            <ArrowLeft className="mr-2 w-4 h-4" /> Back to Dashboard
+          </Button>
+          
+          <div className="text-center">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-bronze-400 to-bronze-600 bg-clip-text text-transparent">
+              A Moment with Henry
             </h1>
-            <p className="text-lg text-gray-300 leading-relaxed drop-shadow-lg max-w-2xl mx-auto">
-              AI-powered support to help you process thoughts and emotions between therapy sessions
-            </p>
-          </motion.div>
-        </div>
-      </div>
+            <p className="text-muted-foreground mt-1">Your personal between-session companion</p>
+          </div>
+        </motion.div>
 
-      {/* Main Content */}
-      <div className="py-8 px-4">
-        <div className="max-w-3xl mx-auto">
-          <Card className="p-10 bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-xl border-purple-500/20 shadow-2xl">
-            {renderStep()}
-          </Card>
-        </div>
+        <ProgressDots />
+
+        <Card className="border-bronze-500/20 bg-card/80 backdrop-blur-sm shadow-xl">
+          <CardContent className="p-6 md:p-8">
+            <AnimatePresence mode="wait">
+              {renderStep()}
+            </AnimatePresence>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

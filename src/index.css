@@ -39,6 +39,12 @@
     --chart-5: 300 100% 60%;
     --radius: 1rem;
 
+    /* Bronze Theme Colors */
+    --bronze: 30 56% 46%;
+    --bronze-dark: 30 60% 36%;
+    --bronze-light: 35 50% 70%;
+    --bronze-glow: 35 70% 55%;
+
     /* Futuristic Studio Colors */
     --neon-cyan: 196 100% 50%;
     --neon-purple: 280 100% 70%;
