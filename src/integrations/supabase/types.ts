@@ -442,6 +442,45 @@ export type Database = {
           },
         ]
       }
+      art_therapy_gallery: {
+        Row: {
+          art_type: string | null
+          created_at: string | null
+          description: string | null
+          file_path: string | null
+          file_url: string | null
+          id: string
+          is_shared: boolean | null
+          mood_expressed: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          art_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          file_path?: string | null
+          file_url?: string | null
+          id?: string
+          is_shared?: boolean | null
+          mood_expressed?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          art_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          file_path?: string | null
+          file_url?: string | null
+          id?: string
+          is_shared?: boolean | null
+          mood_expressed?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       assessment_results: {
         Row: {
           assessment_type: string
@@ -619,6 +658,30 @@ export type Database = {
           reviewed_by?: string | null
           session_cost?: number | null
           status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      binaural_favorites: {
+        Row: {
+          created_at: string | null
+          frequency_name: string
+          frequency_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          frequency_name: string
+          frequency_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          frequency_name?: string
+          frequency_type?: string
+          id?: string
           user_id?: string
         }
         Relationships: []
@@ -920,6 +983,45 @@ export type Database = {
           resource_type?: Database["public"]["Enums"]["career_resource_type"]
           responses?: Json | null
           results?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_coaching_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          module_id: string
+          module_name: string
+          notes: Json | null
+          progress_percentage: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_id: string
+          module_name: string
+          notes?: Json | null
+          progress_percentage?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_id?: string
+          module_name?: string
+          notes?: Json | null
+          progress_percentage?: number | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -2117,6 +2219,33 @@ export type Database = {
         }
         Relationships: []
       }
+      feature_achievements: {
+        Row: {
+          achievement_data: Json | null
+          achievement_type: string
+          feature_name: string
+          id: string
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_data?: Json | null
+          achievement_type: string
+          feature_name: string
+          id?: string
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_data?: Json | null
+          achievement_type?: string
+          feature_name?: string
+          id?: string
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           created_at: string | null
@@ -3011,6 +3140,33 @@ export type Database = {
           },
         ]
       }
+      meditation_favorites: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          id: string
+          meditation_id: string
+          meditation_title: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          meditation_id: string
+          meditation_title: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          meditation_id?: string
+          meditation_title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       meditation_sessions: {
         Row: {
           audio_file_url: string | null
@@ -3184,6 +3340,48 @@ export type Database = {
           mood_label?: string | null
           mood_score?: number
           notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      music_therapy_recordings: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number | null
+          file_path: string | null
+          file_url: string | null
+          id: string
+          instrument: string
+          mood_after: string | null
+          mood_before: string | null
+          notes: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          file_path?: string | null
+          file_url?: string | null
+          id?: string
+          instrument: string
+          mood_after?: string | null
+          mood_before?: string | null
+          notes?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          file_path?: string | null
+          file_url?: string | null
+          id?: string
+          instrument?: string
+          mood_after?: string | null
+          mood_before?: string | null
+          notes?: string | null
+          title?: string
           user_id?: string
         }
         Relationships: []
@@ -4251,6 +4449,78 @@ export type Database = {
           phone_verified?: boolean | null
           preferred_time?: string | null
           timezone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sobriety_tracking: {
+        Row: {
+          created_at: string | null
+          current_streak_days: number | null
+          id: string
+          longest_streak_days: number | null
+          milestones_achieved: Json | null
+          sobriety_date: string
+          substance_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_streak_days?: number | null
+          id?: string
+          longest_streak_days?: number | null
+          milestones_achieved?: Json | null
+          sobriety_date: string
+          substance_type?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_streak_days?: number | null
+          id?: string
+          longest_streak_days?: number | null
+          milestones_achieved?: Json | null
+          sobriety_date?: string
+          substance_type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sponsor_connections: {
+        Row: {
+          connection_status: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          sponsor_contact: string | null
+          sponsor_name: string | null
+          sponsor_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          connection_status?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          sponsor_contact?: string | null
+          sponsor_name?: string | null
+          sponsor_type?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          connection_status?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          sponsor_contact?: string | null
+          sponsor_name?: string | null
+          sponsor_type?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -6092,6 +6362,51 @@ export type Database = {
           status?: string
           therapist_id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      video_diary_entries: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration_seconds: number | null
+          file_path: string
+          file_url: string | null
+          id: string
+          is_private: boolean | null
+          mood_tag: string | null
+          shared_with_therapist: boolean | null
+          thumbnail_url: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration_seconds?: number | null
+          file_path: string
+          file_url?: string | null
+          id?: string
+          is_private?: boolean | null
+          mood_tag?: string | null
+          shared_with_therapist?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration_seconds?: number | null
+          file_path?: string
+          file_url?: string | null
+          id?: string
+          is_private?: boolean | null
+          mood_tag?: string | null
+          shared_with_therapist?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          user_id?: string
         }
         Relationships: []
       }
