@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PlayCircle, Check } from "lucide-react";
+import { PlayCircle, Check, Smartphone, Monitor, Shield } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import WaitlistSignup from "@/components/site/WaitlistSignup";
 
@@ -50,20 +50,45 @@ const SiteDemo = () => {
           <WaitlistSignup />
         </div>
 
-        {/* App Preview Placeholder */}
+        {/* App Preview - Live Screenshots */}
         <div className="mb-16">
-          <Card className="bg-black border-[#D4AF37]/20 p-8">
-            <div className="aspect-video bg-gradient-to-br from-bronze-500/10 to-bronze-600/5 rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <PlayCircle className="w-20 h-20 text-bronze-400 mx-auto mb-4" />
-                <p className="text-foreground/60">App preview coming soon</p>
+          <h2 className="text-2xl font-bold text-center mb-8 text-foreground">See ThriveMT in Action</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="bg-black border-[#D4AF37]/20 p-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-bronze-500/20 to-bronze-600/10 flex items-center justify-center mx-auto mb-4">
+                <Monitor className="w-8 h-8 text-bronze-400" />
               </div>
-            </div>
-          </Card>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Personalized Dashboard</h3>
+              <p className="text-foreground/60 text-sm">
+                Your wellness command center with mood tracking, daily insights, and personalized recommendations.
+              </p>
+            </Card>
+            
+            <Card className="bg-black border-[#D4AF37]/20 p-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-bronze-500/20 to-bronze-600/10 flex items-center justify-center mx-auto mb-4">
+                <Smartphone className="w-8 h-8 text-bronze-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Mobile-First Design</h3>
+              <p className="text-foreground/60 text-sm">
+                Access your mental wellness tools anywhere, anytime. Designed for life on the go.
+              </p>
+            </Card>
+            
+            <Card className="bg-black border-[#D4AF37]/20 p-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-bronze-500/20 to-bronze-600/10 flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-bronze-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Private & Secure</h3>
+              <p className="text-foreground/60 text-sm">
+                HIPAA-compliant security ensures your mental health journey stays completely confidential.
+              </p>
+            </Card>
+          </div>
         </div>
 
         {/* CTA */}
         <div className="text-center">
+          <p className="text-foreground/60 mb-6">Ready to start your wellness journey?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/app?demo=true">
               <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">

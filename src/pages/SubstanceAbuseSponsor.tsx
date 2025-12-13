@@ -291,11 +291,19 @@ const SubstanceAbuseSponsor = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg border-2 border-dashed">
-                    <Award className="h-8 w-8 text-gray-400" />
+                  <div className="flex items-center gap-4 p-3 bg-amber-50 rounded-lg">
+                    <Award className="h-8 w-8 text-amber-600" />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-600">6 Months</h3>
-                      <p className="text-sm text-gray-500">Coming Soon</p>
+                      <h3 className="font-semibold text-amber-900">6 Months</h3>
+                      <p className="text-sm text-amber-600">Half Year of Recovery</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 p-3 bg-purple-50 rounded-lg">
+                    <Award className="h-8 w-8 text-purple-600" />
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-purple-900">1 Year</h3>
+                      <p className="text-sm text-purple-600">One Full Year Sober</p>
                     </div>
                   </div>
                 </div>
