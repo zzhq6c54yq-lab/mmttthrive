@@ -1,21 +1,29 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Shield, Lock, Eye, FileCheck, BookOpen, RefreshCw, Fingerprint, Key, Check } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Shield, Lock, Eye, FileCheck, BookOpen, RefreshCw, Fingerprint, Key, Check, Download, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HomeButton from "@/components/HomeButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
+import { useCompassionateToast } from "@/hooks/useCompassionateToast";
+import { useDataExport } from "@/hooks/useDataExport";
+import { AccountDeletionDialog } from "@/components/account/AccountDeletionDialog";
 
 const PrivacySecurity = () => {
-  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { toast } = useCompassionateToast();
+  const { exportUserData, exporting } = useDataExport();
 
   const handleSecurityAction = (action: string) => {
     toast({
       title: action,
       description: `Your ${action.toLowerCase()} settings have been updated successfully.`,
     });
+  };
+
+  const handleDownloadData = async () => {
+    await exportUserData();
   };
 
   return (
@@ -27,10 +35,10 @@ const PrivacySecurity = () => {
         </div>
         <div className="container px-4 max-w-6xl mx-auto relative z-10">
           <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
+            <button onClick={() => navigate('/app/dashboard')} className="inline-flex items-center text-[#B87333] hover:text-[#B87333]/80 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </Link>
+              Back to Dashboard
+            </button>
             <HomeButton />
           </div>
           
@@ -168,19 +176,24 @@ const PrivacySecurity = () => {
                         View
                       </Button>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span className="text-sm">Data use summary</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span className="text-sm">Download your data</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span className="text-sm">Delete account options</span>
-                      </div>
+                    <div className="space-y-3 mt-4">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start gap-2 text-[#B87333] border-[#B87333] hover:bg-[#B87333]/10"
+                        onClick={handleDownloadData}
+                        disabled={exporting}
+                      >
+                        <Download className="h-4 w-4" />
+                        {exporting ? "Downloading..." : "Download Your Data"}
+                      </Button>
+                      <AccountDeletionDialog 
+                        trigger={
+                          <Button variant="outline" className="w-full justify-start gap-2 text-red-600 border-red-300 hover:bg-red-50">
+                            <Trash2 className="h-4 w-4" />
+                            Delete Account
+                          </Button>
+                        }
+                      />
                     </div>
                   </div>
                 </div>

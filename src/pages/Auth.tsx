@@ -4,20 +4,33 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { ArrowRight, Eye, EyeOff, Loader2, AlertTriangle } from "lucide-react";
+import { useCompassionateToast } from "@/hooks/useCompassionateToast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+type AuthMode = 'login' | 'signup' | 'forgot-password';
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { toast } = useToast();
+  const { showSuccess, showError, toast } = useCompassionateToast();
   
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [showGuestWarning, setShowGuestWarning] = useState(false);
   
   const showLogoutMessage = searchParams.get("logged_out") === "true";
 
@@ -70,17 +83,14 @@ const Auth: React.FC = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
+      if (mode === 'login') {
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         if (error) throw error;
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
-        });
-      } else {
+        showSuccess("Welcome back", "We're glad you're here.");
+      } else if (mode === 'signup') {
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -90,19 +100,72 @@ const Auth: React.FC = () => {
         });
         if (error) throw error;
         toast({
-          title: "Account created!",
-          description: "Please check your email to confirm your account.",
+          title: "You're almost there",
+          description: "We've sent a confirmation email. Check your inbox to complete sign up.",
         });
       }
     } catch (error: any) {
+      // Compassionate error messages
+      let errorMessage = "Let's try that together again.";
+      
+      if (error.message?.includes("Invalid login credentials")) {
+        errorMessage = "Those details didn't match. Would you like to try again or reset your password?";
+      } else if (error.message?.includes("User already registered")) {
+        errorMessage = "Looks like you already have an account. Try signing in instead.";
+      } else if (error.message?.includes("Password should be")) {
+        errorMessage = "Your password needs to be at least 6 characters to keep your account safe.";
+      } else if (error.message?.includes("Email")) {
+        errorMessage = "Let's double-check that email address.";
+      }
+      
       toast({
-        title: "Authentication Error",
-        description: error.message || "An error occurred during authentication.",
+        title: "We couldn't complete that",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast({
+        title: "We need your email",
+        description: "Enter your email address so we can send you a reset link.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/app/auth?reset=true`,
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Check your inbox",
+        description: "We've sent password reset instructions to your email.",
+      });
+      setMode('login');
+    } catch (error: any) {
+      toast({
+        title: "We couldn't send that",
+        description: "Please check your email address and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGuestContinue = () => {
+    setShowGuestWarning(false);
+    navigate("/app/dashboard");
   };
 
   if (checkingSession) {
@@ -129,18 +192,22 @@ const Auth: React.FC = () => {
             </h1>
             {showLogoutMessage ? (
               <p className="text-white/60 text-lg">
-                You've been logged out successfully
+                Take care. We'll be here when you return.
+              </p>
+            ) : mode === 'forgot-password' ? (
+              <p className="text-white/60 text-lg">
+                No worries, it happens. Let's reset your password.
               </p>
             ) : (
               <p className="text-white/60 text-lg">
-                {isLogin ? "Welcome back" : "Create your account"}
+                {mode === 'login' ? "Welcome back" : "Begin your journey with us"}
               </p>
             )}
           </div>
         </div>
 
-        <form onSubmit={handleAuth} className="space-y-6">
-          <div className="space-y-4">
+        {mode === 'forgot-password' ? (
+          <form onSubmit={handleForgotPassword} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-white/80">Email</Label>
               <Input
@@ -153,68 +220,149 @@ const Auth: React.FC = () => {
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
               />
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-white/80">Password</Label>
-              <div className="relative">
+
+            <Button 
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white py-3"
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  Send Reset Link
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
+
+            <button
+              type="button"
+              onClick={() => setMode('login')}
+              className="w-full text-[#B87333] hover:text-[#E5C5A1] transition-colors"
+            >
+              Back to sign in
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleAuth} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white/80">Email</Label>
                 <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
-                  minLength={6}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40 pr-10"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <Label htmlFor="password" className="text-white/80">Password</Label>
+                  {mode === 'login' && (
+                    <button
+                      type="button"
+                      onClick={() => setMode('forgot-password')}
+                      className="text-sm text-[#B87333] hover:text-[#E5C5A1] transition-colors"
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/40 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <Button 
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white py-3"
-          >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <>
-                {isLogin ? "Sign In" : "Create Account"}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </>
-            )}
-          </Button>
-        </form>
-
-        <div className="text-center space-y-4">
-          <button
-            type="button"
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-[#B87333] hover:text-[#E5C5A1] transition-colors"
-          >
-            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
-          </button>
-          
-          <div className="pt-4">
             <Button 
-              variant="ghost"
-              onClick={() => navigate("/app/dashboard")}
-              className="text-white/60 hover:text-white hover:bg-white/10"
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-[#B87333] to-[#E5C5A1] hover:opacity-90 text-white py-3"
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  {mode === 'login' ? "Sign In" : "Create Account"}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </form>
+        )}
+
+        {mode !== 'forgot-password' && (
+          <div className="text-center space-y-4">
+            <button
+              type="button"
+              onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+              className="text-[#B87333] hover:text-[#E5C5A1] transition-colors"
+            >
+              {mode === 'login' ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+            </button>
+            
+            <div className="pt-4">
+              <Button 
+                variant="ghost"
+                onClick={() => setShowGuestWarning(true)}
+                className="text-white/60 hover:text-white hover:bg-white/10"
+              >
+                Continue as Guest
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Guest Mode Warning Dialog */}
+      <AlertDialog open={showGuestWarning} onOpenChange={setShowGuestWarning}>
+        <AlertDialogContent className="bg-gray-900 border-[#B87333]/30">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-[#B87333]" />
+              Just so you know
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white/70">
+              As a guest, your progress and data won't be saved when you leave. 
+              You're welcome to explore, but creating an account lets you keep 
+              your journey safe and pick up right where you left off.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-white/20 text-white hover:bg-white/10">
+              Create Account Instead
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleGuestContinue}
+              className="bg-gradient-to-r from-[#B87333] to-[#E5C5A1] text-white"
             >
               Continue as Guest
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

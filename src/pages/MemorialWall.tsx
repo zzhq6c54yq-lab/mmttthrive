@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "@/components/Page";
@@ -10,8 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Flower, Search, Heart, Plus, Image, Edit, Calendar, MessageSquare } from "lucide-react";
+import { Flower, Search, Heart, Plus, Calendar, MessageSquare, User } from "lucide-react";
 import useTranslation from "@/hooks/useTranslation";
+import UniversalEmptyState from "@/components/shared/UniversalEmptyState";
 
 // Sample memorial entries
 const sampleMemorials = [
@@ -22,7 +22,10 @@ const sampleMemorials = [
     image: "https://images.unsplash.com/photo-1601288496920-b6154fe3626a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     message: "A loving mother, grandmother, and friend who inspired everyone around her with her strength and kindness.",
     flowers: 24,
-    messages: 12
+    messages: 12,
+    createdAt: new Date('2023-12-01'),
+    featured: true,
+    userId: 'user1'
   },
   {
     id: "mem2",
@@ -31,7 +34,10 @@ const sampleMemorials = [
     image: "https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     message: "A dedicated teacher who changed countless lives through his mentorship and wisdom.",
     flowers: 36,
-    messages: 18
+    messages: 18,
+    createdAt: new Date('2023-11-15'),
+    featured: true,
+    userId: 'user2'
   },
   {
     id: "mem3",
@@ -40,7 +46,10 @@ const sampleMemorials = [
     image: "https://images.unsplash.com/photo-1557053815-9f79f70c7980?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     message: "Her laughter and spirit will forever echo in our hearts. A beacon of light in the darkest times.",
     flowers: 42,
-    messages: 22
+    messages: 22,
+    createdAt: new Date('2023-12-10'),
+    featured: false,
+    userId: 'user1'
   }
 ];
 
@@ -52,6 +61,9 @@ interface Memorial {
   message: string;
   flowers: number;
   messages: number;
+  createdAt: Date;
+  featured: boolean;
+  userId: string;
 }
 
 const MemorialWall: React.FC = () => {
@@ -62,6 +74,7 @@ const MemorialWall: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [memorials, setMemorials] = useState<Memorial[]>(sampleMemorials);
   const [searchQuery, setSearchQuery] = useState("");
+  const currentUserId = 'user1'; // Mock current user
   
   // For tribute creation
   const [showNewTribute, setShowNewTribute] = useState(false);
@@ -72,11 +85,26 @@ const MemorialWall: React.FC = () => {
     message: ""
   });
   
-  // Filter memorials based on search query
-  const filteredMemorials = memorials.filter(memorial => 
-    memorial.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    memorial.message.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter memorials based on tab and search
+  const getFilteredMemorials = () => {
+    let filtered = memorials.filter(memorial => 
+      memorial.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      memorial.message.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    switch (activeTab) {
+      case 'recent':
+        return filtered.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      case 'featured':
+        return filtered.filter(m => m.featured);
+      case 'my-tributes':
+        return filtered.filter(m => m.userId === currentUserId);
+      default:
+        return filtered;
+    }
+  };
+
+  const filteredMemorials = getFilteredMemorials();
   
   const handleAddFlower = (memorialId: string) => {
     setMemorials(prev => 
@@ -115,7 +143,10 @@ const MemorialWall: React.FC = () => {
       image: newTribute.image || defaultImage,
       message: newTribute.message,
       flowers: 0,
-      messages: 0
+      messages: 0,
+      createdAt: new Date(),
+      featured: false,
+      userId: currentUserId
     };
     
     setMemorials(prev => [createdTribute, ...prev]);
@@ -137,13 +168,122 @@ const MemorialWall: React.FC = () => {
   };
   
   const handleViewTribute = (id: string) => {
-    // In a real application, this would navigate to a detailed view
     navigate(`/cancer-support/memorial-wall/${id}`, { 
       state: { 
         memorial: memorials.find(m => m.id === id),
         returnPath: "/cancer-support/memorial-wall"
       } 
     });
+  };
+
+  const renderMemorialGrid = () => {
+    if (filteredMemorials.length === 0) {
+      const emptyMessages = {
+        all: {
+          title: isSpanish ? "No se encontraron tributos" : "No tributes found",
+          message: searchQuery 
+            ? (isSpanish ? "No hay resultados para tu búsqueda." : "No results match your search.")
+            : (isSpanish ? "Aún no hay tributos. ¿Por qué no creas el primero?" : "There are no tributes yet. Why not create the first one?")
+        },
+        recent: {
+          title: isSpanish ? "Sin tributos recientes" : "No recent tributes",
+          message: isSpanish ? "Los tributos recientes aparecerán aquí." : "Recent tributes will appear here."
+        },
+        featured: {
+          title: isSpanish ? "Sin tributos destacados" : "No featured tributes",
+          message: isSpanish ? "Los tributos más queridos se destacarán aquí." : "Most loved tributes will be featured here."
+        },
+        'my-tributes': {
+          title: isSpanish ? "Sin tributos propios" : "No tributes yet",
+          message: isSpanish ? "Los tributos que crees aparecerán aquí." : "Tributes you create will appear here."
+        }
+      };
+
+      const current = emptyMessages[activeTab as keyof typeof emptyMessages] || emptyMessages.all;
+
+      return (
+        <UniversalEmptyState
+          icon={Flower}
+          title={current.title}
+          message={current.message}
+          actionLabel={isSpanish ? "Crear Tributo" : "Create Tribute"}
+          onAction={() => setShowNewTribute(true)}
+          variant="warm"
+        />
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredMemorials.map((memorial) => (
+          <Card 
+            key={memorial.id} 
+            className="overflow-hidden hover:shadow-md transition-shadow border-indigo-100 dark:border-indigo-900/30"
+          >
+            <div className="relative h-48">
+              <AspectRatio ratio={16/9}>
+                <img 
+                  src={memorial.image} 
+                  alt={memorial.name} 
+                  className="object-cover w-full h-full"
+                />
+              </AspectRatio>
+              <div 
+                className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end"
+              >
+                <div className="p-4 text-white">
+                  <h3 className="font-semibold text-lg">{memorial.name}</h3>
+                  <p className="text-sm opacity-90">{memorial.dates}</p>
+                </div>
+              </div>
+              {memorial.featured && (
+                <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">
+                  {isSpanish ? "Destacado" : "Featured"}
+                </div>
+              )}
+            </div>
+            
+            <CardContent className="p-4">
+              <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 mb-4">
+                {memorial.message}
+              </p>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-4">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="flex items-center space-x-1 text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+                    onClick={() => handleAddFlower(memorial.id)}
+                  >
+                    <Flower className="h-4 w-4" />
+                    <span>{memorial.flowers}</span>
+                  </Button>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="flex items-center space-x-1 text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span>{memorial.messages}</span>
+                  </Button>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-indigo-600 border-indigo-200 hover:border-indigo-300 dark:border-indigo-800 dark:hover:border-indigo-700"
+                  onClick={() => handleViewTribute(memorial.id)}
+                >
+                  {isSpanish ? "Ver" : "View"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
   };
   
   return (
@@ -189,12 +329,21 @@ const MemorialWall: React.FC = () => {
         <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="all">{isSpanish ? "Todos" : "All"}</TabsTrigger>
-            <TabsTrigger value="recent">{isSpanish ? "Recientes" : "Recent"}</TabsTrigger>
-            <TabsTrigger value="featured">{isSpanish ? "Destacados" : "Featured"}</TabsTrigger>
-            <TabsTrigger value="my-tributes">{isSpanish ? "Mis Tributos" : "My Tributes"}</TabsTrigger>
+            <TabsTrigger value="recent" className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {isSpanish ? "Recientes" : "Recent"}
+            </TabsTrigger>
+            <TabsTrigger value="featured" className="flex items-center gap-1">
+              <Heart className="h-3 w-3" />
+              {isSpanish ? "Destacados" : "Featured"}
+            </TabsTrigger>
+            <TabsTrigger value="my-tributes" className="flex items-center gap-1">
+              <User className="h-3 w-3" />
+              {isSpanish ? "Mis Tributos" : "My Tributes"}
+            </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="all" className="mt-6">
+          <TabsContent value={activeTab} className="mt-6">
             {showNewTribute ? (
               <Card className="mb-8 border-indigo-200 dark:border-indigo-800/40 overflow-hidden">
                 <CardContent className="p-6">
@@ -270,119 +419,7 @@ const MemorialWall: React.FC = () => {
               </Card>
             ) : null}
             
-            {filteredMemorials.length === 0 ? (
-              <div className="text-center py-12">
-                <Flower className="h-12 w-12 mx-auto text-indigo-300 dark:text-indigo-700" />
-                <h3 className="mt-4 text-lg font-medium">
-                  {isSpanish ? "No se encontraron tributos" : "No tributes found"}
-                </h3>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  {searchQuery 
-                    ? (isSpanish 
-                      ? "No hay resultados para tu búsqueda. Prueba con otros términos." 
-                      : "No results match your search. Try different terms.")
-                    : (isSpanish 
-                      ? "Aún no hay tributos. ¿Por qué no creas el primero?" 
-                      : "There are no tributes yet. Why not create the first one?")
-                  }
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredMemorials.map((memorial) => (
-                  <Card 
-                    key={memorial.id} 
-                    className="overflow-hidden hover:shadow-md transition-shadow border-indigo-100 dark:border-indigo-900/30"
-                  >
-                    <div className="relative h-48">
-                      <AspectRatio ratio={16/9}>
-                        <img 
-                          src={memorial.image} 
-                          alt={memorial.name} 
-                          className="object-cover w-full h-full"
-                        />
-                      </AspectRatio>
-                      <div 
-                        className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end"
-                      >
-                        <div className="p-4 text-white">
-                          <h3 className="font-semibold text-lg">{memorial.name}</h3>
-                          <p className="text-sm opacity-90">{memorial.dates}</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <CardContent className="p-4">
-                      <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 mb-4">
-                        {memorial.message}
-                      </p>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex space-x-4">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="flex items-center space-x-1 text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
-                            onClick={() => handleAddFlower(memorial.id)}
-                          >
-                            <Flower className="h-4 w-4" />
-                            <span>{memorial.flowers}</span>
-                          </Button>
-                          
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="flex items-center space-x-1 text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
-                          >
-                            <MessageSquare className="h-4 w-4" />
-                            <span>{memorial.messages}</span>
-                          </Button>
-                        </div>
-                        
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-indigo-600 border-indigo-200 hover:border-indigo-300 dark:border-indigo-800 dark:hover:border-indigo-700"
-                          onClick={() => handleViewTribute(memorial.id)}
-                        >
-                          {isSpanish ? "Ver" : "View"}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="recent">
-            <div className="py-12 text-center text-gray-500 dark:text-gray-400">
-              <Calendar className="h-12 w-12 mx-auto mb-4 text-indigo-400" />
-              <p>{isSpanish ? "Ver tributos recientes por fecha" : "View recent tributes by date"}</p>
-              <Button variant="link" className="mt-2">
-                {isSpanish ? "Implementar próximamente" : "Coming soon"}
-              </Button>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="featured">
-            <div className="py-12 text-center text-gray-500 dark:text-gray-400">
-              <Heart className="h-12 w-12 mx-auto mb-4 text-indigo-400" />
-              <p>{isSpanish ? "Tributos destacados por la comunidad" : "Tributes featured by the community"}</p>
-              <Button variant="link" className="mt-2">
-                {isSpanish ? "Implementar próximamente" : "Coming soon"}
-              </Button>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="my-tributes">
-            <div className="py-12 text-center text-gray-500 dark:text-gray-400">
-              <Edit className="h-12 w-12 mx-auto mb-4 text-indigo-400" />
-              <p>{isSpanish ? "Ver y gestionar tus tributos" : "View and manage your tributes"}</p>
-              <Button variant="link" className="mt-2">
-                {isSpanish ? "Implementar próximamente" : "Coming soon"}
-              </Button>
-            </div>
+            {renderMemorialGrid()}
           </TabsContent>
         </Tabs>
       </div>
