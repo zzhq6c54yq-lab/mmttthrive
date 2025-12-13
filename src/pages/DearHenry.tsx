@@ -9,6 +9,7 @@ import MostLovedCarousel from '@/components/dear-henry/MostLovedCarousel';
 import HenryBio from '@/components/dear-henry/HenryBio';
 import { Button } from '@/components/ui/button';
 import { PenLine } from 'lucide-react';
+import AIDisclaimer from '@/components/compliance/AIDisclaimer';
 
 const DearHenry: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -23,6 +24,11 @@ const DearHenry: React.FC = () => {
     <Page title="Dear Henry" showBackButton={true}>
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-amber-900">
         <DearHenryHeader />
+        
+        {/* AI Disclaimer */}
+        <div className="max-w-4xl mx-auto px-4 pt-4">
+          <AIDisclaimer variant="banner" showCrisisInfo />
+        </div>
 
         <motion.section
           initial={{ opacity: 0, y: 20 }}

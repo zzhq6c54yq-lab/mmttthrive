@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Brain, Heart, MessageCircle, Cloud, Anchor, BookOpen, ArrowLeft, ArrowRight, Sparkles, Save, Share2 } from "lucide-react";
 import { miniSessionSchema } from "@/lib/validations";
+import AIDisclaimer from "@/components/compliance/AIDisclaimer";
 
 const MiniSession: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -647,6 +648,11 @@ const MiniSession: React.FC = () => {
             </AnimatePresence>
           </CardContent>
         </Card>
+        
+        {/* AI Disclaimer */}
+        <div className="mt-6">
+          <AIDisclaimer variant="inline" showCrisisInfo />
+        </div>
       </div>
     </div>
   );

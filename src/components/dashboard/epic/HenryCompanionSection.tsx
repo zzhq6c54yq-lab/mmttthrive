@@ -6,6 +6,7 @@ import { MessageSquare, Sparkles, Heart } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import MoodBoostDialog from '@/components/henry/MoodBoostDialog';
 import DailyWisdomDialog from '@/components/henry/DailyWisdomDialog';
+import AIDisclaimer from '@/components/compliance/AIDisclaimer';
 
 interface HenryCompanionSectionProps {
   userName?: string;
@@ -183,6 +184,11 @@ export const HenryCompanionSection: React.FC<HenryCompanionSectionProps> = ({
                   <Sparkles className="w-4 h-4 mr-2" />
                   Daily Wisdom
                 </Button>
+              </div>
+              
+              {/* AI Disclaimer */}
+              <div className="mt-4">
+                <AIDisclaimer variant="subtle" />
               </div>
             </div>
           </div>
