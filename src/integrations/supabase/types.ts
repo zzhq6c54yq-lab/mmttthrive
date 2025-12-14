@@ -899,6 +899,24 @@ export type Database = {
         }
         Relationships: []
       }
+      beta_signups: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       binaural_favorites: {
         Row: {
           created_at: string | null
@@ -7081,6 +7099,7 @@ export type Database = {
           total_appreciations: number
         }[]
       }
+      get_beta_signup_count: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
