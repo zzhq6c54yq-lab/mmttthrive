@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Check, Brain, Users, TrendingUp, Shield, Clock, Heart } from "lucide-react";
 import { bundles } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import BetaSignup from "@/components/site/BetaSignup";
 
 const SiteLanding = () => {
   return (
@@ -26,6 +27,13 @@ const SiteLanding = () => {
           </Link>
         </div>
       </SiteHeroSection>
+
+      {/* Beta Signup Section */}
+      <section className="py-16 px-6 bg-gradient-to-b from-black to-[#050505]">
+        <div className="container mx-auto max-w-md">
+          <BetaSignup />
+        </div>
+      </section>
 
       {/* SEO Content Section - Our Personalized Approach */}
       <section className="py-20 px-6 bg-gradient-to-b from-black to-[#0a0a0a]">

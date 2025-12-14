@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PlayCircle, Check, Smartphone, Monitor, Shield } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
-import WaitlistSignup from "@/components/site/WaitlistSignup";
+import BetaSignup from "@/components/site/BetaSignup";
 
 const SiteDemo = () => {
   return (
@@ -45,9 +45,9 @@ const SiteDemo = () => {
           </div>
         </div>
 
-        {/* Waitlist Signup */}
+        {/* Beta Signup */}
         <div className="mb-16 max-w-md mx-auto">
-          <WaitlistSignup />
+          <BetaSignup />
         </div>
 
         {/* App Preview - Live Screenshots */}
