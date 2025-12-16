@@ -2663,6 +2663,291 @@ export type Database = {
           },
         ]
       }
+      engagement_change_log: {
+        Row: {
+          affected_record_id: string | null
+          affected_table: string | null
+          change_description: string
+          compliance_note: string | null
+          created_at: string | null
+          editor_name: string
+          id: string
+          new_value: Json | null
+          previous_value: Json | null
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          affected_record_id?: string | null
+          affected_table?: string | null
+          change_description: string
+          compliance_note?: string | null
+          created_at?: string | null
+          editor_name: string
+          id?: string
+          new_value?: Json | null
+          previous_value?: Json | null
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          affected_record_id?: string | null
+          affected_table?: string | null
+          change_description?: string
+          compliance_note?: string | null
+          created_at?: string | null
+          editor_name?: string
+          id?: string
+          new_value?: Json | null
+          previous_value?: Json | null
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      engagement_cohort_retention: {
+        Row: {
+          cohort_name: string | null
+          cohort_signup_week: string
+          created_at: string | null
+          day_1_retention: number | null
+          day_14_retention: number | null
+          day_30_retention: number | null
+          day_60_retention: number | null
+          day_7_retention: number | null
+          day_90_retention: number | null
+          id: string
+          notes: string | null
+          updated_at: string | null
+          user_count: number | null
+        }
+        Insert: {
+          cohort_name?: string | null
+          cohort_signup_week: string
+          created_at?: string | null
+          day_1_retention?: number | null
+          day_14_retention?: number | null
+          day_30_retention?: number | null
+          day_60_retention?: number | null
+          day_7_retention?: number | null
+          day_90_retention?: number | null
+          id?: string
+          notes?: string | null
+          updated_at?: string | null
+          user_count?: number | null
+        }
+        Update: {
+          cohort_name?: string | null
+          cohort_signup_week?: string
+          created_at?: string | null
+          day_1_retention?: number | null
+          day_14_retention?: number | null
+          day_30_retention?: number | null
+          day_60_retention?: number | null
+          day_7_retention?: number | null
+          day_90_retention?: number | null
+          id?: string
+          notes?: string | null
+          updated_at?: string | null
+          user_count?: number | null
+        }
+        Relationships: []
+      }
+      engagement_feature_adoption: {
+        Row: {
+          avg_duration_minutes: number | null
+          avg_sessions_per_user: number | null
+          created_at: string | null
+          feature_category: string | null
+          feature_name: string
+          id: string
+          notes: string | null
+          percentage_active_users: number | null
+          total_sessions: number | null
+          users_count: number | null
+          week_ending: string
+        }
+        Insert: {
+          avg_duration_minutes?: number | null
+          avg_sessions_per_user?: number | null
+          created_at?: string | null
+          feature_category?: string | null
+          feature_name: string
+          id?: string
+          notes?: string | null
+          percentage_active_users?: number | null
+          total_sessions?: number | null
+          users_count?: number | null
+          week_ending: string
+        }
+        Update: {
+          avg_duration_minutes?: number | null
+          avg_sessions_per_user?: number | null
+          created_at?: string | null
+          feature_category?: string | null
+          feature_name?: string
+          id?: string
+          notes?: string | null
+          percentage_active_users?: number | null
+          total_sessions?: number | null
+          users_count?: number | null
+          week_ending?: string
+        }
+        Relationships: []
+      }
+      engagement_metrics_definitions: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          definition: string
+          formula: string | null
+          frequency: string | null
+          id: string
+          metric_name: string
+          notes: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          definition: string
+          formula?: string | null
+          frequency?: string | null
+          id?: string
+          metric_name: string
+          notes?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          definition?: string
+          formula?: string | null
+          frequency?: string | null
+          id?: string
+          metric_name?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      engagement_user_segments: {
+        Row: {
+          avg_session_length: number | null
+          conversion_rate: number | null
+          created_at: string | null
+          dau: number | null
+          engagement_score: number | null
+          id: string
+          notes: string | null
+          retention_rate: number | null
+          segment_name: string
+          segment_type: string
+          user_count: number | null
+          week_ending: string
+        }
+        Insert: {
+          avg_session_length?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          dau?: number | null
+          engagement_score?: number | null
+          id?: string
+          notes?: string | null
+          retention_rate?: number | null
+          segment_name: string
+          segment_type: string
+          user_count?: number | null
+          week_ending: string
+        }
+        Update: {
+          avg_session_length?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          dau?: number | null
+          engagement_score?: number | null
+          id?: string
+          notes?: string | null
+          retention_rate?: number | null
+          segment_name?: string
+          segment_type?: string
+          user_count?: number | null
+          week_ending?: string
+        }
+        Relationships: []
+      }
+      engagement_weekly_logs: {
+        Row: {
+          avg_session_length_minutes: number | null
+          churn_rate: number | null
+          conversion_rate: number | null
+          created_at: string | null
+          dau: number | null
+          desktop_percentage: number | null
+          engagement_score: number | null
+          error_rate: number | null
+          feature_adoption: number | null
+          id: string
+          mau: number | null
+          metadata: Json | null
+          mobile_percentage: number | null
+          notes: string | null
+          nps_score: number | null
+          phi_opt_in_rate: number | null
+          recorded_by: string | null
+          retention_rate: number | null
+          sessions_per_user: number | null
+          user_growth: number | null
+          wau: number | null
+          week_ending: string
+        }
+        Insert: {
+          avg_session_length_minutes?: number | null
+          churn_rate?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          dau?: number | null
+          desktop_percentage?: number | null
+          engagement_score?: number | null
+          error_rate?: number | null
+          feature_adoption?: number | null
+          id?: string
+          mau?: number | null
+          metadata?: Json | null
+          mobile_percentage?: number | null
+          notes?: string | null
+          nps_score?: number | null
+          phi_opt_in_rate?: number | null
+          recorded_by?: string | null
+          retention_rate?: number | null
+          sessions_per_user?: number | null
+          user_growth?: number | null
+          wau?: number | null
+          week_ending: string
+        }
+        Update: {
+          avg_session_length_minutes?: number | null
+          churn_rate?: number | null
+          conversion_rate?: number | null
+          created_at?: string | null
+          dau?: number | null
+          desktop_percentage?: number | null
+          engagement_score?: number | null
+          error_rate?: number | null
+          feature_adoption?: number | null
+          id?: string
+          mau?: number | null
+          metadata?: Json | null
+          mobile_percentage?: number | null
+          notes?: string | null
+          nps_score?: number | null
+          phi_opt_in_rate?: number | null
+          recorded_by?: string | null
+          retention_rate?: number | null
+          sessions_per_user?: number | null
+          user_growth?: number | null
+          wau?: number | null
+          week_ending?: string
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           created_at: string | null
