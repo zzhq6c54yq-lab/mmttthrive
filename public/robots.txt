@@ -18,6 +18,7 @@ Allow: /engagement
 Allow: /careers
 Allow: /investors
 Allow: /the-app
+Allow: /blog
 
 # Disallow authenticated app routes
 Disallow: /app/
