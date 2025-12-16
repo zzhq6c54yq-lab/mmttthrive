@@ -1212,6 +1212,57 @@ export type Database = {
           },
         ]
       }
+      caqh_verification_logs: {
+        Row: {
+          created_at: string | null
+          expiry_date: string | null
+          id: string
+          insurance_panel: string | null
+          notes: string | null
+          therapist_id: string | null
+          verification_date: string | null
+          verification_status: string
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expiry_date?: string | null
+          id?: string
+          insurance_panel?: string | null
+          notes?: string | null
+          therapist_id?: string | null
+          verification_date?: string | null
+          verification_status: string
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expiry_date?: string | null
+          id?: string
+          insurance_panel?: string | null
+          notes?: string | null
+          therapist_id?: string | null
+          verification_date?: string | null
+          verification_status?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "caqh_verification_logs_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "caqh_verification_logs_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       career_applications: {
         Row: {
           cover_letter: string | null
@@ -1759,6 +1810,69 @@ export type Database = {
             columns: ["barter_application_id"]
             isOneToOne: false
             referencedRelation: "barter_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compliance_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string | null
+          days_until_expiry: number | null
+          expiry_date: string | null
+          id: string
+          is_resolved: boolean | null
+          message: string
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          therapist_id: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string | null
+          days_until_expiry?: number | null
+          expiry_date?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          message: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          therapist_id?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string | null
+          days_until_expiry?: number | null
+          expiry_date?: string | null
+          id?: string
+          is_resolved?: boolean | null
+          message?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          therapist_id?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_alerts_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_alerts_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -5821,6 +5935,60 @@ export type Database = {
           },
         ]
       }
+      therapist_license_history: {
+        Row: {
+          created_at: string | null
+          expiry_date: string
+          id: string
+          issue_date: string | null
+          license_number: string
+          license_state: string
+          license_type: string | null
+          therapist_id: string | null
+          verification_status: string | null
+          verification_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          expiry_date: string
+          id?: string
+          issue_date?: string | null
+          license_number: string
+          license_state: string
+          license_type?: string | null
+          therapist_id?: string | null
+          verification_status?: string | null
+          verification_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          expiry_date?: string
+          id?: string
+          issue_date?: string | null
+          license_number?: string
+          license_state?: string
+          license_type?: string | null
+          therapist_id?: string | null
+          verification_status?: string | null
+          verification_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "therapist_license_history_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "therapist_license_history_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "therapists_directory"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       therapist_messages: {
         Row: {
           client_id: string
@@ -6008,17 +6176,30 @@ export type Database = {
           background_check_status: string | null
           bio: string | null
           burnout_risk_score: number | null
+          caqh_id: string | null
+          caqh_last_verified: string | null
+          caqh_status: string | null
           caqh_verified: boolean | null
+          compliance_notes: string | null
+          compliance_status: string | null
           created_at: string
           current_caseload: number | null
+          dea_expiry_date: string | null
+          dea_number: string | null
           experience_years: number | null
           hourly_rate: number
           id: string
           image_url: string | null
           insurance_panels: string[] | null
           is_active: boolean | null
+          last_compliance_check: string | null
           license_expiry: string | null
+          license_expiry_date: string | null
           license_number: string | null
+          license_state: string | null
+          license_type: string | null
+          malpractice_expiry_date: string | null
+          malpractice_policy_number: string | null
           match_score_factors: Json | null
           max_caseload: number | null
           name: string
@@ -6042,17 +6223,30 @@ export type Database = {
           background_check_status?: string | null
           bio?: string | null
           burnout_risk_score?: number | null
+          caqh_id?: string | null
+          caqh_last_verified?: string | null
+          caqh_status?: string | null
           caqh_verified?: boolean | null
+          compliance_notes?: string | null
+          compliance_status?: string | null
           created_at?: string
           current_caseload?: number | null
+          dea_expiry_date?: string | null
+          dea_number?: string | null
           experience_years?: number | null
           hourly_rate?: number
           id?: string
           image_url?: string | null
           insurance_panels?: string[] | null
           is_active?: boolean | null
+          last_compliance_check?: string | null
           license_expiry?: string | null
+          license_expiry_date?: string | null
           license_number?: string | null
+          license_state?: string | null
+          license_type?: string | null
+          malpractice_expiry_date?: string | null
+          malpractice_policy_number?: string | null
           match_score_factors?: Json | null
           max_caseload?: number | null
           name: string
@@ -6076,17 +6270,30 @@ export type Database = {
           background_check_status?: string | null
           bio?: string | null
           burnout_risk_score?: number | null
+          caqh_id?: string | null
+          caqh_last_verified?: string | null
+          caqh_status?: string | null
           caqh_verified?: boolean | null
+          compliance_notes?: string | null
+          compliance_status?: string | null
           created_at?: string
           current_caseload?: number | null
+          dea_expiry_date?: string | null
+          dea_number?: string | null
           experience_years?: number | null
           hourly_rate?: number
           id?: string
           image_url?: string | null
           insurance_panels?: string[] | null
           is_active?: boolean | null
+          last_compliance_check?: string | null
           license_expiry?: string | null
+          license_expiry_date?: string | null
           license_number?: string | null
+          license_state?: string | null
+          license_type?: string | null
+          malpractice_expiry_date?: string | null
+          malpractice_policy_number?: string | null
           match_score_factors?: Json | null
           max_caseload?: number | null
           name?: string

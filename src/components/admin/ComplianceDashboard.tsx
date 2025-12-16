@@ -4,13 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
-import { Shield, Lock, AlertTriangle, CheckCircle, FileText, Search, Database, FileCheck, ClipboardList, Play } from 'lucide-react';
+import { Shield, Lock, AlertTriangle, CheckCircle, FileText, Search, Database, FileCheck, ClipboardList, Play, Award } from 'lucide-react';
 import { toast } from 'sonner';
 import AuditLogsTab from './AuditLogsTab';
 import ConsentStatusTab from './ConsentStatusTab';
 import PHICoverageTab from './PHICoverageTab';
 import AuditChecklistTab from './AuditChecklistTab';
 import AuditRunnerTab from './AuditRunnerTab';
+import LicenseComplianceTab from './LicenseComplianceTab';
 
 interface ComplianceViolation {
   id: string;
@@ -120,10 +121,14 @@ const ComplianceDashboard: React.FC = () => {
     <div className="space-y-6">
       {/* Tabs Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-6 bg-card/50 border border-border/50">
+        <TabsList className="flex flex-wrap bg-card/50 border border-border/50">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <Shield className="w-4 h-4" />
             <span className="hidden sm:inline">Overview</span>
+          </TabsTrigger>
+          <TabsTrigger value="licenses" className="flex items-center gap-2">
+            <Award className="w-4 h-4" />
+            <span className="hidden sm:inline">Licenses & CAQH</span>
           </TabsTrigger>
           <TabsTrigger value="runner" className="flex items-center gap-2">
             <Play className="w-4 h-4" />
@@ -331,6 +336,11 @@ const ComplianceDashboard: React.FC = () => {
               </table>
             </div>
           </Card>
+        </TabsContent>
+
+        {/* Licenses & CAQH Tab */}
+        <TabsContent value="licenses" className="mt-6">
+          <LicenseComplianceTab />
         </TabsContent>
 
         {/* Test Runner Tab */}
