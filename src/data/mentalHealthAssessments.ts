@@ -368,52 +368,52 @@ export const mentalHealthAssessments: MentalHealthAssessment[] = [
     scoring: {
       type: 'sum',
       ranges: [
-        { min: 0, max: 4, level: 'Minimal Depression', levelSpanish: 'Depresión Mínima', description: 'Little to no depression', descriptionSpanish: 'Poca o ninguna depresión' },
-        { min: 5, max: 9, level: 'Mild Depression', levelSpanish: 'Depresión Leve', description: 'Mild depression symptoms', descriptionSpanish: 'Síntomas leves de depresión' },
-        { min: 10, max: 14, level: 'Moderate Depression', levelSpanish: 'Depresión Moderada', description: 'Moderate depression symptoms', descriptionSpanish: 'Síntomas moderados de depresión' },
-        { min: 15, max: 19, level: 'Moderately Severe Depression', levelSpanish: 'Depresión Moderadamente Severa', description: 'Moderately severe depression', descriptionSpanish: 'Depresión moderadamente severa' },
-        { min: 20, max: 27, level: 'Severe Depression', levelSpanish: 'Depresión Severa', description: 'Severe depression symptoms', descriptionSpanish: 'Síntomas severos de depresión' }
+        { min: 0, max: 4, level: 'You\'re Doing Well', levelSpanish: 'Estás Bien', description: 'Your responses suggest you\'re in a good place emotionally', descriptionSpanish: 'Tus respuestas sugieren que estás en un buen lugar emocionalmente' },
+        { min: 5, max: 9, level: 'Some Challenges Present', levelSpanish: 'Algunos Desafíos Presentes', description: 'You may be experiencing some emotional challenges', descriptionSpanish: 'Puedes estar experimentando algunos desafíos emocionales' },
+        { min: 10, max: 14, level: 'We Recommend Support', levelSpanish: 'Recomendamos Apoyo', description: 'Speaking with someone could be helpful', descriptionSpanish: 'Hablar con alguien podría ser útil' },
+        { min: 15, max: 19, level: 'Professional Support Recommended', levelSpanish: 'Se Recomienda Apoyo Profesional', description: 'We strongly encourage connecting with a professional', descriptionSpanish: 'Te animamos encarecidamente a conectar con un profesional' },
+        { min: 20, max: 27, level: 'Please Reach Out Today', levelSpanish: 'Por Favor Comunícate Hoy', description: 'We care about you - please connect with a professional soon', descriptionSpanish: 'Nos preocupamos por ti - por favor conecta con un profesional pronto' }
       ]
     },
     resultInterpretations: [
       {
         scoreRange: { min: 0, max: 4 },
-        title: 'Minimal Depression',
-        titleSpanish: 'Depresión Mínima',
-        description: 'Your responses suggest minimal or no depression. Continue with healthy lifestyle practices.',
-        descriptionSpanish: 'Tus respuestas sugieren depresión mínima o nula. Continúa con prácticas de estilo de vida saludable.',
+        title: 'You\'re Doing Well',
+        titleSpanish: 'Estás Bien',
+        description: 'Your responses suggest you\'re in a good place emotionally. Keep up the healthy habits that support your wellbeing.',
+        descriptionSpanish: 'Tus respuestas sugieren que estás en un buen lugar emocionalmente. Continúa con los hábitos saludables que apoyan tu bienestar.',
         severity: 'low'
       },
       {
         scoreRange: { min: 5, max: 9 },
-        title: 'Mild Depression',
-        titleSpanish: 'Depresión Leve',
-        description: 'Your responses suggest mild depression. Consider self-care strategies and monitoring your mood.',
-        descriptionSpanish: 'Tus respuestas sugieren depresión leve. Considera estrategias de autocuidado y monitoreo de tu estado de ánimo.',
+        title: 'Some Challenges Present',
+        titleSpanish: 'Algunos Desafíos Presentes',
+        description: 'You may be experiencing some emotional challenges. Self-care practices and staying connected with loved ones can help.',
+        descriptionSpanish: 'Puedes estar experimentando algunos desafíos emocionales. Las prácticas de autocuidado y mantenerte conectado con seres queridos pueden ayudar.',
         severity: 'low'
       },
       {
         scoreRange: { min: 10, max: 14 },
-        title: 'Moderate Depression',
-        titleSpanish: 'Depresión Moderada',
-        description: 'Your responses suggest moderate depression. We recommend consulting with a mental health professional.',
-        descriptionSpanish: 'Tus respuestas sugieren depresión moderada. Recomendamos consultar con un profesional de salud mental.',
+        title: 'We Recommend Support',
+        titleSpanish: 'Recomendamos Apoyo',
+        description: 'Based on your responses, speaking with a mental health professional could be really helpful for you right now.',
+        descriptionSpanish: 'Según tus respuestas, hablar con un profesional de salud mental podría ser muy útil para ti en este momento.',
         severity: 'moderate'
       },
       {
         scoreRange: { min: 15, max: 19 },
-        title: 'Moderately Severe Depression',
-        titleSpanish: 'Depresión Moderadamente Severa',
-        description: 'Your responses suggest moderately severe depression. Professional treatment is strongly recommended.',
-        descriptionSpanish: 'Tus respuestas sugieren depresión moderadamente severa. Se recomienda encarecidamente tratamiento profesional.',
+        title: 'Professional Support Recommended',
+        titleSpanish: 'Se Recomienda Apoyo Profesional',
+        description: 'We encourage you to reach out to a mental health professional. You deserve support during this time.',
+        descriptionSpanish: 'Te animamos a comunicarte con un profesional de salud mental. Mereces apoyo durante este tiempo.',
         severity: 'high'
       },
       {
         scoreRange: { min: 20, max: 27 },
-        title: 'Severe Depression',
-        titleSpanish: 'Depresión Severa',
-        description: 'Your responses suggest severe depression. Immediate professional help is strongly recommended.',
-        descriptionSpanish: 'Tus respuestas sugieren depresión severa. Se recomienda encarecidamente ayuda profesional inmediata.',
+        title: 'Please Reach Out Today',
+        titleSpanish: 'Por Favor Comunícate Hoy',
+        description: 'We care about you. Please connect with a mental health professional as soon as possible. You don\'t have to face this alone.',
+        descriptionSpanish: 'Nos preocupamos por ti. Por favor conecta con un profesional de salud mental lo antes posible. No tienes que enfrentar esto solo.',
         severity: 'severe'
       }
     ],

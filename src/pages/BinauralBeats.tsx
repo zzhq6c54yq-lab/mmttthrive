@@ -11,7 +11,7 @@ import { ArrowLeft, Headphones, Play, Star, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import HomeButton from "@/components/HomeButton";
 
-// Track data
+// Track data - Audio is generated in real-time by BinauralBeatPlayer using Web Audio API
 const tracks = [
   // Meditation tracks
   {
@@ -21,7 +21,6 @@ const tracks = [
     category: "meditation",
     duration: "15:00",
     imageUrl: "https://images.unsplash.com/photo-1520473378652-85d9c4aee6cf?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/alpha-waves.mp3", // Mock URL
     baseFrequency: 200,
     targetFrequency: 210,
     popular: true,
@@ -34,7 +33,6 @@ const tracks = [
     category: "meditation",
     duration: "20:00",
     imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/gamma-meditation.mp3", // Mock URL
     baseFrequency: 320,
     targetFrequency: 340,
     popular: false,
@@ -49,7 +47,6 @@ const tracks = [
     category: "sleep",
     duration: "45:00",
     imageUrl: "https://images.unsplash.com/photo-1617644910775-77d4eacedb3a?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/deep-sleep.mp3", // Mock URL
     baseFrequency: 100,
     targetFrequency: 104,
     popular: true,
@@ -62,7 +59,6 @@ const tracks = [
     category: "sleep",
     duration: "30:00",
     imageUrl: "https://images.unsplash.com/photo-1455642305337-78554836e3c6?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/sleep-transition.mp3", // Mock URL
     baseFrequency: 145,
     targetFrequency: 152,
     popular: false,
@@ -77,7 +73,6 @@ const tracks = [
     category: "focus",
     duration: "30:00",
     imageUrl: "https://images.unsplash.com/photo-1589409514187-c21d14df0d04?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/gamma-focus.mp3", // Mock URL
     baseFrequency: 315,
     targetFrequency: 355,
     popular: false,
@@ -90,7 +85,6 @@ const tracks = [
     category: "focus",
     duration: "25:00",
     imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/study-beta.mp3", // Mock URL
     baseFrequency: 230,
     targetFrequency: 245,
     popular: true,
@@ -105,7 +99,6 @@ const tracks = [
     category: "relax",
     duration: "20:00",
     imageUrl: "https://images.unsplash.com/photo-1455218873509-8097305ee378?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/evening-relax.mp3", // Mock URL
     baseFrequency: 136,
     targetFrequency: 142,
     popular: true,
@@ -118,7 +111,6 @@ const tracks = [
     category: "relax",
     duration: "15:00",
     imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/midday-calm.mp3", // Mock URL
     baseFrequency: 165,
     targetFrequency: 173,
     popular: false,
@@ -133,7 +125,6 @@ const tracks = [
     category: "anxiety",
     duration: "20:00",
     imageUrl: "https://images.unsplash.com/photo-1528495612343-9ca9f4a9f67c?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/anxiety-relief.mp3", // Mock URL
     baseFrequency: 160,
     targetFrequency: 167,
     popular: true,
@@ -146,7 +137,6 @@ const tracks = [
     category: "anxiety",
     duration: "18:00",
     imageUrl: "https://images.unsplash.com/photo-1551516594-56cb78394645?auto=format&fit=crop&w=500&q=80",
-    audioUrl: "https://example.com/grounding-beat.mp3", // Mock URL
     baseFrequency: 140,
     targetFrequency: 148,
     popular: false,
