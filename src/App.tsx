@@ -178,6 +178,7 @@ import CareerAssessment from "./pages/career-resources/CareerAssessment";
 import TemplateLibrary from "./pages/career-resources/TemplateLibrary";
 import InterviewSimulator from "./pages/career-resources/InterviewSimulator";
 import GoalPlanner from "./pages/career-resources/GoalPlanner";
+import EngagementMetricsDashboard from "./pages/EngagementMetricsDashboard";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
 import FloatingHenryAssistant from "@/components/henry/FloatingHenryAssistant";
