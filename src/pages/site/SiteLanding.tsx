@@ -174,7 +174,7 @@ const SiteLanding = () => {
         <div className="container mx-auto text-center max-w-3xl">
           <h2 className="text-4xl font-bold mb-6 text-foreground">Ready to Explore?</h2>
           <p className="text-xl text-foreground/80 mb-8">
-            Try our interactive demo or join the beta to be first in line when we launch
+            Try our interactive demo or sign up for early access to be first in line
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/demo">

@@ -79,7 +79,7 @@ const BetaSignup = () => {
         setIsSubmitted(true);
         setCurrentCount((prev) => (prev !== null ? prev + 1 : 1002));
         toast({
-          title: "Welcome to the beta!",
+          title: "Welcome! You're signed up",
           description: "We'll be in touch soon with exclusive updates.",
         });
       }
@@ -104,13 +104,13 @@ const BetaSignup = () => {
             <CheckCircle className="w-8 h-8 text-bronze-400" />
           </div>
         </div>
-        <h3 className="text-2xl font-bold text-foreground mb-2">You're in the beta!</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-2">You're on the list!</h3>
         <p className="text-foreground/60 mb-4">
           We'll send updates to <span className="text-bronze-400">{email}</span>
         </p>
         {currentCount !== null && (
           <div className="mt-6 pt-6 border-t border-bronze-500/20">
-            <p className="text-sm text-foreground/50">People in the beta</p>
+            <p className="text-sm text-foreground/50">People signed up</p>
             <p className="text-3xl font-bold bg-gradient-to-r from-bronze-400 to-bronze-500 bg-clip-text text-transparent">
               {currentCount.toLocaleString()}
             </p>
@@ -129,7 +129,7 @@ const BetaSignup = () => {
             <PartyPopper className="w-8 h-8 text-bronze-400" />
           </div>
         </div>
-        <h3 className="text-2xl font-bold text-foreground mb-2">You're already on the beta list!</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-2">You're already signed up!</h3>
         <p className="text-foreground/60 mb-4">
           We have <span className="text-bronze-400">{email}</span> saved.
         </p>
@@ -138,7 +138,7 @@ const BetaSignup = () => {
         </p>
         {currentCount !== null && (
           <div className="mt-6 pt-6 border-t border-bronze-500/20">
-            <p className="text-sm text-foreground/50">People in the beta</p>
+            <p className="text-sm text-foreground/50">People signed up</p>
             <p className="text-3xl font-bold bg-gradient-to-r from-bronze-400 to-bronze-500 bg-clip-text text-transparent">
               {currentCount.toLocaleString()}
             </p>
@@ -157,7 +157,7 @@ const BetaSignup = () => {
             <Sparkles className="w-7 h-7 text-bronze-400" />
           </div>
         </div>
-        <h3 className="text-2xl font-bold text-foreground mb-2">Join the ThriveMT Beta</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-2">Join ThriveMT Early Access</h3>
         <p className="text-foreground/60">
           Be among the first to experience the future of mental wellness
         </p>

@@ -12,7 +12,7 @@ interface BinauralBeatPlayerProps {
     title: string;
     description: string;
     imageUrl: string;
-    audioUrl: string;
+    audioUrl?: string; // Optional - audio is generated in real-time via Web Audio API
     baseFrequency: number;
     targetFrequency: number;
     duration: string;
