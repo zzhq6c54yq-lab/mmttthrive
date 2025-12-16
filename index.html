@@ -36,6 +36,81 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Structured Data - Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ThriveMT",
+      "alternateName": "Thrive Mental Health",
+      "url": "https://thrive-mental.com",
+      "logo": "https://thrive-mental.com/lovable-uploads/f2c6ac08-6331-4884-950d-7f94d68ff15f.png",
+      "description": "Modern mental health platform offering therapy, coaching, and AI-powered wellness tools.",
+      "foundingDate": "2024",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-800-THRIVE",
+        "contactType": "customer service",
+        "email": "support@thrive-mental.com",
+        "availableLanguage": ["English"]
+      },
+      "sameAs": [
+        "https://twitter.com/ThriveMT",
+        "https://facebook.com/ThriveMT",
+        "https://linkedin.com/company/thrivemt"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      }
+    }
+    </script>
+    
+    <!-- JSON-LD Structured Data - MedicalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "ThriveMT Mental Health Services",
+      "url": "https://thrive-mental.com",
+      "priceRange": "$$",
+      "medicalSpecialty": ["Psychiatry", "Psychology"],
+      "availableService": [
+        {
+          "@type": "MedicalTherapy",
+          "name": "Online Therapy",
+          "description": "Licensed therapist sessions via secure video"
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "Wellness Coaching",
+          "description": "Certified coaching for mental wellness goals"
+        }
+      ],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    }
+    </script>
+    
+    <!-- JSON-LD Structured Data - WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ThriveMT",
+      "url": "https://thrive-mental.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://thrive-mental.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </head>
 
   <body>

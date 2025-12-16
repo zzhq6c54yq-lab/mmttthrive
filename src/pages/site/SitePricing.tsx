@@ -5,10 +5,17 @@ import { therapyPricing, coachingPricing, addOns, groupSessions, bundles } from 
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import InsuranceChecker from "@/components/site/InsuranceChecker";
+import { SEOHead } from "@/components/seo";
 
 const SitePricing = () => {
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Therapy & Coaching Pricing"
+        description="Transparent pricing for online therapy and wellness coaching. Self-pay from $80/session, insurance accepted. Sliding scale and financial assistance available."
+        keywords="therapy pricing, coaching cost, mental health pricing, affordable therapy, insurance therapy, sliding scale therapy, therapy cost, counseling rates"
+        canonicalUrl="https://thrive-mental.com/pricing"
+      />
       <SiteHeroSection
         title="Invest in Your Wellbeing"
         subtitle="Premium care, transparent pricing, real results."
@@ -159,7 +166,7 @@ const SitePricing = () => {
           </section>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

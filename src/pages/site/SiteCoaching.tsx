@@ -4,10 +4,17 @@ import { Card } from "@/components/ui/card";
 import { Target, TrendingUp, Heart, Briefcase, Users, Sparkles, Brain, MessageCircle, Phone, Video, Shield } from "lucide-react";
 import { coachingPricing } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import { SEOHead } from "@/components/seo";
 
 const SiteCoaching = () => {
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Mental Wellness Coaching"
+        description="Certified mental wellness coaches for stress management, personal development, and emotional well-being. Daily support, practical strategies, and accountability."
+        keywords="wellness coaching, mental health coach, stress management, personal development, life coach, emotional wellness, accountability partner, mindset coaching"
+        canonicalUrl="https://thrive-mental.com/coaching"
+      />
       {/* Hero */}
       <SiteHeroSection
         title="Your Goals Deserve a Partner"
@@ -296,7 +303,7 @@ const SiteCoaching = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

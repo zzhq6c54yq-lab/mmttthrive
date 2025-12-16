@@ -5,10 +5,17 @@ import { Check } from "lucide-react";
 import { therapyPricing } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import { FinancialHelpBanner } from "@/components/therapy/FinancialHelpBanner";
+import { SEOHead } from "@/components/seo";
 
 const SiteTherapy = () => {
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Online Therapy with Licensed Therapists"
+        description="Professional online therapy with licensed clinical psychologists. CBT, DBT, EMDR, and trauma-informed care. Insurance accepted. Book your first session today."
+        keywords="online therapy, licensed therapist, CBT therapy, DBT therapy, EMDR, trauma therapy, anxiety counseling, depression treatment, telehealth therapy"
+        canonicalUrl="https://thrive-mental.com/therapy"
+      />
       {/* Hero */}
       <SiteHeroSection
         title="Healing Starts with Being Heard"
@@ -115,7 +122,7 @@ const SiteTherapy = () => {
           <FinancialHelpBanner className="mb-10 md:mb-16" />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

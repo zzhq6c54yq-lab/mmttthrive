@@ -8,6 +8,7 @@ import { Mail, MessageSquare, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import { SEOHead } from "@/components/seo";
 
 const SiteContact = () => {
   const { toast } = useToast();
@@ -78,7 +79,13 @@ const SiteContact = () => {
   };
 
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Contact Us"
+        description="Get in touch with ThriveMT. Questions about therapy, coaching, or our services? Email support@thrive-mental.com or fill out our contact form."
+        keywords="contact ThriveMT, mental health support, therapy questions, customer service, get help"
+        canonicalUrl="https://thrive-mental.com/contact"
+      />
       <SiteHeroSection
         title="We're Here for You"
         subtitle="Questions? Ideas? Just want to talk? Reach out."
@@ -202,7 +209,7 @@ const SiteContact = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

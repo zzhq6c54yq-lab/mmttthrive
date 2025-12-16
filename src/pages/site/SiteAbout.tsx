@@ -1,10 +1,17 @@
 import { Card } from "@/components/ui/card";
 import { Heart, Eye, Target, Users } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
+import { SEOHead } from "@/components/seo";
 
 const SiteAbout = () => {
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="About ThriveMT - Our Mission & Vision"
+        description="ThriveMT makes mental health support simple, affordable, and accessible. Learn about our mission to provide modern mental wellness tools for everyone."
+        keywords="about ThriveMT, mental health mission, wellness company, mental health startup, online therapy company, mental wellness platform"
+        canonicalUrl="https://thrive-mental.com/about"
+      />
       <SiteHeroSection
         title="Built by People Who Understand"
         subtitle="Because mental health deserves more than an app."
@@ -135,7 +142,7 @@ const SiteAbout = () => {
         </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

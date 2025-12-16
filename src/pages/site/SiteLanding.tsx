@@ -5,10 +5,17 @@ import { Check, Brain, Users, TrendingUp, Shield, Clock, Heart } from "lucide-re
 import { bundles } from "@/data/servicePricing";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import BetaSignup from "@/components/site/BetaSignup";
+import { SEOHead } from "@/components/seo";
 
 const SiteLanding = () => {
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Modern Mental Health for Real Life"
+        description="Accessible therapy, premium coaching, and AI-powered wellness tools. Licensed therapists, certified coaches, 24/7 AI companion. Start your wellness journey today."
+        keywords="online therapy, mental health app, wellness coaching, anxiety treatment, depression help, AI mental health, licensed therapists, telehealth therapy"
+        canonicalUrl="https://thrive-mental.com/home"
+      />
       {/* Hero Section */}
       <SiteHeroSection
         title="Modern Mental Health for Real Life"
@@ -185,7 +192,7 @@ const SiteLanding = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

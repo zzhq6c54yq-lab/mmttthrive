@@ -5,12 +5,19 @@ import { Card } from "@/components/ui/card";
 import { DollarSign, Clock, Heart, TrendingUp, Shield, Users } from "lucide-react";
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import { CareerApplicationDialog } from "@/components/site/CareerApplicationDialog";
+import { SEOHead } from "@/components/seo";
 
 const SiteCareers = () => {
   const [applicationDialogOpen, setApplicationDialogOpen] = useState(false);
 
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Careers at ThriveMT"
+        description="Join ThriveMT and help build the future of mental health care. Competitive salaries, remote work, and meaningful impact. View open positions."
+        keywords="mental health jobs, therapist careers, wellness company jobs, remote mental health work, counselor positions, tech startup careers"
+        canonicalUrl="https://thrive-mental.com/careers"
+      />
       <SiteHeroSection
         title="Join the Movement"
         subtitle="Help us build the future of mental health care."
@@ -141,7 +148,7 @@ const SiteCareers = () => {
         open={applicationDialogOpen} 
         onOpenChange={setApplicationDialogOpen} 
       />
-    </div>
+    </main>
   );
 };
 

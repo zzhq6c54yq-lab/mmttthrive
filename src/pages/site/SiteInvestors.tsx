@@ -5,13 +5,20 @@ import { TrendingUp, Target, Users, DollarSign, Zap, Shield } from "lucide-react
 import SiteHeroSection from "@/components/site/SiteHeroSection";
 import { InvestorDeckRequestDialog } from "@/components/site/InvestorDeckRequestDialog";
 import { FounderMeetingDialog } from "@/components/site/FounderMeetingDialog";
+import { SEOHead } from "@/components/seo";
 
 const SiteInvestors = () => {
   const [deckDialogOpen, setDeckDialogOpen] = useState(false);
   const [meetingDialogOpen, setMeetingDialogOpen] = useState(false);
 
   return (
-    <div className="bg-black">
+    <main className="bg-black">
+      <SEOHead 
+        title="Investor Relations"
+        description="Invest in the future of mental health. $68B market, 30% YoY growth. Request our pitch deck or schedule a meeting with our founders."
+        keywords="mental health investment, wellness startup funding, health tech investment, ThriveMT investors, mental health market"
+        canonicalUrl="https://thrive-mental.com/investors"
+      />
       <SiteHeroSection
         title="Shape the Future of Wellness"
         subtitle="$68B market. 30% YoY growth. We're just getting started."
@@ -142,7 +149,7 @@ const SiteInvestors = () => {
         open={meetingDialogOpen} 
         onOpenChange={setMeetingDialogOpen} 
       />
-    </div>
+    </main>
   );
 };
 
