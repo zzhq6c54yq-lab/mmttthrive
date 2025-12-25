@@ -1,10 +1,13 @@
 import { useUser } from "@/contexts/UserContext";
 import { useLifeTransitions } from "@/hooks/useLifeTransitions";
+import { useProgramImageGeneration } from "@/hooks/useProgramImageGeneration";
 import TransitionProgramCard from "@/components/transitions/TransitionProgramCard";
 import { TransitionHeroImage } from "@/components/transitions/TransitionHeroImage";
 import { Button } from "@/components/ui/button";
-import { Heart, Book, Briefcase, Baby, Home, Stethoscope, Sun, ArrowLeft } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Heart, Book, Briefcase, Baby, Home, Stethoscope, Sun, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const iconMap: Record<string, any> = {
   "navigating-divorce": Heart,
@@ -20,9 +23,22 @@ const iconMap: Record<string, any> = {
 const LifeTransitions = () => {
   const { user } = useUser();
   const { programs, enrollments, isLoading } = useLifeTransitions(user?.id);
+  const { generatedImages, isGenerating, progress, generateAllImages, generateSingleImage } = useProgramImageGeneration();
   const navigate = useNavigate();
+  const [regeneratingSlug, setRegeneratingSlug] = useState<string | null>(null);
 
   const enrolledProgramIds = enrollments?.map(e => e.program_id) || [];
+
+  const handleRegenerateImage = async (slug: string) => {
+    setRegeneratingSlug(slug);
+    try {
+      // Clear cache for this slug first
+      localStorage.removeItem(`ai-program-image-${slug}`);
+      await generateSingleImage(slug);
+    } finally {
+      setRegeneratingSlug(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -31,6 +47,8 @@ const LifeTransitions = () => {
       </div>
     );
   }
+
+  const progressPercent = progress ? (progress.current / progress.total) * 100 : 0;
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -48,6 +66,37 @@ const LifeTransitions = () => {
         {/* AI-Generated Hero Image */}
         <TransitionHeroImage />
 
+        {/* Generate AI Images Button */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <Button
+            onClick={generateAllImages}
+            disabled={isGenerating}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 mr-2" />
+                Generate AI Images
+              </>
+            )}
+          </Button>
+          
+          {isGenerating && progress && (
+            <div className="flex-1 max-w-xs space-y-1">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Generating {progress.current} of {progress.total}</span>
+                <span>{Math.round(progressPercent)}%</span>
+              </div>
+              <Progress value={progressPercent} className="h-2" />
+            </div>
+          )}
+        </div>
+
         {/* Enrolled Programs */}
         {enrollments && enrollments.length > 0 && (
           <div className="space-y-4">
@@ -61,6 +110,9 @@ const LifeTransitions = () => {
                   isEnrolled={true}
                   currentWeek={enrollment.current_week}
                   userId={user?.id}
+                  generatedImageUrl={generatedImages[enrollment.program.slug]}
+                  onRegenerateImage={handleRegenerateImage}
+                  isRegenerating={regeneratingSlug === enrollment.program.slug}
                 />
               ))}
             </div>
@@ -82,6 +134,9 @@ const LifeTransitions = () => {
                   icon={iconMap[program.slug] || Book}
                   isEnrolled={false}
                   userId={user?.id}
+                  generatedImageUrl={generatedImages[program.slug]}
+                  onRegenerateImage={handleRegenerateImage}
+                  isRegenerating={regeneratingSlug === program.slug}
                 />
               ))}
           </div>
