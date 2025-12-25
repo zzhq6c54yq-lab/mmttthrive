@@ -10,6 +10,7 @@ import SiteCoaching from "@/pages/site/SiteCoaching";
 import SiteMeetHenry from "@/pages/site/SiteMeetHenry";
 import SitePricing from "@/pages/site/SitePricing";
 import SiteDemo from "@/pages/site/SiteDemo";
+import SiteInteractiveDemo from "@/pages/site/SiteInteractiveDemo";
 import SiteEngagement from "@/pages/site/SiteEngagement";
 import SiteCareers from "@/pages/site/SiteCareers";
 import SiteInvestors from "@/pages/site/SiteInvestors";
@@ -39,6 +40,7 @@ function App() {
               <Route path="/henry" element={<SiteMeetHenry />} />
               <Route path="/pricing" element={<SitePricing />} />
               <Route path="/demo" element={<SiteDemo />} />
+              <Route path="/demo/try" element={<SiteInteractiveDemo />} />
               <Route path="/engagement" element={<SiteEngagement />} />
               <Route path="/careers" element={<SiteCareers />} />
               <Route path="/investors" element={<SiteInvestors />} />
