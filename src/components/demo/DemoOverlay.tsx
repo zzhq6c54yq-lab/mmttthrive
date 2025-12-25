@@ -17,7 +17,7 @@ const DemoOverlay: React.FC<DemoOverlayProps> = ({ onShowTour }) => {
   };
 
   const handleSignUp = () => {
-    navigate('/auth');
+    window.location.href = 'https://thrive-mental.app/auth';
   };
 
   return (

@@ -37,7 +37,7 @@ const DemoGuidedTour: React.FC<DemoGuidedTourProps> = ({ isOpen, onClose }) => {
 
   const handleSignUp = () => {
     onClose();
-    navigate('/auth');
+    window.location.href = 'https://thrive-mental.app/auth';
   };
 
   const title = isSpanish ? step.titleEs : step.title;
