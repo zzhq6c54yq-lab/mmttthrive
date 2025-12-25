@@ -1,8 +1,9 @@
 import { useUser } from "@/contexts/UserContext";
 import { useLifeTransitions } from "@/hooks/useLifeTransitions";
 import TransitionProgramCard from "@/components/transitions/TransitionProgramCard";
+import { TransitionHeroImage } from "@/components/transitions/TransitionHeroImage";
 import { Button } from "@/components/ui/button";
-import { Heart, Users, Book, Briefcase, Baby, Home, Stethoscope, Sun, ArrowLeft } from "lucide-react";
+import { Heart, Book, Briefcase, Baby, Home, Stethoscope, Sun, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const iconMap: Record<string, any> = {
@@ -44,15 +45,8 @@ const LifeTransitions = () => {
           Back to Dashboard
         </Button>
 
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold gradient-heading">
-            Life Transition Guides
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Structured multi-week programs for major life changes. Week-by-week support when you need it most.
-          </p>
-        </div>
+        {/* AI-Generated Hero Image */}
+        <TransitionHeroImage />
 
         {/* Enrolled Programs */}
         {enrollments && enrollments.length > 0 && (
