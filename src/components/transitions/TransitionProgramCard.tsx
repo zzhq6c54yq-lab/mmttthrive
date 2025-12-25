@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLifeTransitions } from "@/hooks/useLifeTransitions";
 import { useNavigate } from "react-router-dom";
+import { Sparkles, RefreshCw } from "lucide-react";
 
 interface TransitionProgramCardProps {
   program: any;
@@ -10,6 +11,9 @@ interface TransitionProgramCardProps {
   isEnrolled: boolean;
   currentWeek?: number;
   userId?: string;
+  generatedImageUrl?: string;
+  onRegenerateImage?: (slug: string) => void;
+  isRegenerating?: boolean;
 }
 
 // Default cover images for programs without one
@@ -24,14 +28,32 @@ const defaultCovers: Record<string, string> = {
   "health-diagnosis": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80",
 };
 
-const TransitionProgramCard = ({ program, icon: Icon, isEnrolled, currentWeek, userId }: TransitionProgramCardProps) => {
+const TransitionProgramCard = ({ 
+  program, 
+  icon: Icon, 
+  isEnrolled, 
+  currentWeek, 
+  userId,
+  generatedImageUrl,
+  onRegenerateImage,
+  isRegenerating
+}: TransitionProgramCardProps) => {
   const { enrollInProgram } = useLifeTransitions(userId);
   const navigate = useNavigate();
 
-  const coverImage = program.cover_image_url || defaultCovers[program.slug] || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80";
+  // Priority: AI generated > program cover > default covers
+  const isAIGenerated = !!generatedImageUrl;
+  const coverImage = generatedImageUrl || program.cover_image_url || defaultCovers[program.slug] || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80";
 
   const handleNavigate = () => {
     navigate(`/app/life-transitions/${program.slug}`);
+  };
+
+  const handleRegenerate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onRegenerateImage) {
+      onRegenerateImage(program.slug);
+    }
   };
 
   return (
@@ -51,6 +73,26 @@ const TransitionProgramCard = ({ program, icon: Icon, isEnrolled, currentWeek, u
         {/* Icon overlay */}
         <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-[#D4AF37]/20 backdrop-blur-sm border border-[#D4AF37]/30">
           <Icon className="w-6 h-6 text-[#D4AF37]" />
+        </div>
+        
+        {/* AI badge and regenerate button */}
+        <div className="absolute top-3 left-3 flex items-center gap-2">
+          {isAIGenerated && (
+            <Badge className="bg-gradient-to-r from-purple-500/80 to-pink-500/80 text-white border-0 text-xs">
+              <Sparkles className="w-3 h-3 mr-1" />
+              AI
+            </Badge>
+          )}
+          {onRegenerateImage && (
+            <button
+              onClick={handleRegenerate}
+              disabled={isRegenerating}
+              className="p-1.5 rounded-md bg-black/50 hover:bg-black/70 text-white/70 hover:text-white transition-colors disabled:opacity-50"
+              title="Regenerate image"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isRegenerating ? 'animate-spin' : ''}`} />
+            </button>
+          )}
         </div>
         
         {/* Duration badge */}
