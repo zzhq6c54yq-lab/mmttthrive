@@ -20,6 +20,7 @@ import SiteApp from "@/pages/site/SiteApp";
 import SitePrivacyPolicy from "@/pages/site/SitePrivacyPolicy";
 import SiteTermsOfService from "@/pages/site/SiteTermsOfService";
 import SiteHIPAANotice from "@/pages/site/SiteHIPAANotice";
+import SiteAuth from "@/pages/site/SiteAuth";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
 
@@ -50,6 +51,7 @@ function App() {
               <Route path="/privacy" element={<SitePrivacyPolicy />} />
               <Route path="/terms" element={<SiteTermsOfService />} />
               <Route path="/hipaa" element={<SiteHIPAANotice />} />
+              <Route path="/auth" element={<SiteAuth />} />
             </Route>
 
             {/* Redirect any /app/* routes to thrive-mental.app */}
