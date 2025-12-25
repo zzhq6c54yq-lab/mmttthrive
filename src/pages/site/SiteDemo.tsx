@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PlayCircle, Check, Smartphone, Monitor, Shield } from "lucide-react";
@@ -11,12 +12,12 @@ const SiteDemo = () => {
         title="Experience It Yourself"
         subtitle="No signup. No pressure. Just explore."
       >
-        <a href="https://thrive-mental.app/app?demo=true">
+        <Link to="/demo/try">
           <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold text-lg px-12 mt-6">
             <PlayCircle className="w-6 h-6 mr-2" />
             Launch Interactive Demo
           </Button>
-        </a>
+        </Link>
       </SiteHeroSection>
 
       <div className="py-20 px-6">
@@ -88,11 +89,11 @@ const SiteDemo = () => {
         {/* CTA */}
         <div className="text-center">
           <p className="text-foreground/60 mb-6">Ready to start your wellness journey?</p>
-          <a href="https://thrive-mental.app/app?demo=true">
+          <Link to="/demo/try">
             <Button size="lg" className="bg-gradient-to-r from-bronze-500 to-bronze-600 hover:from-bronze-600 hover:to-bronze-700 text-black font-semibold">
               Try Demo Now
             </Button>
-          </a>
+          </Link>
         </div>
         </div>
       </div>
