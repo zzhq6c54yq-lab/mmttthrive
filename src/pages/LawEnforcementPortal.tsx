@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Page from "@/components/Page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, FileText, BookOpen, HeartPulse, Calendar, Users, AlertCircle, Video } from "lucide-react";
+import { Shield, Phone, HeartPulse, Users, AlertCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import useTranslation from "@/hooks/useTranslation";
@@ -11,6 +11,7 @@ import LawEnforcementResources from "@/components/law-enforcement/LawEnforcement
 import LawEnforcementCommunity from "@/components/law-enforcement/LawEnforcementCommunity";
 import LawEnforcementAssessments from "@/components/law-enforcement/LawEnforcementAssessments";
 import LawEnforcementWorkshops from "@/components/law-enforcement/LawEnforcementWorkshops";
+import PortalHenrySection from "@/components/henry/PortalHenrySection";
 
 const LawEnforcementPortal: React.FC = () => {
   const navigate = useNavigate();
@@ -54,15 +55,81 @@ const LawEnforcementPortal: React.FC = () => {
     setActiveTab(tab);
   };
 
+  const henryQuickActions = [
+    { label: "Stress Check", onClick: () => setActiveTab("assessments") },
+    { label: "Peer Support", onClick: () => setActiveTab("community") }
+  ];
+
+  // Dashboard content component
+  const DashboardContent = () => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Card className="bg-[#141a24] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+        <CardContent className="p-6">
+          <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
+            <HeartPulse className="h-10 w-10 text-blue-400" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Stress Management</h3>
+          <p className="text-white/70 mb-4">
+            Access specialized tools and resources for managing law enforcement-specific stress.
+          </p>
+          <Button 
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+            onClick={() => handleFeatureClick("stress-management")}
+          >
+            Access Resources
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-[#141a24] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+        <CardContent className="p-6">
+          <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
+            <Users className="h-10 w-10 text-blue-400" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Peer Support</h3>
+          <p className="text-white/70 mb-4">
+            Connect with fellow officers and access peer support resources.
+          </p>
+          <Button 
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+            onClick={() => handleFeatureClick("peer-support")}
+          >
+            Join Network
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-[#141a24] border-blue-900/30 hover:border-blue-700/50 transition-colors">
+        <CardContent className="p-6">
+          <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
+            <AlertCircle className="h-10 w-10 text-blue-400" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">Critical Incident Support</h3>
+          <p className="text-white/70 mb-4">
+            Access immediate support and resources for critical incident management.
+          </p>
+          <Button 
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white"
+            onClick={() => handleFeatureClick("critical-support")}
+          >
+            Get Support
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
   return (
     <Page 
       title={isSpanish ? "Portal de Fuerzas del Orden" : "Law Enforcement Portal"} 
       returnToMain={location.state?.returnToMain}
     >
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-[#0c193d] to-[#0d2563] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
+        {/* Header Banner */}
+        <div className="bg-gradient-to-r from-[#141a24] via-[#182030] to-[#1c2438] p-6 rounded-xl backdrop-blur-md border border-blue-500/30 shadow-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M1 1h2v2H1V1zm4 0h2v2H5V1zm4 0h2v2H9V1zm4 0h2v2h-2V1zm4 0h2v2h-2V1zm-16 4h2v2H1V5zm4 0h2v2H5V5zm4 0h2v2H9V5zm4 0h2v2h-2V5zm4 0h2v2h-2V5z%22 fill=%22%230EA5E9%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-            <div className="p-4 bg-white/10 rounded-full">
+            <div className="p-4 bg-blue-900/30 rounded-full">
               <Shield className="h-10 w-10 text-[#0EA5E9]" />
             </div>
             <div>
@@ -78,7 +145,8 @@ const LawEnforcementPortal: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#0F1319] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg">
+        {/* Tab Navigation */}
+        <div className="bg-[#141a24] border border-blue-900/30 rounded-lg overflow-hidden shadow-lg">
           <div className="flex overflow-x-auto scrollbar-hide">
             <button
               className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
@@ -134,69 +202,44 @@ const LawEnforcementPortal: React.FC = () => {
           
           <div className="p-6">
             {activeTab === 'dashboard' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-                  <CardContent className="p-6">
-                    <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
-                      <HeartPulse className="h-10 w-10 text-blue-400" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Stress Management</h3>
-                    <p className="text-white/70 mb-4">
-                      Access specialized tools and resources for managing law enforcement-specific stress.
-                    </p>
-                    <Button 
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleFeatureClick("stress-management")}
-                    >
-                      Access Resources
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-                  <CardContent className="p-6">
-                    <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
-                      <Users className="h-10 w-10 text-blue-400" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Peer Support</h3>
-                    <p className="text-white/70 mb-4">
-                      Connect with fellow officers and access peer support resources.
-                    </p>
-                    <Button 
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleFeatureClick("peer-support")}
-                    >
-                      Join Network
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-[#141921] border-blue-900/30 hover:border-blue-700/50 transition-colors">
-                  <CardContent className="p-6">
-                    <div className="p-4 bg-blue-900/20 rounded-lg mb-4 flex items-center justify-center">
-                      <AlertCircle className="h-10 w-10 text-blue-400" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Critical Incident Support</h3>
-                    <p className="text-white/70 mb-4">
-                      Access immediate support and resources for critical incident management.
-                    </p>
-                    <Button 
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white"
-                      onClick={() => handleFeatureClick("critical-support")}
-                    >
-                      Get Support
-                    </Button>
-                  </CardContent>
-                </Card>
+              <div className="space-y-6">
+                <PortalHenrySection 
+                  portalName="Law Enforcement"
+                  portalMessage="I understand the unique psychological demands of policing. Whether you're processing critical incidents, dealing with public scrutiny, or finding balance, I'm here to provide confidential support."
+                  quickActions={henryQuickActions}
+                  accentColor="#0EA5E9"
+                />
+                <DashboardContent />
               </div>
             )}
-            
             {activeTab === 'resources' && <LawEnforcementResources />}
             {activeTab === 'community' && <LawEnforcementCommunity />}
             {activeTab === 'assessments' && <LawEnforcementAssessments />}
             {activeTab === 'workshops' && <LawEnforcementWorkshops />}
           </div>
         </div>
+
+        {/* Crisis Support Banner */}
+        <Card className="bg-gradient-to-r from-blue-900/40 to-blue-800/40 border-blue-500/30">
+          <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-blue-900/50 rounded-full">
+                <Phone className="h-6 w-6 text-blue-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">Copline - Law Enforcement Support</h3>
+                <p className="text-blue-200/80">24/7 confidential support for officers by officers</p>
+              </div>
+            </div>
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+              onClick={() => window.open('tel:1-800-267-5463')}
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              1-800-267-5463
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </Page>
   );
