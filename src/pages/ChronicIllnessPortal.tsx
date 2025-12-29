@@ -2,101 +2,149 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import NavigationBar from "@/components/navigation/NavigationBar";
+import Page from "@/components/Page";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Stethoscope, Phone } from "lucide-react";
 import ChronicIllnessDashboard from "@/components/chronic-illness/ChronicIllnessDashboard";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Users, Stethoscope, BookMarked, Activity } from "lucide-react";
-
-// Import the components we'll need for each tab
 import ChronicIllnessResources from "@/components/chronic-illness/ChronicIllnessResources";
 import ChronicIllnessCommunity from "@/components/chronic-illness/ChronicIllnessCommunity";
 import ChronicIllnessAssessments from "@/components/chronic-illness/ChronicIllnessAssessments";
 import ChronicIllnessWorkshops from "@/components/chronic-illness/ChronicIllnessWorkshops";
+import PortalHenrySection from "@/components/henry/PortalHenrySection";
 
 const ChronicIllnessPortal: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<string>("dashboard");
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops'>('dashboard');
+
+  const handleTabChange = (tab: 'dashboard' | 'resources' | 'community' | 'assessments' | 'workshops') => {
+    setActiveTab(tab);
+  };
+
+  const henryQuickActions = [
+    { label: "Wellness Check", onClick: () => setActiveTab("assessments") },
+    { label: "Support Groups", onClick: () => setActiveTab("community") }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f5ecfd] to-[#e5deff] dark:from-[#4b1b6e] dark:to-[#36205e] text-black dark:text-white">
-      <NavigationBar 
-        showBackButton={true}
-        showHomeButton={true}
-        title="Chronic Illness Support"
-        portalMode={true}
-        portalPath="/chronic-illness-welcome"
-      />
-      
-      <div className="container mx-auto px-4 pt-24 pb-20">
-        <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold mb-2 text-purple-800 dark:text-purple-200">Chronic Illness Support Portal</h1>
-          <p className="text-lg max-w-3xl mx-auto text-purple-700 dark:text-purple-300">
-            Tools and resources to support your mental and emotional wellbeing while managing chronic health conditions.
-          </p>
+    <Page title="Chronic Illness Support" showBackButton={true}>
+      <div className="space-y-6">
+        {/* Header Banner */}
+        <div className="bg-gradient-to-r from-[#1c1a20] via-[#22202a] to-[#282432] p-6 rounded-xl backdrop-blur-md border border-purple-500/30 shadow-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22><path d=%22M1 1h2v2H1V1zm4 0h2v2H5V1zm4 0h2v2H9V1zm4 0h2v2h-2V1zm4 0h2v2h-2V1zm-16 4h2v2H1V5zm4 0h2v2H5V5zm4 0h2v2H9V5zm4 0h2v2h-2V5zm4 0h2v2h-2V5z%22 fill=%22%23A855F7%22 fill-opacity=%220.05%22/></svg>')] opacity-30"></div>
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+            <div className="p-4 bg-purple-900/30 rounded-full">
+              <Stethoscope className="h-10 w-10 text-purple-400" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                Chronic Illness Support Portal
+              </h2>
+              <p className="text-white/80">
+                Tools and resources to support your mental and emotional wellbeing while managing chronic health conditions.
+              </p>
+            </div>
+          </div>
         </div>
-        
-        <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-5 mb-8 bg-purple-100 dark:bg-purple-900/30 p-1 rounded-lg">
-            <TabsTrigger 
-              value="dashboard" 
-              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+
+        {/* Tab Navigation */}
+        <div className="bg-[#1c1a20] border border-purple-900/30 rounded-lg overflow-hidden shadow-lg">
+          <div className="flex overflow-x-auto scrollbar-hide">
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'dashboard' 
+                  ? 'border-purple-500 text-purple-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('dashboard')}
             >
-              <Activity className="h-4 w-4" />
-              <span className="hidden sm:inline">Dashboard</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="resources" 
-              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+              Dashboard
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'resources' 
+                  ? 'border-purple-500 text-purple-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('resources')}
             >
-              <BookOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">Resources</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="community" 
-              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+              Resources
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'community' 
+                  ? 'border-purple-500 text-purple-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('community')}
             >
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Community</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="assessments" 
-              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+              Community
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'assessments' 
+                  ? 'border-purple-500 text-purple-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('assessments')}
             >
-              <Stethoscope className="h-4 w-4" />
-              <span className="hidden sm:inline">Assessments</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="workshops" 
-              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+              Assessments
+            </button>
+            <button
+              className={`px-6 py-4 font-medium text-sm flex-shrink-0 border-b-2 ${
+                activeTab === 'workshops' 
+                  ? 'border-purple-500 text-purple-400' 
+                  : 'border-transparent text-white/60 hover:text-white'
+              }`}
+              onClick={() => handleTabChange('workshops')}
             >
-              <BookMarked className="h-4 w-4" />
-              <span className="hidden sm:inline">Workshops</span>
-            </TabsTrigger>
-          </TabsList>
+              Workshops
+            </button>
+          </div>
           
-          <TabsContent value="dashboard">
-            <ChronicIllnessDashboard />
-          </TabsContent>
-          
-          <TabsContent value="resources">
-            <ChronicIllnessResources />
-          </TabsContent>
-          
-          <TabsContent value="community">
-            <ChronicIllnessCommunity />
-          </TabsContent>
-          
-          <TabsContent value="assessments">
-            <ChronicIllnessAssessments />
-          </TabsContent>
-          
-          <TabsContent value="workshops">
-            <ChronicIllnessWorkshops />
-          </TabsContent>
-        </Tabs>
+          <div className="p-6">
+            {activeTab === 'dashboard' && (
+              <div className="space-y-6">
+                <PortalHenrySection 
+                  portalName="Chronic Illness"
+                  portalMessage="Living with chronic illness affects every aspect of your life. Whether you're navigating diagnosis, managing symptoms, or dealing with the emotional toll, I'm here to listen and support you."
+                  quickActions={henryQuickActions}
+                  accentColor="#A855F7"
+                />
+                <ChronicIllnessDashboard />
+              </div>
+            )}
+            {activeTab === 'resources' && <ChronicIllnessResources />}
+            {activeTab === 'community' && <ChronicIllnessCommunity />}
+            {activeTab === 'assessments' && <ChronicIllnessAssessments />}
+            {activeTab === 'workshops' && <ChronicIllnessWorkshops />}
+          </div>
+        </div>
+
+        {/* Crisis Support Banner */}
+        <Card className="bg-gradient-to-r from-purple-900/40 to-purple-800/40 border-purple-500/30">
+          <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-purple-900/50 rounded-full">
+                <Phone className="h-6 w-6 text-purple-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">988 Suicide & Crisis Lifeline</h3>
+                <p className="text-purple-200/80">24/7 free and confidential support</p>
+              </div>
+            </div>
+            <Button 
+              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+              onClick={() => window.open('tel:988')}
+            >
+              <Phone className="h-4 w-4 mr-2" />
+              Call 988
+            </Button>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </Page>
   );
 };
 
